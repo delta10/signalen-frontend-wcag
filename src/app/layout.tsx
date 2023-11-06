@@ -15,9 +15,6 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    // TODO: add correct language tag based on config
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
-    </html>
+    children
   )
 }
