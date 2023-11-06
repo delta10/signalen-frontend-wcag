@@ -9,7 +9,8 @@
     "border_colour": "#7A8AA0",
     "hover_colour": "#F9F9FA",
     "focus_colour": "#000000",
-    "focus_visible_colour": "#5315F6"
+    "focus_visible_colour": "#5315F6",
+    "font": "Open Sans"
   },
   "logo": {
     "link": "https://huisstijl.utrecht.nl/fileadmin/uploads/documenten/zz-huisstijl/logo/logo-gemeente-utrecht-nederlands-groot-1200.png",

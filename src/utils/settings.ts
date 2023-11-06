@@ -8,4 +8,9 @@ const getLogo = (): LogoConfiguration => {
   }
 }
 
-export { getLogo }
+// Local font should always have the .woff2 extension
+const getLocalFont = (): string => {
+  return configuration.theme.font + '.woff2'
+}
+
+export { getLogo, getLocalFont }

@@ -17,6 +17,9 @@ const config: Config = {
         focus: configuration.theme.focus_colour,
         focus_visible: configuration.theme.focus_visible_colour,
       },
+      fontFamily: {
+        sans: ['var(--custom-font)}'],
+      },
     },
   },
   plugins: [],
