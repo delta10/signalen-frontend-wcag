@@ -1,4 +1,8 @@
 {
+  "general": {
+    "default_locale": "en",
+    "available_locales": ["nl", "en"]
+  },
   "theme": {
     "primary_colour": "yellow",
     "secondary_colour": "red"
