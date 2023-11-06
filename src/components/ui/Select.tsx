@@ -4,12 +4,13 @@ import * as Select from '@radix-ui/react-select';
 import React from "react";
 
 type SelectProps = {
-  values: Array<string>
+  values: Array<string>,
+  onSelectChange: (value: string) => void,
 } & React.SelectHTMLAttributes<typeof HTMLSelectElement>
 
-export default function S({ values, ...props }: SelectProps) {
+export default function S({ values, onSelectChange, disabled, ...props }: SelectProps) {
   return (
-    <Select.Root>
+    <Select.Root onValueChange={onSelectChange} disabled={disabled}>
       <Select.Trigger>
         <Select.Value />
         <Select.Icon />
