@@ -6,5 +6,9 @@
   "theme": {
     "primary_colour": "yellow",
     "secondary_colour": "red"
+  },
+  "logo": {
+    "link": "https://huisstijl.utrecht.nl/fileadmin/uploads/documenten/zz-huisstijl/logo/logo-gemeente-utrecht-nederlands-groot-1200.png",
+    "max_height": 150
   }
 }
