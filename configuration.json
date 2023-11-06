@@ -4,7 +4,7 @@
     "available_locales": ["nl", "en"]
   },
   "theme": {
-    "primary_colour": "yellow",
+    "primary_colour": "#CC0500",
     "secondary_colour": "red"
   },
   "logo": {
