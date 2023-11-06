@@ -21,7 +21,7 @@ export default function S({
   return (
     <Select.Root onValueChange={onSelectChange} disabled={disabled}>
       <Select.Trigger
-        className={`flex h-10 items-center gap-4 bg-white p-3 justify-between min-w-[150px] ring-1 ring-border hover:ring-2 hover:bg-hover focus:ring-2 focus:ring-focus outline-none focus-visible:outline-dashed focus-visible:outline-focus_visible ${
+        className={`flex transition duration-100 items-center gap-4 bg-white px-3 py-2 justify-between min-w-[150px] ring-1 ring-border hover:ring-2 hover:bg-hover focus:ring-2 focus:ring-focus outline-none focus-visible:outline-dashed focus-visible:outline-focus_visible ${
           disabled ? 'bg-hover text-border' : ''
         }`}
       >
@@ -33,11 +33,18 @@ export default function S({
       </Select.Trigger>
 
       <Select.Portal>
-        <Select.Content className="bg-white" position="popper">
-          <Select.Viewport>
+        <Select.Content
+          className="bg-white mt-[1px] -ml-[1px] border-r border-b border-l border-border"
+          position="popper"
+        >
+          <Select.Viewport className="h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]">
             <Select.Group>
               {values.map((value) => (
-                <Select.Item key={value} value={value}>
+                <Select.Item
+                  className="px-3 py-1 outline-none hover:bg-hover focus:bg-hover border-t-[0.5px] border-border first:border-t-0"
+                  key={value}
+                  value={value}
+                >
                   {value}
                 </Select.Item>
               ))}
