@@ -1,3 +1,3 @@
-import { Select } from "@/components/ui";
+import { Select } from '@/components/ui'
 
 export { Select }

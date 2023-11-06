@@ -1,5 +1,5 @@
-import { useTranslations } from "next-intl";
-import {LanguageSwitch} from "@/components/navigation/LanguageSwitch";
+import { useTranslations } from 'next-intl'
+import { LanguageSwitch } from '@/components/navigation/LanguageSwitch'
 
 export default function Home() {
   const t = useTranslations('homepage')
