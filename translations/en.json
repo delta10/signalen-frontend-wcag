@@ -3,6 +3,7 @@
     "welcome": "Describe your report"
   },
   "describe-report": {
-    "heading": "Describe your report"
+    "heading": "Describe your report",
+    "description": "Before you file a notification, you can see which notifications are known to the municipality on the <link>notifications map</link>. Is your notification not listed? Then make a notification."
   }
 }

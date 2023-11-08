@@ -3,6 +3,7 @@
     "welcome": "Beschrijf uw melding"
   },
   "describe-report": {
-    "heading": "Beschrijf uw melding"
+    "heading": "Beschrijf uw melding",
+    "description": "Voordat u een melding doet kunt u op de <link>meldingenkaart</link> zien welke meldingen bekend zijn bij de gemeente. Staat uw melding er niet bij? Maak dan een melding."
   }
 }
