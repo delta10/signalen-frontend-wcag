@@ -1,8 +1,8 @@
-import Link, { LinkProps } from 'next/link'
+import { Link } from '@/routing/navigation'
 
 type LinkWrapperProps = {
   unstyled?: boolean
-} & LinkProps &
+} & Parameters<typeof Link>[0] &
   React.AnchorHTMLAttributes<HTMLAnchorElement>
 
 const LinkWrapper = ({

@@ -10,7 +10,7 @@ export default function Home() {
       <p>
         {t.rich('description', {
           link: (chunks) => (
-            <LinkWrapper href={'/meldingen-kaart'}>{chunks}</LinkWrapper>
+            <LinkWrapper href={'/notifications-map'}>{chunks}</LinkWrapper>
           ),
         })}
       </p>

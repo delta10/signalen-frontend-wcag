@@ -1,9 +1,11 @@
 import createMiddleware from 'next-intl/middleware'
 import { getAllAvailableLocales, getDefaultLocale } from '@/utils/locale'
+import { locales, pathnames } from '@/routing/navigation'
 
 export default createMiddleware({
-  locales: getAllAvailableLocales(),
   defaultLocale: getDefaultLocale(),
+  locales,
+  pathnames,
 })
 
 export const config = {
