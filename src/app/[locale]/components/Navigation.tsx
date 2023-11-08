@@ -1,4 +1,4 @@
-import { LanguageSwitch } from '@/components/navigation/LanguageSwitch'
+import { LanguageSwitch } from '@/app/[locale]/components/LanguageSwitch'
 
 const Navigation = () => {
   return (

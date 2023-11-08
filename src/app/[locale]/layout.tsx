@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import React from 'react'
 import { getAllAvailableLocales } from '@/utils/locale'
 import { Container } from '@/components'
-import { Header } from '@/components/navigation/Header'
+import { Header } from '@/app/[locale]/components/Header'
 import localFont from 'next/font/local'
 
 const font = localFont({

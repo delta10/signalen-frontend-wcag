@@ -6,14 +6,16 @@ export default function Home() {
 
   return (
     <>
-      <h1>{t('heading')}</h1>
-      <p>
-        {t.rich('description', {
-          link: (chunks) => (
-            <LinkWrapper href={'/notifications-map'}>{chunks}</LinkWrapper>
-          ),
-        })}
-      </p>
+      <div className="flex flex-col gap-4">
+        <h1>{t('heading')}</h1>
+        <p>
+          {t.rich('description', {
+            link: (chunks) => (
+              <LinkWrapper href={'/notifications-map'}>{chunks}</LinkWrapper>
+            ),
+          })}
+        </p>
+      </div>
     </>
   )
 }

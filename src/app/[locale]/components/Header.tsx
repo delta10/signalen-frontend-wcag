@@ -1,5 +1,5 @@
 import { getLogo } from '@/utils/settings'
-import { Navigation } from '@/components/navigation/Navigation'
+import { Navigation } from '@/app/[locale]/components/Navigation'
 
 const Header = () => {
   return (
