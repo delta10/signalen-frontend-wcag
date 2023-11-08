@@ -1,5 +1,6 @@
 import { useTranslations } from 'next-intl'
 import { LinkWrapper } from '@/components/ui/LinkWrapper'
+import { IncidentDescriptionForm } from '@/app/[locale]/incident/components/IncidentDescriptionForm'
 
 export default function Home() {
   const t = useTranslations('describe-report')
@@ -15,6 +16,7 @@ export default function Home() {
             ),
           })}
         </p>
+        <IncidentDescriptionForm />
       </div>
     </>
   )
