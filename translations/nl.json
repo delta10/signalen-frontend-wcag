@@ -1,5 +1,8 @@
 {
   "homepage": {
-    "welcome": "Welkom bij de Signalen Frontend POC"
+    "welcome": "Beschrijf uw melding"
+  },
+  "describe-report": {
+    "heading": "Beschrijf uw melding"
   }
 }

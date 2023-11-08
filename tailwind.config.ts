@@ -16,6 +16,11 @@ const config: Config = {
         border: configuration.theme.border_colour,
         focus: configuration.theme.focus_colour,
         focus_visible: configuration.theme.focus_visible_colour,
+        link: configuration.theme.link.colour,
+        active_link: configuration.theme.link.active_colour,
+        hover_link: configuration.theme.link.hover_colour,
+        focus_link: configuration.theme.link.focus_colour,
+        focus_visible_link: configuration.theme.link.focus_visible_colour,
       },
       fontFamily: {
         sans: ['var(--custom-font)}'],
