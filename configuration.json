@@ -6,6 +6,7 @@
   "theme": {
     "primary_colour": "#CC0500",
     "secondary_colour": "red",
+    "error_colour": "#D2262E",
     "border_colour": "#7A8AA0",
     "hover_colour": "#F9F9FA",
     "focus_colour": "#000000",
@@ -17,7 +18,8 @@
       "hover_colour": "#3F10BC",
       "focus_colour": "#EBE3FF",
       "focus_visible_colour": "#5315F6"
-    }
+    },
+    "light_text": "#767676"
   },
   "logo": {
     "link": "https://huisstijl.utrecht.nl/fileadmin/uploads/documenten/zz-huisstijl/logo/logo-gemeente-utrecht-nederlands-groot-1200.png",

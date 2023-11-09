@@ -12,6 +12,7 @@ const config: Config = {
       colors: {
         primary: configuration.theme.primary_colour,
         secondary: configuration.theme.secondary_colour,
+        error: configuration.theme.error_colour,
         hover: configuration.theme.hover_colour,
         border: configuration.theme.border_colour,
         focus: configuration.theme.focus_colour,
@@ -21,6 +22,7 @@ const config: Config = {
         hover_link: configuration.theme.link.hover_colour,
         focus_link: configuration.theme.link.focus_colour,
         focus_visible_link: configuration.theme.link.focus_visible_colour,
+        light_text: configuration.theme.light_text,
       },
       fontFamily: {
         sans: ['var(--custom-font)}'],

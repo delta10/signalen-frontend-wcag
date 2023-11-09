@@ -45,11 +45,11 @@ export const IncidentDescriptionForm = () => {
                   Typ geen persoonsgegevens in deze omschrijving. We vragen dit
                   later in dit formulier aan u.
                 </FormDescription>
+                <FormMessage />
               </div>
               <FormControl>
                 <Input placeholder={'title'} {...field} />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />
