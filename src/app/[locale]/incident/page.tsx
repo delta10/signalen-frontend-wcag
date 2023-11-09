@@ -1,9 +1,9 @@
-import { useTranslations } from 'next-intl'
+import { NextIntlClientProvider, useMessages, useTranslations } from 'next-intl'
 import { LinkWrapper } from '@/components/ui/LinkWrapper'
 import { IncidentDescriptionForm } from '@/app/[locale]/incident/components/IncidentDescriptionForm'
 import { client } from '@/lib/apiClient'
 import { ApiError } from '@/sdk'
-import axios from 'axios'
+import pick from 'lodash/pick'
 
 const getMyPrivateAreasList = async () => {
   const response = await client.v1
@@ -22,6 +22,7 @@ export default async function Home() {
 
 function IncidentDescriptionPage() {
   const t = useTranslations('describe-report')
+  const messages = useMessages()
 
   return (
     <>
@@ -34,8 +35,11 @@ function IncidentDescriptionPage() {
             ),
           })}
         </p>
-        <IncidentDescriptionForm />
-        {}
+        <NextIntlClientProvider
+          messages={pick(messages, 'describe-report.form')}
+        >
+          <IncidentDescriptionForm />
+        </NextIntlClientProvider>
       </div>
     </>
   )

@@ -4,7 +4,15 @@
   },
   "describe-report": {
     "heading": "Describe your report",
-    "description": "Before you file a notification, you can see which notifications are known to the municipality on the <link>notifications map</link>. Is your notification not listed? Then make a notification."
+    "description": "Before you file a notification, you can see which notifications are known to the municipality on the <link>notifications map</link>. Is your notification not listed? Then make a notification.",
+    "form": {
+      "describe_textarea_heading": "What is it about?",
+      "describe_textarea_description": "Do not type personal information in this description. We will ask this of you later in this form.",
+      "describe_submit": "Submit",
+      "errors": {
+        "textarea_required": "This is a required field"
+      }
+    }
   },
   "routing": {
     "notifications-map": "/notifications-map",

@@ -13,13 +13,15 @@ import {
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Input } from '@/components/ui/Input'
-
-// TODO: Add translations to zod errors
-const incidentDescriptionFormSchema = z.object({
-  title: z.string().min(2).max(50),
-})
+import { useTranslations } from 'next-intl'
 
 export const IncidentDescriptionForm = () => {
+  const t = useTranslations('describe-report.form')
+
+  const incidentDescriptionFormSchema = z.object({
+    title: z.string().min(1, t('errors.textarea_required')),
+  })
+
   const form = useForm<z.infer<typeof incidentDescriptionFormSchema>>({
     resolver: zodResolver(incidentDescriptionFormSchema),
     defaultValues: {
@@ -40,10 +42,9 @@ export const IncidentDescriptionForm = () => {
           render={({ field }) => (
             <FormItem>
               <div>
-                <FormLabel>Waar gaat het om?</FormLabel>
+                <FormLabel>{t('describe_textarea_heading')}</FormLabel>
                 <FormDescription>
-                  Typ geen persoonsgegevens in deze omschrijving. We vragen dit
-                  later in dit formulier aan u.
+                  {t('describe_textarea_description')}
                 </FormDescription>
                 <FormMessage />
               </div>
@@ -53,7 +54,7 @@ export const IncidentDescriptionForm = () => {
             </FormItem>
           )}
         />
-        <button type="submit">Verstuur</button>
+        <button type="submit">{t('describe_submit')}</button>
       </form>
     </Form>
   )
