@@ -3,7 +3,7 @@
 import { useTransition } from 'react'
 import { usePathname, useRouter } from '@/routing/navigation'
 import { Select } from '@/components'
-import { getAllAvailableLocales } from '@/utils/locale'
+import { getAllAvailableLocales } from '@/lib/utils/locale'
 import { useLocale } from 'next-intl'
 
 const LanguageSwitch = () => {

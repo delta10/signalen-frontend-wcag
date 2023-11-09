@@ -1,0 +1,53 @@
+/* generated using openapi-typescript-codegen -- do no edit */
+/* istanbul ignore file */
+/* tslint:disable */
+/* eslint-disable */
+
+/**
+ * * `A3DMC` - A3DMC
+ * * `A3DEC` - A3DEC
+ * * `A3WMC` - A3WMC
+ * * `A3WEC` - A3WEC
+ * * `I5DMC` - I5DMC
+ * * `STOPEC` - STOPEC
+ * * `KLOKLICHTZC` - KLOKLICHTZC
+ * * `GLADZC` - GLADZC
+ * * `A3DEVOMC` - A3DEVOMC
+ * * `WS1EC` - WS1EC
+ * * `WS2EC` - WS2EC
+ * * `WS3EC` - WS3EC
+ * * `REST` - REST
+ * * `ONDERMIJNING` - ONDERMIJNING
+ * * `EMPTY` - EMPTY
+ * * `LIGHTING` - LIGHTING
+ * * `GLAD_OLIE` - GLAD_OLIE
+ * * `TECHNISCHE_STORING` - TECHNISCHE_STORING
+ * * `STOPEC3` - STOPEC3
+ * * `URGENTE_MELDINGEN` - URGENTE_MELDINGEN
+ * * `3WGM` - 3WGM
+ * * `HANDLING_MARKTEN` - HANDLING_MARKTEN
+ */
+export enum HandlingEnum {
+    A3DMC = 'A3DMC',
+    A3DEC = 'A3DEC',
+    A3WMC = 'A3WMC',
+    A3WEC = 'A3WEC',
+    I5DMC = 'I5DMC',
+    STOPEC = 'STOPEC',
+    KLOKLICHTZC = 'KLOKLICHTZC',
+    GLADZC = 'GLADZC',
+    A3DEVOMC = 'A3DEVOMC',
+    WS1EC = 'WS1EC',
+    WS2EC = 'WS2EC',
+    WS3EC = 'WS3EC',
+    REST = 'REST',
+    ONDERMIJNING = 'ONDERMIJNING',
+    EMPTY = 'EMPTY',
+    LIGHTING = 'LIGHTING',
+    GLAD_OLIE = 'GLAD_OLIE',
+    TECHNISCHE_STORING = 'TECHNISCHE_STORING',
+    STOPEC3 = 'STOPEC3',
+    URGENTE_MELDINGEN = 'URGENTE_MELDINGEN',
+    _3WGM = '3WGM',
+    HANDLING_MARKTEN = 'HANDLING_MARKTEN',
+}

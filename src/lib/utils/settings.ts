@@ -1,4 +1,4 @@
-import configuration from '../../configuration.json'
+import configuration from '../../../configuration.json'
 import { LogoConfiguration } from '@/types/configuration'
 
 const getLogo = (): LogoConfiguration => {

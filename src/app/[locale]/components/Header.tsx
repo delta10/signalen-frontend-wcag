@@ -1,4 +1,4 @@
-import { getLogo } from '@/utils/settings'
+import { getLogo } from '@/lib/utils/settings'
 import { Navigation } from '@/app/[locale]/components/Navigation'
 
 const Header = () => {

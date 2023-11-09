@@ -2,7 +2,7 @@ import {
   createLocalizedPathnamesNavigation,
   Pathnames,
 } from 'next-intl/navigation'
-import { getAllAvailableLocales } from '@/utils/locale'
+import { getAllAvailableLocales } from '@/lib/utils/locale'
 import { createTranslator } from 'next-intl'
 
 export const locales = getAllAvailableLocales()

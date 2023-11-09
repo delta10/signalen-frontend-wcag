@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 import React from 'react'
-import { getAllAvailableLocales } from '@/utils/locale'
+import { getAllAvailableLocales } from '@/lib/utils/locale'
 import { Container } from '@/components'
 import { Header } from '@/app/[locale]/components/Header'
 import localFont from 'next/font/local'
