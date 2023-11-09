@@ -7,7 +7,7 @@ import axios from 'axios'
 
 const getMySignalsList = async () => {
   const response = await client.v1
-    .v1MySignalsList()
+    .v1PrivateAreasList()
     .catch((err: ApiError) => console.log(err))
 
   return response

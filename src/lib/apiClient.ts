@@ -6,7 +6,11 @@ import { BaseHttpRequest, CancelablePromise, SignalsClient } from '@/sdk'
 import { ApiRequestOptions } from '@/sdk/core/ApiRequestOptions'
 
 class AxiosHttpRequestWithRetry extends BaseHttpRequest {
-  axiosInstance = axios.create()
+  axiosInstance = axios.create({
+    headers: {
+      Authorization: 'Bearer ' + process.env.TESTING_PURPOSES_API_KEY,
+    },
+  })
 
   constructor(config: OpenAPIConfig) {
     super(config)
