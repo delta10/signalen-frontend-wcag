@@ -8,6 +8,7 @@ import {
   FormItem,
   FormMessage,
   FormLabel,
+  FormDescription,
 } from '@/components/ui/Form'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -38,7 +39,13 @@ export const IncidentDescriptionForm = () => {
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Waar gaat het om?</FormLabel>
+              <div>
+                <FormLabel>Waar gaat het om?</FormLabel>
+                <FormDescription>
+                  Typ geen persoonsgegevens in deze omschrijving. We vragen dit
+                  later in dit formulier aan u.
+                </FormDescription>
+              </div>
               <FormControl>
                 <Input placeholder={'title'} {...field} />
               </FormControl>
