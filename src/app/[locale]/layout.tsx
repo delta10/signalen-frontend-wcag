@@ -6,7 +6,7 @@ import { Header } from '@/app/[locale]/components/Header'
 import localFont from 'next/font/local'
 
 const font = localFont({
-  src: '../../../public/fonts/poppins.woff2',
+  src: '../../../public/fonts/fira-sans.woff2',
   display: 'swap',
   variable: '--custom-font',
 })
