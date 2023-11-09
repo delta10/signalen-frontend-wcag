@@ -10,7 +10,10 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         type={type}
         {...props}
         ref={ref}
-        className={cn('flex', className)}
+        className={cn(
+          'p-3 transition duration-100 ring-1 ring-border hover:ring-2 hover:bg-hover focus:ring-2 focus:ring-focus outline-none focus-visible:outline-dashed focus-visible:outline-focus_visible',
+          className
+        )}
       />
     )
   }

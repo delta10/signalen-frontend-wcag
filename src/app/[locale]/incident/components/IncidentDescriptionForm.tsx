@@ -11,6 +11,7 @@ import {
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Input } from '@/components/ui/Input'
+import { FormLabel } from '@radix-ui/react-form'
 
 // TODO: Add translations to zod errors
 const incidentDescriptionFormSchema = z.object({
@@ -37,6 +38,7 @@ export const IncidentDescriptionForm = () => {
           control={form.control}
           render={({ field }) => (
             <FormItem>
+              <FormLabel>Hey</FormLabel>
               <FormControl>
                 <Input placeholder={'title'} {...field} />
               </FormControl>
