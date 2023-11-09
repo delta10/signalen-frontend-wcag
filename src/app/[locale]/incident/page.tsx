@@ -1,8 +1,19 @@
 import { useTranslations } from 'next-intl'
 import { LinkWrapper } from '@/components/ui/LinkWrapper'
 import { IncidentDescriptionForm } from '@/app/[locale]/incident/components/IncidentDescriptionForm'
+import { client } from '@/lib/apiClient'
 
-export default function Home() {
+const getMySignalsList = async () => {
+  const response = await client.v1.v1MySignalsList()
+
+  return response
+}
+
+export default async function Home() {
+  return <IncidentDescriptionPage />
+}
+
+function IncidentDescriptionPage() {
   const t = useTranslations('describe-report')
 
   return (
@@ -17,6 +28,7 @@ export default function Home() {
           })}
         </p>
         <IncidentDescriptionForm />
+        {}
       </div>
     </>
   )

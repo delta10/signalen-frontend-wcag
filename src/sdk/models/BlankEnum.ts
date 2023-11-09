@@ -4,5 +4,5 @@
 /* eslint-disable */
 
 export enum BlankEnum {
-    = '',
+ BLANK = '',
 }

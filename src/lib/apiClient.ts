@@ -1,7 +1,7 @@
 import axios from 'axios'
 import axiosRetry from 'axios-retry'
 import { request as __request } from '../sdk/core/request'
-import type { OpenAPIConfig } from '../sdk/core/OpenAPI'
+import type { OpenAPIConfig } from '@/sdk'
 import { BaseHttpRequest, CancelablePromise, SignalsClient } from '@/sdk'
 import { ApiRequestOptions } from '@/sdk/core/ApiRequestOptions'
 
@@ -18,7 +18,7 @@ class AxiosHttpRequestWithRetry extends BaseHttpRequest {
   }
 }
 
-const client = new SignalsClient(
+export const client = new SignalsClient(
   { BASE: process.env.BASE_URL_API },
   AxiosHttpRequestWithRetry
 )
