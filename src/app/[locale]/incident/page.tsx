@@ -5,16 +5,17 @@ import { client } from '@/lib/apiClient'
 import { ApiError } from '@/sdk'
 import axios from 'axios'
 
-const getMySignalsList = async () => {
+const getMyPrivateAreasList = async () => {
   const response = await client.v1
     .v1PrivateAreasList()
+    .then((res) => console.log(res))
     .catch((err: ApiError) => console.log(err))
 
   return response
 }
 
 export default async function Home() {
-  console.log(await getMySignalsList())
+  const privateAreasList = await getMyPrivateAreasList()
 
   return <IncidentDescriptionPage />
 }
