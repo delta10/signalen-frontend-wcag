@@ -16,6 +16,7 @@ import { useTranslations } from 'next-intl'
 import { Textarea } from '@/components/ui/TextArea'
 import { Input } from '@/components/ui/Input'
 import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentFormFooter'
+import { Button } from '@/components/ui/Button'
 
 export const IncidentDescriptionForm = () => {
   const t = useTranslations('describe-report.form')
@@ -79,7 +80,7 @@ export const IncidentDescriptionForm = () => {
           )}
         />
         <IncidentFormFooter>
-          <button type="submit">{t('describe_submit')}</button>
+          <Button type="submit">{t('describe_submit')}</Button>
         </IncidentFormFooter>
       </form>
     </Form>
