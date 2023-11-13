@@ -14,18 +14,19 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Input } from '@/components/ui/Input'
 import { useTranslations } from 'next-intl'
+import { Textarea } from '@/components/ui/TextArea'
 
 export const IncidentDescriptionForm = () => {
   const t = useTranslations('describe-report.form')
 
   const incidentDescriptionFormSchema = z.object({
-    title: z.string().min(1, t('errors.textarea_required')),
+    description: z.string().min(1, t('errors.textarea_required')),
   })
 
   const form = useForm<z.infer<typeof incidentDescriptionFormSchema>>({
     resolver: zodResolver(incidentDescriptionFormSchema),
     defaultValues: {
-      title: '',
+      description: '',
     },
   })
 
@@ -35,12 +36,15 @@ export const IncidentDescriptionForm = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex flex-col gap-4 items-start"
+      >
         <FormField
-          name={'title'}
+          name={'description'}
           control={form.control}
           render={({ field, formState: { errors } }) => (
-            <FormItem error={errors.title}>
+            <FormItem error={errors.description}>
               <div>
                 <FormLabel>{t('describe_textarea_heading')}</FormLabel>
                 <FormDescription>
@@ -49,7 +53,7 @@ export const IncidentDescriptionForm = () => {
                 <FormMessage />
               </div>
               <FormControl>
-                <Input placeholder={'title'} {...field} />
+                <Textarea rows={5} {...field} />
               </FormControl>
             </FormItem>
           )}
