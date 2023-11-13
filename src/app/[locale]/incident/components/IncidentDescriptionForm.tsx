@@ -16,9 +16,9 @@ import { useTranslations } from 'next-intl'
 import { Textarea } from '@/components/ui/TextArea'
 import { Input } from '@/components/ui/Input'
 import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentFormFooter'
-import { Button } from '@/components/ui/Button'
 import { useSignalStore } from '@/store/store'
 import { useRouter } from '@/routing/navigation'
+import { boolean } from 'zod'
 
 export const IncidentDescriptionForm = () => {
   const t = useTranslations('describe-report.form')
@@ -40,7 +40,9 @@ export const IncidentDescriptionForm = () => {
   const onSubmit = (values: z.infer<typeof incidentDescriptionFormSchema>) => {
     console.log(values)
 
-    updateSignal('text', 'test')
+    updateSignal('location', 'string')
+
+    // updateSignal({ description: 12344 } as Model)
 
     router.push('/incident/add')
   }
