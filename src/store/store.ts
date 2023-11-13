@@ -47,6 +47,14 @@ const useSignalStore = create<SignalStore>()(
 const useStepperStore = create<StepperStore>()((set) => ({
   step: 1,
   goToStep: (step) => set((state) => ({ step: step })),
+  removeOneStep: () =>
+    set((state) => ({
+      step: state.step - 1,
+    })),
+  addOneStep: () =>
+    set((state) => ({
+      step: state.step + 1,
+    })),
 }))
 
-export { useSignalStore }
+export { useSignalStore, useStepperStore }

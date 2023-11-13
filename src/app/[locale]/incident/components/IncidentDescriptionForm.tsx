@@ -16,7 +16,7 @@ import { useTranslations } from 'next-intl'
 import { Textarea } from '@/components/ui/TextArea'
 import { Input } from '@/components/ui/Input'
 import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentFormFooter'
-import { useSignalStore } from '@/store/store'
+import { useSignalStore, useStepperStore } from '@/store/store'
 import { useRouter } from '@/routing/navigation'
 import { boolean } from 'zod'
 import { useEffect } from 'react'
@@ -24,6 +24,7 @@ import { useEffect } from 'react'
 export const IncidentDescriptionForm = () => {
   const t = useTranslations('describe-report.form')
   const { updateSignal, signal } = useSignalStore()
+  const { addOneStep } = useStepperStore()
   const router = useRouter()
 
   const incidentDescriptionFormSchema = z.object({
@@ -43,10 +44,11 @@ export const IncidentDescriptionForm = () => {
 
     updateSignal({
       ...signal,
-      text: 'string',
       location: { ...signal.location, address: { naam: 'oranjestraat' } },
-      reporter: { email: 'justiandev@gmail.com', allows_contact: false },
+      reporter: { ...signal.reporter, allows_contact: true },
     })
+
+    addOneStep()
 
     router.push('/incident/add')
   }

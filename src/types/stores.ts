@@ -6,8 +6,10 @@ type SignalStore = {
 }
 
 type StepperStore = {
-  step: 1 | 2 | 3 | 4
-  goToStep: (step: 1 | 2 | 3 | 4) => void
+  step: number
+  goToStep: (step: number) => void
+  removeOneStep: () => void
+  addOneStep: () => void
 }
 
 export type { StepperStore, SignalStore }

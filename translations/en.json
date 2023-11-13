@@ -1,9 +1,9 @@
 {
   "homepage": {
-    "welcome": "Describe your report"
+    "welcome": "1. Describe your report"
   },
   "describe-report": {
-    "heading": "Describe your report",
+    "heading": "1. Describe your report",
     "description": "Before you file a notification, you can see which notifications are known to the municipality on the <link>notifications map</link>. Is your notification not listed? Then make a notification.",
     "form": {
       "describe_textarea_heading": "What is it about?",
@@ -16,7 +16,13 @@
     }
   },
   "describe-add": {
-    "heading": "Location and questions"
+    "heading": "2. Location and questions"
+  },
+  "describe-contact": {
+    "heading": "3. Contact details"
+  },
+  "describe-summary": {
+    "heading": "4. Submit"
   },
   "general": {
     "describe_form": {

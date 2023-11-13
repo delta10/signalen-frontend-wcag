@@ -1,9 +1,9 @@
 {
   "homepage": {
-    "welcome": "Beschrijf uw melding"
+    "welcome": "1. Beschrijf uw melding"
   },
   "describe-report": {
-    "heading": "Beschrijf uw melding",
+    "heading": "1. Beschrijf uw melding",
     "description": "Voordat u een melding doet kunt u op de <link>meldingenkaart</link> zien welke meldingen bekend zijn bij de gemeente. Staat uw melding er niet bij? Maak dan een melding.",
     "form": {
       "describe_textarea_heading": "Waar gaat het om?",
@@ -16,7 +16,13 @@
     }
   },
   "describe-add": {
-    "heading": "Locatie en vragen"
+    "heading": "2. Locatie en vragen"
+  },
+  "describe-contact": {
+    "heading": "3. Contactgegevens"
+  },
+  "describe-summary": {
+    "heading": "4. Versturen"
   },
   "general": {
     "describe_form": {

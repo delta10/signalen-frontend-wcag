@@ -49,7 +49,24 @@ export const pathnames = {
     en: '/incident/add',
     nl: '/incident/vulaan',
   },
+  '/incident/contact': {
+    en: '/incident/contact',
+    nl: '/incident/contact',
+  },
+  '/incident/summary': {
+    en: '/incident/summary',
+    nl: '/incident/samenvatting',
+  },
 } satisfies Pathnames<typeof locales>
+
+type Paths = keyof typeof pathnames
+
+export const steps: { [key: string]: Paths } = {
+  '1': '/incident',
+  '2': '/incident/add',
+  '3': '/incident/contact',
+  '4': '/incident/summary',
+}
 
 export const { Link, redirect, usePathname, useRouter, getPathname } =
   createLocalizedPathnamesNavigation({ locales, pathnames })
