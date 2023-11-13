@@ -14,12 +14,15 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
 import { Textarea } from '@/components/ui/TextArea'
+import { Input } from '@/components/ui/Input'
+import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentFormFooter'
 
 export const IncidentDescriptionForm = () => {
   const t = useTranslations('describe-report.form')
 
   const incidentDescriptionFormSchema = z.object({
     description: z.string().min(1, t('errors.textarea_required')),
+    files: z.any(),
   })
 
   const form = useForm<z.infer<typeof incidentDescriptionFormSchema>>({
@@ -37,7 +40,7 @@ export const IncidentDescriptionForm = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-4 items-start"
+        className="flex flex-col gap-8 items-start"
       >
         <FormField
           name={'description'}
@@ -57,7 +60,27 @@ export const IncidentDescriptionForm = () => {
             </FormItem>
           )}
         />
-        <button type="submit">{t('describe_submit')}</button>
+        <FormField
+          name={'files'}
+          control={form.control}
+          render={({ field, formState: { errors } }) => (
+            <FormItem>
+              <div>
+                <FormLabel>{t('describe_upload_heading')}</FormLabel>
+                <FormDescription>
+                  {t('describe_upload_description')}
+                </FormDescription>
+                <FormMessage />
+              </div>
+              <FormControl>
+                <Input type="file" />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <IncidentFormFooter>
+          <button type="submit">{t('describe_submit')}</button>
+        </IncidentFormFooter>
       </form>
     </Form>
   )
