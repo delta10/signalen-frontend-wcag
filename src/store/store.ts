@@ -1,7 +1,6 @@
 import { create } from 'zustand'
-import { SignalStore } from '@/types/signal'
+import { SignalStore, StepperStore } from '@/types/stores'
 import { immer } from 'zustand/middleware/immer'
-import { StepperStore } from '@/types/stepper'
 
 const useSignalStore = create<SignalStore>()(
   immer((set) => ({

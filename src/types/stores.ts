@@ -16,4 +16,9 @@ type SignalStore = {
   updateSignal: (key: Paths<PublicSignalCreate>, value: any) => void
 }
 
-export type { SignalStore }
+type StepperStore = {
+  step: 1 | 2 | 3 | 4
+  goToStep: (step: 1 | 2 | 3 | 4) => void
+}
+
+export type { StepperStore, SignalStore }
