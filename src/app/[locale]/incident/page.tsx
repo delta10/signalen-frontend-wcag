@@ -13,15 +13,15 @@ const getMyPrivateAreasList = async () => {
     .catch((err: ApiError) => console.log(err))
 
   // const response = await client.v1
-  //   .v1PublicSignalsCreate({
-  //     category: undefined,
-  //     incident_date_start: '',
-  //     location: undefined,
-  //     reporter: undefined,
-  //     text: '',
-  //   })
-  //   .then((res) => console.log(res))
-  //   .catch((err) => console.log(err))
+  // .v1PublicSignalsCreate({
+  //   category: undefined,
+  //   incident_date_start: '',
+  //   location: undefined,
+  //   reporter: undefined,
+  //   text: '',
+  // })
+  // .then((res) => console.log(res))
+  // .catch((err) => console.log(err))
 
   return response
 }
