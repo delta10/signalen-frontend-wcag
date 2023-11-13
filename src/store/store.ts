@@ -37,7 +37,12 @@ const useSignalStore = create<SignalStore>()(
       },
       incident_date_start: '',
     },
-    updateSignal: (key, value) => set((state) => (state.signal[key] = value)),
+    updateSignal: (key, value) =>
+      set((state) => {
+        if (key != undefined) {
+          state.signal[key] = value
+        }
+      }),
   }))
 )
 
