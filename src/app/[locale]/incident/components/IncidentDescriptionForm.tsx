@@ -80,7 +80,9 @@ export const IncidentDescriptionForm = () => {
           )}
         />
         <IncidentFormFooter>
-          <Button type="submit">{t('describe_submit')}</Button>
+          <Button variant="primary" type="submit">
+            {t('describe_submit')}
+          </Button>
         </IncidentFormFooter>
       </form>
     </Form>

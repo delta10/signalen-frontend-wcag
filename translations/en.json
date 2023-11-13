@@ -10,7 +10,7 @@
       "describe_textarea_description": "Do not type personal information in this description. We will ask this of you later in this form.",
       "describe_upload_heading": "Add pictures (not required)",
       "describe_upload_description": "Add a photo to clarify the situation",
-      "describe_submit": "Submit",
+      "describe_submit": "Next",
       "errors": {
         "textarea_required": "This is a required field"
       }
