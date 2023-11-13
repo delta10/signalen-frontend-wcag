@@ -10,6 +10,7 @@ type ObjKeys = {
   [key: string]: any
 }
 
+// TODO, check how I can get specific type value belonging to a deeply nested key, to support strongly typed value parameters
 type SignalStore = {
   signal: PublicSignalCreate & ObjKeys
   updateSignal: (key: Paths<PublicSignalCreate>, value: any) => void
