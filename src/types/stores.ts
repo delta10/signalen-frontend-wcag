@@ -1,31 +1,8 @@
 import { PublicSignalCreate } from '@/sdk'
 
-type Paths<T> = T extends object
-  ? {
-      [K in keyof T]: `${Exclude<K, symbol>}${'' | `.${Paths<T[K]>}`}`
-    }[keyof T]
-  : never
-
-type DeepValue<T, Path extends string> = Path extends keyof T
-  ? T[Path]
-  : Path extends `${infer Key}.${infer Rest}`
-  ? Key extends keyof T
-    ? DeepValue<T[Key], Rest>
-    : never
-  : never
-
-type ObjKeys = {
-  [key: string]: any
-}
-
-type UpdateObject<T> = <Path extends Paths<T>>(
-  key: Path,
-  value: DeepValue<T, Path>
-) => void
-
 type SignalStore = {
-  signal: PublicSignalCreate & ObjKeys
-  updateSignal: UpdateObject<PublicSignalCreate>
+  signal: PublicSignalCreate
+  updateSignal: (obj: PublicSignalCreate) => void
 }
 
 type StepperStore = {

@@ -19,6 +19,7 @@ import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentF
 import { useSignalStore } from '@/store/store'
 import { useRouter } from '@/routing/navigation'
 import { boolean } from 'zod'
+import { useEffect } from 'react'
 
 export const IncidentDescriptionForm = () => {
   const t = useTranslations('describe-report.form')
@@ -40,7 +41,12 @@ export const IncidentDescriptionForm = () => {
   const onSubmit = (values: z.infer<typeof incidentDescriptionFormSchema>) => {
     console.log(values)
 
-    updateSignal('text', 'true')
+    updateSignal({
+      ...signal,
+      text: 'string',
+      location: { ...signal.location, address: { naam: 'oranjestraat' } },
+      reporter: { email: 'justiandev@gmail.com', allows_contact: false },
+    })
 
     router.push('/incident/add')
   }

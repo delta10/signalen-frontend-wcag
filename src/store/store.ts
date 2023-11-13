@@ -37,12 +37,9 @@ const useSignalStore = create<SignalStore>()(
       },
       incident_date_start: '',
     },
-    updateSignal: (key, value) =>
+    updateSignal: (obj) =>
       set((state) => {
-        if (key != undefined) {
-          // TODO: Check how I can support strongly typed key -> value pairs, so that I don't have to set [key: string]: any for the Signal Object
-          state.signal[key] = value
-        }
+        state.signal = obj
       }),
   }))
 )
