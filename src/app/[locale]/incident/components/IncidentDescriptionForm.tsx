@@ -40,7 +40,7 @@ export const IncidentDescriptionForm = () => {
   const onSubmit = (values: z.infer<typeof incidentDescriptionFormSchema>) => {
     console.log(values)
 
-    updateSignal('location', 'string')
+    updateSignal('text', 'true')
 
     // updateSignal({ description: 12344 } as Model)
 

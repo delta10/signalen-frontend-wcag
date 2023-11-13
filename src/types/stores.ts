@@ -6,15 +6,22 @@ type Paths<T> = T extends object
     }[keyof T]
   : never
 
-// function getTypeForKey<T, K extends keyof T>(obj: T, key: K): T[K] {
-//   return obj[key]
-// }
+type DeepValue<T, Path extends string> = Path extends keyof T
+  ? T[Path]
+  : Path extends `${infer Key}.${infer Rest}`
+  ? Key extends keyof T
+    ? DeepValue<T[Key], Rest>
+    : never
+  : never
 
 type ObjKeys = {
   [key: string]: any
 }
 
-type UpdateObject<T> = <K extends keyof T>(key: Paths<T>, value: T[K]) => void
+type UpdateObject<T> = <Path extends Paths<T>>(
+  key: Path,
+  value: DeepValue<T, Path>
+) => void
 
 // TODO, check how I can get specific type value belonging to a deeply nested key, to support strongly typed value parameters
 type SignalStore = {
