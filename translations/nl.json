@@ -10,7 +10,6 @@
       "describe_textarea_description": "Typ geen persoonsgegevens in deze omschrijving. We vragen dit later in dit formulier aan u.",
       "describe_upload_heading": "Foto's toevoegen (niet verplicht)",
       "describe_upload_description": "Voeg een foto toe om de situatie te verduidelijken",
-      "describe_submit": "Volgende",
       "errors": {
         "textarea_required": "Dit is een verplicht veld"
       }
@@ -18,6 +17,12 @@
   },
   "describe-add": {
     "heading": "Locatie en vragen"
+  },
+  "general": {
+    "describe_form": {
+      "back_button": "Vorige",
+      "next_button": "Volgende"
+    }
   },
   "routing": {
     "notifications-map": "/meldingen-kaart",

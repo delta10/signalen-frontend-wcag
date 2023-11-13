@@ -87,11 +87,7 @@ export const IncidentDescriptionForm = () => {
             </FormItem>
           )}
         />
-        <IncidentFormFooter className="flex justify-end">
-          <Button variant="primary" type="submit">
-            {t('describe_submit')}
-          </Button>
-        </IncidentFormFooter>
+        <IncidentFormFooter />
         <p className="text-light_text">
           Lukt het niet om een melding te doen? Bel het telefoonnummer 14 020
           <br />

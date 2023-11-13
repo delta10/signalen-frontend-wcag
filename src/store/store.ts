@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { SignalStore } from '@/types/signal'
 import { immer } from 'zustand/middleware/immer'
+import { StepperStore } from '@/types/stepper'
 
 const useSignalStore = create<SignalStore>()(
   immer((set) => ({
@@ -46,5 +47,10 @@ const useSignalStore = create<SignalStore>()(
       }),
   }))
 )
+
+const useStepperStore = create<StepperStore>()((set) => ({
+  step: 1,
+  goToStep: (step) => set((state) => ({ step: step })),
+}))
 
 export { useSignalStore }

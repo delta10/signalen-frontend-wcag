@@ -47,9 +47,7 @@ function IncidentDescriptionPage() {
             ),
           })}
         </p>
-        <NextIntlClientProvider
-          messages={pick(messages, 'describe-report.form')}
-        >
+        <NextIntlClientProvider messages={messages}>
           <IncidentDescriptionForm />
         </NextIntlClientProvider>
       </div>
