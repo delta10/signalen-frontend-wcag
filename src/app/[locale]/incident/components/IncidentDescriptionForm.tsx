@@ -39,8 +39,8 @@ export const IncidentDescriptionForm = () => {
         <FormField
           name={'title'}
           control={form.control}
-          render={({ field }) => (
-            <FormItem>
+          render={({ field, formState: { errors } }) => (
+            <FormItem error={errors.title}>
               <div>
                 <FormLabel>{t('describe_textarea_heading')}</FormLabel>
                 <FormDescription>

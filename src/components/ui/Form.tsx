@@ -6,6 +6,7 @@ import { Slot } from '@radix-ui/react-slot'
 import {
   Controller,
   ControllerProps,
+  FieldError,
   FieldPath,
   FieldValues,
   FormProvider,
@@ -72,22 +73,30 @@ const FormItemContext = React.createContext<FormItemContextValue>(
   {} as FormItemContextValue
 )
 
-const FormItem = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => {
-  const id = React.useId()
+type FormItemProps = {
+  error?: FieldError
+} & React.HTMLAttributes<HTMLDivElement>
 
-  return (
-    <FormItemContext.Provider value={{ id }}>
-      <div
-        ref={ref}
-        className={cn('flex flex-col items-start gap-4', className)}
-        {...props}
-      />
-    </FormItemContext.Provider>
-  )
-})
+const FormItem = React.forwardRef<HTMLDivElement, FormItemProps>(
+  ({ className, error, ...props }, ref) => {
+    const id = React.useId()
+
+    return (
+      <FormItemContext.Provider value={{ id }}>
+        <div
+          ref={ref}
+          className={cn(
+            `flex flex-col items-start gap-4 ${
+              error ? 'border-l-4 border-l-error pl-4' : ''
+            }`,
+            className
+          )}
+          {...props}
+        />
+      </FormItemContext.Provider>
+    )
+  }
+)
 FormItem.displayName = 'FormItem'
 
 const FormLabel = React.forwardRef<
