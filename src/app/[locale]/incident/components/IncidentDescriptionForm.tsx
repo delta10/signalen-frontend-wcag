@@ -17,9 +17,11 @@ import { Textarea } from '@/components/ui/TextArea'
 import { Input } from '@/components/ui/Input'
 import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentFormFooter'
 import { Button } from '@/components/ui/Button'
+import { useSignalStore } from '@/store/store'
 
 export const IncidentDescriptionForm = () => {
   const t = useTranslations('describe-report.form')
+  const { updateSignal, signal } = useSignalStore()
 
   const incidentDescriptionFormSchema = z.object({
     description: z.string().min(1, t('errors.textarea_required')),
@@ -35,6 +37,8 @@ export const IncidentDescriptionForm = () => {
 
   const onSubmit = (values: z.infer<typeof incidentDescriptionFormSchema>) => {
     console.log(values)
+
+    updateSignal('text', 'test')
   }
 
   return (

@@ -6,14 +6,12 @@ type Paths<T> = T extends object
     }[keyof T]
   : never
 
-type ObjectKeys = {
+type ObjKeys = {
   [key: string]: any
 }
 
-type Signals = PublicSignalCreate & ObjectKeys
-
 type SignalStore = {
-  signal: Signals
+  signal: PublicSignalCreate & ObjKeys
   updateSignal: (key: Paths<PublicSignalCreate>, value: any) => void
 }
 
