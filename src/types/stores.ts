@@ -23,7 +23,6 @@ type UpdateObject<T> = <Path extends Paths<T>>(
   value: DeepValue<T, Path>
 ) => void
 
-// TODO, check how I can get specific type value belonging to a deeply nested key, to support strongly typed value parameters
 type SignalStore = {
   signal: PublicSignalCreate & ObjKeys
   updateSignal: UpdateObject<PublicSignalCreate>

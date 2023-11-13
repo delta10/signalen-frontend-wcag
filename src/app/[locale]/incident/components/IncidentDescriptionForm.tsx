@@ -42,8 +42,6 @@ export const IncidentDescriptionForm = () => {
 
     updateSignal('text', 'true')
 
-    // updateSignal({ description: 12344 } as Model)
-
     router.push('/incident/add')
   }
 
