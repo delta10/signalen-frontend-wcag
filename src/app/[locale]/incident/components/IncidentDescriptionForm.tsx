@@ -18,10 +18,12 @@ import { Input } from '@/components/ui/Input'
 import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentFormFooter'
 import { Button } from '@/components/ui/Button'
 import { useSignalStore } from '@/store/store'
+import { useRouter } from '@/routing/navigation'
 
 export const IncidentDescriptionForm = () => {
   const t = useTranslations('describe-report.form')
   const { updateSignal, signal } = useSignalStore()
+  const router = useRouter()
 
   const incidentDescriptionFormSchema = z.object({
     description: z.string().min(1, t('errors.textarea_required')),
@@ -39,6 +41,8 @@ export const IncidentDescriptionForm = () => {
     console.log(values)
 
     updateSignal('text', 'test')
+
+    router.push('/incident/add')
   }
 
   return (

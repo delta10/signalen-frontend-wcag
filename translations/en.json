@@ -16,6 +16,9 @@
       }
     }
   },
+  "describe-add": {
+    "heading": "Location and questions"
+  },
   "routing": {
     "notifications-map": "/notifications-map",
     "incident": "/incident"

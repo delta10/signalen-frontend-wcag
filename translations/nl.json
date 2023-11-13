@@ -16,6 +16,9 @@
       }
     }
   },
+  "describe-add": {
+    "heading": "Locatie en vragen"
+  },
   "routing": {
     "notifications-map": "/meldingen-kaart",
     "incident": "/incident"
