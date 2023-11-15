@@ -18,6 +18,7 @@ import { useTranslations } from 'next-intl'
 import { useSignalStore, useStepperStore } from '@/store/store'
 import { useRouter } from '@/routing/navigation'
 import { LocationMap } from '@/app/[locale]/incident/add/components/LocationMap'
+import { Button } from '@/components/ui/Button'
 
 const IncidentQuestionsLocationForm = () => {
   const t = useTranslations('describe-add.form')
@@ -63,20 +64,28 @@ const IncidentQuestionsLocationForm = () => {
             name={'map'}
             control={form.control}
             render={({ field, formState: { errors } }) => (
-              <FormItem>
+              <FormItem className="w-full relative">
                 <div>
                   <FormLabel>{t('add_map_heading')}</FormLabel>
                   <FormMessage />
                 </div>
-                <FormControl>
-                  <LocationMap />
+                <FormControl className="w-full bg-red-400 relative">
+                  <>
+                    <LocationMap />
+                    <Button
+                      className="absolute top-1/2 mt-5 -translate-y-1/2 left-1/2 -translate-x-1/2 border-none"
+                      type="button"
+                    >
+                      Kies locatie
+                    </Button>
+                  </>
                 </FormControl>
               </FormItem>
             )}
           />
+          <IncidentFormFooter />
         </form>
       </Form>
-      <IncidentFormFooter />
     </div>
   )
 }
