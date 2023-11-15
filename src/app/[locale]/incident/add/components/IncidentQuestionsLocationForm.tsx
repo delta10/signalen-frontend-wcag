@@ -17,6 +17,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
 import { useSignalStore, useStepperStore } from '@/store/store'
 import { useRouter } from '@/routing/navigation'
+import { LocationMap } from '@/app/[locale]/incident/add/components/LocationMap'
 
 const IncidentQuestionsLocationForm = () => {
   const t = useTranslations('describe-add.form')
@@ -67,7 +68,9 @@ const IncidentQuestionsLocationForm = () => {
                   <FormLabel>{t('add_map_heading')}</FormLabel>
                   <FormMessage />
                 </div>
-                <FormControl></FormControl>
+                <FormControl>
+                  <LocationMap />
+                </FormControl>
               </FormItem>
             )}
           />
