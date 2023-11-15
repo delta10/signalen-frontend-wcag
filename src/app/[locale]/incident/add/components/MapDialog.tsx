@@ -2,12 +2,15 @@ import * as Dialog from '@radix-ui/react-dialog'
 import { TbPlus } from 'react-icons/tb'
 import React, { useState } from 'react'
 import Map, { ViewState } from 'react-map-gl/maplibre'
+import { useTranslations } from 'next-intl'
 
 type MapDialogProps = {
   trigger: React.ReactElement
 } & React.HTMLAttributes<HTMLDivElement>
 
 const MapDialog = ({ trigger }: MapDialogProps) => {
+  const t = useTranslations('describe-add.map')
+
   const [viewState, setViewState] = useState<ViewState>({
     longitude: 5.10448,
     latitude: 52.092876,
@@ -30,7 +33,7 @@ const MapDialog = ({ trigger }: MapDialogProps) => {
         <Dialog.Content className="fixed inset-0 bg-white z-[1000] grid grid-cols-1 md:grid-cols-3">
           <div className="col-span-1 p-4">
             <Dialog.Title>
-              <h1>Kies de locatie</h1>
+              <h1>{t('map_heading')}</h1>
             </Dialog.Title>
           </div>
           <div className="col-span-1 md:col-span-2">

@@ -19,7 +19,6 @@ import { useSignalStore, useStepperStore } from '@/store/store'
 import { useRouter } from '@/routing/navigation'
 import { LocationMap } from '@/app/[locale]/incident/add/components/LocationMap'
 import { Button } from '@/components/ui/Button'
-import { TbCross, TbPlus } from 'react-icons/tb'
 import { MapDialog } from '@/app/[locale]/incident/add/components/MapDialog'
 
 const IncidentQuestionsLocationForm = () => {
@@ -80,10 +79,10 @@ const IncidentQuestionsLocationForm = () => {
                           className="absolute top-1/2 mt-5 -translate-y-1/2 left-1/2 -translate-x-1/2 border-none"
                           type="button"
                         >
-                          Kies locatie
+                          {t('add_choose_location_button')}
                         </Button>
                       }
-                    />{' '}
+                    />
                   </>
                 </FormControl>
               </FormItem>

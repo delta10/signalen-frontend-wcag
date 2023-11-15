@@ -18,7 +18,11 @@
   "describe-add": {
     "heading": "2. Locatie en vragen",
     "form": {
-      "add_map_heading": "Waar is het?"
+      "add_map_heading": "Waar is het?",
+      "add_choose_location_button": "Kies locatie"
+    },
+    "map": {
+      "map_heading": "Kies uw locatie"
     }
   },
   "describe-contact": {

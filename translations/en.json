@@ -18,7 +18,11 @@
   "describe-add": {
     "heading": "2. Location and questions",
     "form": {
-      "add_map_heading": "Where is it?"
+      "add_map_heading": "Where is it?",
+      "add_choose_location_button": "Choose location"
+    },
+    "map": {
+      "map_heading": "Choose your location"
     }
   },
   "describe-contact": {
