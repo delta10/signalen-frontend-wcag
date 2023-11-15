@@ -17,8 +17,6 @@ const IncidentFormFooter = ({ className }: IncidentFormFooterProps) => {
 
   const navigate = () => {
     router.push(steps[step - 1])
-
-    console.log('test')
   }
 
   const goBack = () => {

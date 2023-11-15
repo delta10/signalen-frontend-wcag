@@ -19,7 +19,10 @@
     "heading": "2. Location and questions",
     "form": {
       "add_map_heading": "Where is it?",
-      "add_choose_location_button": "Choose location"
+      "add_choose_location_button": "Choose location",
+      "errors": {
+        "location_required": "This is a required field"
+      }
     },
     "map": {
       "map_heading": "Choose your location"

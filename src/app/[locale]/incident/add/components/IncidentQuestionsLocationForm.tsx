@@ -19,7 +19,7 @@ import { useRouter } from '@/routing/navigation'
 import { LocationMap } from '@/app/[locale]/incident/add/components/LocationMap'
 import { Button } from '@/components/ui/Button'
 import { MapDialog } from '@/app/[locale]/incident/add/components/MapDialog'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Coordinate } from '@/types/map'
 
 const IncidentQuestionsLocationForm = () => {
@@ -33,21 +33,36 @@ const IncidentQuestionsLocationForm = () => {
   const router = useRouter()
 
   const incidentQuestionAndLocationFormSchema = z.object({
-    map: z.any(),
+    map: z.object({
+      lng: z.number().min(0.00000001, t('errors.location_required')),
+      lat: z.number().min(0.00000001, t('errors.location_required')),
+    }),
   })
 
   const form = useForm<z.infer<typeof incidentQuestionAndLocationFormSchema>>({
     resolver: zodResolver(incidentQuestionAndLocationFormSchema),
     defaultValues: {
-      map: null,
+      map: {
+        lng: marker.lng,
+        lat: marker.lat,
+      },
     },
   })
+
+  const {
+    setValue,
+    formState: { errors },
+  } = form
+
+  useEffect(() => {
+    if (marker.lat !== 0 && marker.lng !== 0) {
+      setValue('map', { lng: marker.lng, lat: marker.lat })
+    }
+  }, [marker])
 
   const onSubmit = (
     values: z.infer<typeof incidentQuestionAndLocationFormSchema>
   ) => {
-    console.log(values)
-
     updateSignal({
       ...signal,
       location: { ...signal.location, address: { naam: 'oranjestraat' } },
@@ -73,7 +88,7 @@ const IncidentQuestionsLocationForm = () => {
               <FormItem className="w-full relative">
                 <div>
                   <FormLabel>{t('add_map_heading')}</FormLabel>
-                  <FormMessage />
+                  <FormMessage customError={errors.map?.lng} />
                 </div>
                 <FormControl className="w-full bg-red-400 relative">
                   <>

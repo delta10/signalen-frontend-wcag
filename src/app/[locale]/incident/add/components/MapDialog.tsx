@@ -50,9 +50,7 @@ const MapDialog = ({ trigger, marker, setMarker }: MapDialogProps) => {
         <Dialog.Overlay />
         <Dialog.Content className="fixed inset-0 bg-white z-[1000] grid grid-cols-1 md:grid-cols-3">
           <div className="col-span-1 p-4">
-            <Dialog.Title>
-              <h1>{t('map_heading')}</h1>
-            </Dialog.Title>
+            <h1>{t('map_heading')}</h1>
           </div>
           <div className="col-span-1 md:col-span-2">
             <Map

@@ -19,7 +19,10 @@
     "heading": "2. Locatie en vragen",
     "form": {
       "add_map_heading": "Waar is het?",
-      "add_choose_location_button": "Kies locatie"
+      "add_choose_location_button": "Kies locatie",
+      "errors": {
+        "location_required": "Dit is een verplicht veld"
+      }
     },
     "map": {
       "map_heading": "Kies uw locatie"
