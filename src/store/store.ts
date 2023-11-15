@@ -11,7 +11,7 @@ const useSignalStore = create<SignalStore>()(
         address_text: null,
         geometrie: {
           type: undefined,
-          coordinates: undefined,
+          coordinates: [0, 0],
         },
         created_by: null,
         bag_validated: false,

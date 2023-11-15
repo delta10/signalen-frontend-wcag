@@ -8,16 +8,17 @@ import Map, {
   ViewState,
 } from 'react-map-gl/maplibre'
 import { useTranslations } from 'next-intl'
-import { Coordinate } from '@/types/map'
+import { useSignalStore } from '@/store/store'
+import { _NestedLocationModel } from '@/sdk'
 
 type MapDialogProps = {
   trigger: React.ReactElement
-  marker: Coordinate
-  setMarker: React.Dispatch<React.SetStateAction<Coordinate>>
+  marker: Array<number>
 } & React.HTMLAttributes<HTMLDivElement>
 
-const MapDialog = ({ trigger, marker, setMarker }: MapDialogProps) => {
+const MapDialog = ({ trigger, marker }: MapDialogProps) => {
   const t = useTranslations('describe-add.map')
+  const { updateSignal, signal } = useSignalStore()
 
   const [viewState, setViewState] = useState<ViewState>({
     longitude: 5.10448,
@@ -34,7 +35,16 @@ const MapDialog = ({ trigger, marker, setMarker }: MapDialogProps) => {
   })
 
   const handleMapClick = (event: MapLayerMouseEvent) => {
-    setMarker({ lng: event.lngLat.lng, lat: event.lngLat.lat })
+    updateSignal({
+      ...signal,
+      location: {
+        ...signal.location,
+        geometrie: {
+          type: _NestedLocationModel.type.POINT,
+          coordinates: [event.lngLat.lng, event.lngLat.lat],
+        },
+      },
+    })
     setViewState({
       ...viewState,
       zoom: 16,
@@ -60,7 +70,7 @@ const MapDialog = ({ trigger, marker, setMarker }: MapDialogProps) => {
               style={{ width: '100%', height: '100%' }}
               mapStyle={`${process.env.NEXT_PUBLIC_MAPTILER_MAP}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`}
             >
-              <Marker longitude={marker.lng} latitude={marker.lat}></Marker>
+              <Marker longitude={marker[0]} latitude={marker[1]}></Marker>
             </Map>
             <div className="fixed right-0 top-0 p-4 bg-white mt-4 mr-4 w-12 h-12 flex items-center justify-center text-2xl text-black border-border border-2">
               <Dialog.Close className="rotate-45">

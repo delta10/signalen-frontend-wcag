@@ -4,7 +4,6 @@ import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentF
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -21,16 +20,14 @@ import { Button } from '@/components/ui/Button'
 import { MapDialog } from '@/app/[locale]/incident/add/components/MapDialog'
 import { useEffect, useState } from 'react'
 import { Coordinate } from '@/types/map'
+import { _NestedLocationModel } from '@/sdk'
 
 const IncidentQuestionsLocationForm = () => {
   const t = useTranslations('describe-add.form')
   const { updateSignal, signal } = useSignalStore()
-  const [marker, setMarker] = useState<Coordinate>({
-    lng: 0,
-    lat: 0,
-  })
   const { addOneStep } = useStepperStore()
   const router = useRouter()
+  const marker = signal.location.geometrie.coordinates!
 
   const incidentQuestionAndLocationFormSchema = z.object({
     map: z.object({
@@ -43,8 +40,8 @@ const IncidentQuestionsLocationForm = () => {
     resolver: zodResolver(incidentQuestionAndLocationFormSchema),
     defaultValues: {
       map: {
-        lng: marker.lng,
-        lat: marker.lat,
+        lng: signal.location.geometrie.coordinates?.[0],
+        lat: signal.location.geometrie.coordinates?.[1],
       },
     },
   })
@@ -55,8 +52,8 @@ const IncidentQuestionsLocationForm = () => {
   } = form
 
   useEffect(() => {
-    if (marker.lat !== 0 && marker.lng !== 0) {
-      setValue('map', { lng: marker.lng, lat: marker.lat })
+    if (marker[0] !== 0 && marker[1] !== 0) {
+      setValue('map', { lng: marker[0], lat: marker[1] })
     }
   }, [marker])
 
@@ -65,8 +62,13 @@ const IncidentQuestionsLocationForm = () => {
   ) => {
     updateSignal({
       ...signal,
-      location: { ...signal.location, address: { naam: 'oranjestraat' } },
-      reporter: { ...signal.reporter, allows_contact: true },
+      location: {
+        ...signal.location,
+        geometrie: {
+          type: _NestedLocationModel.type.POINT,
+          coordinates: [values.map.lng, values.map.lat],
+        },
+      },
     })
 
     addOneStep()
@@ -95,7 +97,6 @@ const IncidentQuestionsLocationForm = () => {
                     <LocationMap />
                     <MapDialog
                       marker={marker}
-                      setMarker={setMarker}
                       trigger={
                         <Button
                           className="absolute top-1/2 mt-5 -translate-y-1/2 left-1/2 -translate-x-1/2 border-none"
