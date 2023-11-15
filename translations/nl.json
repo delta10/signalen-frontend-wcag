@@ -16,7 +16,10 @@
     }
   },
   "describe-add": {
-    "heading": "2. Locatie en vragen"
+    "heading": "2. Locatie en vragen",
+    "form": {
+      "add_map_heading": "Waar is het?"
+    }
   },
   "describe-contact": {
     "heading": "3. Contactgegevens"

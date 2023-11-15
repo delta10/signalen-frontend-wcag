@@ -16,7 +16,10 @@
     }
   },
   "describe-add": {
-    "heading": "2. Location and questions"
+    "heading": "2. Location and questions",
+    "form": {
+      "add_map_heading": "Where is it?"
+    }
   },
   "describe-contact": {
     "heading": "3. Contact details"
