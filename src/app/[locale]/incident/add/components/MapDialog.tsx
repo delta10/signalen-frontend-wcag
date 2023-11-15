@@ -8,13 +8,15 @@ import Map, {
   ViewState,
 } from 'react-map-gl/maplibre'
 import { useTranslations } from 'next-intl'
-import Lng_lat from '@maplibre/maplibre-gl-style-spec/src/coordinates/lng_lat'
+import { Coordinate } from '@/types/map'
 
 type MapDialogProps = {
   trigger: React.ReactElement
+  marker: Coordinate
+  setMarker: React.Dispatch<React.SetStateAction<Coordinate>>
 } & React.HTMLAttributes<HTMLDivElement>
 
-const MapDialog = ({ trigger }: MapDialogProps) => {
+const MapDialog = ({ trigger, marker, setMarker }: MapDialogProps) => {
   const t = useTranslations('describe-add.map')
 
   const [viewState, setViewState] = useState<ViewState>({
@@ -30,14 +32,15 @@ const MapDialog = ({ trigger }: MapDialogProps) => {
     },
     pitch: 0,
   })
-  const [marker, setMarker] = useState<{ lng: number; lat: number }>({
-    lng: 0,
-    lat: 0,
-  })
 
   const handleMapClick = (event: MapLayerMouseEvent) => {
     setMarker({ lng: event.lngLat.lng, lat: event.lngLat.lat })
-    setViewState({ ...viewState, zoom: 16 })
+    setViewState({
+      ...viewState,
+      zoom: 16,
+      latitude: event.lngLat.lat,
+      longitude: event.lngLat.lng,
+    })
   }
 
   return (
