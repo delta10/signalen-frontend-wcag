@@ -10,7 +10,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/Form'
-import { Textarea } from '@/components/ui/TextArea'
+import * as Dialog from '@radix-ui/react-dialog'
 import * as z from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -19,6 +19,8 @@ import { useSignalStore, useStepperStore } from '@/store/store'
 import { useRouter } from '@/routing/navigation'
 import { LocationMap } from '@/app/[locale]/incident/add/components/LocationMap'
 import { Button } from '@/components/ui/Button'
+import { TbCross, TbPlus } from 'react-icons/tb'
+import { MapDialog } from '@/app/[locale]/incident/add/components/MapDialog'
 
 const IncidentQuestionsLocationForm = () => {
   const t = useTranslations('describe-add.form')
@@ -72,12 +74,16 @@ const IncidentQuestionsLocationForm = () => {
                 <FormControl className="w-full bg-red-400 relative">
                   <>
                     <LocationMap />
-                    <Button
-                      className="absolute top-1/2 mt-5 -translate-y-1/2 left-1/2 -translate-x-1/2 border-none"
-                      type="button"
-                    >
-                      Kies locatie
-                    </Button>
+                    <MapDialog
+                      trigger={
+                        <Button
+                          className="absolute top-1/2 mt-5 -translate-y-1/2 left-1/2 -translate-x-1/2 border-none"
+                          type="button"
+                        >
+                          Kies locatie
+                        </Button>
+                      }
+                    />{' '}
                   </>
                 </FormControl>
               </FormItem>
