@@ -1,8 +1,14 @@
 import * as Dialog from '@radix-ui/react-dialog'
 import { TbPlus } from 'react-icons/tb'
 import React, { useState } from 'react'
-import Map, { ViewState } from 'react-map-gl/maplibre'
+import Map, {
+  LngLat,
+  MapLayerMouseEvent,
+  Marker,
+  ViewState,
+} from 'react-map-gl/maplibre'
 import { useTranslations } from 'next-intl'
+import Lng_lat from '@maplibre/maplibre-gl-style-spec/src/coordinates/lng_lat'
 
 type MapDialogProps = {
   trigger: React.ReactElement
@@ -24,6 +30,15 @@ const MapDialog = ({ trigger }: MapDialogProps) => {
     },
     pitch: 0,
   })
+  const [marker, setMarker] = useState<{ lng: number; lat: number }>({
+    lng: 0,
+    lat: 0,
+  })
+
+  const handleMapClick = (event: MapLayerMouseEvent) => {
+    setMarker({ lng: event.lngLat.lng, lat: event.lngLat.lat })
+    setViewState({ ...viewState, zoom: 16 })
+  }
 
   return (
     <Dialog.Root>
@@ -39,10 +54,13 @@ const MapDialog = ({ trigger }: MapDialogProps) => {
           <div className="col-span-1 md:col-span-2">
             <Map
               {...viewState}
+              onClick={(e) => handleMapClick(e)}
               onMove={(evt) => setViewState(evt.viewState)}
               style={{ width: '100%', height: '100%' }}
               mapStyle={`${process.env.NEXT_PUBLIC_MAPTILER_MAP}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`}
-            />
+            >
+              <Marker longitude={marker.lng} latitude={marker.lat}></Marker>
+            </Map>
             <div className="fixed right-0 top-0 p-4 bg-white mt-4 mr-4 w-12 h-12 flex items-center justify-center text-2xl text-black border-border border-2">
               <Dialog.Close className="rotate-45">
                 <TbPlus />
