@@ -5,7 +5,7 @@ import { immer } from 'zustand/middleware/immer'
 const useSignalStore = create<SignalStore>()(
   immer((set) => ({
     signal: {
-      text: 'empty',
+      text: '',
       location: {
         id: 0,
         address_text: null,
