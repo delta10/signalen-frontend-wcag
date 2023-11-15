@@ -5,8 +5,8 @@ const LocationMap = () => {
   return (
     <Map
       initialViewState={{
-        longitude: -122.4,
-        latitude: 37.8,
+        longitude: 5.10448,
+        latitude: 52.092876,
         zoom: 14,
       }}
       style={{ width: 600, height: 400 }}
