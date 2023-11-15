@@ -24,18 +24,20 @@ const IncidentQuestionsLocationForm = () => {
   const { addOneStep } = useStepperStore()
   const router = useRouter()
 
-  const incidentDescriptionFormSchema = z.object({
+  const incidentQuestionAndLocationFormSchema = z.object({
     map: z.any(),
   })
 
-  const form = useForm<z.infer<typeof incidentDescriptionFormSchema>>({
-    resolver: zodResolver(incidentDescriptionFormSchema),
+  const form = useForm<z.infer<typeof incidentQuestionAndLocationFormSchema>>({
+    resolver: zodResolver(incidentQuestionAndLocationFormSchema),
     defaultValues: {
       map: null,
     },
   })
 
-  const onSubmit = (values: z.infer<typeof incidentDescriptionFormSchema>) => {
+  const onSubmit = (
+    values: z.infer<typeof incidentQuestionAndLocationFormSchema>
+  ) => {
     console.log(values)
 
     updateSignal({

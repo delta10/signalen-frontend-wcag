@@ -1,5 +1,5 @@
 import { NextIntlClientProvider, useMessages, useTranslations } from 'next-intl'
-import { IncidentContactForm } from '@/app/[locale]/incident/components/IncidentContactForm'
+import { IncidentContactForm } from '@/app/[locale]/incident/contact/components/IncidentContactForm'
 
 export default function AddContactDetailsPage() {
   const t = useTranslations('describe-contact')
