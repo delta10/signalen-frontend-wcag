@@ -33,17 +33,14 @@ export const IncidentDescriptionForm = () => {
   const form = useForm<z.infer<typeof incidentDescriptionFormSchema>>({
     resolver: zodResolver(incidentDescriptionFormSchema),
     defaultValues: {
-      description: '',
+      description: signal.text,
     },
   })
 
   const onSubmit = (values: z.infer<typeof incidentDescriptionFormSchema>) => {
-    console.log(values)
-
     updateSignal({
       ...signal,
-      location: { ...signal.location, address: { naam: 'oranjestraat' } },
-      reporter: { ...signal.reporter, allows_contact: true },
+      text: values.description,
     })
 
     addOneStep()
