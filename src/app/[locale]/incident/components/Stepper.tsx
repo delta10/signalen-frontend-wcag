@@ -37,19 +37,29 @@ export const Stepper = ({}: StepperProps) => {
   return (
     <div className="flex">
       <div className="border-l-2 border-gray-400"></div>
-      <div className="flex flex-col gap-8">
+      <div className="flex flex-col gap-10">
         {items.map((item, index) => {
           return (
             <Link
               onClick={() => goToStep(index + 1)}
               href={item.path}
               key={item.path}
-              className="flex flex-row gap-4"
+              className="flex flex-row gap-4 h-6 items-center"
             >
-              <div className="w-6 h-6 flex items-center justify-center rounded-full bg-gray-400 -translate-x-1/2 -ml-[1px]">
+              <div
+                className={`${
+                  step == index + 1 ? 'w-9 h-9' : 'w-6 h-6'
+                } flex items-center justify-center rounded-full bg-gray-400 -translate-x-1/2 -ml-[1px]`}
+              >
                 {index + 1}
               </div>
-              <div>{item.name}</div>
+              <p
+                className={`${
+                  step == index + 1 ? 'text-xl font-semibold -ml-3' : ''
+                }`}
+              >
+                {item.name}
+              </p>
             </Link>
           )
         })}
