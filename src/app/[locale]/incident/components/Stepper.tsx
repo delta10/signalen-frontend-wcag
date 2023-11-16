@@ -1,5 +1,59 @@
+'use client'
+
+import { useTranslations } from 'next-intl'
+import { Link, Paths } from '@/routing/navigation'
+import { useStepperStore } from '@/store/store'
+
 type StepperProps = {}
 
+type StepperItem = {
+  path: Paths
+  name: string
+}
+
 export const Stepper = ({}: StepperProps) => {
-  return <div>Stepper</div>
+  const t = useTranslations('stepper')
+  const { step, goToStep } = useStepperStore()
+
+  const items: Array<StepperItem> = [
+    {
+      path: '/incident',
+      name: t('step_one'),
+    },
+    {
+      path: '/incident/add',
+      name: t('step_two'),
+    },
+    {
+      path: '/incident/contact',
+      name: t('step_three'),
+    },
+    {
+      path: '/incident/summary',
+      name: t('step_four'),
+    },
+  ]
+
+  return (
+    <div className="flex">
+      <div className="border-l-2 border-gray-400"></div>
+      <div className="flex flex-col gap-8">
+        {items.map((item, index) => {
+          return (
+            <Link
+              onClick={() => goToStep(index + 1)}
+              href={item.path}
+              key={item.path}
+              className="flex flex-row gap-4"
+            >
+              <div className="w-6 h-6 flex items-center justify-center rounded-full bg-gray-400 -translate-x-1/2 -ml-[1px]">
+                {index + 1}
+              </div>
+              <div>{item.name}</div>
+            </Link>
+          )
+        })}
+      </div>
+    </div>
+  )
 }

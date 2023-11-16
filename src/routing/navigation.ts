@@ -70,3 +70,5 @@ export const steps: { [key: string]: Paths } = {
 
 export const { Link, redirect, usePathname, useRouter, getPathname } =
   createLocalizedPathnamesNavigation({ locales, pathnames })
+
+export type { Paths }

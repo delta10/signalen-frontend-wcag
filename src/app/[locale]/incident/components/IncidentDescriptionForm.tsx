@@ -91,12 +91,6 @@ export const IncidentDescriptionForm = () => {
           )}
         />
         <IncidentFormFooter />
-        <p className="text-light_text">
-          Lukt het niet om een melding te doen? Bel het telefoonnummer 14 020
-          <br />
-          Wij zijn bereikbaar van maandag tot en met vrijdag van 08.00 tot 18.00
-          uur.
-        </p>
       </form>
     </Form>
   )

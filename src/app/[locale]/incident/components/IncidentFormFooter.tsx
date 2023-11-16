@@ -26,30 +26,38 @@ const IncidentFormFooter = ({ className }: IncidentFormFooterProps) => {
   }
 
   return (
-    <div
-      className={cn(
-        `bg-gray-200 w-full p-4 flex justify-end ${
-          step != 1 && pathname != '/incident' ? 'justify-between' : ''
-        }`,
-        className
-      )}
-    >
-      {step != 1 && pathname != '/incident' && (
-        <Button
-          variant="transparent"
-          type="submit"
-          className="justify-self-start self-start"
-          onClick={() => goBack()}
-        >
-          {t('back_button')}
-        </Button>
-      )}
-      {step < 4 && (
-        <Button variant="primary" type="submit" className="justify-self-end">
-          {t('next_button')}
-        </Button>
-      )}
-    </div>
+    <>
+      <div
+        className={cn(
+          `bg-gray-200 w-full p-4 flex justify-end ${
+            step != 1 && pathname != '/incident' ? 'justify-between' : ''
+          }`,
+          className
+        )}
+      >
+        {step != 1 && pathname != '/incident' && (
+          <Button
+            variant="transparent"
+            type="submit"
+            className="justify-self-start self-start"
+            onClick={() => goBack()}
+          >
+            {t('back_button')}
+          </Button>
+        )}
+        {step < 4 && (
+          <Button variant="primary" type="submit" className="justify-self-end">
+            {t('next_button')}
+          </Button>
+        )}
+      </div>
+      <p className="text-light_text">
+        Lukt het niet om een melding te doen? Bel het telefoonnummer 14 020
+        <br />
+        Wij zijn bereikbaar van maandag tot en met vrijdag van 08.00 tot 18.00
+        uur.
+      </p>
+    </>
   )
 }
 
