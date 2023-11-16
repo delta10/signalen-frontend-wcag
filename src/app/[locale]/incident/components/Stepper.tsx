@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl'
 import { Link, Paths } from '@/routing/navigation'
 import { useStepperStore } from '@/store/store'
+import { useEffect, useRef } from 'react'
 
 type StepperProps = {}
 
@@ -14,6 +15,18 @@ type StepperItem = {
 export const Stepper = ({}: StepperProps) => {
   const t = useTranslations('stepper')
   const { step, lastCompletedStep, goToStep } = useStepperStore()
+  const ref = useRef<HTMLDivElement>(null)
+  const lineRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (
+      ref.current !== null &&
+      lineRef.current !== null &&
+      window.screen.width < 768
+    ) {
+      lineRef.current.style.width = `${String(ref.current.offsetWidth - 24)}px`
+    }
+  }, [ref.current, lineRef.current])
 
   const items: Array<StepperItem> = [
     {
@@ -35,12 +48,16 @@ export const Stepper = ({}: StepperProps) => {
   ]
 
   return (
-    <div className="flex">
-      <div className="border-l-2 border-gray-400"></div>
-      <div className="flex flex-col gap-10">
+    <div className="flex md:flex-row flex-col items-start md:items-stretch">
+      <div
+        className="border-t-2 md:border-t-0 md:border-l-2 border-gray-400"
+        ref={lineRef}
+      ></div>
+      <div
+        className="flex flex-row md:flex-col gap-10 -translate-y-1/2 md:translate-y-0"
+        ref={ref}
+      >
         {items.map((item, index) => {
-          console.log(lastCompletedStep, index)
-
           return (
             <Link
               onClick={() => goToStep(index + 1)}
@@ -61,7 +78,7 @@ export const Stepper = ({}: StepperProps) => {
               <p
                 className={`${
                   step == index + 1 ? 'text-xl font-semibold -ml-3' : ''
-                } transition duration-100 group-hover:underline group-focus:underline`}
+                } md:block hidden transition duration-100 group-hover:underline group-focus:underline`}
               >
                 {item.name}
               </p>
