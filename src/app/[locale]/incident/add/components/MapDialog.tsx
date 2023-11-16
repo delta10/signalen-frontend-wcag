@@ -10,6 +10,8 @@ import Map, {
 import { useTranslations } from 'next-intl'
 import { useSignalStore } from '@/store/store'
 import { _NestedLocationModel } from '@/sdk'
+import Select from 'react-select'
+import { AddressSelect } from '@/app/[locale]/incident/add/components/AddressSelect'
 
 type MapDialogProps = {
   trigger: React.ReactElement
@@ -59,8 +61,9 @@ const MapDialog = ({ trigger, marker }: MapDialogProps) => {
       <Dialog.Portal>
         <Dialog.Overlay />
         <Dialog.Content className="fixed inset-0 bg-white z-[1000] grid grid-cols-1 md:grid-cols-3">
-          <div className="col-span-1 p-4">
+          <div className="col-span-1 p-4 flex flex-col gap-4">
             <h1>{t('map_heading')}</h1>
+            <AddressSelect />
           </div>
           <div className="col-span-1 md:col-span-2">
             <Map
