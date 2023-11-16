@@ -22,7 +22,7 @@ import { useRouter } from '@/routing/navigation'
 export const IncidentDescriptionForm = () => {
   const t = useTranslations('describe-report.form')
   const { updateSignal, signal } = useSignalStore()
-  const { addOneStep } = useStepperStore()
+  const { addOneStep, setLastCompletedStep } = useStepperStore()
   const router = useRouter()
 
   const incidentDescriptionFormSchema = z.object({
@@ -43,6 +43,7 @@ export const IncidentDescriptionForm = () => {
       text: values.description,
     })
 
+    setLastCompletedStep(1)
     addOneStep()
 
     router.push('/incident/add')

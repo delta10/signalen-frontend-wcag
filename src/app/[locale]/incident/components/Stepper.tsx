@@ -13,7 +13,7 @@ type StepperItem = {
 
 export const Stepper = ({}: StepperProps) => {
   const t = useTranslations('stepper')
-  const { step, goToStep } = useStepperStore()
+  const { step, lastCompletedStep, goToStep } = useStepperStore()
 
   const items: Array<StepperItem> = [
     {
@@ -39,24 +39,29 @@ export const Stepper = ({}: StepperProps) => {
       <div className="border-l-2 border-gray-400"></div>
       <div className="flex flex-col gap-10">
         {items.map((item, index) => {
+          console.log(lastCompletedStep, index)
+
           return (
             <Link
               onClick={() => goToStep(index + 1)}
               href={item.path}
               key={item.path}
-              className="flex flex-row gap-4 h-6 items-center"
+              tabIndex={lastCompletedStep >= index ? 0 : -1}
+              className={`flex flex-row gap-4 h-6 items-center group ${
+                lastCompletedStep >= index ? '' : 'pointer-events-none'
+              }`}
             >
               <div
-                className={`${
-                  step == index + 1 ? 'w-9 h-9' : 'w-6 h-6'
-                } flex items-center justify-center rounded-full bg-gray-400 -translate-x-1/2 -ml-[1px]`}
+                className={`${step == index + 1 ? 'w-9 h-9' : 'w-6 h-6'} ${
+                  lastCompletedStep >= index ? 'bg-primary' : 'bg-gray-400'
+                } flex items-center justify-center rounded-full -translate-x-1/2 -ml-[1px] text-white text-sm`}
               >
                 {index + 1}
               </div>
               <p
                 className={`${
                   step == index + 1 ? 'text-xl font-semibold -ml-3' : ''
-                }`}
+                } transition duration-100 group-hover:underline group-focus:underline`}
               >
                 {item.name}
               </p>

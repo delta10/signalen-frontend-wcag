@@ -7,6 +7,8 @@ type SignalStore = {
 
 type StepperStore = {
   step: number
+  lastCompletedStep: number
+  setLastCompletedStep: (step: number) => void
   goToStep: (step: number) => void
   removeOneStep: () => void
   addOneStep: () => void

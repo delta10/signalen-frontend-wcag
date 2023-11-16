@@ -46,7 +46,9 @@ const useSignalStore = create<SignalStore>()(
 
 const useStepperStore = create<StepperStore>()((set) => ({
   step: 1,
+  lastCompletedStep: 0,
   goToStep: (step) => set((state) => ({ step: step })),
+  setLastCompletedStep: (step) => set((state) => ({ lastCompletedStep: step })),
   removeOneStep: () =>
     set((state) => ({
       step: state.step - 1,

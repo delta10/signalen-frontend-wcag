@@ -25,7 +25,7 @@ import { _NestedLocationModel } from '@/sdk'
 const IncidentQuestionsLocationForm = () => {
   const t = useTranslations('describe-add.form')
   const { updateSignal, signal } = useSignalStore()
-  const { addOneStep } = useStepperStore()
+  const { addOneStep, setLastCompletedStep } = useStepperStore()
   const router = useRouter()
   const marker = signal.location.geometrie.coordinates!
 
@@ -71,6 +71,7 @@ const IncidentQuestionsLocationForm = () => {
       },
     })
 
+    setLastCompletedStep(2)
     addOneStep()
 
     router.push('/incident/contact')
