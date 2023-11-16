@@ -32,6 +32,20 @@ const AddressSelect = () => {
       options={options}
       components={{ DropdownIndicator, IndicatorSeparator }}
       placeholder="Zoek naar adres"
+      unstyled={true}
+      classNames={{
+        control: () => 'address__select',
+        menu: () => 'address__select-menu',
+        option: (state) =>
+          `address__select-option ${
+            state.isSelected && 'address__select-option__selected'
+          } ${
+            !state.isSelected &&
+            state.isFocused &&
+            'address__select-option__focused'
+          }
+          `,
+      }}
     />
   )
 }
