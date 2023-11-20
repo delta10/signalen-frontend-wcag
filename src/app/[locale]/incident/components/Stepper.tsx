@@ -1,10 +1,10 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
-import { Link, Paths } from '@/routing/navigation'
-import { useStepperStore } from '@/store/store'
+import { Link, Paths, usePathname } from '@/routing/navigation'
+import { useSignalStore, useStepperStore } from '@/store/store'
 import { useEffect, useRef } from 'react'
-import { last } from 'lodash'
+import { Button } from '@/components/ui/Button'
 
 type StepperProps = {}
 
@@ -15,10 +15,13 @@ type StepperItem = {
 
 export const Stepper = ({}: StepperProps) => {
   const t = useTranslations('stepper')
-  const { step, lastCompletedStep, goToStep } = useStepperStore()
+  const { step, lastCompletedStep, goToStep, setLastCompletedStep } =
+    useStepperStore()
+  const { resetSignal } = useSignalStore()
   const ref = useRef<HTMLDivElement>(null)
   const lineRef = useRef<HTMLDivElement>(null)
   const lineStatusRef = useRef<HTMLDivElement>(null)
+  const pathname = usePathname()
 
   useEffect(() => {
     if (
@@ -44,6 +47,12 @@ export const Stepper = ({}: StepperProps) => {
     }
   }, [step])
 
+  const resetState = () => {
+    setLastCompletedStep(0)
+    goToStep(1)
+    resetSignal()
+  }
+
   const items: Array<StepperItem> = [
     {
       path: '/incident',
@@ -63,50 +72,58 @@ export const Stepper = ({}: StepperProps) => {
     },
   ]
 
-  return (
-    <div className="flex md:flex-row flex-col items-start md:items-stretch">
-      <div
-        className="border-t-2 md:border-t-0 md:border-l-2 border-gray-400"
-        ref={lineRef}
-      ></div>
-      <div
-        className="border-t-2 -mt-[2px] md:-mt-0 md:-ml-[2px] md:border-t-0 md:border-l-2 border-primary"
-        ref={lineStatusRef}
-        style={{ height: '0px' }}
-      ></div>
-      <div
-        className="flex flex-row md:flex-col gap-10 -translate-y-1/2 md:translate-y-0"
-        ref={ref}
-      >
-        {items.map((item, index) => {
-          return (
-            <Link
-              onClick={() => goToStep(index + 1)}
-              href={item.path}
-              key={item.path}
-              tabIndex={lastCompletedStep >= index ? 0 : -1}
-              className={`flex flex-row gap-4 h-6 items-center group ${
-                lastCompletedStep >= index ? '' : 'pointer-events-none'
-              }`}
-            >
-              <div
-                className={`${step == index + 1 ? 'w-9 h-9' : 'w-6 h-6'} ${
-                  lastCompletedStep >= index ? 'bg-primary' : 'bg-gray-400'
-                } flex items-center justify-center rounded-full -translate-x-1/2 -ml-[1px] text-white text-sm`}
+  if (pathname !== '/incident/thankyou') {
+    return (
+      <div className="flex md:flex-row flex-col items-start md:items-stretch">
+        <div
+          className="border-t-2 md:border-t-0 md:border-l-2 border-gray-400"
+          ref={lineRef}
+        ></div>
+        <div
+          className="border-t-2 -mt-[2px] md:-mt-0 md:-ml-[2px] md:border-t-0 md:border-l-2 border-primary"
+          ref={lineStatusRef}
+          style={{ height: '0px' }}
+        ></div>
+        <div
+          className="flex flex-row md:flex-col gap-10 -translate-y-1/2 md:translate-y-0"
+          ref={ref}
+        >
+          {items.map((item, index) => {
+            return (
+              <Link
+                onClick={() => goToStep(index + 1)}
+                href={item.path}
+                key={item.path}
+                tabIndex={lastCompletedStep >= index ? 0 : -1}
+                className={`flex flex-row gap-4 h-6 items-center group ${
+                  lastCompletedStep >= index ? '' : 'pointer-events-none'
+                }`}
               >
-                {index + 1}
-              </div>
-              <p
-                className={`${
-                  step == index + 1 ? 'text-xl font-semibold -ml-3' : ''
-                } md:block hidden transition duration-100 group-hover:underline group-focus:underline`}
-              >
-                {item.name}
-              </p>
-            </Link>
-          )
-        })}
+                <div
+                  className={`${step == index + 1 ? 'w-9 h-9' : 'w-6 h-6'} ${
+                    lastCompletedStep >= index ? 'bg-primary' : 'bg-gray-400'
+                  } flex items-center justify-center rounded-full -translate-x-1/2 -ml-[1px] text-white text-sm`}
+                >
+                  {index + 1}
+                </div>
+                <p
+                  className={`${
+                    step == index + 1 ? 'text-xl font-semibold -ml-3' : ''
+                  } md:block hidden transition duration-100 group-hover:underline group-focus:underline`}
+                >
+                  {item.name}
+                </p>
+              </Link>
+            )
+          })}
+        </div>
       </div>
-    </div>
+    )
+  }
+
+  return (
+    <Button onClick={() => resetState()} asChild>
+      <Link href={'/incident'}>{t('new_notification')}</Link>
+    </Button>
   )
 }

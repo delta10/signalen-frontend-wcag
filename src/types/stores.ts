@@ -3,6 +3,7 @@ import { PublicSignalCreate } from '@/sdk'
 type SignalStore = {
   signal: PublicSignalCreate
   updateSignal: (obj: PublicSignalCreate) => void
+  resetSignal: () => void
 }
 
 type StepperStore = {

@@ -6,7 +6,8 @@
     "step_one": "Beschrijf uw melding",
     "step_two": "Locatie en vragen",
     "step_three": "Contactgegevens",
-    "step_four": "Versturen"
+    "step_four": "Versturen",
+    "new_notification": "Nieuwe melding"
   },
   "describe-report": {
     "heading": "1. Beschrijf uw melding",

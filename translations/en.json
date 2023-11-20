@@ -6,7 +6,8 @@
     "step_one": "Describe your report",
     "step_two": "Location and questions",
     "step_three": "Contact details",
-    "step_four": "Submit"
+    "step_four": "Submit",
+    "new_notification": "New notification"
   },
   "describe-report": {
     "heading": "1. Describe your report",

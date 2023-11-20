@@ -57,6 +57,10 @@ export const pathnames = {
     en: '/incident/summary',
     nl: '/incident/samenvatting',
   },
+  '/incident/thankyou': {
+    en: '/incident/thankyou',
+    nl: '/incident/thankyou',
+  },
 } satisfies Pathnames<typeof locales>
 
 type Paths = keyof typeof pathnames

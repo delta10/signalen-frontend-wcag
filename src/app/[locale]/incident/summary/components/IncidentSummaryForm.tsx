@@ -8,21 +8,13 @@ import { useSignalStore, useStepperStore } from '@/store/store'
 import React, { useEffect } from 'react'
 import { LocationMap } from '@/components/ui/LocationMap'
 import { client } from '@/lib/apiClient'
+import { useRouter } from '@/routing/navigation'
 
 const IncidentSummaryForm = () => {
   const t = useTranslations('describe-summary')
   const { signal } = useSignalStore()
   const { goToStep } = useStepperStore()
-
-  useEffect(() => {
-    const getCategories = async () => {
-      await client.v1
-        .v1PublicTermsCategoriesList()
-        .then((res) => console.log(res))
-    }
-
-    getCategories()
-  }, [])
+  const router = useRouter()
 
   const handleSignalSubmit = async () => {
     await client.v1
@@ -34,9 +26,7 @@ const IncidentSummaryForm = () => {
           sub_category: `${process.env.NEXT_PUBLIC_BASE_URL_API}/signals/v1/public/terms/categories/overig/sub_categories/overig`,
         },
       })
-      .then((res) => {
-        console.log(res)
-      })
+      .then((res) => router.push('/incident/thankyou'))
       .catch((err) => console.log(err))
   }
 
