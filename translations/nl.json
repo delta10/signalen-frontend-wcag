@@ -76,6 +76,13 @@
       }
     }
   },
+  "describe-thankyou": {
+    "heading": "Bedankt!",
+    "description_notification_number": "Uw melding is bij ons bekend.",
+    "description_notification_email": "Hebt u een e-mailadres ingevuld? Dan ontvangt u een e-mail met alle gegevens van uw melding.",
+    "what_do_we_do_heading": "Wat doen we met uw melding?",
+    "what_do_we_do_description": "Uw melding wordt ingepland: wij laten u binnen 5 werkdagen weten hoe en wanneer uw melding wordt afgehandeld. Dat doen we via e-mail."
+  },
   "general": {
     "describe_form": {
       "back_button": "Vorige",
