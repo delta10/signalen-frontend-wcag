@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl'
 import { Link, Paths } from '@/routing/navigation'
 import { useStepperStore } from '@/store/store'
 import { useEffect, useRef } from 'react'
+import { last } from 'lodash'
 
 type StepperProps = {}
 
@@ -17,6 +18,7 @@ export const Stepper = ({}: StepperProps) => {
   const { step, lastCompletedStep, goToStep } = useStepperStore()
   const ref = useRef<HTMLDivElement>(null)
   const lineRef = useRef<HTMLDivElement>(null)
+  const lineStatusRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (
@@ -27,6 +29,19 @@ export const Stepper = ({}: StepperProps) => {
       lineRef.current.style.width = `${String(ref.current.offsetWidth - 24)}px`
     }
   }, [ref.current, lineRef.current])
+
+  useEffect(() => {
+    if (lineRef.current !== null && lineStatusRef.current !== null) {
+      const partOfLineBetweenTwoSteps =
+        lineRef.current.offsetHeight / (items.length - 1)
+
+      lineStatusRef.current.style.minHeight = `${String(
+        partOfLineBetweenTwoSteps * (step - 1)
+      )}px`
+
+      console.log(partOfLineBetweenTwoSteps)
+    }
+  }, [step])
 
   const items: Array<StepperItem> = [
     {
@@ -52,6 +67,11 @@ export const Stepper = ({}: StepperProps) => {
       <div
         className="border-t-2 md:border-t-0 md:border-l-2 border-gray-400"
         ref={lineRef}
+      ></div>
+      <div
+        className="border-t-2 -ml-[2px] md:border-t-0 md:border-l-2 border-primary"
+        ref={lineStatusRef}
+        style={{ height: '0px' }}
       ></div>
       <div
         className="flex flex-row md:flex-col gap-10 -translate-y-1/2 md:translate-y-0"
