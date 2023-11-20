@@ -1,15 +1,15 @@
 import { getLogo } from '@/lib/utils/settings'
 import { Navigation } from '@/app/[locale]/components/Navigation'
+import Image from 'next/image'
 
 const Header = () => {
   return (
     <header>
-      <img
-        width={'100%'}
-        height={getLogo().max_height}
-        alt={'gemeente logo'}
-        style={{ maxHeight: getLogo().max_height }}
-        src={getLogo().link}
+      <Image
+        src={'/assets/utrecht.webp'}
+        alt={'Gemeente logo'}
+        width={275}
+        height={150}
       />
       <Navigation />
     </header>
