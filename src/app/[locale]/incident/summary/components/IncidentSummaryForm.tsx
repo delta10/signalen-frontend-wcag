@@ -4,13 +4,14 @@ import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentF
 import { useTranslations } from 'next-intl'
 import { Divider } from '@/components/ui/Divider'
 import { LinkWrapper } from '@/components/ui/LinkWrapper'
-import { useSignalStore } from '@/store/store'
+import { useSignalStore, useStepperStore } from '@/store/store'
 import React from 'react'
 import { LocationMap } from '@/components/ui/LocationMap'
 
 const IncidentSummaryForm = () => {
   const t = useTranslations('describe-summary')
   const { signal } = useSignalStore()
+  const { goToStep } = useStepperStore()
 
   return (
     <div className="flex flex-col gap-8">
@@ -19,7 +20,7 @@ const IncidentSummaryForm = () => {
       <div className="flex flex-col gap-4">
         <div className="flex flex-row justify-between">
           <h3>{t('steps.step_one.title')}</h3>
-          <LinkWrapper href={'/incident'}>
+          <LinkWrapper href={'/incident'} onClick={() => goToStep(1)}>
             {t('steps.step_one.edit')}
           </LinkWrapper>
         </div>
@@ -32,7 +33,7 @@ const IncidentSummaryForm = () => {
       <div className="flex flex-col gap-4">
         <div className="flex flex-row justify-between">
           <h3>{t('steps.step_two.title')}</h3>
-          <LinkWrapper href={'/incident/add'}>
+          <LinkWrapper href={'/incident/add'} onClick={() => goToStep(2)}>
             {t('steps.step_two.edit')}
           </LinkWrapper>
         </div>
@@ -44,7 +45,7 @@ const IncidentSummaryForm = () => {
       <div className="flex flex-col gap-4">
         <div className="flex flex-row justify-between">
           <h3>{t('steps.step_three.title')}</h3>
-          <LinkWrapper href={'/incident/contact'}>
+          <LinkWrapper href={'/incident/contact'} onClick={() => goToStep(3)}>
             {t('steps.step_three.edit')}
           </LinkWrapper>
         </div>
