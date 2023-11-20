@@ -32,7 +32,7 @@ const useSignalStore = create<SignalStore>()(
       reporter: {
         email: undefined,
         phone: undefined,
-        sharing_allowed: undefined,
+        sharing_allowed: false,
         allows_contact: false,
       },
       incident_date_start: '',

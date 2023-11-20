@@ -19,6 +19,7 @@ import {
 import validator from 'validator'
 import { Textarea } from '@/components/ui/TextArea'
 import { Input } from '@/components/ui/Input'
+import { Checkbox } from '@/components/ui/Checkbox'
 
 const IncidentContactForm = () => {
   const t = useTranslations('describe-contact.form')
@@ -33,6 +34,7 @@ const IncidentContactForm = () => {
       .optional()
       .nullable(),
     email: z.string().email(t('errors.email_not_valid')).optional().nullable(),
+    sharing_allowed: z.boolean().optional(),
   })
 
   const form = useForm<z.infer<typeof incidentContactFormSchema>>({
@@ -40,6 +42,7 @@ const IncidentContactForm = () => {
     defaultValues: {
       phone: signal.reporter.phone,
       email: signal.reporter.email,
+      sharing_allowed: signal.reporter.sharing_allowed,
     },
   })
 
@@ -50,6 +53,7 @@ const IncidentContactForm = () => {
         ...signal.reporter,
         email: values.email,
         phone: values.phone,
+        sharing_allowed: values.sharing_allowed,
       },
     })
 
@@ -104,6 +108,26 @@ const IncidentContactForm = () => {
             <h2>{t('send_to_other_instance_heading')}</h2>
             <p>{t('send_to_other_instance_description')}</p>
           </div>
+          <FormField
+            name={'sharing_allowed'}
+            control={form.control}
+            render={({ field, formState: { errors } }) => (
+              <FormItem error={errors.sharing_allowed}>
+                <div>
+                  <FormLabel>{t('describe_mail_input_heading')}</FormLabel>
+                  <FormMessage />
+                </div>
+                <FormControl>
+                  <Checkbox
+                    {...field}
+                    checked={field.value}
+                    value={undefined}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
           <IncidentFormFooter />
         </form>
       </Form>
