@@ -6,29 +6,7 @@ import { ApiError } from '@/sdk'
 import pick from 'lodash/pick'
 import { undefined } from 'zod'
 
-const getMyPrivateAreasList = async () => {
-  const response = await client.v1
-    .v1PrivateAreasList()
-    .then((res) => console.log(res))
-    .catch((err: ApiError) => console.log(err))
-
-  // const response = await client.v1
-  // .v1PublicSignalsCreate({
-  //   category: undefined,
-  //   incident_date_start: '',
-  //   location: undefined,
-  //   reporter: undefined,
-  //   text: '',
-  // })
-  // .then((res) => console.log(res))
-  // .catch((err) => console.log(err))
-
-  return response
-}
-
 export default async function Home() {
-  const privateAreasList = await getMyPrivateAreasList()
-
   return <IncidentDescriptionPage />
 }
 

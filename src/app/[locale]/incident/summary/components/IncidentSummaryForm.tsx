@@ -7,14 +7,20 @@ import { LinkWrapper } from '@/components/ui/LinkWrapper'
 import { useSignalStore, useStepperStore } from '@/store/store'
 import React from 'react'
 import { LocationMap } from '@/components/ui/LocationMap'
+import { client } from '@/lib/apiClient'
 
 const IncidentSummaryForm = () => {
   const t = useTranslations('describe-summary')
   const { signal } = useSignalStore()
   const { goToStep } = useStepperStore()
 
-  const handleSignalSubmit = () => {
-    console.log('submit')
+  const handleSignalSubmit = async () => {
+    await client.v1
+      .v1PublicSignalsCreate(signal)
+      .then((res) => {
+        console.log(res)
+      })
+      .catch((err) => console.log(err))
   }
 
   return (
