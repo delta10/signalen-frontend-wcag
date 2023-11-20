@@ -40,7 +40,13 @@
       "heading": "May we call you for questions? And keep you informed via e-mail?",
       "description": "Often we have another question. With this we can solve the problem faster or better. Or we want to explain something. We would then like to give you a call. Or else we e-mail you.\n\nWe only use your phone number and e-mail address for this report.",
       "send_to_other_instance_heading": "May we forward your report?",
-      "send_to_other_instance_description": "Sometimes the municipality cannot do anything. Another organization must then get to work. If so, we can sometimes forward your report. We send your phone number or e-mail address along with it. But we only do that if you agree."
+      "send_to_other_instance_description": "Sometimes the municipality cannot do anything. Another organization must then get to work. If so, we can sometimes forward your report. We send your phone number or e-mail address along with it. But we only do that if you agree.",
+      "describe_phone_input_heading": "What is your telephone number? (not required)",
+      "describe_mail_input_heading": "What is your e-mail address? (not required)",
+      "errors": {
+        "number_not_valid": "Use a valid telephone number",
+        "email_not_valid": "Use a valid mail address"
+      }
     }
   },
   "describe-summary": {

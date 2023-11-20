@@ -7,7 +7,18 @@ import { useRouter } from '@/routing/navigation'
 import * as z from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Form } from '@/components/ui/Form'
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/Form'
+import validator from 'validator'
+import { Textarea } from '@/components/ui/TextArea'
+import { Input } from '@/components/ui/Input'
 
 const IncidentContactForm = () => {
   const t = useTranslations('describe-contact.form')
@@ -15,14 +26,33 @@ const IncidentContactForm = () => {
   const { addOneStep, setLastCompletedStep } = useStepperStore()
   const router = useRouter()
 
-  const incidentContactFormSchema = z.object({})
+  const incidentContactFormSchema = z.object({
+    phone: z
+      .string()
+      .refine(validator.isMobilePhone, t('errors.number_not_valid'))
+      .optional()
+      .nullable(),
+    email: z.string().email(t('errors.email_not_valid')).optional().nullable(),
+  })
 
   const form = useForm<z.infer<typeof incidentContactFormSchema>>({
     resolver: zodResolver(incidentContactFormSchema),
-    defaultValues: {},
+    defaultValues: {
+      phone: signal.reporter.phone,
+      email: signal.reporter.email,
+    },
   })
 
   const onSubmit = (values: z.infer<typeof incidentContactFormSchema>) => {
+    updateSignal({
+      ...signal,
+      reporter: {
+        ...signal.reporter,
+        email: values.email,
+        phone: values.phone,
+      },
+    })
+
     setLastCompletedStep(3)
     addOneStep()
 
@@ -40,6 +70,36 @@ const IncidentContactForm = () => {
             <h2>{t('heading')}</h2>
             <p>{t('description')}</p>
           </div>
+          <FormField
+            name={'phone'}
+            control={form.control}
+            render={({ field, formState: { errors } }) => (
+              <FormItem error={errors.phone}>
+                <div>
+                  <FormLabel>{t('describe_phone_input_heading')}</FormLabel>
+                  <FormMessage />
+                </div>
+                <FormControl>
+                  <Input {...field} value={field.value!} />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          <FormField
+            name={'email'}
+            control={form.control}
+            render={({ field, formState: { errors } }) => (
+              <FormItem error={errors.email}>
+                <div>
+                  <FormLabel>{t('describe_mail_input_heading')}</FormLabel>
+                  <FormMessage />
+                </div>
+                <FormControl>
+                  <Input {...field} value={field.value!} />
+                </FormControl>
+              </FormItem>
+            )}
+          />
           <div className="flex flex-col gap-4">
             <h2>{t('send_to_other_instance_heading')}</h2>
             <p>{t('send_to_other_instance_description')}</p>

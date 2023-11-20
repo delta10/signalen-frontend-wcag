@@ -1,7 +1,9 @@
 import React from 'react'
 import { cn } from '@/lib/utils/style'
 
-type InputProps = {} & React.InputHTMLAttributes<HTMLInputElement>
+type InputProps = {
+  value: string | number | readonly string[] | undefined | null
+} & React.InputHTMLAttributes<HTMLInputElement>
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, ...props }, ref) => {

@@ -40,7 +40,14 @@
       "heading": "Mogen we u bellen voor vragen? En op de hoogte houden via e-mail?",
       "description": "Vaak hebben we nog een vraag. Daarmee kunnen we het probleem sneller of beter oplossen. Of we willen iets uitleggen. Wij willen u dan graag even bellen. Of anders e-mailen wij u.\n\nWij gebruiken uw telefoonnummer en e-mailadres alléén voor deze melding.",
       "send_to_other_instance_heading": "Mogen we uw melding doorsturen?",
-      "send_to_other_instance_description": "Soms kan de gemeente niets doen. Een andere organisatie moet dan aan het werk. Als dat zo is kunnen wij uw melding soms doorsturen. Wij sturen uw telefoonnummer of e-mailadres mee. Maar dat doen we alleen als u dat goed vindt."    }
+      "send_to_other_instance_description": "Soms kan de gemeente niets doen. Een andere organisatie moet dan aan het werk. Als dat zo is kunnen wij uw melding soms doorsturen. Wij sturen uw telefoonnummer of e-mailadres mee. Maar dat doen we alleen als u dat goed vindt.",
+      "describe_phone_input_heading": "Wat is uw telefoonnummer? (niet verplicht)",
+      "describe_mail_input_heading": "Wat is uw e-mailadres? (niet verplicht)",
+      "errors": {
+        "number_not_valid": "Gebruik een geldig telefoonnummer",
+        "email_not_valid": "Gebruik een geldig mailadres"
+      }
+    }
   },
   "describe-summary": {
     "heading": "4. Versturen"
