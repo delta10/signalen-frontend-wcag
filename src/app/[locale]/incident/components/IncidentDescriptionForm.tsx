@@ -86,7 +86,7 @@ export const IncidentDescriptionForm = () => {
                 <FormMessage />
               </div>
               <FormControl>
-                <Input type="file" />
+                <Input type="file" value="" />
               </FormControl>
             </FormItem>
           )}
