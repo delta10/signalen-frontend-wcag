@@ -24,7 +24,7 @@
     "lodash.pick": "^4.4.0",
     "maplibre-gl": "^3.6.1",
     "next": "14.0.1",
-    "next-intl": "^3.0.0-rc.6",
+    "next-intl": "^3.0.0",
     "prettier": "^3.0.3",
     "react": "^18",
     "react-dom": "^18",
