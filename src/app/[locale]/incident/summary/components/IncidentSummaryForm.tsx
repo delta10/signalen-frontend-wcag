@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl'
 import { Divider } from '@/components/ui/Divider'
 import { LinkWrapper } from '@/components/ui/LinkWrapper'
 import { useSignalStore, useStepperStore } from '@/store/store'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { LocationMap } from '@/components/ui/LocationMap'
 import { client } from '@/lib/apiClient'
 
@@ -14,9 +14,26 @@ const IncidentSummaryForm = () => {
   const { signal } = useSignalStore()
   const { goToStep } = useStepperStore()
 
+  useEffect(() => {
+    const getCategories = async () => {
+      await client.v1
+        .v1PublicTermsCategoriesList()
+        .then((res) => console.log(res))
+    }
+
+    getCategories()
+  }, [])
+
   const handleSignalSubmit = async () => {
     await client.v1
-      .v1PublicSignalsCreate(signal)
+      .v1PublicSignalsCreate({
+        ...signal,
+        incident_date_start: new Date().toISOString(),
+        category: {
+          ...signal.category,
+          sub_category: `${process.env.NEXT_PUBLIC_BASE_URL_API}/signals/v1/public/terms/categories/overig/sub_categories/overig`,
+        },
+      })
       .then((res) => {
         console.log(res)
       })

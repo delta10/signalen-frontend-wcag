@@ -23,6 +23,6 @@ class AxiosHttpRequestWithRetry extends BaseHttpRequest {
 }
 
 export const client = new SignalsClient(
-  { BASE: process.env.BASE_URL_API },
+  { BASE: process.env.NEXT_PUBLIC_BASE_URL_API },
   AxiosHttpRequestWithRetry
 )
