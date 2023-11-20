@@ -108,26 +108,25 @@ const IncidentContactForm = () => {
             <h2>{t('send_to_other_instance_heading')}</h2>
             <p>{t('send_to_other_instance_description')}</p>
           </div>
-          <FormField
-            name={'sharing_allowed'}
-            control={form.control}
-            render={({ field, formState: { errors } }) => (
-              <FormItem error={errors.sharing_allowed}>
-                <div>
-                  <FormLabel>{t('describe_mail_input_heading')}</FormLabel>
-                  <FormMessage />
-                </div>
-                <FormControl>
-                  <Checkbox
-                    {...field}
-                    checked={field.value}
-                    value={undefined}
-                    onCheckedChange={field.onChange}
-                  />
-                </FormControl>
-              </FormItem>
-            )}
-          />
+          <div className="bg-gray-200 w-full flex flex-row gap-4 p-4">
+            <FormField
+              name={'sharing_allowed'}
+              control={form.control}
+              render={({ field, formState: { errors } }) => (
+                <FormItem error={errors.sharing_allowed}>
+                  <FormControl>
+                    <Checkbox
+                      {...field}
+                      checked={field.value}
+                      value={undefined}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <p>{t('describe_checkbox_input_description')}</p>
+          </div>
           <IncidentFormFooter />
         </form>
       </Form>

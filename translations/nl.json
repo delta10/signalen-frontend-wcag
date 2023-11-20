@@ -43,6 +43,7 @@
       "send_to_other_instance_description": "Soms kan de gemeente niets doen. Een andere organisatie moet dan aan het werk. Als dat zo is kunnen wij uw melding soms doorsturen. Wij sturen uw telefoonnummer of e-mailadres mee. Maar dat doen we alleen als u dat goed vindt.",
       "describe_phone_input_heading": "Wat is uw telefoonnummer? (niet verplicht)",
       "describe_mail_input_heading": "Wat is uw e-mailadres? (niet verplicht)",
+      "describe_checkbox_input_description": "Ja, ik geef de gemeente Amsterdam toestemming om mijn melding door te sturen naar andere organisaties als de melding niet voor de gemeente is bestemd.",
       "errors": {
         "number_not_valid": "Gebruik een geldig telefoonnummer",
         "email_not_valid": "Gebruik een geldig mailadres"

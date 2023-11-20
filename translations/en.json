@@ -43,6 +43,7 @@
       "send_to_other_instance_description": "Sometimes the municipality cannot do anything. Another organization must then get to work. If so, we can sometimes forward your report. We send your phone number or e-mail address along with it. But we only do that if you agree.",
       "describe_phone_input_heading": "What is your telephone number? (not required)",
       "describe_mail_input_heading": "What is your e-mail address? (not required)",
+      "describe_checkbox_input_description": "Yes, I give the Municipality of Amsterdam permission to forward my report to other organizations if the report is not intended for the Municipality.",
       "errors": {
         "number_not_valid": "Use a valid telephone number",
         "email_not_valid": "Use a valid mail address"
