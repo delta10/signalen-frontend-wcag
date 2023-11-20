@@ -59,7 +59,7 @@ export const pathnames = {
   },
   '/incident/thankyou': {
     en: '/incident/thankyou',
-    nl: '/incident/thankyou',
+    nl: '/incident/bedankt',
   },
 } satisfies Pathnames<typeof locales>
 
