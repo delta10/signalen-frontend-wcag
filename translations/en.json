@@ -51,7 +51,29 @@
     }
   },
   "describe-summary": {
-    "heading": "4. Submit"
+    "heading": "4. Submit",
+    "description": "Check your information and submit your report.",
+    "steps": {
+      "step_one": {
+        "title": "1. Describe your report",
+        "edit": "Edit your report",
+        "input_heading": "What is it about?"
+      },
+      "step_two": {
+        "title": "2. Location and questions",
+        "edit": "Edit location and questions",
+        "input_heading": "Where is it?"
+      },
+      "step_three": {
+        "title": "3. Contact information",
+        "edit": "Edit contact information",
+        "no_contact_details": "You have not entered contact information. We cannot let you know what we have done with your report.",
+        "input_telephone_heading": "What is your phone number?",
+        "input_mail_heading": "What is your email address?",
+        "input_sharing_heading": "Report sharing",
+        "input_sharing_allowed": "Yes, I authorize the Municipality of Amsterdam to forward my report to other organizations if it is not intended for the municipality."
+      }
+    }
   },
   "general": {
     "describe_form": {
