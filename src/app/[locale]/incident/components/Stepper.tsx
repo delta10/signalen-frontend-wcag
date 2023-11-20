@@ -33,13 +33,14 @@ export const Stepper = ({}: StepperProps) => {
   useEffect(() => {
     if (lineRef.current !== null && lineStatusRef.current !== null) {
       const partOfLineBetweenTwoSteps =
-        lineRef.current.offsetHeight / (items.length - 1)
+        (window.screen.width > 768
+          ? lineRef.current.offsetHeight
+          : lineRef.current.offsetWidth) /
+        (items.length - 1)
 
-      lineStatusRef.current.style.minHeight = `${String(
-        partOfLineBetweenTwoSteps * (step - 1)
-      )}px`
-
-      console.log(partOfLineBetweenTwoSteps)
+      lineStatusRef.current.style[
+        window.screen.width > 768 ? 'minHeight' : 'minWidth'
+      ] = `${String(partOfLineBetweenTwoSteps * (step - 1))}px`
     }
   }, [step])
 
@@ -69,7 +70,7 @@ export const Stepper = ({}: StepperProps) => {
         ref={lineRef}
       ></div>
       <div
-        className="border-t-2 -ml-[2px] md:border-t-0 md:border-l-2 border-primary"
+        className="border-t-2 -mt-[2px] md:-mt-0 md:-ml-[2px] md:border-t-0 md:border-l-2 border-primary"
         ref={lineStatusRef}
         style={{ height: '0px' }}
       ></div>
