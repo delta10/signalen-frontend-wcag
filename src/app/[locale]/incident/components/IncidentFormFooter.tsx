@@ -38,7 +38,7 @@ const IncidentFormFooter = ({ className }: IncidentFormFooterProps) => {
         {step != 1 && pathname != '/incident' && (
           <Button
             variant="transparent"
-            type="submit"
+            type="button"
             className="justify-self-start self-start"
             onClick={() => goBack()}
           >
