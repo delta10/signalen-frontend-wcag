@@ -78,7 +78,8 @@
   "general": {
     "describe_form": {
       "back_button": "Vorige",
-      "next_button": "Volgende"
+      "next_button": "Volgende",
+      "submit_button": "Verstuur"
     }
   },
   "routing": {

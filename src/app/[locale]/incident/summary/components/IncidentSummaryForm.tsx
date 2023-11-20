@@ -13,12 +13,16 @@ const IncidentSummaryForm = () => {
   const { signal } = useSignalStore()
   const { goToStep } = useStepperStore()
 
+  const handleSignalSubmit = () => {
+    console.log('submit')
+  }
+
   return (
     <div className="flex flex-col gap-8">
       <p>{t('description')}</p>
       <Divider />
       <div className="flex flex-col gap-4">
-        <div className="flex flex-row justify-between">
+        <div className="flex flex-col gap-1 md:flex-row justify-between">
           <h3>{t('steps.step_one.title')}</h3>
           <LinkWrapper href={'/incident'} onClick={() => goToStep(1)}>
             {t('steps.step_one.edit')}
@@ -31,7 +35,7 @@ const IncidentSummaryForm = () => {
       </div>
       <Divider />
       <div className="flex flex-col gap-4">
-        <div className="flex flex-row justify-between">
+        <div className="flex flex-col gap-1 md:flex-row justify-between">
           <h3>{t('steps.step_two.title')}</h3>
           <LinkWrapper href={'/incident/add'} onClick={() => goToStep(2)}>
             {t('steps.step_two.edit')}
@@ -43,7 +47,7 @@ const IncidentSummaryForm = () => {
       </div>
       <Divider />
       <div className="flex flex-col gap-4">
-        <div className="flex flex-row justify-between">
+        <div className="flex flex-col gap-1 md:flex-row justify-between">
           <h3>{t('steps.step_three.title')}</h3>
           <LinkWrapper href={'/incident/contact'} onClick={() => goToStep(3)}>
             {t('steps.step_three.edit')}
@@ -78,7 +82,7 @@ const IncidentSummaryForm = () => {
           </>
         )}
       </div>
-      <IncidentFormFooter />
+      <IncidentFormFooter handleSignalSubmit={handleSignalSubmit} />
     </div>
   )
 }

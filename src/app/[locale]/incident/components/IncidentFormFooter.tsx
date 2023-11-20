@@ -7,9 +7,14 @@ import { Button } from '@/components/ui/Button'
 import { useStepperStore } from '@/store/store'
 import { steps, usePathname as usePath, useRouter } from '@/routing/navigation'
 
-type IncidentFormFooterProps = {} & React.HTMLAttributes<HTMLDivElement>
+type IncidentFormFooterProps = {
+  handleSignalSubmit?: () => void
+} & React.HTMLAttributes<HTMLDivElement>
 
-const IncidentFormFooter = ({ className }: IncidentFormFooterProps) => {
+const IncidentFormFooter = ({
+  className,
+  handleSignalSubmit,
+}: IncidentFormFooterProps) => {
   const t = useTranslations('general.describe_form')
   const { step, addOneStep, removeOneStep } = useStepperStore()
   const pathname = usePath()
@@ -48,6 +53,16 @@ const IncidentFormFooter = ({ className }: IncidentFormFooterProps) => {
         {step < 4 && (
           <Button variant="primary" type="submit" className="justify-self-end">
             {t('next_button')}
+          </Button>
+        )}
+        {step === 4 && (
+          <Button
+            variant="primary"
+            type="submit"
+            className="justify-self-end"
+            onClick={() => (handleSignalSubmit ? handleSignalSubmit() : null)}
+          >
+            {t('submit_button')}
           </Button>
         )}
       </div>
