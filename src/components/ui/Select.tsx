@@ -21,6 +21,7 @@ export default function S({
   return (
     <Select.Root onValueChange={onSelectChange} disabled={disabled}>
       <Select.Trigger
+        name="language switch"
         className={`flex transition duration-100 items-center gap-4 bg-white p-3 justify-between min-w-[150px] ring-1 ring-border hover:ring-2 hover:bg-hover focus:ring-2 focus:ring-focus outline-none focus-visible:outline-dashed focus-visible:outline-focus_visible ${
           disabled ? 'bg-hover text-border' : ''
         }`}

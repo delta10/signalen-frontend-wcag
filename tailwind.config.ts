@@ -39,7 +39,7 @@ const config: Config = {
         light_text: configuration.theme.light_text,
       },
       fontFamily: {
-        sans: ['var(--custom-font)}'],
+        sans: ['var(--custom-font)'],
       },
     },
   },
