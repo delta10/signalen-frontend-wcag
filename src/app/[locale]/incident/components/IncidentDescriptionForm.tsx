@@ -86,7 +86,8 @@ export const IncidentDescriptionForm = () => {
                 <FormMessage />
               </div>
               <FormControl>
-                <Input type="file" value="" />
+                {/* TODO: put onChange handler on file upload, or provide defaultValue (bind to react-hook-form). To prevent error */}
+                <Input type="file" value="" onChange={() => 'test'} />
               </FormControl>
             </FormItem>
           )}

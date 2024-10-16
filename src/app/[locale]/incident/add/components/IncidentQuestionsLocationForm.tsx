@@ -95,6 +95,7 @@ const IncidentQuestionsLocationForm = () => {
                 <FormControl className="w-full bg-red-400 relative">
                   <>
                     <LocationMap />
+                    {/* TODO: I can not find the reason why not every element inside this dialog is focusable */}
                     <MapDialog
                       marker={marker}
                       trigger={

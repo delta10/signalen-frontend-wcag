@@ -108,12 +108,15 @@ const IncidentContactForm = () => {
             <h2>{t('send_to_other_instance_heading')}</h2>
             <p>{t('send_to_other_instance_description')}</p>
           </div>
-          <div className="bg-gray-200 w-full flex flex-row gap-4 p-4">
+          <div className="bg-gray-200 w-full p-4">
             <FormField
               name={'sharing_allowed'}
               control={form.control}
               render={({ field, formState: { errors } }) => (
-                <FormItem error={errors.sharing_allowed}>
+                <FormItem
+                  error={errors.sharing_allowed}
+                  className="flex flex-row gap-4"
+                >
                   <FormControl>
                     <Checkbox
                       {...field}
@@ -122,10 +125,12 @@ const IncidentContactForm = () => {
                       onCheckedChange={field.onChange}
                     />
                   </FormControl>
+                  <FormLabel className="font-normal">
+                    {t('describe_checkbox_input_description')}
+                  </FormLabel>
                 </FormItem>
               )}
             />
-            <p>{t('describe_checkbox_input_description')}</p>
           </div>
           <IncidentFormFooter />
         </form>

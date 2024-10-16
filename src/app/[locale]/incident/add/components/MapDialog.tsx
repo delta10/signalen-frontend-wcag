@@ -10,6 +10,7 @@ import { useTranslations } from 'next-intl'
 import { useSignalStore } from '@/store/store'
 import { _NestedLocationModel } from '@/services/client'
 import { AddressSelect } from '@/app/[locale]/incident/add/components/AddressSelect'
+import * as VisuallyHidden from '@radix-ui/react-visually-hidden'
 
 type MapDialogProps = {
   trigger: React.ReactElement
@@ -59,6 +60,13 @@ const MapDialog = ({ trigger, marker }: MapDialogProps) => {
       <Dialog.Portal>
         <Dialog.Overlay />
         <Dialog.Content className="fixed inset-0 bg-white z-[1000] grid grid-cols-1 md:grid-cols-3">
+          <VisuallyHidden.Root>
+            {/* TODO: Overleggen welke titel hier het meest vriendelijk is voor de gebruiker, multi-language support integreren */}
+            <Dialog.Title>Locatie kiezen</Dialog.Title>
+            <Dialog.Description>
+              Kies een locatie op de kaart voor de locatie van uw melding.
+            </Dialog.Description>
+          </VisuallyHidden.Root>
           <div className="col-span-1 p-4 flex flex-col gap-4">
             <h1>{t('map_heading')}</h1>
             <AddressSelect />
