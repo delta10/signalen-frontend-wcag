@@ -1,4 +1,4 @@
-import { PublicSignalCreate } from '@/sdk'
+import { PublicSignalCreate } from '@/services/client'
 
 type SignalStore = {
   signal: PublicSignalCreate

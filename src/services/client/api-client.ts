@@ -1,9 +1,9 @@
 import axios from 'axios'
 import axiosRetry from 'axios-retry'
-import { request as __request } from '../sdk/core/request'
-import type { OpenAPIConfig } from '@/sdk'
-import { BaseHttpRequest, CancelablePromise, SignalsClient } from '@/sdk'
-import { ApiRequestOptions } from '@/sdk/core/ApiRequestOptions'
+import { request as __request } from '@/services/client/core/request'
+import type { OpenAPIConfig } from '../client'
+import { BaseHttpRequest, CancelablePromise, SignalsClient } from '../client'
+import { ApiRequestOptions } from '@/services/client/core/ApiRequestOptions'
 
 class AxiosHttpRequestWithRetry extends BaseHttpRequest {
   axiosInstance = axios.create({

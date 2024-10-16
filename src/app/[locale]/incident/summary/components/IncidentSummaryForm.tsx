@@ -7,7 +7,7 @@ import { LinkWrapper } from '@/components/ui/LinkWrapper'
 import { useSignalStore, useStepperStore } from '@/store/store'
 import React, { useEffect } from 'react'
 import { LocationMap } from '@/components/ui/LocationMap'
-import { client } from '@/lib/apiClient'
+import { client } from '@/services/client/api-client'
 import { useRouter } from '@/routing/navigation'
 
 const IncidentSummaryForm = () => {

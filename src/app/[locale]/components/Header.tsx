@@ -1,4 +1,3 @@
-import { getLogo } from '@/lib/utils/settings'
 import { Navigation } from '@/app/[locale]/components/Navigation'
 import Image from 'next/image'
 

@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { SignalStore, StepperStore } from '@/types/stores'
 import { immer } from 'zustand/middleware/immer'
-import { PublicSignalCreate } from '@/sdk'
+import { PublicSignalCreate } from '@/services/client'
 
 const initialSignalState: PublicSignalCreate = {
   text: '',

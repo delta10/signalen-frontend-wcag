@@ -18,9 +18,8 @@ import { useRouter } from '@/routing/navigation'
 import { LocationMap } from '@/components/ui/LocationMap'
 import { Button } from '@/components/ui/Button'
 import { MapDialog } from '@/app/[locale]/incident/add/components/MapDialog'
-import { useEffect, useState } from 'react'
-import { Coordinate } from '@/types/map'
-import { _NestedLocationModel } from '@/sdk'
+import { useEffect } from 'react'
+import { _NestedLocationModel } from '@/services/client'
 
 const IncidentQuestionsLocationForm = () => {
   const t = useTranslations('describe-add.form')

@@ -2,15 +2,13 @@ import * as Dialog from '@radix-ui/react-dialog'
 import { TbPlus } from 'react-icons/tb'
 import React, { useState } from 'react'
 import Map, {
-  LngLat,
   MapLayerMouseEvent,
   Marker,
   ViewState,
 } from 'react-map-gl/maplibre'
 import { useTranslations } from 'next-intl'
 import { useSignalStore } from '@/store/store'
-import { _NestedLocationModel } from '@/sdk'
-import Select from 'react-select'
+import { _NestedLocationModel } from '@/services/client'
 import { AddressSelect } from '@/app/[locale]/incident/add/components/AddressSelect'
 
 type MapDialogProps = {
