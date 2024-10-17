@@ -4,7 +4,11 @@ import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentF
 import { useTranslations } from 'next-intl'
 import { Divider } from '@/components/ui/Divider'
 import { LinkWrapper } from '@/components/ui/LinkWrapper'
-import { useSignalStore, useStepperStore } from '@/store/store'
+import {
+  useSignalAttachmentStore,
+  useSignalStore,
+  useStepperStore,
+} from '@/store/store'
 import React, { useEffect } from 'react'
 import { LocationMap } from '@/components/ui/LocationMap'
 import { client } from '@/services/client/api-client'
@@ -14,6 +18,7 @@ const IncidentSummaryForm = () => {
   const t = useTranslations('describe-summary')
   const { signal } = useSignalStore()
   const { goToStep } = useStepperStore()
+  const { attachments } = useSignalAttachmentStore()
   const router = useRouter()
 
   const handleSignalSubmit = async () => {
@@ -26,8 +31,20 @@ const IncidentSummaryForm = () => {
           sub_category: `${process.env.NEXT_PUBLIC_BASE_URL_API}/signals/v1/public/terms/categories/overig/sub_categories/overig`,
         },
       })
+      .then((res) => {
+        // todo: verplaats naar methode
+        const signalId = res.signal_id
+        if (signalId && attachments.length > 0) {
+          attachments.forEach((attachment) => {
+            const formData = new FormData()
+            formData.append('signal_id', signalId)
+            formData.append('file', attachment)
+            client.v1.uploadAttachment(signalId, formData)
+          })
+        }
+      })
       .then((res) => router.push('/incident/thankyou'))
-      .catch((err) => console.log(err))
+      .catch((err) => console.error(err))
   }
 
   return (

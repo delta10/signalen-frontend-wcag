@@ -14,16 +14,22 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
 import { Textarea } from '@/components/ui/TextArea'
-import { Input } from '@/components/ui/Input'
 import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentFormFooter'
-import { useSignalStore, useStepperStore } from '@/store/store'
+import {
+  useSignalAttachmentStore,
+  useSignalStore,
+  useStepperStore,
+} from '@/store/store'
 import { useRouter } from '@/routing/navigation'
+import React, { useState } from 'react'
 
 export const IncidentDescriptionForm = () => {
   const t = useTranslations('describe-report.form')
   const { updateSignal, signal } = useSignalStore()
   const { addOneStep, setLastCompletedStep } = useStepperStore()
+  const { updateAttachments, attachments } = useSignalAttachmentStore()
   const router = useRouter()
+  const [images, setImages] = useState<File[]>([])
 
   const incidentDescriptionFormSchema = z.object({
     description: z.string().min(1, t('errors.textarea_required')),
@@ -43,10 +49,22 @@ export const IncidentDescriptionForm = () => {
       text: values.description,
     })
 
+    if (images.length > 0) {
+      updateAttachments(images)
+    }
+
     setLastCompletedStep(1)
     addOneStep()
 
     router.push('/incident/add')
+  }
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files
+    if (files && files.length > 0) {
+      const filesArray = Array.from(files)
+      setImages(filesArray)
+    }
   }
 
   return (
@@ -73,24 +91,32 @@ export const IncidentDescriptionForm = () => {
             </FormItem>
           )}
         />
-        <FormField
-          name={'files'}
-          control={form.control}
-          render={({ field, formState: { errors } }) => (
-            <FormItem>
-              <div>
-                <FormLabel>{t('describe_upload_heading')}</FormLabel>
-                <FormDescription>
-                  {t('describe_upload_description')}
-                </FormDescription>
-                <FormMessage />
-              </div>
-              <FormControl>
-                {/* TODO: put onChange handler on file upload, or provide defaultValue (bind to react-hook-form). To prevent error */}
-                <Input type="file" value="" onChange={() => 'test'} />
-              </FormControl>
-            </FormItem>
-          )}
+        {/*<FormField*/}
+        {/*  name={'files'}*/}
+        {/*  control={form.control}*/}
+        {/*  render={({ field, formState: { errors } }) => (*/}
+        {/*    <FormItem>*/}
+        {/*      <div>*/}
+        {/*        <FormLabel>{t('describe_upload_heading')}</FormLabel>*/}
+        {/*        <FormDescription>*/}
+        {/*          {t('describe_upload_description')}*/}
+        {/*        </FormDescription>*/}
+        {/*        <FormMessage />*/}
+        {/*      </div>*/}
+        {/*      <FormControl>*/}
+        {/*        /!* TODO: put onChange handler on file upload, or provide defaultValue (bind to react-hook-form). To prevent error *!/*/}
+        {/*        <FileInput value={images} onChange={handleChange} />*/}
+        {/*      </FormControl>*/}
+        {/*    </FormItem>*/}
+        {/*  )}*/}
+        {/*/>*/}
+        {/*<FileInputUncontrolled />*/}
+        <label htmlFor="fileUpload">kies iets moois</label>
+        <input
+          name={'fileUpload'}
+          type="file"
+          onChange={handleFileChange} // Handle file selection immediately
+          multiple
         />
         <IncidentFormFooter />
       </form>

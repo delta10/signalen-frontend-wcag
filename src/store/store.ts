@@ -1,5 +1,9 @@
 import { create } from 'zustand'
-import { SignalStore, StepperStore } from '@/types/stores'
+import {
+  SignalAttachmentStore,
+  SignalStore,
+  StepperStore,
+} from '@/types/stores'
 import { immer } from 'zustand/middleware/immer'
 import { PublicSignalCreate } from '@/services/client'
 
@@ -50,6 +54,17 @@ const useSignalStore = create<SignalStore>()(
   }))
 )
 
+const useSignalAttachmentStore = create<SignalAttachmentStore>()(
+  immer((set) => ({
+    attachments: [],
+    updateAttachments: (attachments: File[]) =>
+      set((state) => {
+        state.attachments = attachments
+      }),
+    resetAttachments: () => set(() => ({ attachments: [] })),
+  }))
+)
+
 const useStepperStore = create<StepperStore>()((set) => ({
   step: 1,
   lastCompletedStep: 0,
@@ -65,4 +80,4 @@ const useStepperStore = create<StepperStore>()((set) => ({
     })),
 }))
 
-export { useSignalStore, useStepperStore }
+export { useSignalStore, useStepperStore, useSignalAttachmentStore }

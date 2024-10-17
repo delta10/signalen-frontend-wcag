@@ -6,6 +6,12 @@ type SignalStore = {
   resetSignal: () => void
 }
 
+type SignalAttachmentStore = {
+  attachments: File[]
+  updateAttachments: (attachments: File[]) => void
+  resetAttachments: () => void
+}
+
 type StepperStore = {
   step: number
   lastCompletedStep: number
@@ -15,4 +21,4 @@ type StepperStore = {
   addOneStep: () => void
 }
 
-export type { StepperStore, SignalStore }
+export type { StepperStore, SignalStore, SignalAttachmentStore }

@@ -2445,6 +2445,26 @@ export class V1Service {
     }
 
     /**
+     * @param uuid
+     * @param formData
+     * @returns PublicSignalAttachment
+     * @throws ApiError
+     */
+    public uploadAttachment(
+      uuid: string,
+      formData: FormData,
+    ): CancelablePromise<PublicSignalAttachment> {
+        return this.httpRequest.request({
+            method: 'POST',
+            url: `/signals/v1/public/signals/${uuid}/attachments/`,
+            path: {
+                'uuid': uuid,
+            },
+            body: formData,
+        });
+    }
+
+    /**
      * GeoJSON of all signals that can be shown on a public map.
      * @param bbox
      * @param categorySlug
