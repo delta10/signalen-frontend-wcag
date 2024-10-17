@@ -5,9 +5,9 @@ import { useTranslations } from 'next-intl'
 import { Divider } from '@/components/ui/Divider'
 import { LinkWrapper } from '@/components/ui/LinkWrapper'
 import { useSignalStore, useStepperStore } from '@/store/store'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { LocationMap } from '@/components/ui/LocationMap'
-import { client } from '@/services/client/api-client'
+import { signalsClient } from '@/services/client/api-client'
 import { useRouter } from '@/routing/navigation'
 
 const IncidentSummaryForm = () => {
@@ -17,7 +17,7 @@ const IncidentSummaryForm = () => {
   const router = useRouter()
 
   const handleSignalSubmit = async () => {
-    await client.v1
+    await signalsClient.v1
       .v1PublicSignalsCreate({
         ...signal,
         incident_date_start: new Date().toISOString(),
