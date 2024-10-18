@@ -11,7 +11,6 @@
   },
   "describe-report": {
     "heading": "1. Beschrijf uw melding",
-    "description": "Voordat u een melding doet kunt u op de <link>meldingenkaart</link> zien welke meldingen bekend zijn bij de gemeente. Staat uw melding er niet bij? Maak dan een melding.",
     "form": {
       "describe_textarea_heading": "Waar gaat het om?",
       "describe_textarea_description": "Typ geen persoonsgegevens in deze omschrijving. We vragen dit later in dit formulier aan u.",
