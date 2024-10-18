@@ -164,8 +164,8 @@ const FormMessage = React.forwardRef<HTMLParagraphElement, FormMessageProps>(
     const body = customError
       ? String(customError?.message)
       : error
-      ? String(error?.message)
-      : children
+        ? String(error?.message)
+        : children
 
     if (!body) {
       return null
