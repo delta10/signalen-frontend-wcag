@@ -5,8 +5,8 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Signalen Frontend POC',
-  description: 'POC for the Signalen frontend',
+  title: 'Maak een melding',
+  description: 'Maak een melding bij jouw gemeente.',
 }
 
 export default function RootLayout({
