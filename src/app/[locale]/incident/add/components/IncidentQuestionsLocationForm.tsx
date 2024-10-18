@@ -18,13 +18,23 @@ import { useRouter } from '@/routing/navigation'
 import { LocationMap } from '@/components/ui/LocationMap'
 import { Button } from '@/components/ui/Button'
 import { MapDialog } from '@/app/[locale]/incident/add/components/MapDialog'
-import { useEffect } from 'react'
-import { _NestedLocationModel } from '@/services/client'
+import { useEffect, useState } from 'react'
+import {
+  _NestedLocationModel,
+  FieldTypeEnum,
+  PublicQuestionSerializerDetail,
+} from '@/services/client'
+import { fetchAdditionalQuestions } from '@/services/additional-questions'
+import { RadioGroup } from '@/components/ui/RadioGroup'
 
 const IncidentQuestionsLocationForm = () => {
   const t = useTranslations('describe-add.form')
   const { updateSignal, signal } = useSignalStore()
   const { addOneStep, setLastCompletedStep } = useStepperStore()
+  const [additionalQuestions, setAdditionalQuestions] = useState<
+    PublicQuestionSerializerDetail[]
+  >([])
+
   const router = useRouter()
   const marker = signal.location.geometrie.coordinates!
 
@@ -34,6 +44,18 @@ const IncidentQuestionsLocationForm = () => {
       lat: z.number().min(0.00000001, t('errors.location_required')),
     }),
   })
+
+  const additionalQuestionTypes = {
+    [FieldTypeEnum.RADIO_INPUT]: (props: any) => <RadioGroup name={props.key} values={props.meta.values} />,
+    [FieldTypeEnum.PLAIN_TEXT]: (props: any) => <div>{props.value}</div>,
+    [FieldTypeEnum.TEXT_INPUT]: (props: any) => <div>TextInput</div>,
+    [FieldTypeEnum.MULTI_TEXT_INPUT]: (props: any) => <div>MultiTextInput</div>,
+    [FieldTypeEnum.CHECKBOX_INPUT]: (props: any) => <div>CheckboxInput</div>,
+    [FieldTypeEnum.SELECT_INPUT]: (props: any) => <div>SelectInput</div>,
+    [FieldTypeEnum.TEXT_AREA_INPUT]: (props: any) => <div>TextAreaInput</div>,
+    [FieldTypeEnum.ASSET_SELECT]: null,
+    [FieldTypeEnum.LOCATION_SELECT]: null,
+  }
 
   const form = useForm<z.infer<typeof incidentQuestionAndLocationFormSchema>>({
     resolver: zodResolver(incidentQuestionAndLocationFormSchema),
@@ -55,6 +77,22 @@ const IncidentQuestionsLocationForm = () => {
       setValue('map', { lng: marker[0], lat: marker[1] })
     }
   }, [marker])
+
+  useEffect(() => {
+    const appendAdditionalQuestions = async () => {
+      try {
+        const additionalQuestions = await fetchAdditionalQuestions(
+          'overlast-in-de-openbare-ruimte',
+          'vuurwerkoverlast'
+        )
+        setAdditionalQuestions(additionalQuestions)
+      } catch (e) {
+        console.error('Could not fetch additional questions', e)
+      }
+    }
+
+    appendAdditionalQuestions()
+  }, [])
 
   const onSubmit = (
     values: z.infer<typeof incidentQuestionAndLocationFormSchema>
@@ -112,6 +150,16 @@ const IncidentQuestionsLocationForm = () => {
               </FormItem>
             )}
           />
+          {additionalQuestions.filter((question) => additionalQuestionTypes[question.field_type]).map((question) => (
+            <FormItem key={question.key} className="w-full relative">
+              <div>
+                <FormLabel>{question.meta.label}</FormLabel>
+              </div>
+              <FormControl className="w-full bg-red-400 relative">
+                {additionalQuestionTypes[question.field_type]?.(question)}
+              </FormControl>
+            </FormItem>
+          ))}
           <IncidentFormFooter />
         </form>
       </Form>
