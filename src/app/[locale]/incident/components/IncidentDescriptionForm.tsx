@@ -18,6 +18,8 @@ import { Input } from '@/components/ui/Input'
 import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentFormFooter'
 import { useSignalStore, useStepperStore } from '@/store/store'
 import { useRouter } from '@/routing/navigation'
+import { useEffect } from 'react'
+import { getCategoryForDescription } from '@/services/classification'
 
 export const IncidentDescriptionForm = () => {
   const t = useTranslations('describe-report.form')
@@ -36,6 +38,15 @@ export const IncidentDescriptionForm = () => {
       description: signal.text,
     },
   })
+
+  useEffect(() => {
+    // TODO: only watch description field
+    const { unsubscribe } = form.watch(async (name, value) => {
+      const { main, sub } = await getCategoryForDescription(value.values.description as string)
+      console.log(main, sub)
+    })
+    return () => unsubscribe()
+  }, [form.watch])
 
   const onSubmit = (values: z.infer<typeof incidentDescriptionFormSchema>) => {
     updateSignal({
