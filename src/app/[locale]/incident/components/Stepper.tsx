@@ -23,36 +23,6 @@ export const Stepper = ({}: StepperProps) => {
   const lineStatusRef = useRef<HTMLDivElement>(null)
   const pathname = usePathname()
 
-  useEffect(() => {
-    if (
-      ref.current !== null &&
-      lineRef.current !== null &&
-      window.screen.width < 768
-    ) {
-      lineRef.current.style.width = `${String(ref.current.offsetWidth - 24)}px`
-    }
-  }, [ref.current, lineRef.current])
-
-  useEffect(() => {
-    if (lineRef.current !== null && lineStatusRef.current !== null) {
-      const partOfLineBetweenTwoSteps =
-        (window.screen.width > 768
-          ? lineRef.current.offsetHeight
-          : lineRef.current.offsetWidth) /
-        (items.length - 1)
-
-      lineStatusRef.current.style[
-        window.screen.width > 768 ? 'minHeight' : 'minWidth'
-      ] = `${String(partOfLineBetweenTwoSteps * (step - 1))}px`
-    }
-  }, [step])
-
-  const resetState = () => {
-    setLastCompletedStep(0)
-    goToStep(1)
-    resetSignal()
-  }
-
   const items: Array<StepperItem> = [
     {
       path: '/incident',
@@ -71,6 +41,36 @@ export const Stepper = ({}: StepperProps) => {
       name: t('step_four'),
     },
   ]
+
+  useEffect(() => {
+    if (
+      ref.current !== null &&
+      lineRef.current !== null &&
+      window.screen.width < 768
+    ) {
+      lineRef.current.style.width = `${String(ref.current.offsetWidth - 24)}px`
+    }
+  })
+
+  useEffect(() => {
+    if (lineRef.current !== null && lineStatusRef.current !== null) {
+      const partOfLineBetweenTwoSteps =
+        (window.screen.width > 768
+          ? lineRef.current.offsetHeight
+          : lineRef.current.offsetWidth) /
+        (items.length - 1)
+
+      lineStatusRef.current.style[
+        window.screen.width > 768 ? 'minHeight' : 'minWidth'
+      ] = `${String(partOfLineBetweenTwoSteps * (step - 1))}px`
+    }
+  }, [step, items.length])
+
+  const resetState = () => {
+    setLastCompletedStep(0)
+    goToStep(1)
+    resetSignal()
+  }
 
   if (pathname !== '/incident/thankyou') {
     return (
