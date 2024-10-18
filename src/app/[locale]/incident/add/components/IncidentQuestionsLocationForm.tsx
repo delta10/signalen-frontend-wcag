@@ -54,7 +54,7 @@ const IncidentQuestionsLocationForm = () => {
     if (marker[0] !== 0 && marker[1] !== 0) {
       setValue('map', { lng: marker[0], lat: marker[1] })
     }
-  }, [marker, setValue])
+  }, [marker])
 
   const onSubmit = (
     values: z.infer<typeof incidentQuestionAndLocationFormSchema>

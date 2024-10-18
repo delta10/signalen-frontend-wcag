@@ -38,7 +38,7 @@ const LocationMap = () => {
         latitude: signal.location.geometrie.coordinates![1],
       })
     }
-  }, [signal.location.geometrie.coordinates, viewState])
+  }, [signal.location.geometrie.coordinates])
 
   return (
     <Map
