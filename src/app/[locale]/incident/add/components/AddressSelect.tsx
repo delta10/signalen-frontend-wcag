@@ -1,10 +1,7 @@
-import Select, {
-  DropdownIndicatorProps,
-  components,
-  IndicatorSeparatorProps,
-} from 'react-select'
+import Select, { DropdownIndicatorProps, components } from 'react-select'
 import React from 'react'
 import { TbSearch } from 'react-icons/tb'
+import { useConfig } from '@/hooks/useConfig'
 
 const options = [
   { value: 'eikenboomstraat', label: 'eikenboomstraat' },
@@ -27,6 +24,8 @@ const IndicatorSeparator = () => {
 }
 
 const AddressSelect = () => {
+  const { config } = useConfig()
+
   return (
     <Select
       options={options}
