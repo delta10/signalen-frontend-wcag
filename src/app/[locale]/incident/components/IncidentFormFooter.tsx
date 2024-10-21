@@ -6,6 +6,8 @@ import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/Button'
 import { useStepperStore } from '@/store/stepper_store'
 import { steps, usePathname as usePath, useRouter } from '@/routing/navigation'
+import { Paragraph } from '@utrecht/component-library-react/dist/css-module'
+import '@utrecht/design-tokens/dist/index.css'
 
 type IncidentFormFooterProps = {
   handleSignalSubmit?: () => void
@@ -66,12 +68,6 @@ const IncidentFormFooter = ({
           </Button>
         )}
       </div>
-      <p className="text-light_text">
-        Lukt het niet om een melding te doen? Bel het telefoonnummer 14 020
-        <br />
-        Wij zijn bereikbaar van maandag tot en met vrijdag van 08.00 tot 18.00
-        uur.
-      </p>
     </>
   )
 }
