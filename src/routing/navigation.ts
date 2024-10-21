@@ -6,10 +6,6 @@ export const locales = getAllAvailableLocales()
 
 export const pathnames = {
   '/': '/',
-  '/notifications-map': {
-    en: '/notifications-map',
-    nl: '/meldingen-kaart',
-  },
   '/incident': {
     en: '/incident',
     nl: '/incident',
