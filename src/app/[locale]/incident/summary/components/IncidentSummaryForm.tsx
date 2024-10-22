@@ -13,6 +13,7 @@ import React, { useEffect } from 'react'
 import { LocationMap } from '@/components/ui/LocationMap'
 import { signalsClient } from '@/services/client/api-client'
 import { useRouter } from '@/routing/navigation'
+import { postAttachments } from '@/services/attachment/attachments'
 
 const IncidentSummaryForm = () => {
   const t = useTranslations('describe-summary')
@@ -39,7 +40,7 @@ const IncidentSummaryForm = () => {
             const formData = new FormData()
             formData.append('signal_id', signalId)
             formData.append('file', attachment)
-            signalsClient.v1.uploadAttachment(signalId, formData)
+            postAttachments(signalId, formData)
           })
         }
       })
