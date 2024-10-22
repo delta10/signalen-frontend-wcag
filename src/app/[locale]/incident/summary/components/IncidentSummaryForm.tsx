@@ -33,7 +33,7 @@ const IncidentSummaryForm = () => {
           bag_validated: false,
         },
         category: {
-          sub_category: `${process.env.NEXT_PUBLIC_BASE_URL_API}/signals/v1/public/terms/categories/overig/sub_categories/overig`,
+          sub_category: formState.sub_category_url,
           sub: '',
           sub_slug: '',
           main: '',

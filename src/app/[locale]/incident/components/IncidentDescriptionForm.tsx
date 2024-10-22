@@ -47,7 +47,15 @@ export const IncidentDescriptionForm = () => {
     const debouncedWatch = debounce(async (value) => {
       if (value) {
         const { main, sub } = await getCategoryForDescription(value)
-        console.log(main, sub)
+
+        updateForm({
+          ...formState,
+          category: main,
+          sub_category: sub,
+          sub_category_url:
+            process.env.NEXT_PUBLIC_BASE_URL_API +
+            `/signals/v1/public/terms/categories/${main}/sub_categories/${sub}`,
+        })
       }
     }, 500)
 
