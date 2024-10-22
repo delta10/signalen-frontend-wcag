@@ -16,15 +16,16 @@ import { useTranslations } from 'next-intl'
 import { Textarea } from '@/components/ui/TextArea'
 import { Input } from '@/components/ui/Input'
 import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentFormFooter'
-import { useSignalStore, useStepperStore } from '@/store/store'
+import { useStepperStore } from '@/store/stepper_store'
 import { useRouter } from '@/routing/navigation'
 import { useEffect } from 'react'
 import { getCategoryForDescription } from '@/services/classification'
 import { debounce } from 'lodash'
+import { useFormStore } from '@/store/form_store'
 
 export const IncidentDescriptionForm = () => {
   const t = useTranslations('describe-report.form')
-  const { updateSignal, signal } = useSignalStore()
+  const { updateForm, formState } = useFormStore()
   const { addOneStep, setLastCompletedStep } = useStepperStore()
   const router = useRouter()
 
@@ -36,7 +37,7 @@ export const IncidentDescriptionForm = () => {
   const form = useForm<z.infer<typeof incidentDescriptionFormSchema>>({
     resolver: zodResolver(incidentDescriptionFormSchema),
     defaultValues: {
-      description: signal.text,
+      description: formState.description,
     },
   })
 
@@ -58,9 +59,9 @@ export const IncidentDescriptionForm = () => {
   }, [description])
 
   const onSubmit = (values: z.infer<typeof incidentDescriptionFormSchema>) => {
-    updateSignal({
-      ...signal,
-      text: values.description,
+    updateForm({
+      ...formState,
+      description: values.description,
     })
 
     setLastCompletedStep(1)

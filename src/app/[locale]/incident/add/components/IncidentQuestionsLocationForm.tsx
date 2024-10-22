@@ -13,20 +13,20 @@ import * as z from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
-import { useSignalStore, useStepperStore } from '@/store/store'
+import { useStepperStore } from '@/store/stepper_store'
 import { useRouter } from '@/routing/navigation'
 import { LocationMap } from '@/components/ui/LocationMap'
 import { Button } from '@/components/ui/Button'
 import { MapDialog } from '@/app/[locale]/incident/add/components/MapDialog'
 import { useEffect } from 'react'
-import { _NestedLocationModel } from '@/services/client'
+import { useFormStore } from '@/store/form_store'
 
 const IncidentQuestionsLocationForm = () => {
   const t = useTranslations('describe-add.form')
-  const { updateSignal, signal } = useSignalStore()
+  const { updateForm, formState } = useFormStore()
   const { addOneStep, setLastCompletedStep } = useStepperStore()
   const router = useRouter()
-  const marker = signal.location.geometrie.coordinates!
+  const marker = formState.coordinates!
 
   const incidentQuestionAndLocationFormSchema = z.object({
     map: z.object({
@@ -39,8 +39,8 @@ const IncidentQuestionsLocationForm = () => {
     resolver: zodResolver(incidentQuestionAndLocationFormSchema),
     defaultValues: {
       map: {
-        lng: signal.location.geometrie.coordinates?.[0],
-        lat: signal.location.geometrie.coordinates?.[1],
+        lng: formState.coordinates[0],
+        lat: formState.coordinates[1],
       },
     },
   })
@@ -59,15 +59,9 @@ const IncidentQuestionsLocationForm = () => {
   const onSubmit = (
     values: z.infer<typeof incidentQuestionAndLocationFormSchema>
   ) => {
-    updateSignal({
-      ...signal,
-      location: {
-        ...signal.location,
-        geometrie: {
-          type: _NestedLocationModel.type.POINT,
-          coordinates: [values.map.lng, values.map.lat],
-        },
-      },
+    updateForm({
+      ...formState,
+      coordinates: [values.map.lng, values.map.lat],
     })
 
     setLastCompletedStep(2)
