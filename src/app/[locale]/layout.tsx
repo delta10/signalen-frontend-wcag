@@ -4,6 +4,7 @@ import { getAllAvailableLocales } from '@/lib/utils/locale'
 import { Container } from '@/components'
 import { Header } from '@/app/[locale]/components/Header'
 import localFont from 'next/font/local'
+import AppProvider from '@/components/providers/AppProvider'
 
 const font = localFont({
   src: '../../../public/fonts/open-sans.woff2',
@@ -23,10 +24,12 @@ export default function LocaleLayout({
   return (
     <html lang={locale} className={`${font.variable}`}>
       <body className="bg-gray-100">
-        <Container className="bg-white">
-          <Header />
-          {children}
-        </Container>
+        <AppProvider>
+          <Container className="bg-white">
+            <Header />
+            {children}
+          </Container>
+        </AppProvider>
       </body>
     </html>
   )
