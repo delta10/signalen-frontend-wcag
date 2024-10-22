@@ -7,6 +7,7 @@ const initialFormState: FormStoreState = {
   description: '',
   category: '',
   sub_category: '',
+  sub_category_url: '',
   coordinates: [0, 0],
   email: '',
   phone: '',

@@ -2,6 +2,7 @@ type FormStoreState = {
   description: string
   category: string
   sub_category: string
+  sub_category_url: string
   coordinates: number[]
   email?: string | null
   phone?: string | null
