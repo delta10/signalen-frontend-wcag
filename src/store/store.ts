@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import { SignalStore, StepperStore } from '@/types/stores'
 import { immer } from 'zustand/middleware/immer'
 import { PublicSignalCreate } from '@/services/client'
+import { createJSONStorage, persist } from 'zustand/middleware'
 
 const initialSignalState: PublicSignalCreate = {
   text: '',
@@ -38,31 +39,48 @@ const initialSignalState: PublicSignalCreate = {
 }
 
 const useSignalStore = create<SignalStore>()(
-  immer((set) => ({
-    signal: {
-      ...initialSignalState,
-    },
-    updateSignal: (obj) =>
-      set((state) => {
-        state.signal = obj
-      }),
-    resetSignal: () => set(() => ({ signal: initialSignalState })),
-  }))
+  persist(
+    immer((set) => ({
+      signal: {
+        ...initialSignalState,
+      },
+      updateSignal: (obj) =>
+        set((state) => {
+          state.signal = obj
+        }),
+      resetSignal: () => set(() => ({ signal: initialSignalState })),
+    })),
+    {
+      name: 'signal',
+      storage: createJSONStorage(() => sessionStorage),
+    }
+  )
 )
 
-const useStepperStore = create<StepperStore>()((set) => ({
-  step: 1,
-  lastCompletedStep: 0,
-  goToStep: (step) => set((state) => ({ step: step })),
-  setLastCompletedStep: (step) => set((state) => ({ lastCompletedStep: step })),
-  removeOneStep: () =>
-    set((state) => ({
-      step: state.step - 1,
-    })),
-  addOneStep: () =>
-    set((state) => ({
-      step: state.step + 1,
-    })),
-}))
+const useStepperStore = create<StepperStore>()(
+  persist(
+    (set) => ({
+      step: 1,
+      lastCompletedStep: 0,
+
+      goToStep: (step: number) => set(() => ({ step })),
+
+      setLastCompletedStep: (step: number) =>
+        set(() => ({ lastCompletedStep: step })),
+
+      removeOneStep: () => set((state) => ({ step: state.step - 1 })),
+
+      addOneStep: () => set((state) => ({ step: state.step + 1 })),
+    }),
+    {
+      name: 'step',
+      partialize: (state) => ({
+        step: state.step,
+        lastCompletedStep: state.lastCompletedStep,
+      }),
+      storage: createJSONStorage(() => sessionStorage),
+    }
+  )
+)
 
 export { useSignalStore, useStepperStore }
