@@ -11,7 +11,7 @@ import {
 } from '@/store/store'
 import React, { useEffect } from 'react'
 import { LocationMap } from '@/components/ui/LocationMap'
-import { client } from '@/services/client/api-client'
+import { signalsClient } from '@/services/client/api-client'
 import { useRouter } from '@/routing/navigation'
 
 const IncidentSummaryForm = () => {
@@ -22,7 +22,7 @@ const IncidentSummaryForm = () => {
   const router = useRouter()
 
   const handleSignalSubmit = async () => {
-    await client.v1
+    await signalsClient.v1
       .v1PublicSignalsCreate({
         ...signal,
         incident_date_start: new Date().toISOString(),
@@ -39,7 +39,7 @@ const IncidentSummaryForm = () => {
             const formData = new FormData()
             formData.append('signal_id', signalId)
             formData.append('file', attachment)
-            client.v1.uploadAttachment(signalId, formData)
+            signalsClient.v1.uploadAttachment(signalId, formData)
           })
         }
       })

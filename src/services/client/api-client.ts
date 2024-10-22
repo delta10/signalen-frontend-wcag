@@ -1,20 +1,26 @@
-import axios from 'axios'
+import axios, { AxiosInstance } from 'axios'
 import axiosRetry from 'axios-retry'
 import { request as __request } from '@/services/client/core/request'
 import type { OpenAPIConfig } from '../client'
 import { BaseHttpRequest, CancelablePromise, SignalsClient } from '../client'
 import { ApiRequestOptions } from '@/services/client/core/ApiRequestOptions'
 
-class AxiosHttpRequestWithRetry extends BaseHttpRequest {
-  axiosInstance = axios.create({
-    headers: {
-      Authorization: 'Bearer ' + process.env.TESTING_PURPOSES_API_KEY,
-    },
+export const axiosInstance = (baseUrl?: string): AxiosInstance => {
+  const instance = axios.create({
+    baseURL: baseUrl ? baseUrl : process.env.NEXT_PUBLIC_BASE_URL_API,
   })
+
+  axiosRetry(instance)
+
+  return instance
+}
+
+class AxiosHttpRequestWithRetry extends BaseHttpRequest {
+  axiosInstance: AxiosInstance
 
   constructor(config: OpenAPIConfig) {
     super(config)
-    axiosRetry(this.axiosInstance)
+    this.axiosInstance = axiosInstance()
   }
 
   public override request<T>(options: ApiRequestOptions): CancelablePromise<T> {
@@ -22,7 +28,7 @@ class AxiosHttpRequestWithRetry extends BaseHttpRequest {
   }
 }
 
-export const client = new SignalsClient(
-  { BASE: process.env.NEXT_PUBLIC_BASE_URL_API },
+export const signalsClient = new SignalsClient(
+  { BASE: '' },
   AxiosHttpRequestWithRetry
 )
