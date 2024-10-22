@@ -132,6 +132,15 @@ export const IncidentDescriptionForm = () => {
                 <FormMessage />
               </div>
               <div className="flex ">
+                {images.length > 0 &&
+                  images.map((image, index) => (
+                    <img
+                      key={index}
+                      className="empty-box"
+                      src={URL.createObjectURL(image)}
+                      alt={'voorbeeld weergave'}
+                    />
+                  ))}
                 <div className="empty-box" />
                 <FormControl>
                   {/*<FileInput value={images} onChange={handleChange} />*/}
