@@ -1,15 +1,17 @@
-import { PublicSignalCreate } from '@/services/client'
-
-type SignalStore = {
-  signal: PublicSignalCreate
-  updateSignal: (obj: PublicSignalCreate) => void
-  resetSignal: () => void
-}
-
-type InitialFormState = {
+type FormStoreState = {
   description: string
   category: string
   sub_category: string
+  coordinates: number[]
+  email?: string | null
+  phone?: string | null
+  sharing_allowed?: boolean
+}
+
+type FormStore = {
+  formState: FormStoreState
+  updateForm: (obj: FormStoreState) => void
+  resetForm: () => void
 }
 
 type StepperStore = {
@@ -21,4 +23,4 @@ type StepperStore = {
   addOneStep: () => void
 }
 
-export type { StepperStore, SignalStore, InitialFormState }
+export type { StepperStore, FormStore, FormStoreState }

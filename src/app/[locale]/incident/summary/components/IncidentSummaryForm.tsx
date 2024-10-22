@@ -4,27 +4,54 @@ import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentF
 import { useTranslations } from 'next-intl'
 import { Divider } from '@/components/ui/Divider'
 import { LinkWrapper } from '@/components/ui/LinkWrapper'
-import { useSignalStore, useStepperStore } from '@/store/store'
+import { useStepperStore } from '@/store/stepper_store'
 import React from 'react'
 import { LocationMap } from '@/components/ui/LocationMap'
 import { signalsClient } from '@/services/client/api-client'
 import { useRouter } from '@/routing/navigation'
+import { useFormStore } from '@/store/form_store'
+import { _NestedLocationModel } from '@/services/client'
 
 const IncidentSummaryForm = () => {
   const t = useTranslations('describe-summary')
-  const { signal } = useSignalStore()
+  const { formState } = useFormStore()
   const { goToStep } = useStepperStore()
   const router = useRouter()
 
   const handleSignalSubmit = async () => {
     await signalsClient.v1
       .v1PublicSignalsCreate({
-        ...signal,
-        incident_date_start: new Date().toISOString(),
-        category: {
-          ...signal.category,
-          sub_category: `${process.env.NEXT_PUBLIC_BASE_URL_API}/signals/v1/public/terms/categories/overig/sub_categories/overig`,
+        text: formState.description,
+        location: {
+          id: 0,
+          address_text: null,
+          geometrie: {
+            type: _NestedLocationModel.type.POINT,
+            coordinates: formState.coordinates,
+          },
+          created_by: null,
+          bag_validated: false,
         },
+        category: {
+          sub_category: `${process.env.NEXT_PUBLIC_BASE_URL_API}/signals/v1/public/terms/categories/overig/sub_categories/overig`,
+          sub: '',
+          sub_slug: '',
+          main: '',
+          main_slug: '',
+          category_url: undefined,
+          departments: '',
+          created_by: null,
+          text: undefined,
+          deadline: '',
+          deadline_factor_3: '',
+        },
+        reporter: {
+          email: formState.email,
+          phone: formState.phone,
+          sharing_allowed: formState.sharing_allowed,
+          allows_contact: false,
+        },
+        incident_date_start: new Date().toISOString(),
       })
       .then((res) => router.push('/incident/thankyou'))
       .catch((err) => console.log(err))
@@ -43,7 +70,7 @@ const IncidentSummaryForm = () => {
         </div>
         <IncidentSummaryFormItem
           title={t('steps.step_one.input_heading')}
-          value={signal.text}
+          value={formState.description}
         />
       </div>
       <Divider />
@@ -66,27 +93,25 @@ const IncidentSummaryForm = () => {
             {t('steps.step_three.edit')}
           </LinkWrapper>
         </div>
-        {signal.reporter.phone === undefined &&
-        signal.reporter.email === undefined &&
-        signal.reporter.sharing_allowed === false ? (
+        {formState.phone === undefined &&
+        formState.email === undefined &&
+        formState.sharing_allowed === false ? (
           <p>{t('steps.step_three.no_contact_details')}</p>
         ) : (
           <>
-            {signal.reporter.phone !== undefined &&
-            signal.reporter.phone !== null ? (
+            {formState.phone !== undefined && formState.phone !== null ? (
               <IncidentSummaryFormItem
                 title={t('steps.step_three.input_telephone_heading')}
-                value={signal.reporter.phone}
+                value={formState.phone}
               />
             ) : null}
-            {signal.reporter.email !== undefined &&
-            signal.reporter.email !== null ? (
+            {formState.email !== undefined && formState.email !== null ? (
               <IncidentSummaryFormItem
                 title={t('steps.step_three.input_mail_heading')}
-                value={signal.reporter.email}
+                value={formState.email}
               />
             ) : null}
-            {signal.reporter.sharing_allowed ? (
+            {formState.sharing_allowed ? (
               <IncidentSummaryFormItem
                 title={t('steps.step_three.input_sharing_heading')}
                 value={t('steps.step_three.input_sharing_allowed')}

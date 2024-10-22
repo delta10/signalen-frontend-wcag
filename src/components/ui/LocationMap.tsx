@@ -1,19 +1,16 @@
 import Map, { Marker, ViewState } from 'react-map-gl/maplibre'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import React, { useEffect, useState } from 'react'
-import { useSignalStore } from '@/store/store'
+import { useFormStore } from '@/store/form_store'
 
+/* TODO: Use center coordinates as configured in config.json */
 const LocationMap = () => {
-  const { signal } = useSignalStore()
+  const { formState } = useFormStore()
   const [viewState, setViewState] = useState<ViewState>({
     longitude:
-      signal.location.geometrie.coordinates![0] !== 0
-        ? signal.location.geometrie.coordinates![0]
-        : 5.10448,
+      formState.coordinates[0] !== 0 ? formState.coordinates[0] : 5.10448,
     latitude:
-      signal.location.geometrie.coordinates![1] !== 0
-        ? signal.location.geometrie.coordinates![1]
-        : 52.092876,
+      formState.coordinates[1] !== 0 ? formState.coordinates[1] : 52.092876,
     zoom: 14,
     bearing: 0,
     padding: {
@@ -25,20 +22,17 @@ const LocationMap = () => {
     pitch: 0,
   })
 
-  const marker = signal.location.geometrie.coordinates!
+  const marker = formState.coordinates
 
   useEffect(() => {
-    if (
-      signal.location.geometrie.coordinates![0] !== 0 &&
-      signal.location.geometrie.coordinates![1] !== 0
-    ) {
+    if (formState.coordinates[0] !== 0 && formState.coordinates[1] !== 0) {
       setViewState({
         ...viewState,
-        longitude: signal.location.geometrie.coordinates![0],
-        latitude: signal.location.geometrie.coordinates![1],
+        longitude: formState.coordinates[0],
+        latitude: formState.coordinates[1],
       })
     }
-  }, [signal.location.geometrie.coordinates])
+  }, [formState.coordinates])
 
   return (
     <Map
