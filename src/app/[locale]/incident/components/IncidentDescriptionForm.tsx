@@ -30,18 +30,45 @@ export const IncidentDescriptionForm = () => {
   const { updateAttachments, attachments } = useSignalAttachmentStore()
   const router = useRouter()
   const [images, setImages] = useState<File[]>([])
+  const ACCEPTED_IMAGE_TYPES = [
+    'image/jpeg',
+    'image/jpg',
+    'image/png',
+    'image/gif',
+  ]
+  const MAX_FILE_SIZE = 20971520
+  const MIN_FILE_SIZE = 30720
 
   const incidentDescriptionFormSchema = z.object({
     description: z.string().min(1, t('errors.textarea_required')),
-    files: z.any(),
+    files: z
+      .array(z.instanceof(File))
+      .refine(
+        (files) =>
+          files.every((file) => ACCEPTED_IMAGE_TYPES.includes(file.type)),
+        {
+          message: t('errors.file_type_invalid'),
+        }
+      )
+      .refine((files) => files.every((file) => file.size <= MAX_FILE_SIZE), {
+        message: t('errors.file_size_too_large'),
+      })
+      .refine((files) => files.every((file) => file.size >= MIN_FILE_SIZE), {
+        message: t('errors.file_size_too_small'),
+      }),
   })
 
   const form = useForm<z.infer<typeof incidentDescriptionFormSchema>>({
     resolver: zodResolver(incidentDescriptionFormSchema),
     defaultValues: {
       description: signal.text,
+      files: images,
     },
   })
+  const {
+    register,
+    formState: { errors },
+  } = form
 
   const onSubmit = (values: z.infer<typeof incidentDescriptionFormSchema>) => {
     updateSignal({
@@ -63,6 +90,7 @@ export const IncidentDescriptionForm = () => {
     const files = e.target.files
     if (files && files.length > 0) {
       const filesArray = Array.from(files)
+      form.setValue('files', filesArray)
       setImages(filesArray)
     }
   }
@@ -91,33 +119,46 @@ export const IncidentDescriptionForm = () => {
             </FormItem>
           )}
         />
-        {/*<FormField*/}
-        {/*  name={'files'}*/}
-        {/*  control={form.control}*/}
-        {/*  render={({ field, formState: { errors } }) => (*/}
-        {/*    <FormItem>*/}
-        {/*      <div>*/}
-        {/*        <FormLabel>{t('describe_upload_heading')}</FormLabel>*/}
-        {/*        <FormDescription>*/}
-        {/*          {t('describe_upload_description')}*/}
-        {/*        </FormDescription>*/}
-        {/*        <FormMessage />*/}
-        {/*      </div>*/}
-        {/*      <FormControl>*/}
-        {/*        /!* TODO: put onChange handler on file upload, or provide defaultValue (bind to react-hook-form). To prevent error *!/*/}
-        {/*        <FileInput value={images} onChange={handleChange} />*/}
-        {/*      </FormControl>*/}
-        {/*    </FormItem>*/}
-        {/*  )}*/}
-        {/*/>*/}
-        {/*<FileInputUncontrolled />*/}
-        <label htmlFor="fileUpload">kies iets moois</label>
-        <input
-          name={'fileUpload'}
-          type="file"
-          onChange={handleFileChange} // Handle file selection immediately
-          multiple
+        <FormField
+          name={'files'}
+          control={form.control}
+          render={({ field, formState: { errors } }) => (
+            <FormItem>
+              <div>
+                <FormLabel>{t('describe_upload_heading')}</FormLabel>
+                <FormDescription>
+                  {t('describe_upload_description')}
+                </FormDescription>
+                <FormMessage />
+              </div>
+              <div className="flex ">
+                <div className="empty-box" />
+                <FormControl>
+                  {/*<FileInput value={images} onChange={handleChange} />*/}
+                  <div className="file-upload-box">
+                    <label htmlFor="fileUpload">
+                      <span>upload icon</span>
+                    </label>
+                    <input
+                      id="fileUpload"
+                      type="file"
+                      className="hidden"
+                      accept={ACCEPTED_IMAGE_TYPES.join(',')}
+                      {...register('files', { required: false })}
+                      onChange={handleFileChange} // Handle file selection immediately
+                      multiple
+                    />
+                  </div>
+                </FormControl>
+              </div>
+            </FormItem>
+          )}
         />
+        {/* aar eigen component
+                // this.imageFieldValues[id].previewUrl = URL.createObjectURL(file); //
+        todo: gebruik tw read onl
+        */}
+
         <IncidentFormFooter />
       </form>
     </Form>
