@@ -20,6 +20,7 @@ import { useSignalStore, useStepperStore } from '@/store/store'
 import { useRouter } from '@/routing/navigation'
 import { useEffect } from 'react'
 import { getCategoryForDescription } from '@/services/classification'
+import { debounce } from 'lodash'
 
 export const IncidentDescriptionForm = () => {
   const t = useTranslations('describe-report.form')
@@ -39,14 +40,22 @@ export const IncidentDescriptionForm = () => {
     },
   })
 
+  const { description } = form.watch()
+
   useEffect(() => {
-    // TODO: only watch description field
-    const { unsubscribe } = form.watch(async (name, value) => {
-      const { main, sub } = await getCategoryForDescription(value.values.description as string)
-      console.log(main, sub)
-    })
-    return () => unsubscribe()
-  }, [form.watch])
+    const debouncedWatch = debounce(async (value) => {
+      if (value) {
+        const { main, sub } = await getCategoryForDescription(value)
+        console.log(main, sub)
+      }
+    }, 500)
+
+    debouncedWatch(description)
+
+    return () => {
+      debouncedWatch.cancel()
+    }
+  }, [description])
 
   const onSubmit = (values: z.infer<typeof incidentDescriptionFormSchema>) => {
     updateSignal({
