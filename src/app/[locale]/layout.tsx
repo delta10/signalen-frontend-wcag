@@ -5,7 +5,6 @@ import { Container } from '@/components'
 import { Header } from '@/app/[locale]/components/Header'
 import localFont from 'next/font/local'
 import { Document } from '@utrecht/component-library-react/dist/css-module'
-import '@utrecht/design-tokens/dist/index.css'
 
 const font = localFont({
   src: '../../../public/fonts/open-sans.woff2',
