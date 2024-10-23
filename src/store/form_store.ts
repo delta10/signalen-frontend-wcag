@@ -8,8 +8,8 @@ const initialFormState: FormStoreState = {
   main_category: '',
   sub_category: '',
   coordinates: [0, 0],
-  email: '',
-  phone: '',
+  email: undefined,
+  phone: undefined,
   sharing_allowed: false,
 }
 
