@@ -2,9 +2,10 @@
 
 import { useTranslations } from 'next-intl'
 import { Link, Paths, usePathname } from '@/routing/navigation'
-import { useSignalStore, useStepperStore } from '@/store/store'
+import { useStepperStore } from '@/store/stepper_store'
 import { useEffect, useRef } from 'react'
 import { Button } from '@/components/ui/Button'
+import { useFormStore } from '@/store/form_store'
 
 type StepperProps = {}
 
@@ -17,7 +18,7 @@ export const Stepper = ({}: StepperProps) => {
   const t = useTranslations('stepper')
   const { step, lastCompletedStep, goToStep, setLastCompletedStep } =
     useStepperStore()
-  const { resetSignal } = useSignalStore()
+  const { resetForm } = useFormStore()
   const ref = useRef<HTMLDivElement>(null)
   const lineRef = useRef<HTMLDivElement>(null)
   const lineStatusRef = useRef<HTMLDivElement>(null)
@@ -50,7 +51,7 @@ export const Stepper = ({}: StepperProps) => {
   const resetState = () => {
     setLastCompletedStep(0)
     goToStep(1)
-    resetSignal()
+    resetForm()
   }
 
   const items: Array<StepperItem> = [

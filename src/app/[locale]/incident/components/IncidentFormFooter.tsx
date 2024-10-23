@@ -4,7 +4,7 @@ import React from 'react'
 import { cn } from '@/lib/utils/style'
 import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/Button'
-import { useStepperStore } from '@/store/store'
+import { useStepperStore } from '@/store/stepper_store'
 import { steps, usePathname as usePath, useRouter } from '@/routing/navigation'
 
 type IncidentFormFooterProps = {
