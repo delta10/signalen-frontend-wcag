@@ -5,9 +5,8 @@ import { FormStore, FormStoreState } from '@/types/stores'
 
 const initialFormState: FormStoreState = {
   description: '',
-  category: '',
+  main_category: '',
   sub_category: '',
-  sub_category_url: '',
   coordinates: [0, 0],
   email: '',
   phone: '',

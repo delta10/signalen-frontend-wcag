@@ -50,11 +50,8 @@ export const IncidentDescriptionForm = () => {
 
         updateForm({
           ...formState,
-          category: main,
+          main_category: main,
           sub_category: sub,
-          sub_category_url:
-            process.env.NEXT_PUBLIC_BASE_URL_API +
-            `/signals/v1/public/terms/categories/${main}/sub_categories/${sub}`,
         })
       }
     }, 500)
