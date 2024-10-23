@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { getConfig } from '@/services/config/config'
+import { getServerConfig } from '@/services/config/config'
 import { AppConfig } from '@/types/config'
 
 export const useConfig = () => {
@@ -11,7 +11,7 @@ export const useConfig = () => {
     try {
       setLoading(true)
       setError(null)
-      const data = await getConfig()
+      const data = await getServerConfig()
       setConfig(data)
     } catch (err) {
       setError(err instanceof Error ? err : new Error('Failed to fetch config'))
