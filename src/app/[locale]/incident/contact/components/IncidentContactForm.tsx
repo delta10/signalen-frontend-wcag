@@ -2,7 +2,7 @@
 
 import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentFormFooter'
 import { useTranslations } from 'next-intl'
-import { useSignalStore, useStepperStore } from '@/store/store'
+import { useStepperStore } from '@/store/stepper_store'
 import { useRouter } from '@/routing/navigation'
 import * as z from 'zod'
 import { useForm } from 'react-hook-form'
@@ -10,20 +10,19 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from '@/components/ui/Form'
 import validator from 'validator'
-import { Textarea } from '@/components/ui/TextArea'
 import { Input } from '@/components/ui/Input'
 import { Checkbox } from '@/components/ui/Checkbox'
+import { useFormStore } from '@/store/form_store'
 
 const IncidentContactForm = () => {
   const t = useTranslations('describe-contact.form')
-  const { updateSignal, signal } = useSignalStore()
+  const { updateForm, formState } = useFormStore()
   const { addOneStep, setLastCompletedStep } = useStepperStore()
   const router = useRouter()
 
@@ -40,21 +39,18 @@ const IncidentContactForm = () => {
   const form = useForm<z.infer<typeof incidentContactFormSchema>>({
     resolver: zodResolver(incidentContactFormSchema),
     defaultValues: {
-      phone: signal.reporter.phone,
-      email: signal.reporter.email,
-      sharing_allowed: signal.reporter.sharing_allowed,
+      phone: formState.phone,
+      email: formState.email,
+      sharing_allowed: formState.sharing_allowed,
     },
   })
 
   const onSubmit = (values: z.infer<typeof incidentContactFormSchema>) => {
-    updateSignal({
-      ...signal,
-      reporter: {
-        ...signal.reporter,
-        email: values.email,
-        phone: values.phone,
-        sharing_allowed: values.sharing_allowed,
-      },
+    updateForm({
+      ...formState,
+      email: values.email,
+      phone: values.phone,
+      sharing_allowed: values.sharing_allowed,
     })
 
     setLastCompletedStep(3)
