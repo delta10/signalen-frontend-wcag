@@ -6,6 +6,7 @@ type FormStoreState = {
   email?: string | null
   phone?: string | null
   sharing_allowed?: boolean
+  extra_properties: object[]
 }
 
 type FormStore = {

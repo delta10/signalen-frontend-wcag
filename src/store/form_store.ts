@@ -11,6 +11,7 @@ const initialFormState: FormStoreState = {
   email: undefined,
   phone: undefined,
   sharing_allowed: false,
+  extra_properties: [],
 }
 
 const useFormStore = create<FormStore>()(

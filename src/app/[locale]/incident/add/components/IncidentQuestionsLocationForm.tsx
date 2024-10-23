@@ -11,13 +11,17 @@ import {
 import { RadioGroup } from '@/components/ui/RadioGroup'
 import { LocationSelect } from '@/app/[locale]/incident/add/components/questions/LocationSelect'
 import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentFormFooter'
+import { useStepperStore } from '@/store/stepper_store'
+import { useRouter } from '@/routing/navigation'
 
 export const IncidentQuestionsLocationForm = () => {
-  const { formState: formStoreState } = useFormStore()
+  const { formState: formStoreState, updateForm } = useFormStore()
   const [loading, setLoading] = useState<boolean>(true)
   const [additionalQuestions, setAdditionalQuestions] = useState<
     PublicQuestionSerializerDetail[]
   >([])
+  const { addOneStep, setLastCompletedStep } = useStepperStore()
+  const router = useRouter()
   const {
     register,
     handleSubmit,
@@ -68,7 +72,36 @@ export const IncidentQuestionsLocationForm = () => {
 
   const onSubmit = (data: any) => {
     // TODO: Add question answers to save call
-    console.log('Submitted Data:', data)
+    const questionKeys = Object.keys(data)
+    const questionsToSubmit = additionalQuestions.filter(
+      (question) =>
+        questionKeys.includes(question.key) && data[question.key] !== null
+    )
+
+    const answers = questionsToSubmit.map((question) => {
+      const id = data[question.key]
+
+      return {
+        id: question.key,
+        label: question.meta.label,
+        category_url: `/signals/v1/public/terms/categories/${formStoreState.sub_category}/sub_categories/${formStoreState.main_category}`,
+        answer: {
+          id: id,
+          label: question.meta.values[id],
+          info: '',
+        },
+      }
+    })
+
+    updateForm({
+      ...formStoreState,
+      extra_properties: answers,
+    })
+
+    setLastCompletedStep(2)
+    addOneStep()
+
+    router.push('/incident/contact')
   }
 
   const renderFields = (data: PublicQuestionSerializerDetail[]) => {

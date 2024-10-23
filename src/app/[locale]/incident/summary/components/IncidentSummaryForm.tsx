@@ -42,7 +42,7 @@ const IncidentSummaryForm = () => {
         category: {
           sub_category:
             process.env.NEXT_PUBLIC_BASE_URL_API +
-            `/signals/v1/public/terms/categories/${formState.main_category}/sub_categories/${formState.sub_category}/`,
+            `/signals/v1/public/terms/categories/${formState.main_category}/sub_categories/${formState.sub_category}`,
         },
         /* TODO: check if allows_contact needs to be set */
         reporter: {
@@ -52,6 +52,7 @@ const IncidentSummaryForm = () => {
           allows_contact: false,
         },
         incident_date_start: new Date().toISOString(),
+        extra_properties: formState.extra_properties,
       })
       .then((res) => router.push('/incident/thankyou'))
       .catch((err) => console.log(err))
