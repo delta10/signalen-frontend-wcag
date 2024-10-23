@@ -1,14 +1,49 @@
 import React from 'react'
+import { PublicQuestionSerializerDetail } from '@/services/client'
+import { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form'
+import { useTranslations } from 'next-intl'
 
-export const RadioGroup = (props: any) => {
+type RadioGroupProps = {
+  field: PublicQuestionSerializerDetail
+  register: UseFormRegister<FieldValues>
+  errors: FieldErrors<FieldValues>
+}
+
+export const RadioGroup = ({ field, register, errors }: RadioGroupProps) => {
+  const t = useTranslations('general.errors')
+
+  const errorMessage = errors[field.key]?.message as string
+
   return (
-    <div>
-      {Object.keys(props.values).map((key: string) => (
+    <fieldset aria-invalid={!!errorMessage}>
+      <legend>{field.meta.label}</legend>
+
+      {errorMessage && (
+        <p
+          id={`${field.key}-error`}
+          aria-live="assertive"
+          style={{ color: 'red' }}
+        >
+          {errorMessage}
+        </p>
+      )}
+
+      {Object.keys(field.meta.values).map((key: string) => (
         <div key={key}>
-          <input type="radio" id={`${props.name}-${key}`} name={`${props.name}`} value={props.values[key]} />
-          <label htmlFor={`${props.name}-${key}`}>{props.values[key]}</label>
+          <input
+            {...register(field.key, {
+              required: field.required ? t('required') : false,
+            })}
+            type="radio"
+            id={`${field.key}-${key}`}
+            value={key}
+            aria-describedby={errorMessage ? `${field.key}-error` : undefined}
+          />
+          <label htmlFor={`${field.key}-${key}`}>
+            {field.meta.values[key]}
+          </label>
         </div>
       ))}
-    </div>
+    </fieldset>
   )
 }

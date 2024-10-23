@@ -87,6 +87,9 @@
       "back_button": "Back",
       "next_button": "Next",
       "submit_button": "Submit"
+    },
+    "errors": {
+      "required": "This field is required"
     }
   },
   "routing": {

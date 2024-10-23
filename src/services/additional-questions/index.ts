@@ -9,19 +9,18 @@ export const fetchAdditionalQuestions = async (main: string, sub: string) => {
       return []
     }
 
-    const uniqueKeys = new Set<string>();
-    const deduplicatedQuestions = questions.filter(question => {
+    const uniqueKeys = new Set<string>()
+    const deduplicatedQuestions = questions.filter((question) => {
       if (uniqueKeys.has(question.key)) {
         return false
       } else {
         uniqueKeys.add(question.key)
         return true
       }
-    });
+    })
 
     return deduplicatedQuestions
-
-  } catch(e) {
+  } catch (e) {
     console.error('Could not fetch additional questions', e)
   }
 

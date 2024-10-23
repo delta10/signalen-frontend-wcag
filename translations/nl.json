@@ -87,6 +87,9 @@
       "back_button": "Vorige",
       "next_button": "Volgende",
       "submit_button": "Verstuur"
+    },
+    "errors": {
+      "required": "Dit veld is verplicht"
     }
   },
   "routing": {
