@@ -7,14 +7,11 @@ import {
   FormField,
   FormItem,
   FormMessage,
-  FormLabel,
   FormDescription,
 } from '@/components/ui/Form'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
-import { Textarea } from '@/components/ui/TextArea'
-import { Input } from '@/components/ui/Input'
 import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentFormFooter'
 import { useStepperStore } from '@/store/stepper_store'
 import { useRouter } from '@/routing/navigation'
@@ -22,6 +19,9 @@ import { useEffect } from 'react'
 import { getCategoryForDescription } from '@/services/classification'
 import { debounce } from 'lodash'
 import { useFormStore } from '@/store/form_store'
+
+import { FormFieldTextarea } from '@utrecht/component-library-react/dist/css-module'
+import { FileInput, Label } from '@amsterdam/design-system-react'
 
 export const IncidentDescriptionForm = () => {
   const t = useTranslations('describe-report.form')
@@ -85,27 +85,24 @@ export const IncidentDescriptionForm = () => {
           name={'description'}
           control={form.control}
           render={({ field, formState: { errors } }) => (
-            <FormItem error={errors.description}>
-              <div>
-                <FormLabel>{t('describe_textarea_heading')}</FormLabel>
-                <FormDescription>
-                  {t('describe_textarea_description')}
-                </FormDescription>
-                <FormMessage />
-              </div>
-              <FormControl>
-                <Textarea rows={5} {...field} />
-              </FormControl>
-            </FormItem>
+            <FormFieldTextarea
+              rows={5}
+              description={t('describe_textarea_description')}
+              label={t('describe_textarea_heading')}
+              errorMessage={errors.description?.message}
+              invalid={Boolean(errors.description?.message)}
+              {...field}
+            />
           )}
         />
+
         <FormField
           name={'files'}
           control={form.control}
           render={({ field, formState: { errors } }) => (
             <FormItem>
               <div>
-                <FormLabel>{t('describe_upload_heading')}</FormLabel>
+                <Label>{t('describe_upload_heading')}</Label>
                 <FormDescription>
                   {t('describe_upload_description')}
                 </FormDescription>
@@ -113,7 +110,12 @@ export const IncidentDescriptionForm = () => {
               </div>
               <FormControl>
                 {/* TODO: put onChange handler on file upload, or provide defaultValue (bind to react-hook-form). To prevent error */}
-                <Input type="file" value="" onChange={() => 'test'} />
+                <FileInput
+                  type="file"
+                  value=""
+                  onChange={() => 'test'}
+                  multiple
+                />
               </FormControl>
             </FormItem>
           )}
