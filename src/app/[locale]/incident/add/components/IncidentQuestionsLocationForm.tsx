@@ -6,7 +6,6 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from '@/components/ui/Form'
 import * as z from 'zod'
@@ -16,10 +15,15 @@ import { useTranslations } from 'next-intl'
 import { useStepperStore } from '@/store/stepper_store'
 import { useRouter } from '@/routing/navigation'
 import { LocationMap } from '@/components/ui/LocationMap'
-import { Button } from '@/components/ui/Button'
+
 import { MapDialog } from '@/app/[locale]/incident/add/components/MapDialog'
 import { useEffect } from 'react'
 import { useFormStore } from '@/store/form_store'
+
+import {
+  Button,
+  FormLabel,
+} from '@utrecht/component-library-react/dist/css-module'
 
 const IncidentQuestionsLocationForm = () => {
   const t = useTranslations('describe-add.form')
