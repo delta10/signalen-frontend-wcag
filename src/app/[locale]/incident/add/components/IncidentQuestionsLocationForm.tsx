@@ -24,11 +24,12 @@ export const IncidentQuestionsLocationForm = () => {
     formState: { errors },
   } = useForm()
 
+  // TODO: remove hardcoded marker
   const marker = [0, 0]
 
   const additionalQuestionTypes = {
-    [FieldTypeEnum.RADIO_INPUT]: (props: PublicQuestionSerializerDetail) => (
-      <RadioGroup register={register} field={props} errors={errors} />
+    [FieldTypeEnum.RADIO_INPUT]: (field: PublicQuestionSerializerDetail) => (
+      <RadioGroup register={register} field={field} errors={errors} />
     ),
     [FieldTypeEnum.PLAIN_TEXT]: (props: any) => <div>{props.value}</div>,
     [FieldTypeEnum.TEXT_INPUT]: (props: any) => <div>TextInput</div>,
