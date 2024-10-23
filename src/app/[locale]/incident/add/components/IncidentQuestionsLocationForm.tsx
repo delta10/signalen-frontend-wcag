@@ -28,6 +28,10 @@ export const IncidentQuestionsLocationForm = () => {
     formState: { errors },
   } = useForm()
 
+  useEffect(() => {
+    router.prefetch('/incident/contact')
+  }, [router])
+
   // TODO: remove hardcoded marker
   const marker = [0, 0]
 
