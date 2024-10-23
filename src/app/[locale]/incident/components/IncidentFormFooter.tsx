@@ -6,8 +6,6 @@ import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/Button'
 import { useStepperStore } from '@/store/stepper_store'
 import { steps, usePathname as usePath, useRouter } from '@/routing/navigation'
-import { Paragraph } from '@utrecht/component-library-react/dist/css-module'
-import '@utrecht/design-tokens/dist/index.css'
 
 type IncidentFormFooterProps = {
   handleSignalSubmit?: () => void
