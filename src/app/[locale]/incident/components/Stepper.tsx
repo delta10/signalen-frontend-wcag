@@ -1,10 +1,14 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
-import { Link, Paths, usePathname } from '@/routing/navigation'
+import { Paths, usePathname } from '@/routing/navigation'
 import { useSignalStore, useStepperStore } from '@/store/store'
 import { useEffect, useRef } from 'react'
-import { Button } from '@/components/ui/Button'
+import {
+  Button,
+  Link,
+  Paragraph,
+} from '@utrecht/component-library-react/dist/css-module'
 
 type StepperProps = {}
 
@@ -106,13 +110,13 @@ export const Stepper = ({}: StepperProps) => {
                 >
                   {index + 1}
                 </div>
-                <p
+                <Paragraph
                   className={`${
                     step == index + 1 ? 'text-xl font-semibold -ml-3' : ''
                   } md:block hidden transition duration-100 group-hover:underline group-focus:underline`}
                 >
                   {item.name}
-                </p>
+                </Paragraph>
               </Link>
             )
           })}
