@@ -24,7 +24,11 @@ export const RadioGroup = ({ field, register, errors }: RadioGroupProps) => {
       (question) => question.id === id
     )
 
-    if (typeof extraProperties[0]?.answer !== 'string') {
+    if (!extraProperties.length) {
+      return false
+    }
+
+    if (typeof extraProperties[0].answer !== 'string') {
       return extraProperties[0].answer.id === key
     }
 
