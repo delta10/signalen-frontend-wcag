@@ -96,18 +96,31 @@ export const IncidentQuestionsLocationForm = () => {
 
     const answers = questionsToSubmit.map((question) => {
       const id = data[question.key]
+      const checkboxAnswers: string[] = Array.isArray(id)
+        ? id.filter((key: any) => key !== false && key !== 'empty')
+        : []
+
+      // If checkboxAnswers has a length, map over them to return a list of answer objects
+      const answer =
+        checkboxAnswers.length > 0
+          ? checkboxAnswers.map((answerId) => ({
+              id: answerId,
+              label: question.meta.values[answerId],
+              info: '',
+            }))
+          : question.meta?.values?.[id]
+            ? {
+                id: id,
+                label: question.meta.values[id],
+                info: '',
+              }
+            : data[question.key]
 
       return {
         id: question.key,
         label: question.meta.label,
         category_url: `/signals/v1/public/terms/categories/${formStoreState.sub_category}/sub_categories/${formStoreState.main_category}`,
-        answer: question.meta?.values?.[id]
-          ? {
-              id: id,
-              label: question.meta.values[id],
-              info: '',
-            }
-          : data[question.key],
+        answer,
       }
     })
 
