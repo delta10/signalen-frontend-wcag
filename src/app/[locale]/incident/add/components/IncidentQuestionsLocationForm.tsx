@@ -48,7 +48,6 @@ export const IncidentQuestionsLocationForm = () => {
   }, [formStoreState.main_category, formStoreState.sub_category])
 
   const onSubmit = (data: any) => {
-    // TODO: Add question answers to save call
     const questionKeys = Object.keys(data)
     const questionsToSubmit = additionalQuestions.filter(
       (question) =>
