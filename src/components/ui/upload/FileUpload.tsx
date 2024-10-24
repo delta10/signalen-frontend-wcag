@@ -12,6 +12,10 @@ export const ACCEPTED_IMAGE_TYPES = [
 export const MAX_FILE_SIZE = 20971520
 export const MIN_FILE_SIZE = 30720
 
+type FileUploadProps<TFormValues extends FieldValues> = {
+  form: UseFormReturn<TFormValues> // UseFormReturn type from react-hook-form
+}
+
 export const FileUpload = <TFormValues extends FieldValues>({
   form,
 }: FileUploadProps<TFormValues>) => {
@@ -21,10 +25,12 @@ export const FileUpload = <TFormValues extends FieldValues>({
     const files = e.target.files
     if (files && files.length > 0) {
       const filesArray = Array.from(files)
+      // @ts-ignore
       form.setValue('files', filesArray)
     }
   }
 
+  // @ts-ignore
   return (
     <div className="flex">
       {form.getValues('files')?.length > 0 &&
