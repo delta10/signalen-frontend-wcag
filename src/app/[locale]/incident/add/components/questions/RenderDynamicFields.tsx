@@ -36,9 +36,11 @@ export const RenderDynamicFields = ({
       <TextAreaInput register={register} field={field} errors={errors} />
     ),
     [FieldTypes.ASSET_SELECT]: (field: PublicQuestion) => (
+      // TODO: Implement Asset Select
       <AssetSelect field={field} />
     ),
     [FieldTypes.LOCATION_SELECT]: (props: any) => (
+      // TODO: Implement Location Select
       <LocationSelect marker={[0, 0]} />
     ),
   }

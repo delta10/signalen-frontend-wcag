@@ -30,8 +30,8 @@ export const CheckboxInput = ({
 
     if (Array.isArray(extraProperties[0].answer)) {
       return (
-        extraProperties[0].answer.filter((answer) => answer.id === key).length >
-        0
+        extraProperties[0].answer.filter((answer) => answer?.id === key)
+          .length > 0
       )
     }
 
