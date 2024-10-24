@@ -1,6 +1,6 @@
 'use client'
 
-import { Field, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { useEffect, useState } from 'react'
 import { fetchAdditionalQuestions } from '@/services/additional-questions'
 import { useFormStore } from '@/store/form_store'
@@ -89,7 +89,9 @@ export const IncidentQuestionsLocationForm = () => {
     const questionKeys = Object.keys(data)
     const questionsToSubmit = additionalQuestions.filter(
       (question) =>
-        questionKeys.includes(question.key) && data[question.key] !== null
+        questionKeys.includes(question.key) &&
+        data[question.key] !== null &&
+        data[question.key] !== ''
     )
 
     const answers = questionsToSubmit.map((question) => {
@@ -99,11 +101,13 @@ export const IncidentQuestionsLocationForm = () => {
         id: question.key,
         label: question.meta.label,
         category_url: `/signals/v1/public/terms/categories/${formStoreState.sub_category}/sub_categories/${formStoreState.main_category}`,
-        answer: {
-          id: id,
-          label: question.meta.values[id],
-          info: '',
-        },
+        answer: question.meta?.values?.[id]
+          ? {
+              id: id,
+              label: question.meta.values[id],
+              info: '',
+            }
+          : data[question.key],
       }
     })
 
