@@ -36,6 +36,7 @@ export const RadioInput = ({ field, register, errors }: RadioGroupProps) => {
       <legend>
         {field.meta.label}{' '}
         <span> {field.required ? '' : `(${t('not_required_short')})`}</span>
+        {field.meta.subtitle && <span>{field.meta.subtitle}</span>}
       </legend>
 
       {errorMessage && (
