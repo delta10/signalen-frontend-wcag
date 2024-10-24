@@ -89,7 +89,8 @@
       "submit_button": "Submit"
     },
     "errors": {
-      "required": "This field is required"
+      "required": "This field is required",
+      "max_length": "This field has a maximal length of {maxLength} characters"
     }
   },
   "routing": {

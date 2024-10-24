@@ -2,6 +2,7 @@ import { QuestionField } from '@/types/form'
 import React from 'react'
 import { useTranslations } from 'next-intl'
 import { useFormStore } from '@/store/form_store'
+import { getValidators } from '@/lib/utils/form-validator'
 
 interface TextInputProps extends QuestionField {}
 
@@ -45,9 +46,7 @@ export const TextInput = ({ field, register, errors }: TextInputProps) => {
         <span id={`${field.key}-${field.key}`}>{field.meta.subtitle}</span>
       )}
       <input
-        {...register(field.key, {
-          required: field.required ? t('required') : false,
-        })}
+        {...register(field.key, getValidators(field, t))}
         type="text"
         placeholder={field.meta.placeholder ? field.meta.placeholder : ''}
         defaultValue={getDefaultValueTextInput(field.key)}

@@ -89,7 +89,8 @@
       "submit_button": "Verstuur"
     },
     "errors": {
-      "required": "Dit veld is verplicht"
+      "required": "Dit veld is verplicht",
+      "max_length": "Dit veld heeft een maximale lengte van {maxLength} karakters"
     }
   },
   "routing": {

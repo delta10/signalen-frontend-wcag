@@ -2,6 +2,7 @@ import React from 'react'
 import { useTranslations } from 'next-intl'
 import { useFormStore } from '@/store/form_store'
 import { QuestionField } from '@/types/form'
+import { getValidators } from '@/lib/utils/form-validator'
 
 interface RadioGroupProps extends QuestionField {}
 
@@ -47,9 +48,7 @@ export const RadioInput = ({ field, register, errors }: RadioGroupProps) => {
       {Object.keys(field.meta.values).map((key: string) => (
         <div key={key}>
           <input
-            {...register(field.key, {
-              required: field.required ? t('required') : false,
-            })}
+            {...register(field.key, getValidators(field, t))}
             type="radio"
             id={`${field.key}-${key}`}
             value={key}
