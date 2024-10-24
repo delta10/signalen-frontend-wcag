@@ -17,7 +17,10 @@
       "describe_upload_heading": "Add pictures (not required)",
       "describe_upload_description": "Add a photo to clarify the situation",
       "errors": {
-        "textarea_required": "This is a required field"
+        "textarea_required": "This is a required field",
+        "file_type_invalid": "Invalid file type. Only JPEG, PNG, and GIF are accepted.",
+        "file_size_too_large": "File size too large. Each file must be less than 20MB.",
+        "file_size_too_small": "File size too small. Each file must be at least 30KB."
       }
     }
   },

@@ -17,7 +17,11 @@
       "describe_upload_heading": "Foto's toevoegen (niet verplicht)",
       "describe_upload_description": "Voeg een foto toe om de situatie te verduidelijken",
       "errors": {
-        "textarea_required": "Dit is een verplicht veld"
+        "textarea_required": "Dit is een verplicht veld",
+        "file_type_invalid": "Ongeldig bestandstype. Alleen JPEG, PNG, en GIF zijn toegestaan.",
+        "file_size_too_large": "Bestandsgrootte is te groot. Elk bestand moet kleiner zijn dan 20MB.",
+        "file_size_too_small": "Bestandsgrootte is te klein. Elk bestand moet minimaal 30KB zijn."
+
       }
     }
   },

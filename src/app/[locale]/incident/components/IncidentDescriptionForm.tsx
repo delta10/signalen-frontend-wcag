@@ -14,7 +14,6 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
 import { Textarea } from '@/components/ui/TextArea'
-import { Input } from '@/components/ui/Input'
 import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentFormFooter'
 import { useStepperStore } from '@/store/stepper_store'
 import { useRouter } from '@/routing/navigation'
@@ -22,6 +21,13 @@ import { useEffect } from 'react'
 import { getCategoryForDescription } from '@/services/classification'
 import { debounce } from 'lodash'
 import { useFormStore } from '@/store/form_store'
+import React from 'react'
+import {
+  ACCEPTED_IMAGE_TYPES,
+  FileUpload,
+  MAX_FILE_SIZE,
+  MIN_FILE_SIZE,
+} from '@/components/ui/upload/FileUpload'
 
 export const IncidentDescriptionForm = () => {
   const t = useTranslations('describe-report.form')
@@ -31,15 +37,32 @@ export const IncidentDescriptionForm = () => {
 
   const incidentDescriptionFormSchema = z.object({
     description: z.string().min(1, t('errors.textarea_required')),
-    files: z.any(),
+    files: z
+      .array(z.instanceof(File))
+      .refine(
+        (files) =>
+          files.every((file) => ACCEPTED_IMAGE_TYPES.includes(file.type)),
+        {
+          message: t('errors.file_type_invalid'),
+        }
+      )
+      .refine((files) => files.every((file) => file.size <= MAX_FILE_SIZE), {
+        message: t('errors.file_size_too_large'),
+      })
+      .refine((files) => files.every((file) => file.size >= MIN_FILE_SIZE), {
+        message: t('errors.file_size_too_small'),
+      }),
   })
 
+  // todo: kijken of dit netter kan
   const form = useForm<z.infer<typeof incidentDescriptionFormSchema>>({
     resolver: zodResolver(incidentDescriptionFormSchema),
     defaultValues: {
       description: formState.description,
+      files: formState.attachments,
     },
   })
+  console.log('update', formState.attachments)
 
   const { description } = form.watch()
 
@@ -67,6 +90,7 @@ export const IncidentDescriptionForm = () => {
     updateForm({
       ...formState,
       description: values.description,
+      attachments: values.files,
     })
 
     setLastCompletedStep(1)
@@ -75,6 +99,7 @@ export const IncidentDescriptionForm = () => {
     router.push('/incident/add')
   }
 
+  // @ts-ignore
   return (
     <Form {...form}>
       <form
@@ -111,9 +136,23 @@ export const IncidentDescriptionForm = () => {
                 </FormDescription>
                 <FormMessage />
               </div>
+
               <FormControl>
-                {/* TODO: put onChange handler on file upload, or provide defaultValue (bind to react-hook-form). To prevent error */}
-                <Input type="file" value="" onChange={() => 'test'} />
+                {/*<FileInput value={images} onChange={handleChange}
+
+                  1. verplaats naar aparte file [x]
+                  2. kijk of via form values kan [x]
+                  3. zorg dat preview, empty boxes en upload knop werken []
+                  4. maak delete knop op preview []
+                  5. voeg preview toe aan summary []
+                  6. check toetsenboard controls []
+                  7. check overige toegankelijkheid []
+                  8. op de een of andere manier worden de files niet goed bewaard bij een refresh
+                  todo: gebruik tw read onl
+                  todo: zorg dat file plussen ook werkt
+                  />*/}
+                {/*@ts-ignore*/}
+                <FileUpload form={form} />
               </FormControl>
             </FormItem>
           )}

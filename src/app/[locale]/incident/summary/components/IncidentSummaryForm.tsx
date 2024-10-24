@@ -9,6 +9,7 @@ import React from 'react'
 import { LocationMap } from '@/components/ui/LocationMap'
 import { signalsClient } from '@/services/client/api-client'
 import { useRouter } from '@/routing/navigation'
+import { postAttachments } from '@/services/attachment/attachments'
 import { useFormStore } from '@/store/form_store'
 import { _NestedLocationModel } from '@/services/client'
 
@@ -53,8 +54,22 @@ const IncidentSummaryForm = () => {
         },
         incident_date_start: new Date().toISOString(),
       })
+      .then((res) => {
+        // todo: verplaats naar methode
+        if (formState.attachments.length > 0) {
+          const signalId = res.signal_id
+          if (signalId) {
+            formState.attachments.forEach((attachment) => {
+              const formData = new FormData()
+              formData.append('signal_id', signalId)
+              formData.append('file', attachment)
+              postAttachments(signalId, formData)
+            })
+          }
+        }
+      })
       .then((res) => router.push('/incident/thankyou'))
-      .catch((err) => console.log(err))
+      .catch((err) => console.error(err))
   }
 
   return (
