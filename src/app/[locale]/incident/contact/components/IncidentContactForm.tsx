@@ -19,12 +19,17 @@ import validator from 'validator'
 import { Input } from '@/components/ui/Input'
 import { Checkbox } from '@/components/ui/Checkbox'
 import { useFormStore } from '@/store/form_store'
+import { useEffect } from 'react'
 
 const IncidentContactForm = () => {
   const t = useTranslations('describe-contact.form')
   const { updateForm, formState } = useFormStore()
   const { addOneStep, setLastCompletedStep } = useStepperStore()
   const router = useRouter()
+
+  useEffect(() => {
+    router.prefetch('/incident/summary')
+  }, [router])
 
   const incidentContactFormSchema = z.object({
     phone: z
