@@ -14,7 +14,6 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
 import { Textarea } from '@/components/ui/TextArea'
-import { Input } from '@/components/ui/Input'
 import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentFormFooter'
 import { useStepperStore } from '@/store/stepper_store'
 import { useRouter } from '@/routing/navigation'
@@ -22,14 +21,14 @@ import { useEffect } from 'react'
 import { getCategoryForDescription } from '@/services/classification'
 import { debounce } from 'lodash'
 import { useFormStore } from '@/store/form_store'
-import React, { useState } from 'react'
+import React from 'react'
+import { IoAddCircleOutline } from 'react-icons/io5'
 
 export const IncidentDescriptionForm = () => {
   const t = useTranslations('describe-report.form')
   const { updateForm, formState } = useFormStore()
   const { addOneStep, setLastCompletedStep } = useStepperStore()
   const router = useRouter()
-  const [images, setImages] = useState<File[]>([])
   const ACCEPTED_IMAGE_TYPES = [
     'image/jpeg',
     'image/jpg',
@@ -90,11 +89,10 @@ export const IncidentDescriptionForm = () => {
   }, [description])
 
   const onSubmit = (values: z.infer<typeof incidentDescriptionFormSchema>) => {
-    // todo: kijk of het ook uit form values gehaald kan worden? --> dan kan images evt weg.
     updateForm({
       ...formState,
       description: values.description,
-      attachments: images,
+      attachments: values.files,
     })
 
     setLastCompletedStep(1)
@@ -108,7 +106,6 @@ export const IncidentDescriptionForm = () => {
     if (files && files.length > 0) {
       const filesArray = Array.from(files)
       form.setValue('files', filesArray)
-      setImages(filesArray)
     }
   }
 
@@ -149,21 +146,35 @@ export const IncidentDescriptionForm = () => {
                 <FormMessage />
               </div>
               <div className="flex ">
-                {images.length > 0 &&
-                  images.map((image, index) => (
-                    <img
-                      key={index}
-                      className="empty-box"
-                      src={URL.createObjectURL(image)}
-                      alt={'voorbeeld weergave'}
-                    />
-                  ))}
+                {form.getValues('files').length > 0 &&
+                  form
+                    .getValues('files')
+                    .map((image, index) => (
+                      <img
+                        key={index}
+                        className="empty-box"
+                        src={URL.createObjectURL(image)}
+                        alt={'voorbeeld weergave'}
+                      />
+                    ))}
                 <div className="empty-box" />
                 <FormControl>
-                  {/*<FileInput value={images} onChange={handleChange} />*/}
+                  {/*<FileInput value={images} onChange={handleChange}
+
+                  1. verplaats naar aparte file
+                  2. kijk of via form values kan
+                  3. zorg dat preview, empty boxes en upload knop werken
+                  4. maak delete knop op preview
+                  5. voeg preview toe aan summary
+                  6. check toetsenboard controls
+                  7. check overige toegankelijkheid
+
+                  />*/}
                   <div className="file-upload-box">
-                    <label htmlFor="fileUpload">
-                      <span>upload icon</span>
+                    <label htmlFor="fileUpload" className="flex" tabIndex={0}>
+                      <span className="flex justify-center items-center h-full">
+                        <IoAddCircleOutline className="w-14 h-14" />
+                      </span>
                     </label>
                     <input
                       id="fileUpload"
