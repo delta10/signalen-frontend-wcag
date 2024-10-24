@@ -90,7 +90,8 @@
     },
     "errors": {
       "required": "Dit veld is verplicht",
-      "max_length": "Dit veld heeft een maximale lengte van {maxLength} karakters"
+      "max_length": "Dit veld heeft een maximale lengte van {maxLength} karakters",
+      "not_required_short": "niet verplicht"
     }
   },
   "routing": {

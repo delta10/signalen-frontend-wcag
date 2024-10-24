@@ -33,7 +33,10 @@ export const RadioInput = ({ field, register, errors }: RadioGroupProps) => {
 
   return (
     <fieldset aria-invalid={!!errorMessage}>
-      <legend>{field.meta.label}</legend>
+      <legend>
+        {field.meta.label}{' '}
+        <span> {field.required ? '' : `(${t('not_required_short')})`}</span>
+      </legend>
 
       {errorMessage && (
         <p

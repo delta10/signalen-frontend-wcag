@@ -41,7 +41,10 @@ export const TextInput = ({ field, register, errors }: TextInputProps) => {
           {errorMessage}
         </p>
       )}
-      <label htmlFor={`${field.key}`}>{field.meta.label}</label>
+      <label htmlFor={`${field.key}`}>
+        {field.meta.label}{' '}
+        <span> {field.required ? '' : `(${t('not_required_short')})`}</span>
+      </label>
       {field.meta.subtitle && (
         <span id={`${field.key}-${field.key}`}>{field.meta.subtitle}</span>
       )}

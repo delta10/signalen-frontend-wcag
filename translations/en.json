@@ -90,7 +90,8 @@
     },
     "errors": {
       "required": "This field is required",
-      "max_length": "This field has a maximal length of {maxLength} characters"
+      "max_length": "This field has a maximal length of {maxLength} characters",
+      "not_required_short": "not required"
     }
   },
   "routing": {
