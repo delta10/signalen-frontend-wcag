@@ -56,14 +56,16 @@ const IncidentSummaryForm = () => {
       })
       .then((res) => {
         // todo: verplaats naar methode
-        const signalId = res.signal_id
-        if (signalId && attachments.length > 0) {
-          attachments.forEach((attachment) => {
-            const formData = new FormData()
-            formData.append('signal_id', signalId)
-            formData.append('file', attachment)
-            postAttachments(signalId, formData)
-          })
+        if (formState.attachments.length > 0) {
+          const signalId = res.signal_id
+          if (signalId) {
+            formState.attachments.forEach((attachment) => {
+              const formData = new FormData()
+              formData.append('signal_id', signalId)
+              formData.append('file', attachment)
+              postAttachments(signalId, formData)
+            })
+          }
         }
       })
       .then((res) => router.push('/incident/thankyou'))

@@ -28,7 +28,6 @@ export const IncidentDescriptionForm = () => {
   const t = useTranslations('describe-report.form')
   const { updateForm, formState } = useFormStore()
   const { addOneStep, setLastCompletedStep } = useStepperStore()
-  const { updateAttachments, attachments } = useSignalAttachmentStore()
   const router = useRouter()
   const [images, setImages] = useState<File[]>([])
   const ACCEPTED_IMAGE_TYPES = [
@@ -59,6 +58,7 @@ export const IncidentDescriptionForm = () => {
       }),
   })
 
+  // todo: kijken of dit netter kan
   const form = useForm<z.infer<typeof incidentDescriptionFormSchema>>({
     resolver: zodResolver(incidentDescriptionFormSchema),
     defaultValues: {
@@ -67,6 +67,7 @@ export const IncidentDescriptionForm = () => {
   })
 
   const { description } = form.watch()
+  const { register } = form
 
   useEffect(() => {
     const debouncedWatch = debounce(async (value) => {
@@ -89,14 +90,12 @@ export const IncidentDescriptionForm = () => {
   }, [description])
 
   const onSubmit = (values: z.infer<typeof incidentDescriptionFormSchema>) => {
+    // todo: kijk of het ook uit form values gehaald kan worden? --> dan kan images evt weg.
     updateForm({
       ...formState,
       description: values.description,
+      attachments: images,
     })
-
-    if (images.length > 0) {
-      updateAttachments(images)
-    }
 
     setLastCompletedStep(1)
     addOneStep()
@@ -184,6 +183,7 @@ export const IncidentDescriptionForm = () => {
         {/* aar eigen component
                 // this.imageFieldValues[id].previewUrl = URL.createObjectURL(file); //
         todo: gebruik tw read onl
+        todo: zorg dat file plussen ook werkt
         */}
 
         <IncidentFormFooter />
