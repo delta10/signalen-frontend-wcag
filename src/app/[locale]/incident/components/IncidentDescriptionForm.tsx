@@ -22,7 +22,6 @@ import { getCategoryForDescription } from '@/services/classification'
 import { debounce } from 'lodash'
 import { useFormStore } from '@/store/form_store'
 import React from 'react'
-import { IoAddCircleOutline } from 'react-icons/io5'
 import {
   ACCEPTED_IMAGE_TYPES,
   FileUpload,
@@ -60,8 +59,10 @@ export const IncidentDescriptionForm = () => {
     resolver: zodResolver(incidentDescriptionFormSchema),
     defaultValues: {
       description: formState.description,
+      files: formState.attachments,
     },
   })
+  console.log('update', formState.attachments)
 
   const { description } = form.watch()
 
@@ -98,6 +99,7 @@ export const IncidentDescriptionForm = () => {
     router.push('/incident/add')
   }
 
+  // @ts-ignore
   return (
     <Form {...form}>
       <form
@@ -145,19 +147,16 @@ export const IncidentDescriptionForm = () => {
                   5. voeg preview toe aan summary []
                   6. check toetsenboard controls []
                   7. check overige toegankelijkheid []
-
+                  8. op de een of andere manier worden de files niet goed bewaard bij een refresh
+                  todo: gebruik tw read onl
+                  todo: zorg dat file plussen ook werkt
                   />*/}
+                {/*@ts-ignore*/}
                 <FileUpload form={form} />
               </FormControl>
             </FormItem>
           )}
         />
-        {/* aar eigen component
-                // this.imageFieldValues[id].previewUrl = URL.createObjectURL(file); //
-        todo: gebruik tw read onl
-        todo: zorg dat file plussen ook werkt
-        */}
-
         <IncidentFormFooter />
       </form>
     </Form>
