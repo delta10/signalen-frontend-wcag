@@ -7,10 +7,9 @@ import Map, {
   ViewState,
 } from 'react-map-gl/maplibre'
 import { useTranslations } from 'next-intl'
-import { useSignalStore } from '@/store/store'
-import { _NestedLocationModel } from '@/services/client'
 import { AddressSelect } from '@/app/[locale]/incident/add/components/AddressSelect'
 import * as VisuallyHidden from '@radix-ui/react-visually-hidden'
+import { useFormStore } from '@/store/form_store'
 
 type MapDialogProps = {
   trigger: React.ReactElement
@@ -19,7 +18,7 @@ type MapDialogProps = {
 
 const MapDialog = ({ trigger, marker }: MapDialogProps) => {
   const t = useTranslations('describe-add.map')
-  const { updateSignal, signal } = useSignalStore()
+  const { updateForm, formState } = useFormStore()
 
   const [viewState, setViewState] = useState<ViewState>({
     longitude: 5.10448,
@@ -36,16 +35,11 @@ const MapDialog = ({ trigger, marker }: MapDialogProps) => {
   })
 
   const handleMapClick = (event: MapLayerMouseEvent) => {
-    updateSignal({
-      ...signal,
-      location: {
-        ...signal.location,
-        geometrie: {
-          type: _NestedLocationModel.type.POINT,
-          coordinates: [event.lngLat.lng, event.lngLat.lat],
-        },
-      },
+    updateForm({
+      ...formState,
+      coordinates: [event.lngLat.lng, event.lngLat.lat],
     })
+
     setViewState({
       ...viewState,
       zoom: 16,
