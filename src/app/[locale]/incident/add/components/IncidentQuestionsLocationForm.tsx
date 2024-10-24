@@ -59,7 +59,7 @@ export const IncidentQuestionsLocationForm = () => {
     const answers = questionsToSubmit.map((question) => {
       const id = data[question.key]
       const checkboxAnswers: string[] = Array.isArray(id)
-        ? id.filter((key: any) => key !== false && key !== 'empty')
+        ? id.filter((value: any) => value !== false && value !== 'empty')
         : []
 
       // If checkboxAnswers has a length, map over them to return a list of answer objects
