@@ -1,24 +1,26 @@
 'use client'
 
-import { useForm } from 'react-hook-form'
+import { Field, useForm } from 'react-hook-form'
 import { useEffect, useState } from 'react'
 import { fetchAdditionalQuestions } from '@/services/additional-questions'
 import { useFormStore } from '@/store/form_store'
-import {
-  FieldTypeEnum,
-  PublicQuestionSerializerDetail,
-} from '@/services/client'
-import { RadioGroup } from '@/components/ui/RadioGroup'
 import { LocationSelect } from '@/app/[locale]/incident/add/components/questions/LocationSelect'
 import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentFormFooter'
 import { useStepperStore } from '@/store/stepper_store'
 import { useRouter } from '@/routing/navigation'
+import { RadioInput } from '@/app/[locale]/incident/add/components/questions/RadioInput'
+import { TextInput } from '@/app/[locale]/incident/add/components/questions/TextInput'
+import { PlainText } from '@/app/[locale]/incident/add/components/questions/PlainText'
+import { CheckboxInput } from '@/app/[locale]/incident/add/components/questions/CheckboxInput'
+import { TextAreaInput } from '@/app/[locale]/incident/add/components/questions/TextAreaInput'
+import { AssetSelect } from '@/app/[locale]/incident/add/components/questions/AssetSelect'
+import { FieldTypes, PublicQuestion } from '@/types/form'
 
 export const IncidentQuestionsLocationForm = () => {
   const { formState: formStoreState, updateForm } = useFormStore()
   const [loading, setLoading] = useState<boolean>(true)
   const [additionalQuestions, setAdditionalQuestions] = useState<
-    PublicQuestionSerializerDetail[]
+    PublicQuestion[]
   >([])
   const { addOneStep, setLastCompletedStep } = useStepperStore()
   const router = useRouter()
@@ -36,17 +38,25 @@ export const IncidentQuestionsLocationForm = () => {
   const marker = [0, 0]
 
   const additionalQuestionTypes = {
-    [FieldTypeEnum.RADIO_INPUT]: (field: PublicQuestionSerializerDetail) => (
-      <RadioGroup register={register} field={field} errors={errors} />
+    [FieldTypes.RADIO_INPUT]: (field: PublicQuestion) => (
+      <RadioInput register={register} field={field} errors={errors} />
     ),
-    [FieldTypeEnum.PLAIN_TEXT]: (props: any) => <div>{props.value}</div>,
-    [FieldTypeEnum.TEXT_INPUT]: (props: any) => <div>TextInput</div>,
-    [FieldTypeEnum.MULTI_TEXT_INPUT]: (props: any) => <div>MultiTextInput</div>,
-    [FieldTypeEnum.CHECKBOX_INPUT]: (props: any) => <div>CheckboxInput</div>,
-    [FieldTypeEnum.SELECT_INPUT]: (props: any) => <div>SelectInput</div>,
-    [FieldTypeEnum.TEXT_AREA_INPUT]: (props: any) => <div>TextAreaInput</div>,
-    [FieldTypeEnum.ASSET_SELECT]: null,
-    [FieldTypeEnum.LOCATION_SELECT]: (props: any) => (
+    [FieldTypes.PLAIN_TEXT]: (field: PublicQuestion) => (
+      <PlainText field={field} />
+    ),
+    [FieldTypes.TEXT_INPUT]: (field: PublicQuestion) => (
+      <TextInput register={register} field={field} errors={errors} />
+    ),
+    [FieldTypes.CHECKBOX_INPUT]: (field: PublicQuestion) => (
+      <CheckboxInput register={register} field={field} errors={errors} />
+    ),
+    [FieldTypes.TEXT_AREA_INPUT]: (field: PublicQuestion) => (
+      <TextAreaInput register={register} field={field} errors={errors} />
+    ),
+    [FieldTypes.ASSET_SELECT]: (field: PublicQuestion) => (
+      <AssetSelect field={field} />
+    ),
+    [FieldTypes.LOCATION_SELECT]: (props: any) => (
       <LocationSelect marker={marker} {...props} />
     ),
   }
@@ -54,10 +64,10 @@ export const IncidentQuestionsLocationForm = () => {
   useEffect(() => {
     const appendAdditionalQuestions = async () => {
       try {
-        const additionalQuestions = await fetchAdditionalQuestions(
+        const additionalQuestions = (await fetchAdditionalQuestions(
           formStoreState.main_category,
           formStoreState.sub_category
-        )
+        )) as unknown as PublicQuestion[]
 
         additionalQuestions.filter(
           (question) => additionalQuestionTypes[question.field_type]
@@ -108,7 +118,7 @@ export const IncidentQuestionsLocationForm = () => {
     router.push('/incident/contact')
   }
 
-  const renderFields = (data: PublicQuestionSerializerDetail[]) => {
+  const renderFields = (data: PublicQuestion[]) => {
     return Object.keys(data).map((value, index, array) => {
       const question = data[index]
 

@@ -1,16 +1,11 @@
 import React from 'react'
-import { PublicQuestionSerializerDetail } from '@/services/client'
-import { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form'
 import { useTranslations } from 'next-intl'
 import { useFormStore } from '@/store/form_store'
+import { QuestionField } from '@/types/form'
 
-type RadioGroupProps = {
-  field: PublicQuestionSerializerDetail
-  register: UseFormRegister<FieldValues>
-  errors: FieldErrors<FieldValues>
-}
+interface RadioGroupProps extends QuestionField {}
 
-export const RadioGroup = ({ field, register, errors }: RadioGroupProps) => {
+export const RadioInput = ({ field, register, errors }: RadioGroupProps) => {
   const t = useTranslations('general.errors')
   const { formState } = useFormStore()
 
