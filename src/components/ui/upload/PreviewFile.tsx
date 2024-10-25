@@ -13,7 +13,7 @@ const PreviewFile = ({ file, allowDelete = false, onDelete }: Props) => {
   const t = useTranslations('general.button')
 
   useEffect(() => {
-    const objectUrl = URL.createObjectURL(file)
+    const objectUrl = file['name'] ? URL.createObjectURL(file) : ''
     setImageUrl(objectUrl)
 
     return () => URL.revokeObjectURL(objectUrl) // Clean up memory on unmount

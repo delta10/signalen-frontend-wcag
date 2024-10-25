@@ -56,8 +56,6 @@ export const FileUpload = ({ form }: FileUploadProps) => {
     }
   }
 
-  console.log('in file upload', form.getValues('files'))
-
   // @ts-ignore
   return (
     <div className="flex gap-4">

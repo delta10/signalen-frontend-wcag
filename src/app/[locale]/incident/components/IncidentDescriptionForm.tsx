@@ -58,15 +58,24 @@ export const IncidentDescriptionForm = () => {
       }),
   })
 
+  const getAttachments = () => {
+    // When the browser is refreshed the files are not properly stored in the localstorage.
+    // Therefor, we check if the file object is still of type File.
+    const filesArray = formState.attachments.filter(
+      (file) => file instanceof File
+    )
+
+    return filesArray.length > 0 ? filesArray : []
+  }
+
   // todo: kijken of dit netter kan
   const form = useForm<z.infer<typeof incidentDescriptionFormSchema>>({
     resolver: zodResolver(incidentDescriptionFormSchema),
     defaultValues: {
       description: formState.description,
-      files: formState.attachments,
+      files: getAttachments(),
     },
   })
-  console.log('update', formState.attachments)
 
   const { description } = form.watch()
 
@@ -147,13 +156,15 @@ export const IncidentDescriptionForm = () => {
                   1. verplaats naar aparte file [x]
                   2. kijk of via form values kan [x]
                   3. zorg dat preview, empty boxes en upload knop werken [x]
-                  4. maak delete knop op preview [z]
-                  5. voeg preview toe aan summary []
+                  4. maak delete knop op preview [x]
+                  5. voeg preview toe aan summary [x]
                   6. check toetsenboard controls pt1.[x] pt2.[]
                   7. check overige toegankelijkheid []
                   8. op de een of andere manier worden de files niet goed bewaard bij een refresh []
                   9. op dit moment wordt de hele array vervangen []
                   10. ipv form naar upload component alleen een methode passen daarin de update uitvoeren -> makkelijker hergebruik
+                  11. form validatie eerder triggeren []
+                  12. verschillende screen sizes
 
                   vraag:
                   - wat doen bij overschrijden max aantal files?
