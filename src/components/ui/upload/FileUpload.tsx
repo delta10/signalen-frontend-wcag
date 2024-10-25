@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { IoAddCircleOutline } from 'react-icons/io5'
 import PreviewFile from '@/components/ui/upload/PreviewFile'
 import { useTranslations } from 'next-intl'
@@ -23,16 +23,11 @@ type FileUploadProps = {
 
 export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
   ({ onFileUpload, onDelete, files, ...props }, ref) => {
-    const [nrOfFiles, setNrOfFiles] = useState(files.length)
     const [labelHovered, setLabelHovered] = useState(false)
     const t = useTranslations('general.button')
 
-    const numberOfEmtpy = MAX_NUMBER_FILES - nrOfFiles - 1
+    const numberOfEmtpy = MAX_NUMBER_FILES - files.length - 1
     const empty = numberOfEmtpy < 0 ? [] : [...Array(numberOfEmtpy).keys()]
-
-    useEffect(() => {
-      setNrOfFiles(files.length)
-    }, [files])
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLLabelElement>) => {
       if (e.key === 'Enter' || e.key === ' ') {
@@ -54,7 +49,7 @@ export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
               />
             ))}
 
-        {nrOfFiles < MAX_NUMBER_FILES && (
+        {files.length < MAX_NUMBER_FILES && (
           <div className="file-upload-box">
             <label
               htmlFor="fileUpload"

@@ -47,7 +47,6 @@ h3 {
     @apply border-b-transparent;
 }
 
-/*todo: move*/
 .empty-box {
     width: 100px;
     height: 100px;

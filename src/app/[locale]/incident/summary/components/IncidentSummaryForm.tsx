@@ -57,7 +57,6 @@ const IncidentSummaryForm = () => {
         incident_date_start: new Date().toISOString(),
       })
       .then((res) => {
-        // todo: verplaats naar methode
         if (formState.attachments.length > 0) {
           const signalId = res.signal_id
           if (signalId) {
@@ -165,7 +164,7 @@ export const IncidentSummaryFormItem = ({
   )
 }
 
-export const IncidentSummaryFormAttachments = ({
+const IncidentSummaryFormAttachments = ({
   title,
   attachments = [],
 }: {
