@@ -163,15 +163,6 @@ export const IncidentDescriptionForm = () => {
               </div>
 
               <FormControl>
-                {/*
-                  - form validatie eerder triggeren []
-                  - ipv form naar upload component alleen een methode passen daarin de update uitvoeren [x]
-                  - verschillende screen sizes []
-
-                  - check toetsenboard controls pt1.[x] pt2.[]
-                  - check overige toegankelijkheid []
-                  - screen reader*/}
-
                 {/*@ts-ignore*/}
                 <FileUpload
                   onFileUpload={(e) => handleFileChange(e)}

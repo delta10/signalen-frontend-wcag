@@ -175,7 +175,7 @@ export const IncidentSummaryFormAttachments = ({
   return (
     <div className="flex flex-col gap-2">
       <p className="font-semibold">{title}</p>
-      <div className="flex gap-4">
+      <div className="flex gap-4 flex-wrap">
         {attachments.map((image, index) => (
           <PreviewFile file={image} key={index} />
         ))}

@@ -41,7 +41,7 @@ export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
     }
 
     return (
-      <div ref={ref} className="flex gap-4">
+      <div ref={ref} className="flex gap-4 flex-wrap">
         {files.length > 0 &&
           files
             .slice(0, MAX_NUMBER_FILES)
