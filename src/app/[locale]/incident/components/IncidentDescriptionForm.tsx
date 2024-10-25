@@ -26,6 +26,7 @@ import {
   ACCEPTED_IMAGE_TYPES,
   FileUpload,
   MAX_FILE_SIZE,
+  MAX_NUMBER_FILES,
   MIN_FILE_SIZE,
 } from '@/components/ui/upload/FileUpload'
 
@@ -64,7 +65,6 @@ export const IncidentDescriptionForm = () => {
     return filesArray.length > 0 ? filesArray : []
   }
 
-  // todo: kijken of dit netter kan
   const form = useForm<z.infer<typeof incidentDescriptionFormSchema>>({
     resolver: zodResolver(incidentDescriptionFormSchema),
     defaultValues: {
@@ -72,6 +72,7 @@ export const IncidentDescriptionForm = () => {
       files: getAttachments(),
     },
   })
+  const { register } = form
 
   const { description } = form.watch()
 
@@ -108,7 +109,22 @@ export const IncidentDescriptionForm = () => {
     router.push('/incident/add')
   }
 
-  // @ts-ignore
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files
+    if (files && files.length > 0) {
+      const filesArray = form
+        .getValues('files')
+        .concat(Array.from(files))
+        .slice(0, MAX_NUMBER_FILES)
+      form.setValue('files', filesArray)
+    }
+  }
+
+  const deleteFile = (index: number) => {
+    const updatedFiles = form.getValues('files').filter((_, i) => i !== index)
+    form.setValue('files', updatedFiles)
+  }
+
   return (
     <Form {...form}>
       <form
@@ -136,8 +152,8 @@ export const IncidentDescriptionForm = () => {
         <FormField
           name={'files'}
           control={form.control}
-          render={({ field, formState: { errors } }) => (
-            <FormItem>
+          render={({ formState: { errors } }) => (
+            <FormItem error={errors.description}>
               <div>
                 <FormLabel>{t('describe_upload_heading')}</FormLabel>
                 <FormDescription>
@@ -147,29 +163,22 @@ export const IncidentDescriptionForm = () => {
               </div>
 
               <FormControl>
-                {/*<FileInput value={images} onChange={handleChange}
+                {/*
+                  - form validatie eerder triggeren []
+                  - ipv form naar upload component alleen een methode passen daarin de update uitvoeren [x]
+                  - verschillende screen sizes []
 
-                  1. verplaats naar aparte file [x]
-                  2. kijk of via form values kan [x]
-                  3. zorg dat preview, empty boxes en upload knop werken [x]
-                  4. maak delete knop op preview [x]
-                  5. voeg preview toe aan summary [x]
-                  6. check toetsenboard controls pt1.[x] pt2.[]
-                  7. check overige toegankelijkheid []
-                  8. op de een of andere manier worden de files niet goed bewaard bij een refresh [x] --> weggoien
-                  9. op dit moment wordt de hele array vervangen [x]
-                  10. ipv form naar upload component alleen een methode passen daarin de update uitvoeren -> makkelijker hergebruik
-                  11. form validatie eerder triggeren []
-                  12. verschillende screen sizes
-                  13. max 5 items en description aanpassen [x]
+                  - check toetsenboard controls pt1.[x] pt2.[]
+                  - check overige toegankelijkheid []
+                  - screen reader*/}
 
-                  vraag:
-                  - wat doen bij overschrijden max aantal files?
-                  todo: gebruik tw read onl
-                  todo: zorg dat file plussen ook werkt
-                  />*/}
                 {/*@ts-ignore*/}
-                <FileUpload form={form} />
+                <FileUpload
+                  onFileUpload={(e) => handleFileChange(e)}
+                  onDelete={(index) => deleteFile(index)}
+                  files={form.getValues('files')}
+                  {...register('files', { required: false })}
+                />
               </FormControl>
             </FormItem>
           )}
