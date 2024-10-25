@@ -1,67 +1,94 @@
 'use client'
 
-import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentFormFooter'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/Form'
-import * as z from 'zod'
 import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useTranslations } from 'next-intl'
+import { useEffect, useState } from 'react'
+import { fetchAdditionalQuestions } from '@/services/additional-questions'
+import { useFormStore } from '@/store/form_store'
+import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentFormFooter'
 import { useStepperStore } from '@/store/stepper_store'
 import { useRouter } from '@/routing/navigation'
-import { LocationMap } from '@/components/ui/LocationMap'
-import { Button } from '@/components/ui/Button'
-import { MapDialog } from '@/app/[locale]/incident/add/components/MapDialog'
-import { useEffect } from 'react'
-import { useFormStore } from '@/store/form_store'
+import { PublicQuestion } from '@/types/form'
+import { RenderDynamicFields } from '@/app/[locale]/incident/add/components/questions/RenderDynamicFields'
 
-const IncidentQuestionsLocationForm = () => {
-  const t = useTranslations('describe-add.form')
-  const { updateForm, formState } = useFormStore()
+export const IncidentQuestionsLocationForm = () => {
+  const { formState: formStoreState, updateForm } = useFormStore()
+  const [loading, setLoading] = useState<boolean>(true)
+  const [additionalQuestions, setAdditionalQuestions] = useState<
+    PublicQuestion[]
+  >([])
   const { addOneStep, setLastCompletedStep } = useStepperStore()
   const router = useRouter()
-  const marker = formState.coordinates!
-
-  const incidentQuestionAndLocationFormSchema = z.object({
-    map: z.object({
-      lng: z.number().min(0.00000001, t('errors.location_required')),
-      lat: z.number().min(0.00000001, t('errors.location_required')),
-    }),
-  })
-
-  const form = useForm<z.infer<typeof incidentQuestionAndLocationFormSchema>>({
-    resolver: zodResolver(incidentQuestionAndLocationFormSchema),
-    defaultValues: {
-      map: {
-        lng: formState.coordinates[0],
-        lat: formState.coordinates[1],
-      },
-    },
-  })
-
   const {
-    setValue,
+    register,
+    handleSubmit,
     formState: { errors },
-  } = form
+  } = useForm()
 
   useEffect(() => {
-    if (marker[0] !== 0 && marker[1] !== 0) {
-      setValue('map', { lng: marker[0], lat: marker[1] })
-    }
-  }, [marker])
+    router.prefetch('/incident/contact')
+  }, [router])
 
-  const onSubmit = (
-    values: z.infer<typeof incidentQuestionAndLocationFormSchema>
-  ) => {
+  useEffect(() => {
+    const appendAdditionalQuestions = async () => {
+      try {
+        const additionalQuestions = (await fetchAdditionalQuestions(
+          formStoreState.main_category,
+          formStoreState.sub_category
+        )) as unknown as PublicQuestion[]
+
+        setAdditionalQuestions(additionalQuestions)
+        setLoading(false)
+      } catch (e) {
+        console.error('Could not fetch additional questions', e)
+        setLoading(false)
+      }
+    }
+
+    appendAdditionalQuestions()
+  }, [formStoreState.main_category, formStoreState.sub_category])
+
+  const onSubmit = (data: any) => {
+    const questionKeys = Object.keys(data)
+    const questionsToSubmit = additionalQuestions.filter(
+      (question) =>
+        questionKeys.includes(question.key) &&
+        data[question.key] !== null &&
+        data[question.key] !== ''
+    )
+
+    const answers = questionsToSubmit.map((question) => {
+      const id = data[question.key]
+      const checkboxAnswers: string[] = Array.isArray(id)
+        ? id.filter((value: any) => value !== false && value !== 'empty')
+        : []
+
+      // If checkboxAnswers has a length, map over them to return a list of answer objects
+      const answer =
+        checkboxAnswers.length > 0
+          ? checkboxAnswers.map((answerId) => ({
+              id: answerId,
+              label: question.meta.values[answerId],
+              info: '',
+            }))
+          : question.meta?.values?.[id]
+            ? {
+                id: id,
+                label: question.meta.values[id],
+                info: '',
+              }
+            : data[question.key]
+
+      return {
+        id: question.key,
+        label: question.meta.label,
+        category_url: `/signals/v1/public/terms/categories/${formStoreState.sub_category}/sub_categories/${formStoreState.main_category}`,
+        answer,
+      }
+    })
+
     updateForm({
-      ...formState,
-      coordinates: [values.map.lng, values.map.lat],
+      ...formStoreState,
+      extra_properties: answers,
     })
 
     setLastCompletedStep(2)
@@ -71,46 +98,23 @@ const IncidentQuestionsLocationForm = () => {
   }
 
   return (
-    <div>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col gap-8 items-start"
-        >
-          <FormField
-            name={'map'}
-            control={form.control}
-            render={({ field, formState: { errors } }) => (
-              <FormItem className="w-full relative">
-                <div>
-                  <FormLabel>{t('add_map_heading')}</FormLabel>
-                  <FormMessage customError={errors.map?.lng} />
-                </div>
-                <FormControl className="w-full bg-red-400 relative">
-                  <>
-                    <LocationMap />
-                    {/* TODO: I can not find the reason why not every element inside this dialog is focusable */}
-                    <MapDialog
-                      marker={marker}
-                      trigger={
-                        <Button
-                          className="absolute top-1/2 mt-5 -translate-y-1/2 left-1/2 -translate-x-1/2 border-none"
-                          type="button"
-                        >
-                          {t('add_choose_location_button')}
-                        </Button>
-                      }
-                    />
-                  </>
-                </FormControl>
-              </FormItem>
-            )}
-          />
-          <IncidentFormFooter />
-        </form>
-      </Form>
-    </div>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-col gap-8 items-start"
+    >
+      {additionalQuestions.length ? (
+        <RenderDynamicFields
+          data={additionalQuestions}
+          register={register}
+          errors={errors}
+        />
+      ) : loading ? (
+        /* TODO: Implement nice loading state */
+        <p>Laden...</p>
+      ) : (
+        <p>TODO: Laat hier een LocationSelect zien</p>
+      )}
+      <IncidentFormFooter />
+    </form>
   )
 }
-
-export { IncidentQuestionsLocationForm }

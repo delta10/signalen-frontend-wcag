@@ -87,6 +87,11 @@
       "back_button": "Back",
       "next_button": "Next",
       "submit_button": "Submit"
+    },
+    "errors": {
+      "required": "This field is required",
+      "max_length": "This field has a maximal length of {maxLength} characters",
+      "not_required_short": "not required"
     }
   },
   "routing": {
