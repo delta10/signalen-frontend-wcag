@@ -20,7 +20,8 @@
         "textarea_required": "Dit is een verplicht veld",
         "file_type_invalid": "Ongeldig bestandstype. Alleen JPEG, PNG, en GIF zijn toegestaan.",
         "file_size_too_large": "Bestandsgrootte is te groot. Elk bestand moet kleiner zijn dan 20MB.",
-        "file_size_too_small": "Bestandsgrootte is te klein. Elk bestand moet minimaal 30KB zijn."
+        "file_size_too_small": "Bestandsgrootte is te klein. Elk bestand moet minimaal 30KB zijn.",
+        "file_limit_exceeded": "U kunt maximaal 3 bestanden uploaden."
 
       }
     }
@@ -91,6 +92,10 @@
       "back_button": "Vorige",
       "next_button": "Volgende",
       "submit_button": "Verstuur"
+    },
+    "button": {
+      "upload_file": "Upload bestand",
+      "delete_file": "Verwijder bestand"
     }
   },
   "routing": {

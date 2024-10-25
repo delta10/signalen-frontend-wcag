@@ -26,6 +26,7 @@ import {
   ACCEPTED_IMAGE_TYPES,
   FileUpload,
   MAX_FILE_SIZE,
+  MAX_NUMBER_FILES,
   MIN_FILE_SIZE,
 } from '@/components/ui/upload/FileUpload'
 
@@ -51,6 +52,9 @@ export const IncidentDescriptionForm = () => {
       })
       .refine((files) => files.every((file) => file.size >= MIN_FILE_SIZE), {
         message: t('errors.file_size_too_small'),
+      })
+      .refine((files) => files.length <= MAX_NUMBER_FILES, {
+        message: t('errors.file_limit_exceeded'), // Your error message here
       }),
   })
 
@@ -142,12 +146,17 @@ export const IncidentDescriptionForm = () => {
 
                   1. verplaats naar aparte file [x]
                   2. kijk of via form values kan [x]
-                  3. zorg dat preview, empty boxes en upload knop werken []
-                  4. maak delete knop op preview []
+                  3. zorg dat preview, empty boxes en upload knop werken [x]
+                  4. maak delete knop op preview [z]
                   5. voeg preview toe aan summary []
-                  6. check toetsenboard controls []
+                  6. check toetsenboard controls pt1.[x] pt2.[]
                   7. check overige toegankelijkheid []
-                  8. op de een of andere manier worden de files niet goed bewaard bij een refresh
+                  8. op de een of andere manier worden de files niet goed bewaard bij een refresh []
+                  9. op dit moment wordt de hele array vervangen []
+                  10. ipv form naar upload component alleen een methode passen daarin de update uitvoeren -> makkelijker hergebruik
+
+                  vraag:
+                  - wat doen bij overschrijden max aantal files?
                   todo: gebruik tw read onl
                   todo: zorg dat file plussen ook werkt
                   />*/}

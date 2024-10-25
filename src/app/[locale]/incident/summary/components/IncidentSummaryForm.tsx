@@ -12,6 +12,7 @@ import { useRouter } from '@/routing/navigation'
 import { postAttachments } from '@/services/attachment/attachments'
 import { useFormStore } from '@/store/form_store'
 import { _NestedLocationModel } from '@/services/client'
+import { MAX_NUMBER_FILES } from '@/components/ui/upload/FileUpload'
 
 const IncidentSummaryForm = () => {
   const t = useTranslations('describe-summary')
@@ -59,12 +60,14 @@ const IncidentSummaryForm = () => {
         if (formState.attachments.length > 0) {
           const signalId = res.signal_id
           if (signalId) {
-            formState.attachments.forEach((attachment) => {
-              const formData = new FormData()
-              formData.append('signal_id', signalId)
-              formData.append('file', attachment)
-              postAttachments(signalId, formData)
-            })
+            formState.attachments
+              .slice(0, MAX_NUMBER_FILES)
+              .forEach((attachment) => {
+                const formData = new FormData()
+                formData.append('signal_id', signalId)
+                formData.append('file', attachment)
+                postAttachments(signalId, formData)
+              })
           }
         }
       })

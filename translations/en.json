@@ -20,7 +20,8 @@
         "textarea_required": "This is a required field",
         "file_type_invalid": "Invalid file type. Only JPEG, PNG, and GIF are accepted.",
         "file_size_too_large": "File size too large. Each file must be less than 20MB.",
-        "file_size_too_small": "File size too small. Each file must be at least 30KB."
+        "file_size_too_small": "File size too small. Each file must be at least 30KB.",
+        "file_limit_exceeded": "Maximum number of files is 3."
       }
     }
   },
@@ -90,6 +91,10 @@
       "back_button": "Back",
       "next_button": "Next",
       "submit_button": "Submit"
+    },
+    "button": {
+      "upload_file": "Upload file",
+      "delete_file": "Delete file"
     }
   },
   "routing": {

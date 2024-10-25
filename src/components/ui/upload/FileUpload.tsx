@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-// import { cn } from '@/lib/utils/style'
 import { IoAddCircleOutline } from 'react-icons/io5'
 import { FieldValues, UseFormReturn } from 'react-hook-form'
+import PreviewFile from '@/components/ui/upload/PreviewFile'
+import { useTranslations } from 'next-intl'
 
 export const ACCEPTED_IMAGE_TYPES = [
   'image/jpeg',
@@ -9,9 +10,10 @@ export const ACCEPTED_IMAGE_TYPES = [
   'image/png',
   'image/gif',
 ]
+
 export const MAX_FILE_SIZE = 20971520
 export const MIN_FILE_SIZE = 30720
-const MAX_NUMBER_FILES = 3
+export const MAX_NUMBER_FILES = 3
 
 interface FormWithFiles extends FieldValues {
   files: File[]
@@ -26,6 +28,8 @@ export const FileUpload = ({ form }: FileUploadProps) => {
   const [nrOfFiles, setNrOfFiles] = useState(
     form.getValues('files') ? form.getValues('files').length : 0
   )
+  const [labelHovered, setLabelHovered] = useState(false)
+  const t = useTranslations('general.button')
 
   const numberOfEmtpy = MAX_NUMBER_FILES - nrOfFiles - 1
   const empty = numberOfEmtpy < 0 ? [] : [...Array(numberOfEmtpy).keys()]
@@ -39,27 +43,54 @@ export const FileUpload = ({ form }: FileUploadProps) => {
     }
   }
 
+  const removeFile = (index: number) => {
+    const updatedFiles = form.getValues('files').filter((_, i) => i !== index)
+    form.setValue('files', updatedFiles)
+    setNrOfFiles(updatedFiles.length)
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLLabelElement>) => {
+    console.log(e.key)
+    if (e.key === 'Enter' || e.key === ' ') {
+      document.getElementById('fileUpload')?.click()
+    }
+  }
+
   console.log('in file upload', form.getValues('files'))
 
   // @ts-ignore
   return (
-    <div className="flex">
+    <div className="flex gap-4">
       {form.getValues('files')?.length > 0 &&
         form
           .getValues('files')
+          .slice(0, MAX_NUMBER_FILES)
           .map((image, index) => (
-            <img
+            <PreviewFile
+              file={image}
+              onDelete={() => removeFile(index)}
+              allowDelete={true}
               key={index}
-              className="empty-box"
-              src={URL.createObjectURL(image)}
-              alt={'voorbeeld weergave'}
             />
           ))}
+
       {nrOfFiles < MAX_NUMBER_FILES && (
         <div className="file-upload-box">
-          <label htmlFor="fileUpload" className="flex" tabIndex={0}>
-            <span className="flex justify-center items-center h-full">
-              <IoAddCircleOutline className="w-14 h-14" />
+          <label
+            htmlFor="fileUpload"
+            className="flex"
+            tabIndex={0}
+            aria-label={t('upload_file')}
+            onMouseEnter={() => setLabelHovered(true)}
+            onMouseLeave={() => setLabelHovered(false)}
+            onKeyDown={(e) => handleKeyDown(e)}
+          >
+            <span className="flex justify-center items-center h-full relative">
+              <IoAddCircleOutline
+                className={`transition-all duration-300 ${
+                  labelHovered ? 'w-16 h-16' : 'w-14 h-14'
+                }`}
+              />
             </span>
           </label>
           <input
@@ -68,7 +99,7 @@ export const FileUpload = ({ form }: FileUploadProps) => {
             className="hidden"
             accept={ACCEPTED_IMAGE_TYPES.join(',')}
             {...register('files', { required: false })}
-            onChange={handleFileChange} // Handle file selection immediately
+            onChange={handleFileChange}
             multiple
           />
         </div>
