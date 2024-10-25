@@ -13,7 +13,7 @@ export const ACCEPTED_IMAGE_TYPES = [
 
 export const MAX_FILE_SIZE = 20971520
 export const MIN_FILE_SIZE = 30720
-export const MAX_NUMBER_FILES = 3
+export const MAX_NUMBER_FILES = 5
 
 interface FormWithFiles extends FieldValues {
   files: File[]
@@ -37,7 +37,10 @@ export const FileUpload = ({ form }: FileUploadProps) => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
     if (files && files.length > 0) {
-      const filesArray = Array.from(files)
+      const filesArray = form
+        .getValues('files')
+        .concat(Array.from(files))
+        .slice(0, MAX_NUMBER_FILES)
       form.setValue('files', filesArray)
       setNrOfFiles(filesArray.length)
     }

@@ -26,7 +26,6 @@ import {
   ACCEPTED_IMAGE_TYPES,
   FileUpload,
   MAX_FILE_SIZE,
-  MAX_NUMBER_FILES,
   MIN_FILE_SIZE,
 } from '@/components/ui/upload/FileUpload'
 
@@ -52,9 +51,6 @@ export const IncidentDescriptionForm = () => {
       })
       .refine((files) => files.every((file) => file.size >= MIN_FILE_SIZE), {
         message: t('errors.file_size_too_small'),
-      })
-      .refine((files) => files.length <= MAX_NUMBER_FILES, {
-        message: t('errors.file_limit_exceeded'), // Your error message here
       }),
   })
 
@@ -160,11 +156,12 @@ export const IncidentDescriptionForm = () => {
                   5. voeg preview toe aan summary [x]
                   6. check toetsenboard controls pt1.[x] pt2.[]
                   7. check overige toegankelijkheid []
-                  8. op de een of andere manier worden de files niet goed bewaard bij een refresh []
-                  9. op dit moment wordt de hele array vervangen []
+                  8. op de een of andere manier worden de files niet goed bewaard bij een refresh [x] --> weggoien
+                  9. op dit moment wordt de hele array vervangen [x]
                   10. ipv form naar upload component alleen een methode passen daarin de update uitvoeren -> makkelijker hergebruik
                   11. form validatie eerder triggeren []
                   12. verschillende screen sizes
+                  13. max 5 items en description aanpassen [x]
 
                   vraag:
                   - wat doen bij overschrijden max aantal files?

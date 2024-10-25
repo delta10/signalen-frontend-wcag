@@ -10,7 +10,7 @@ type Props = {
 
 const PreviewFile = ({ file, allowDelete = false, onDelete }: Props) => {
   const [imageUrl, setImageUrl] = useState<string>('')
-  const t = useTranslations('general.button')
+  const t = useTranslations('general')
 
   useEffect(() => {
     const objectUrl = file['name'] ? URL.createObjectURL(file) : ''
@@ -21,11 +21,11 @@ const PreviewFile = ({ file, allowDelete = false, onDelete }: Props) => {
 
   return (
     <div className="relative">
-      <img className="empty-box" src={imageUrl} alt="Voorbeeld weergave" />
+      <img className="empty-box" src={imageUrl} alt={t('file.preview')} />
       {allowDelete && (
         <button
           onClick={onDelete}
-          aria-label={t('delete_file')}
+          aria-label={t('button.delete_file')}
           className="absolute bottom-0 right-0 bg-gray-900 bg-opacity-50 text-white w-full flex justify-center items-center py-2 hover:bg-opacity-80 transition-colors duration-200 delay-100"
         >
           <FaRegTrashCan className="w-5 h-5" />

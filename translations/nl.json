@@ -15,7 +15,7 @@
       "describe_textarea_heading": "Waar gaat het om?",
       "describe_textarea_description": "Typ geen persoonsgegevens in deze omschrijving. We vragen dit later in dit formulier aan u.",
       "describe_upload_heading": "Foto's toevoegen (niet verplicht)",
-      "describe_upload_description": "Voeg een foto toe om de situatie te verduidelijken",
+      "describe_upload_description": "Voeg een foto toe om de situatie te verduidelijken (maximaal 5 foto's).",
       "errors": {
         "textarea_required": "Dit is een verplicht veld",
         "file_type_invalid": "Ongeldig bestandstype. Alleen JPEG, PNG, en GIF zijn toegestaan.",
@@ -97,6 +97,9 @@
     "button": {
       "upload_file": "Upload bestand",
       "delete_file": "Verwijder bestand"
+    },
+    "file": {
+      "preview": "Voorbeeld weergave"
     }
   },
   "routing": {

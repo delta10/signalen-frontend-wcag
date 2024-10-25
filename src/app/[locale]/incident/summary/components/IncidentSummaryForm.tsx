@@ -61,14 +61,12 @@ const IncidentSummaryForm = () => {
         if (formState.attachments.length > 0) {
           const signalId = res.signal_id
           if (signalId) {
-            formState.attachments
-              .slice(0, MAX_NUMBER_FILES)
-              .forEach((attachment) => {
-                const formData = new FormData()
-                formData.append('signal_id', signalId)
-                formData.append('file', attachment)
-                postAttachments(signalId, formData)
-              })
+            formState.attachments.forEach((attachment) => {
+              const formData = new FormData()
+              formData.append('signal_id', signalId)
+              formData.append('file', attachment)
+              postAttachments(signalId, formData)
+            })
           }
         }
       })
@@ -178,7 +176,7 @@ export const IncidentSummaryFormAttachments = ({
     <div className="flex flex-col gap-2">
       <p className="font-semibold">{title}</p>
       <div className="flex gap-4">
-        {attachments.slice(0, MAX_NUMBER_FILES).map((image, index) => (
+        {attachments.map((image, index) => (
           <PreviewFile file={image} key={index} />
         ))}
       </div>
