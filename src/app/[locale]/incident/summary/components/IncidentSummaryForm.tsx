@@ -13,6 +13,7 @@ import { postAttachments } from '@/services/attachment/attachments'
 import { useFormStore } from '@/store/form_store'
 import { _NestedLocationModel } from '@/services/client'
 import { MAX_NUMBER_FILES } from '@/components/ui/upload/FileUpload'
+import PreviewFile from '@/components/ui/upload/PreviewFile'
 
 const IncidentSummaryForm = () => {
   const t = useTranslations('describe-summary')
@@ -90,6 +91,12 @@ const IncidentSummaryForm = () => {
           title={t('steps.step_one.input_heading')}
           value={formState.description}
         />
+        {formState.attachments?.length > 0 && (
+          <IncidentSummaryFormAttachments
+            title={t('steps.step_one.upload_images')}
+            attachments={formState.attachments}
+          />
+        )}
       </div>
       <Divider />
       <div className="flex flex-col gap-4">
@@ -156,6 +163,25 @@ export const IncidentSummaryFormItem = ({
     <div className="flex flex-col gap-1">
       <p className="font-semibold">{title}</p>
       {value !== '' ? <p>{value}</p> : <div className="mt-2">{children}</div>}
+    </div>
+  )
+}
+
+export const IncidentSummaryFormAttachments = ({
+  title,
+  attachments = [],
+}: {
+  title: string
+  attachments: File[]
+}) => {
+  return (
+    <div className="flex flex-col gap-2">
+      <p className="font-semibold">{title}</p>
+      <div className="flex gap-4">
+        {attachments.slice(0, MAX_NUMBER_FILES).map((image, index) => (
+          <PreviewFile file={image} key={index} />
+        ))}
+      </div>
     </div>
   )
 }

@@ -62,7 +62,8 @@
       "step_one": {
         "title": "1. Beschrijf uw melding",
         "edit": "Wijzig uw melding",
-        "input_heading": "Waar gaat het over?"
+        "input_heading": "Waar gaat het over?",
+        "upload_images": "Foto's toevoegen"
       },
       "step_two": {
         "title": "2. Locatie en vragen",
