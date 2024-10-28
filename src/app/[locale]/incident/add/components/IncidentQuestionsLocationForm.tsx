@@ -16,10 +16,15 @@ export const IncidentQuestionsLocationForm = () => {
   const [additionalQuestions, setAdditionalQuestions] = useState<
     PublicQuestion[]
   >([])
+  const [conditionalQuestions, setConditionalQuestions] = useState<
+    PublicQuestion[]
+  >([])
   const { addOneStep, setLastCompletedStep } = useStepperStore()
   const router = useRouter()
   const {
     register,
+    watch,
+    getValues,
     handleSubmit,
     formState: { errors },
   } = useForm()
@@ -31,12 +36,29 @@ export const IncidentQuestionsLocationForm = () => {
   useEffect(() => {
     const appendAdditionalQuestions = async () => {
       try {
-        const additionalQuestions = (await fetchAdditionalQuestions(
-          formStoreState.main_category,
-          formStoreState.sub_category
-        )) as unknown as PublicQuestion[]
+        if (
+          formStoreState.main_category !== 'overig' &&
+          formStoreState.sub_category !== 'overig'
+        ) {
+          const additionalQuestions = (await fetchAdditionalQuestions(
+            formStoreState.main_category,
+            formStoreState.sub_category
+          )) as unknown as PublicQuestion[]
 
-        setAdditionalQuestions(additionalQuestions)
+          // Don't embed question in default additionalQuestions list if ifOneOf or ifAllOf is set on the meta of the question
+          const defaultAdditionalQuestions = additionalQuestions.filter(
+            (question) => !question.meta.ifOneOf && !question.meta.ifAllOf
+          )
+
+          // Embed question in conditionalQuestions list if ifOneOf or ifAllOf is set on the meta of the question
+          const conditionalQuestions = additionalQuestions.filter(
+            (question) => question.meta.ifOneOf || question.meta.ifAllOf
+          )
+
+          setAdditionalQuestions(defaultAdditionalQuestions)
+          setConditionalQuestions(conditionalQuestions)
+        }
+
         setLoading(false)
       } catch (e) {
         console.error('Could not fetch additional questions', e)
@@ -46,6 +68,52 @@ export const IncidentQuestionsLocationForm = () => {
 
     appendAdditionalQuestions()
   }, [formStoreState.main_category, formStoreState.sub_category])
+
+  useEffect(() => {
+    const subscription = watch((value, { name, type }) => {
+      const changedFieldName = name?.split('.')[0]
+
+      if (changedFieldName) {
+        // TODO: build support for nesting and ifAllOf, order of fields, checkboxes, remove fields that are dependent on a field that was removed, store fields that were conditional and filled in in formState
+        const conditionalQuestionsThatDependOnChangedField =
+          conditionalQuestions.filter(
+            (question) => question.meta.ifOneOf[changedFieldName]
+          )
+
+        conditionalQuestionsThatDependOnChangedField.map((question) => {
+          const matchValue: string[] = question.meta.ifOneOf[changedFieldName]
+          const inputValue = getValues(changedFieldName)
+          const conditionalFieldName = question.key
+          const newAdditionalQuestions = Array.from(additionalQuestions)
+
+          const matchesValue = Array.isArray(inputValue)
+            ? inputValue.some((value) => matchValue.includes(value))
+            : matchValue.includes(inputValue)
+
+          if (matchesValue) {
+            if (
+              newAdditionalQuestions.findIndex(
+                (questionToTest) => questionToTest.key === question.key
+              ) === -1
+            ) {
+              newAdditionalQuestions.push(question)
+
+              setAdditionalQuestions(newAdditionalQuestions)
+            }
+          } else {
+            const filteredNewAdditionalQuestions =
+              newAdditionalQuestions.filter(
+                (question) => question.key !== conditionalFieldName
+              )
+
+            setAdditionalQuestions(filteredNewAdditionalQuestions)
+          }
+        })
+      }
+    })
+
+    return () => subscription.unsubscribe()
+  }, [watch, conditionalQuestions, additionalQuestions])
 
   const onSubmit = (data: any) => {
     const questionKeys = Object.keys(data)
