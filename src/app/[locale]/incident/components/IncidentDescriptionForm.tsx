@@ -15,7 +15,7 @@ import { useTranslations } from 'next-intl'
 import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentFormFooter'
 import { useStepperStore } from '@/store/stepper_store'
 import { useRouter } from '@/routing/navigation'
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import { getCategoryForDescription } from '@/services/classification'
 import { debounce } from 'lodash'
 import { useFormStore } from '@/store/form_store'
@@ -29,7 +29,7 @@ import {
 } from '@/components/ui/upload/FileUpload'
 
 import { FormFieldTextarea } from '@utrecht/component-library-react/dist/css-module'
-import { FileInput, Label } from '@amsterdam/design-system-react'
+import { Label } from '@amsterdam/design-system-react'
 
 export const IncidentDescriptionForm = () => {
   const t = useTranslations('describe-report.form')
@@ -155,9 +155,11 @@ export const IncidentDescriptionForm = () => {
           name={'files'}
           control={form.control}
           render={({ formState: { errors } }) => (
-            <FormItem error={errors.description}>
+            <FormItem>
               <div>
-                <Label onClick={() => setFocus('files')}>{t('describe_upload_heading')}</Label>
+                <Label onClick={() => setFocus('files')}>
+                  {t('describe_upload_heading')}
+                </Label>
                 <FormDescription>
                   {t('describe_upload_description')}
                 </FormDescription>
