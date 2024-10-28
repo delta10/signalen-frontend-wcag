@@ -1,5 +1,5 @@
 import { useTranslations } from 'next-intl'
-import { Paragraph } from '../../../../components/index'
+import { Paragraph } from '@/components/index'
 
 export default function Thankyou() {
   const t = useTranslations('describe-thankyou')

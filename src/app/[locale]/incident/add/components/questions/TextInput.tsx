@@ -3,7 +3,7 @@ import React from 'react'
 import { useTranslations } from 'next-intl'
 import { useFormStore } from '@/store/form_store'
 import { getValidators } from '@/lib/utils/form-validator'
-import { Paragraph } from '../../../../../../components/index'
+import { Paragraph } from '@/components/index'
 
 interface TextInputProps extends QuestionField {}
 

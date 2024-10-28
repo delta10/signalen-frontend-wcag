@@ -20,7 +20,7 @@ import { Input } from '@/components/ui/Input'
 import { Checkbox } from '@/components/ui/Checkbox'
 import { useFormStore } from '@/store/form_store'
 import { useEffect } from 'react'
-import { Paragraph } from '../../../../../components/index'
+import { Paragraph } from '@/components/index'
 
 const IncidentContactForm = () => {
   const t = useTranslations('describe-contact.form')

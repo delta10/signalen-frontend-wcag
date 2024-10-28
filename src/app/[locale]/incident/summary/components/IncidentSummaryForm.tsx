@@ -11,7 +11,7 @@ import { signalsClient } from '@/services/client/api-client'
 import { useRouter } from '@/routing/navigation'
 import { useFormStore } from '@/store/form_store'
 import { _NestedLocationModel } from '@/services/client'
-import { Paragraph } from '../../../../../components/index'
+import { Paragraph } from '@/components/index'
 
 const IncidentSummaryForm = () => {
   const t = useTranslations('describe-summary')

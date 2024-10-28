@@ -6,7 +6,7 @@ import {
   Link,
 } from '@utrecht/component-library-react/dist/css-module'
 
-import { Paragraph } from '../../../components/index'
+import { Paragraph } from '@/components/index'
 
 export default async function Home() {
   return <IncidentDescriptionPage />

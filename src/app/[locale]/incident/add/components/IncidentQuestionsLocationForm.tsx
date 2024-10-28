@@ -9,7 +9,7 @@ import { useStepperStore } from '@/store/stepper_store'
 import { useRouter } from '@/routing/navigation'
 import { PublicQuestion } from '@/types/form'
 import { RenderDynamicFields } from '@/app/[locale]/incident/add/components/questions/RenderDynamicFields'
-import { Paragraph } from '../../../../../components/index'
+import { Paragraph } from '@/components/index'
 
 export const IncidentQuestionsLocationForm = () => {
   const { formState: formStoreState, updateForm } = useFormStore()
