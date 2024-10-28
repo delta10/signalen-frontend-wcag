@@ -21,7 +21,7 @@ type FileUploadProps = {
   files: File[]
 }
 
-export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
+export const FileUpload = React.forwardRef<HTMLLabelElement, FileUploadProps>(
   ({ onFileUpload, onDelete, files, ...props }, ref) => {
     const [labelHovered, setLabelHovered] = useState(false)
     const t = useTranslations('general.button')
@@ -36,7 +36,7 @@ export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
     }
 
     return (
-      <div ref={ref} className="flex gap-4 flex-wrap">
+      <div className="flex gap-4 flex-wrap">
         {files.length > 0 &&
           files
             .slice(0, MAX_NUMBER_FILES)
@@ -54,6 +54,7 @@ export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
             <label
               htmlFor="fileUpload"
               className="flex"
+              ref={ref}
               tabIndex={0}
               aria-label={t('upload_file')}
               onMouseEnter={() => setLabelHovered(true)}

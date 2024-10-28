@@ -21,7 +21,11 @@ const PreviewFile = ({ file, allowDelete = false, onDelete }: Props) => {
 
   return (
     <div className="relative">
-      <img className="empty-box" src={imageUrl} alt={t('file.preview')} />
+      <img
+        className="empty-box object-cover"
+        src={imageUrl}
+        alt={t('file.preview')}
+      />
       {allowDelete && (
         <button
           onClick={onDelete}

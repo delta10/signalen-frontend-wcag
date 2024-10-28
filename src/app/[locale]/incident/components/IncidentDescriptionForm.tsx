@@ -17,7 +17,7 @@ import { Textarea } from '@/components/ui/TextArea'
 import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentFormFooter'
 import { useStepperStore } from '@/store/stepper_store'
 import { useRouter } from '@/routing/navigation'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { getCategoryForDescription } from '@/services/classification'
 import { debounce } from 'lodash'
 import { useFormStore } from '@/store/form_store'
@@ -72,7 +72,7 @@ export const IncidentDescriptionForm = () => {
       files: getAttachments(),
     },
   })
-  const { register } = form
+  const { register, setFocus } = form
 
   const { description } = form.watch()
 
@@ -155,7 +155,9 @@ export const IncidentDescriptionForm = () => {
           render={({ formState: { errors } }) => (
             <FormItem error={errors.description}>
               <div>
-                <FormLabel>{t('describe_upload_heading')}</FormLabel>
+                <FormLabel onClick={() => setFocus('files')}>
+                  {t('describe_upload_heading')}
+                </FormLabel>
                 <FormDescription>
                   {t('describe_upload_description')}
                 </FormDescription>
