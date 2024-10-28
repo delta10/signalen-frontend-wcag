@@ -3,4 +3,4 @@ import { Container } from '@/components/layout'
 
 export { Select, Container }
 
-export { Paragraph } from '@utrecht/component-library-react'
+export { Paragraph } from '@utrecht/component-library-react/dist/css-module'
