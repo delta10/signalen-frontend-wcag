@@ -3,6 +3,7 @@ import { useTranslations } from 'next-intl'
 import { useFormStore } from '@/store/form_store'
 import { getValidators } from '@/lib/utils/form-validator'
 import React from 'react'
+import { Paragraph } from '../../../../../../components/index'
 
 interface CheckboxInputProps extends QuestionField {}
 
@@ -46,13 +47,13 @@ export const CheckboxInput = ({
         {field.meta.subtitle && <span>{field.meta.subtitle}</span>}
       </legend>
       {errorMessage && (
-        <p
+        <Paragraph
           id={`${field.key}-error`}
           aria-live="assertive"
           style={{ color: 'red' }}
         >
           {errorMessage}
-        </p>
+        </Paragraph>
       )}
       {Object.keys(field.meta.values).map((key: string) => (
         <div key={key}>
