@@ -70,11 +70,11 @@ export const IncidentQuestionsLocationForm = () => {
   }, [formStoreState.main_category, formStoreState.sub_category])
 
   useEffect(() => {
-    const subscription = watch((value, { name, type }) => {
+    const subscription = watch((value, { name }) => {
       const changedFieldName = name?.split('.')[0]
 
       if (changedFieldName) {
-        // TODO: build support for nesting and ifAllOf, order of fields, checkboxes, remove fields that are dependent on a field that was removed, store fields that were conditional and filled in in formState
+        // TODO: build support for nesting and ifAllOf, order of fields, checkboxes, remove fields that are dependent on a field that was removed, store hard stop that is conditional and filled in in formState
         const conditionalQuestionsThatDependOnChangedField =
           conditionalQuestions.filter(
             (question) => question.meta.ifOneOf[changedFieldName]
@@ -114,6 +114,23 @@ export const IncidentQuestionsLocationForm = () => {
 
     return () => subscription.unsubscribe()
   }, [watch, conditionalQuestions, additionalQuestions])
+
+  // If any conditional questions have already been filled in, display them by default.
+  useEffect(() => {
+    const storedConditionalQuestions = conditionalQuestions.filter(
+      (question) =>
+        formStoreState.extra_properties.findIndex(
+          (storedQuestion) => storedQuestion.id === question.key
+        ) !== -1
+    )
+
+    if (storedConditionalQuestions.length) {
+      const newAdditionalQuestions = Array.from(additionalQuestions)
+      newAdditionalQuestions.push(...storedConditionalQuestions)
+
+      setAdditionalQuestions(newAdditionalQuestions)
+    }
+  }, [conditionalQuestions])
 
   const onSubmit = (data: any) => {
     const questionKeys = Object.keys(data)
