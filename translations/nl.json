@@ -94,6 +94,11 @@
       "next_button": "Volgende",
       "submit_button": "Verstuur"
     },
+    "errors": {
+      "required": "Dit veld is verplicht",
+      "max_length": "Dit veld heeft een maximale lengte van {maxLength} karakters",
+      "not_required_short": "niet verplicht"
+    },
     "button": {
       "upload_file": "Upload bestand",
       "delete_file": "Verwijder bestand"

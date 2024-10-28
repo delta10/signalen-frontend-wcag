@@ -7,13 +7,11 @@ import {
   FormField,
   FormItem,
   FormMessage,
-  FormLabel,
   FormDescription,
 } from '@/components/ui/Form'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
-import { Textarea } from '@/components/ui/TextArea'
 import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentFormFooter'
 import { useStepperStore } from '@/store/stepper_store'
 import { useRouter } from '@/routing/navigation'
@@ -30,11 +28,18 @@ import {
   MIN_FILE_SIZE,
 } from '@/components/ui/upload/FileUpload'
 
+import { FormFieldTextarea } from '@utrecht/component-library-react/dist/css-module'
+import { FileInput, Label } from '@amsterdam/design-system-react'
+
 export const IncidentDescriptionForm = () => {
   const t = useTranslations('describe-report.form')
   const { updateForm, formState } = useFormStore()
   const { addOneStep, setLastCompletedStep } = useStepperStore()
   const router = useRouter()
+
+  useEffect(() => {
+    router.prefetch('/incident/add')
+  }, [router])
 
   const incidentDescriptionFormSchema = z.object({
     description: z.string().min(1, t('errors.textarea_required')),
@@ -135,35 +140,29 @@ export const IncidentDescriptionForm = () => {
           name={'description'}
           control={form.control}
           render={({ field, formState: { errors } }) => (
-            <FormItem error={errors.description}>
-              <div>
-                <FormLabel>{t('describe_textarea_heading')}</FormLabel>
-                <FormDescription>
-                  {t('describe_textarea_description')}
-                </FormDescription>
-                <FormMessage />
-              </div>
-              <FormControl>
-                <Textarea rows={5} {...field} />
-              </FormControl>
-            </FormItem>
+            <FormFieldTextarea
+              rows={5}
+              description={t('describe_textarea_description')}
+              label={t('describe_textarea_heading')}
+              errorMessage={errors.description?.message}
+              invalid={Boolean(errors.description?.message)}
+              {...field}
+            />
           )}
         />
+
         <FormField
           name={'files'}
           control={form.control}
           render={({ formState: { errors } }) => (
             <FormItem error={errors.description}>
               <div>
-                <FormLabel onClick={() => setFocus('files')}>
-                  {t('describe_upload_heading')}
-                </FormLabel>
+                <Label onClick={() => setFocus('files')}>{t('describe_upload_heading')}</Label>
                 <FormDescription>
                   {t('describe_upload_description')}
                 </FormDescription>
                 <FormMessage />
               </div>
-
               <FormControl>
                 {/*@ts-ignore*/}
                 <FileUpload
