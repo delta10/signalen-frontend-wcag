@@ -91,7 +91,6 @@ export const TextInput = ({ field, register, errors }: TextInputProps) => {
         {...register(field.key, getValidators(field, t))}
         type="text"
         placeholder={field.meta.placeholder ? field.meta.placeholder : ''}
-        defaultValue={getDefaultValueTextInput(field.key)}
         id={`${field.key}`}
         aria-describedby={
           field.meta.subtitle ? `${field.key}-${field.key}` : ''
