@@ -2,7 +2,9 @@ import { QuestionField } from '@/types/form'
 import { useTranslations } from 'next-intl'
 import { useFormStore } from '@/store/form_store'
 import { getValidators } from '@/lib/utils/form-validator'
-import React from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
+import { useFormContext } from 'react-hook-form'
+import { evaluateConditions } from '@/lib/utils/check-visibility'
 
 interface TextAreaInputProps extends QuestionField {}
 
@@ -11,9 +13,34 @@ export const TextAreaInput = ({
   register,
   errors,
 }: TextAreaInputProps) => {
+  const [shouldRender, setShouldRender] = useState<boolean>(false)
+  const { watch, setValue } = useFormContext()
   const t = useTranslations('general.errors')
   const { formState } = useFormStore()
   const errorMessage = errors[field.key]?.message as string
+
+  const watchValues = watch()
+
+  // Memoize `evaluateConditions` result to prevent unnecessary updates
+  const shouldRenderResult = useMemo(
+    () => evaluateConditions(field.meta, watchValues),
+    [field.meta, watchValues]
+  )
+
+  // Handle visibility changes
+  useEffect(() => {
+    if (shouldRender !== shouldRenderResult) {
+      setShouldRender(shouldRenderResult)
+      if (!shouldRenderResult) {
+        setValue(field.key, null)
+      } else {
+        const defaultValue = getDefaultValueTextInput(field.key)
+        if (defaultValue) {
+          setValue(field.key, defaultValue)
+        }
+      }
+    }
+  }, [shouldRenderResult, shouldRender, field.key, setValue])
 
   // Check if the user has already answered a specific question.
   // Returns the answer if an answer exists, otherwise returns empty string.
@@ -32,6 +59,18 @@ export const TextAreaInput = ({
     }
 
     return ''
+  }
+
+  // Register the field immediately with initial value
+  useEffect(() => {
+    const defaultValue = getDefaultValueTextInput(field.key)
+    if (defaultValue && shouldRender) {
+      setValue(field.key, defaultValue)
+    }
+  }, [field.key, setValue, shouldRender])
+
+  if (!shouldRender) {
+    return null
   }
 
   return (
