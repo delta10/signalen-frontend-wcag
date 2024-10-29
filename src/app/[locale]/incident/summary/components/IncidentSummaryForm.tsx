@@ -17,9 +17,7 @@ import {
   Alert,
   Paragraph,
 } from '@utrecht/component-library-react/dist/css-module'
-import { Heading2, Heading3 } from '@utrecht/component-library-react'
-import { TbSearch } from 'react-icons/tb'
-import { FaSpinner } from 'react-icons/fa'
+import { Heading3 } from '@utrecht/component-library-react'
 
 const IncidentSummaryForm = () => {
   const t = useTranslations('describe-summary')
@@ -181,10 +179,6 @@ const IncidentSummaryForm = () => {
       />
     </div>
   )
-}
-
-const test = () => {
-  return <TbSearch />
 }
 
 export const IncidentSummaryFormItem = ({
