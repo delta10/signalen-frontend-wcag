@@ -249,7 +249,6 @@ const SubmitAlert = ({
   if (loading) {
     return (
       <Alert ref={alertRef} id="submit-described-loading" aria-live="assertive">
-        <Heading3>wttfff</Heading3>
         <Paragraph className="pt-1">
           Uw melding wordt afgehandeld. U gaat automatisch naar de volgende
           pagina zodra de melding is ontvangen.
