@@ -10,7 +10,7 @@ interface RadioGroupProps extends QuestionField {}
 
 export const RadioInput = ({ field, register, errors }: RadioGroupProps) => {
   const [shouldRender, setShouldRender] = useState<boolean>(false)
-  const { watch, getValues, setValue, resetField } = useFormContext()
+  const { watch, setValue } = useFormContext()
   const t = useTranslations('general.errors')
   const { formState } = useFormStore()
 
