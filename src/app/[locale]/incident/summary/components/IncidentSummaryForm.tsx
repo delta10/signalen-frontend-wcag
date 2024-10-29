@@ -9,9 +9,12 @@ import React, { useEffect } from 'react'
 import { LocationMap } from '@/components/ui/LocationMap'
 import { signalsClient } from '@/services/client/api-client'
 import { useRouter } from '@/routing/navigation'
+import { postAttachments } from '@/services/attachment/attachments'
 import { useFormStore } from '@/store/form_store'
 import { _NestedLocationModel } from '@/services/client'
 import { Paragraph } from '@/components/index'
+import { MAX_NUMBER_FILES } from '@/components/ui/upload/FileUpload'
+import PreviewFile from '@/components/ui/upload/PreviewFile'
 
 const IncidentSummaryForm = () => {
   const t = useTranslations('describe-summary')
@@ -59,8 +62,21 @@ const IncidentSummaryForm = () => {
         incident_date_start: new Date().toISOString(),
         extra_properties: formState.extra_properties,
       })
+      .then((res) => {
+        if (formState.attachments.length > 0) {
+          const signalId = res.signal_id
+          if (signalId) {
+            formState.attachments.forEach((attachment) => {
+              const formData = new FormData()
+              formData.append('signal_id', signalId)
+              formData.append('file', attachment)
+              postAttachments(signalId, formData)
+            })
+          }
+        }
+      })
       .then((res) => router.push('/incident/thankyou'))
-      .catch((err) => console.log(err))
+      .catch((err) => console.error(err))
   }
 
   return (
@@ -78,6 +94,12 @@ const IncidentSummaryForm = () => {
           title={t('steps.step_one.input_heading')}
           value={formState.description}
         />
+        {formState.attachments?.length > 0 && (
+          <IncidentSummaryFormAttachments
+            title={t('steps.step_one.upload_images')}
+            attachments={formState.attachments}
+          />
+        )}
       </div>
       <Divider />
       <div className="flex flex-col gap-4">
@@ -148,6 +170,25 @@ export const IncidentSummaryFormItem = ({
       ) : (
         <div className="mt-2">{children}</div>
       )}
+    </div>
+  )
+}
+
+const IncidentSummaryFormAttachments = ({
+  title,
+  attachments = [],
+}: {
+  title: string
+  attachments: File[]
+}) => {
+  return (
+    <div className="flex flex-col gap-2">
+      <p className="font-semibold">{title}</p>
+      <div className="flex gap-4 flex-wrap">
+        {attachments.map((image, index) => (
+          <PreviewFile file={image} key={index} />
+        ))}
+      </div>
     </div>
   )
 }

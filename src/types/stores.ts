@@ -18,6 +18,7 @@ type FormStoreState = {
     id: string
     label: string
   }>
+  attachments: File[]
 }
 
 type FormStore = {

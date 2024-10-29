@@ -15,9 +15,14 @@
       "describe_textarea_heading": "Waar gaat het om?",
       "describe_textarea_description": "Typ geen persoonsgegevens in deze omschrijving. We vragen dit later in dit formulier aan u.",
       "describe_upload_heading": "Foto's toevoegen (niet verplicht)",
-      "describe_upload_description": "Voeg een foto toe om de situatie te verduidelijken",
+      "describe_upload_description": "Voeg een foto toe om de situatie te verduidelijken (maximaal 5 foto's).",
       "errors": {
-        "textarea_required": "Dit is een verplicht veld"
+        "textarea_required": "Dit is een verplicht veld",
+        "file_type_invalid": "Ongeldig bestandstype. Alleen JPEG, PNG, en GIF zijn toegestaan.",
+        "file_size_too_large": "Bestandsgrootte is te groot. Elk bestand moet kleiner zijn dan 20MB.",
+        "file_size_too_small": "Bestandsgrootte is te klein. Elk bestand moet minimaal 30KB zijn.",
+        "file_limit_exceeded": "U kunt maximaal 3 bestanden uploaden."
+
       }
     }
   },
@@ -57,7 +62,8 @@
       "step_one": {
         "title": "1. Beschrijf uw melding",
         "edit": "Wijzig uw melding",
-        "input_heading": "Waar gaat het over?"
+        "input_heading": "Waar gaat het over?",
+        "upload_images": "Foto's toevoegen"
       },
       "step_two": {
         "title": "2. Locatie en vragen",
@@ -92,6 +98,13 @@
       "required": "Dit veld is verplicht",
       "max_length": "Dit veld heeft een maximale lengte van {maxLength} karakters",
       "not_required_short": "niet verplicht"
+    },
+    "button": {
+      "upload_file": "Upload bestand",
+      "delete_file": "Verwijder bestand"
+    },
+    "file": {
+      "preview": "Voorbeeld weergave"
     }
   },
   "routing": {
