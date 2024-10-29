@@ -83,3 +83,7 @@ h3 {
     border-radius: 50%;
     border: 1px solid rgb(0, 32, 92);
 }
+
+.slow-spin {
+    animation: spin 1s linear infinite;
+}
