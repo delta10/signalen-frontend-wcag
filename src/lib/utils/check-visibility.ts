@@ -7,8 +7,6 @@ export const evaluateConditions = (
 ): boolean => {
   if (!conditions) return true
 
-  console.log(watchValues)
-
   // Handle `ifOneOf` condition
   if (conditions.ifOneOf) {
     return Object.entries(conditions.ifOneOf).some(([key, value]): boolean => {

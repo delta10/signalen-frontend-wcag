@@ -10,7 +10,7 @@ interface RadioGroupProps extends QuestionField {}
 
 export const RadioInput = ({ field, register, errors }: RadioGroupProps) => {
   const [shouldRender, setShouldRender] = useState<boolean>(false)
-  const { watch, getValues, resetField } = useFormContext()
+  const { watch, getValues, setValue, resetField } = useFormContext()
   const t = useTranslations('general.errors')
   const { formState } = useFormStore()
 
@@ -24,35 +24,46 @@ export const RadioInput = ({ field, register, errors }: RadioGroupProps) => {
     [field.meta, watchValues]
   )
 
-  // Only update `shouldRender` if the result changes
+  // Handle visibility changes
   useEffect(() => {
     if (shouldRender !== shouldRenderResult) {
       setShouldRender(shouldRenderResult)
-      resetField(field.key)
+      if (!shouldRenderResult) {
+        setValue(field.key, null)
+      } else {
+        const defaultValue = getDefaultValueRadioInput(field.key)
+        if (defaultValue) {
+          setValue(field.key, defaultValue)
+        }
+      }
     }
-  }, [shouldRenderResult, shouldRender])
+  }, [shouldRenderResult, shouldRender, field.key, setValue])
 
-  // Check if the user has already answered a specific question.
-  // Returns true if an answer exists, otherwise returns false.
-  // This is used to determine if the 'defaultChecked' property of a radio input should be set.
-  const getDefaultValueRadioInput = (id: string, key: string) => {
-    const extraProperties = formState.extra_properties.filter(
+  // Get default value helper function
+  const getDefaultValueRadioInput = (id: string) => {
+    const extraProperty = formState.extra_properties.find(
       (question) => question.id === id
     )
 
-    if (!extraProperties.length) {
-      return false
+    if (!extraProperty) return null
+
+    if (typeof extraProperty.answer !== 'string' && extraProperty.answer?.id) {
+      return extraProperty.answer.id
     }
 
-    if (typeof extraProperties[0].answer !== 'string') {
-      return extraProperties[0].answer?.id === key
-    }
-
-    return false
+    return null
   }
 
+  // Register the field immediately with initial value
+  useEffect(() => {
+    const defaultValue = getDefaultValueRadioInput(field.key)
+    if (defaultValue && shouldRender) {
+      setValue(field.key, defaultValue)
+    }
+  }, [field.key, setValue, shouldRender])
+
   if (!shouldRender) {
-    return null // Do not render if conditions aren't met
+    return null
   }
 
   return (
@@ -83,7 +94,6 @@ export const RadioInput = ({ field, register, errors }: RadioGroupProps) => {
             id={`${field.key}-${key}`}
             value={key}
             aria-describedby={errorMessage ? `${field.key}-error` : undefined}
-            defaultChecked={getDefaultValueRadioInput(field.key, key)}
           />
           <label htmlFor={`${field.key}-${key}`}>
             {field.meta.values[key]}
