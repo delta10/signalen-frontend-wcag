@@ -78,6 +78,10 @@
         "input_sharing_heading": "Report sharing",
         "input_sharing_allowed": "Yes, I authorize the Municipality of Amsterdam to forward my report to other organizations if it is not intended for the municipality."
       }
+    },
+    "errors": {
+        "submit_failed_heading": "Submit failed",
+        "submit_failed_description": "Due to a technical error, the report could not be sent. We did not receive your information. Please try again in a few minutes."
     }
   },
   "describe-thankyou": {

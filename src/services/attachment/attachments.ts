@@ -16,6 +16,6 @@ export const postAttachments = async (
 
     return response.data
   } catch (error) {
-    throw new Error('Could not fetch suggested addresses. Please try again.')
+    throw new Error('Something went wrong uploading the attachment')
   }
 }
