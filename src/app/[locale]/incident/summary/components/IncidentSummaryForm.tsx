@@ -246,6 +246,7 @@ const SubmitAlert = ({
     }
   }, [error, loading])
 
+  // todo: zet maak aria-labels nog even netjes
   if (loading) {
     return (
       <Alert ref={alertRef} id="submit-described-loading" aria-live="assertive">
