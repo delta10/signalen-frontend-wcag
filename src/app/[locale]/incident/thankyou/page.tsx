@@ -12,7 +12,7 @@ export default function Thankyou() {
         <Paragraph>{t('description_notification_email')}</Paragraph>
       </div>
       <div className="flex flex-col gap-2">
-        <h3>{t('what_do_we_do_heading')}</h3>
+        <Heading level={3}>{t('what_do_we_do_heading')}</Heading>
         <Paragraph>{t('what_do_we_do_description')}</Paragraph>
       </div>
     </div>

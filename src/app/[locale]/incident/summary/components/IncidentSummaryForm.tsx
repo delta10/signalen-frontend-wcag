@@ -11,7 +11,7 @@ import { signalsClient } from '@/services/client/api-client'
 import { useRouter } from '@/routing/navigation'
 import { useFormStore } from '@/store/form_store'
 import { _NestedLocationModel } from '@/services/client'
-import { Paragraph } from '@/components/index'
+import { Paragraph, Heading } from '@/components/index'
 
 const IncidentSummaryForm = () => {
   const t = useTranslations('describe-summary')
@@ -69,7 +69,7 @@ const IncidentSummaryForm = () => {
       <Divider />
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-1 md:flex-row justify-between">
-          <h3>{t('steps.step_one.title')}</h3>
+          <Heading level={3}>{t('steps.step_one.title')}</Heading>
           <LinkWrapper href={'/incident'} onClick={() => goToStep(1)}>
             {t('steps.step_one.edit')}
           </LinkWrapper>
@@ -82,7 +82,7 @@ const IncidentSummaryForm = () => {
       <Divider />
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-1 md:flex-row justify-between">
-          <h3>{t('steps.step_two.title')}</h3>
+          <Heading level={3}>{t('steps.step_two.title')}</Heading>
           <LinkWrapper href={'/incident/add'} onClick={() => goToStep(2)}>
             {t('steps.step_two.edit')}
           </LinkWrapper>
@@ -94,7 +94,7 @@ const IncidentSummaryForm = () => {
       <Divider />
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-1 md:flex-row justify-between">
-          <h3>{t('steps.step_three.title')}</h3>
+          <Heading level={3}>{t('steps.step_three.title')}</Heading>
           <LinkWrapper href={'/incident/contact'} onClick={() => goToStep(3)}>
             {t('steps.step_three.edit')}
           </LinkWrapper>
