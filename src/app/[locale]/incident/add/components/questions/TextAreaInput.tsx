@@ -5,6 +5,7 @@ import { getValidators } from '@/lib/utils/form-validator'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { evaluateConditions } from '@/lib/utils/check-visibility'
+import { Paragraph } from '@/components/index'
 
 interface TextAreaInputProps extends QuestionField {}
 
@@ -76,13 +77,13 @@ export const TextAreaInput = ({
   return (
     <div className="flex flex-col gap-2">
       {errorMessage && (
-        <p
+        <Paragraph
           id={`${field.key}-error`}
           aria-live="assertive"
           style={{ color: 'red' }}
         >
           {errorMessage}
-        </p>
+        </Paragraph>
       )}
       <label htmlFor={`${field.key}`}>
         {field.meta.label}{' '}
@@ -95,6 +96,7 @@ export const TextAreaInput = ({
         {...register(field.key, getValidators(field, t))}
         rows={5}
         placeholder={field.meta.placeholder ? field.meta.placeholder : ''}
+        defaultValue={getDefaultValueTextInput(field.key)}
         id={`${field.key}`}
         aria-describedby={
           field.meta.subtitle ? `${field.key}-${field.key}` : ''

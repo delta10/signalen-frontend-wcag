@@ -2,10 +2,11 @@ import { NextIntlClientProvider, useMessages, useTranslations } from 'next-intl'
 import { IncidentDescriptionForm } from '@/app/[locale]/incident/components/IncidentDescriptionForm'
 import {
   Heading1,
-  Paragraph,
   Alert,
   Link,
 } from '@utrecht/component-library-react/dist/css-module'
+
+import { Paragraph } from '@/components/index'
 
 export default async function Home() {
   return <IncidentDescriptionPage />

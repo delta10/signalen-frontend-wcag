@@ -5,6 +5,7 @@ import { getValidators } from '@/lib/utils/form-validator'
 import React, { useEffect, useMemo, useState } from 'react'
 import { evaluateConditions } from '@/lib/utils/check-visibility'
 import { useFormContext } from 'react-hook-form'
+import { Paragraph } from '@/components/index'
 
 interface CheckboxInputProps extends QuestionField {}
 
@@ -91,13 +92,13 @@ export const CheckboxInput = ({
         {field.meta.subtitle && <span>{field.meta.subtitle}</span>}
       </legend>
       {errorMessage && (
-        <p
+        <Paragraph
           id={`${field.key}-error`}
           aria-live="assertive"
           style={{ color: 'red' }}
         >
           {errorMessage}
-        </p>
+        </Paragraph>
       )}
       {Object.keys(field.meta.values).map((key: string) => (
         <div key={key}>

@@ -5,6 +5,7 @@ import { QuestionField } from '@/types/form'
 import { getValidators } from '@/lib/utils/form-validator'
 import { useFormContext } from 'react-hook-form'
 import { evaluateConditions } from '@/lib/utils/check-visibility'
+import { Paragraph } from '@/components/index'
 
 interface RadioGroupProps extends QuestionField {}
 
@@ -75,13 +76,13 @@ export const RadioInput = ({ field, register, errors }: RadioGroupProps) => {
       </legend>
 
       {errorMessage && (
-        <p
+        <Paragraph
           id={`${field.key}-error`}
           aria-live="assertive"
           style={{ color: 'red' }}
         >
           {errorMessage}
-        </p>
+        </Paragraph>
       )}
 
       {Object.keys(field.meta.values).map((key: string) => (

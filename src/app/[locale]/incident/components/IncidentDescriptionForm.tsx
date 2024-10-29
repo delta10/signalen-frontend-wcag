@@ -19,9 +19,17 @@ import { useEffect } from 'react'
 import { getCategoryForDescription } from '@/services/classification'
 import { debounce } from 'lodash'
 import { useFormStore } from '@/store/form_store'
+import React from 'react'
+import {
+  ACCEPTED_IMAGE_TYPES,
+  FileUpload,
+  MAX_FILE_SIZE,
+  MAX_NUMBER_FILES,
+  MIN_FILE_SIZE,
+} from '@/components/ui/upload/FileUpload'
 
 import { FormFieldTextarea } from '@utrecht/component-library-react/dist/css-module'
-import { FileInput, Label } from '@amsterdam/design-system-react'
+import { Label } from '@amsterdam/design-system-react'
 
 export const IncidentDescriptionForm = () => {
   const t = useTranslations('describe-report.form')
@@ -35,15 +43,41 @@ export const IncidentDescriptionForm = () => {
 
   const incidentDescriptionFormSchema = z.object({
     description: z.string().min(1, t('errors.textarea_required')),
-    files: z.any(),
+    files: z
+      .array(z.instanceof(File))
+      .refine(
+        (files) =>
+          files.every((file) => ACCEPTED_IMAGE_TYPES.includes(file.type)),
+        {
+          message: t('errors.file_type_invalid'),
+        }
+      )
+      .refine((files) => files.every((file) => file.size <= MAX_FILE_SIZE), {
+        message: t('errors.file_size_too_large'),
+      })
+      .refine((files) => files.every((file) => file.size >= MIN_FILE_SIZE), {
+        message: t('errors.file_size_too_small'),
+      }),
   })
+
+  const getAttachments = () => {
+    // When the browser is refreshed the files are not properly stored in the localstorage.
+    // Therefor, we check if the file object is still of type File.
+    const filesArray = formState.attachments.filter(
+      (file) => file instanceof File
+    )
+
+    return filesArray.length > 0 ? filesArray : []
+  }
 
   const form = useForm<z.infer<typeof incidentDescriptionFormSchema>>({
     resolver: zodResolver(incidentDescriptionFormSchema),
     defaultValues: {
       description: formState.description,
+      files: getAttachments(),
     },
   })
+  const { register, setFocus } = form
 
   const { description } = form.watch()
 
@@ -71,12 +105,29 @@ export const IncidentDescriptionForm = () => {
     updateForm({
       ...formState,
       description: values.description,
+      attachments: values.files,
     })
 
     setLastCompletedStep(1)
     addOneStep()
 
     router.push('/incident/add')
+  }
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files
+    if (files && files.length > 0) {
+      const filesArray = form
+        .getValues('files')
+        .concat(Array.from(files))
+        .slice(0, MAX_NUMBER_FILES)
+      form.setValue('files', filesArray)
+    }
+  }
+
+  const deleteFile = (index: number) => {
+    const updatedFiles = form.getValues('files').filter((_, i) => i !== index)
+    form.setValue('files', updatedFiles)
   }
 
   return (
@@ -103,22 +154,24 @@ export const IncidentDescriptionForm = () => {
         <FormField
           name={'files'}
           control={form.control}
-          render={({ field, formState: { errors } }) => (
+          render={({ formState: { errors } }) => (
             <FormItem>
               <div>
-                <Label>{t('describe_upload_heading')}</Label>
+                <Label onClick={() => setFocus('files')}>
+                  {t('describe_upload_heading')}
+                </Label>
                 <FormDescription>
                   {t('describe_upload_description')}
                 </FormDescription>
                 <FormMessage />
               </div>
               <FormControl>
-                {/* TODO: put onChange handler on file upload, or provide defaultValue (bind to react-hook-form). To prevent error */}
-                <FileInput
-                  type="file"
-                  value=""
-                  onChange={() => 'test'}
-                  multiple
+                {/*@ts-ignore*/}
+                <FileUpload
+                  onFileUpload={(e) => handleFileChange(e)}
+                  onDelete={(index) => deleteFile(index)}
+                  files={form.getValues('files')}
+                  {...register('files', { required: false })}
                 />
               </FormControl>
             </FormItem>

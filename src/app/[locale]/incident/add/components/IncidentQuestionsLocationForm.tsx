@@ -9,6 +9,7 @@ import { useStepperStore } from '@/store/stepper_store'
 import { useRouter } from '@/routing/navigation'
 import { PublicQuestion } from '@/types/form'
 import { RenderDynamicFields } from '@/app/[locale]/incident/add/components/questions/RenderDynamicFields'
+import { Paragraph } from '@/components/index'
 
 export const IncidentQuestionsLocationForm = () => {
   const { formState: formStoreState, updateForm } = useFormStore()
@@ -113,9 +114,9 @@ export const IncidentQuestionsLocationForm = () => {
           />
         ) : loading ? (
           /* TODO: Implement nice loading state */
-          <p>Laden...</p>
+          <Paragraph>Laden...</Paragraph>
         ) : (
-          <p>TODO: Laat hier een LocationSelect zien</p>
+          <Paragraph>TODO: Laat hier een LocationSelect zien</Paragraph>
         )}
         <IncidentFormFooter />
       </form>
