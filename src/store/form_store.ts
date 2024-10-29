@@ -12,6 +12,7 @@ const initialFormState: FormStoreState = {
   phone: undefined,
   sharing_allowed: false,
   extra_properties: [],
+  attachments: [],
 }
 
 const useFormStore = create<FormStore>()(
