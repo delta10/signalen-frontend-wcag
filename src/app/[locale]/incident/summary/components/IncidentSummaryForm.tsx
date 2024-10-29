@@ -13,7 +13,6 @@ import { postAttachments } from '@/services/attachment/attachments'
 import { useFormStore } from '@/store/form_store'
 import { _NestedLocationModel } from '@/services/client'
 import { Paragraph, Heading } from '@/components/index'
-import { Paragraph } from '@/components/index'
 import { MAX_NUMBER_FILES } from '@/components/ui/upload/FileUpload'
 import PreviewFile from '@/components/ui/upload/PreviewFile'
 
