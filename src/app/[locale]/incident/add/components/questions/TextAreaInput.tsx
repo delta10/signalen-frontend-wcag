@@ -3,6 +3,7 @@ import { useTranslations } from 'next-intl'
 import { useFormStore } from '@/store/form_store'
 import { getValidators } from '@/lib/utils/form-validator'
 import React from 'react'
+import { Paragraph } from '@/components/index'
 
 interface TextAreaInputProps extends QuestionField {}
 
@@ -37,13 +38,13 @@ export const TextAreaInput = ({
   return (
     <div className="flex flex-col gap-2">
       {errorMessage && (
-        <p
+        <Paragraph
           id={`${field.key}-error`}
           aria-live="assertive"
           style={{ color: 'red' }}
         >
           {errorMessage}
-        </p>
+        </Paragraph>
       )}
       <label htmlFor={`${field.key}`}>
         {field.meta.label}{' '}

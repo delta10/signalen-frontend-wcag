@@ -20,6 +20,7 @@ import { Input } from '@/components/ui/Input'
 import { Checkbox } from '@/components/ui/Checkbox'
 import { useFormStore } from '@/store/form_store'
 import { useEffect } from 'react'
+import { Paragraph } from '@/components/index'
 
 const IncidentContactForm = () => {
   const t = useTranslations('describe-contact.form')
@@ -73,7 +74,7 @@ const IncidentContactForm = () => {
         >
           <div className="flex flex-col gap-4">
             <h2>{t('heading')}</h2>
-            <p>{t('description')}</p>
+            <Paragraph>{t('description')}</Paragraph>
           </div>
           <FormField
             name={'phone'}
@@ -107,7 +108,7 @@ const IncidentContactForm = () => {
           />
           <div className="flex flex-col gap-4">
             <h2>{t('send_to_other_instance_heading')}</h2>
-            <p>{t('send_to_other_instance_description')}</p>
+            <Paragraph>{t('send_to_other_instance_description')}</Paragraph>
           </div>
           <div className="bg-gray-200 w-full p-4">
             <FormField

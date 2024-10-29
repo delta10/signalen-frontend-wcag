@@ -12,6 +12,7 @@ import { useRouter } from '@/routing/navigation'
 import { postAttachments } from '@/services/attachment/attachments'
 import { useFormStore } from '@/store/form_store'
 import { _NestedLocationModel } from '@/services/client'
+import { Paragraph } from '@/components/index'
 import { MAX_NUMBER_FILES } from '@/components/ui/upload/FileUpload'
 import PreviewFile from '@/components/ui/upload/PreviewFile'
 
@@ -80,7 +81,7 @@ const IncidentSummaryForm = () => {
 
   return (
     <div className="flex flex-col gap-8">
-      <p>{t('description')}</p>
+      <Paragraph>{t('description')}</Paragraph>
       <Divider />
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-1 md:flex-row justify-between">
@@ -123,7 +124,7 @@ const IncidentSummaryForm = () => {
         {formState.phone === undefined &&
         formState.email === undefined &&
         formState.sharing_allowed === false ? (
-          <p>{t('steps.step_three.no_contact_details')}</p>
+          <Paragraph>{t('steps.step_three.no_contact_details')}</Paragraph>
         ) : (
           <>
             {formState.phone !== undefined && formState.phone !== null ? (
@@ -163,8 +164,12 @@ export const IncidentSummaryFormItem = ({
 }) => {
   return (
     <div className="flex flex-col gap-1">
-      <p className="font-semibold">{title}</p>
-      {value !== '' ? <p>{value}</p> : <div className="mt-2">{children}</div>}
+      <Paragraph className="font-semibold">{title}</Paragraph>
+      {value !== '' ? (
+        <Paragraph>{value}</Paragraph>
+      ) : (
+        <div className="mt-2">{children}</div>
+      )}
     </div>
   )
 }

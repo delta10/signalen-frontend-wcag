@@ -3,6 +3,7 @@ import { useTranslations } from 'next-intl'
 import { useFormStore } from '@/store/form_store'
 import { QuestionField } from '@/types/form'
 import { getValidators } from '@/lib/utils/form-validator'
+import { Paragraph } from '@/components/index'
 
 interface RadioGroupProps extends QuestionField {}
 
@@ -40,13 +41,13 @@ export const RadioInput = ({ field, register, errors }: RadioGroupProps) => {
       </legend>
 
       {errorMessage && (
-        <p
+        <Paragraph
           id={`${field.key}-error`}
           aria-live="assertive"
           style={{ color: 'red' }}
         >
           {errorMessage}
-        </p>
+        </Paragraph>
       )}
 
       {Object.keys(field.meta.values).map((key: string) => (
