@@ -96,7 +96,6 @@ export const TextAreaInput = ({
         {...register(field.key, getValidators(field, t))}
         rows={5}
         placeholder={field.meta.placeholder ? field.meta.placeholder : ''}
-        defaultValue={getDefaultValueTextInput(field.key)}
         id={`${field.key}`}
         aria-describedby={
           field.meta.subtitle ? `${field.key}-${field.key}` : ''
