@@ -109,9 +109,24 @@ const IncidentSummaryForm = () => {
             {t('steps.step_two.edit')}
           </LinkWrapper>
         </div>
-        <IncidentSummaryFormItem title={t('steps.step_two.input_heading')}>
-          <LocationMap />
-        </IncidentSummaryFormItem>
+        {/* TODO: AssetSelect en LocationSelect hier tonen, indien een / beide zijn ingevuld */}
+        {formState.extra_properties.map((answer) => {
+          return (
+            <IncidentSummaryFormItem
+              title={answer.label}
+              key={answer.id}
+              value={
+                typeof answer.answer === 'string'
+                  ? answer.answer
+                  : Array.isArray(answer.answer)
+                    ? answer.answer
+                        .map((singleAnswer) => singleAnswer.label)
+                        .join(', ')
+                    : answer.answer.label
+              }
+            />
+          )
+        })}
       </div>
       <Divider />
       <div className="flex flex-col gap-4">
