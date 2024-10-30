@@ -7,7 +7,7 @@ import { useEffect, useRef } from 'react'
 import { useFormStore } from '@/store/form_store'
 import { Button, Link } from '@utrecht/component-library-react/dist/css-module'
 
-import { Paragraph } from '@/components/index'
+import { Paragraph } from '@/components'
 
 type StepperProps = {}
 
