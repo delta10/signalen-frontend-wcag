@@ -66,9 +66,7 @@ const IncidentFormFooter = ({
             variant="primary"
             type="submit"
             disabled={loading}
-            aria-describedby={
-              loading ? 'submit-described-loading' : ariaDescribedById
-            }
+            aria-describedby={ariaDescribedById}
             className="flex items-center gap-2 justify-self-end"
             onClick={() => (handleSignalSubmit ? handleSignalSubmit() : null)}
           >

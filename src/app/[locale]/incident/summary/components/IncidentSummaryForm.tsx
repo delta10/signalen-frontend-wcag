@@ -240,16 +240,12 @@ const SubmitAlert = ({
     }
   }, [error, loading])
 
-  // todo: zet maak aria-labels nog even netjes
   if (loading) {
     return (
-      <Alert ref={alertRef} id="submit-described-loading" aria-live="assertive">
-        <Paragraph className="pt-1">
-          Uw melding wordt afgehandeld. U gaat automatisch naar de volgende
-          pagina zodra de melding is ontvangen.
-          <br />
-          <br />
-          Een ogenblik geduld alstublieft...
+      <Alert ref={alertRef} id="submit-described-by" aria-live="assertive">
+        <Heading3>{t('submit_alert.loading.heading')}</Heading3>
+        <Paragraph className="pt-2">
+          {t.rich('submit_alert.loading.description', { br: () => <br /> })}
         </Paragraph>
       </Alert>
     )
@@ -263,9 +259,9 @@ const SubmitAlert = ({
         id="submit-described-by"
         aria-live="polite"
       >
-        {error && <Heading3>{t('errors.submit_failed_heading')}</Heading3>}
-        <Paragraph className="pt-1">
-          {t('errors.submit_failed_description')}
+        <Heading3>{t('submit_alert.error.heading')}</Heading3>
+        <Paragraph className="pt-2">
+          {t('submit_alert.error.description')}
         </Paragraph>
       </Alert>
     )
