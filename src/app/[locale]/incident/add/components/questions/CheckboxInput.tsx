@@ -86,7 +86,7 @@ export const CheckboxInput = ({ field }: CheckboxInputProps) => {
   }
 
   return (
-    <fieldset aria-invalid={!!errorMessage}>
+    <fieldset aria-invalid={!!errorMessage} data-testid="checkbox-group">
       <legend>
         {field.meta.label}{' '}
         <span> {field.required ? '' : `(${t('not_required_short')})`}</span>
