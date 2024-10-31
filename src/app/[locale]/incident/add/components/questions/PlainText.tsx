@@ -26,10 +26,6 @@ export const PlainText = ({ field }: PlainTextProps) => {
     }
   }, [field, shouldRender])
 
-  useEffect(() => {
-    console.log(formState.isBlocking)
-  }, [formState.isBlocking])
-
   const watchValues = watch()
 
   // Memoize `evaluateConditions` result to prevent unnecessary updates
