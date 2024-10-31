@@ -86,7 +86,7 @@
       },
       "loading": {
         "heading": "Processing",
-        "description": "Your report is being processed. You will automatically go to the next page once the report is received.<br></br><br></br>Please wait a moment...."
+        "description": "Your report is being processed. You will automatically go to the next page once the report is received.\n\nPlease wait a moment...."
       }
     }
   },

@@ -17,7 +17,7 @@ import {
   Alert,
   Paragraph,
 } from '@utrecht/component-library-react/dist/css-module'
-import { Heading3 } from '@utrecht/component-library-react'
+import { Heading, MultilineData } from '@utrecht/component-library-react'
 
 const IncidentSummaryForm = () => {
   const t = useTranslations('describe-summary')
@@ -232,7 +232,12 @@ const SubmitAlert = ({
 }) => {
   const t = useTranslations('describe-summary')
   const alertRef = useRef<HTMLDivElement | null>(null)
-
+  const multilineRef = useRef<HTMLPreElement>(null)
+  const exampleText = `
+  This is an example of
+  multiline text that keeps
+  line breaks and indentation
+  `
   // Scroll to error message when an error occurs
   useEffect(() => {
     if ((error || loading) && alertRef.current) {
@@ -242,24 +247,19 @@ const SubmitAlert = ({
 
   if (loading) {
     return (
-      <Alert ref={alertRef} id="submit-described-by" aria-live="assertive">
-        <Heading3>{t('submit_alert.loading.heading')}</Heading3>
-        <Paragraph className="pt-2">
-          {t.rich('submit_alert.loading.description', { br: () => <br /> })}
-        </Paragraph>
+      <Alert ref={alertRef} id="submit-described-by">
+        <Heading level={3}>{t('submit_alert.loading.heading')}</Heading>
+        <MultilineData ref={multilineRef} className="pt-2">
+          {t('submit_alert.loading.description')}
+        </MultilineData>
       </Alert>
     )
   }
 
   if (error) {
     return (
-      <Alert
-        ref={alertRef}
-        type="error"
-        id="submit-described-by"
-        aria-live="polite"
-      >
-        <Heading3>{t('submit_alert.error.heading')}</Heading3>
+      <Alert ref={alertRef} type="error" id="submit-described-by">
+        <Heading level={3}>{t('submit_alert.error.heading')}</Heading>
         <Paragraph className="pt-2">
           {t('submit_alert.error.description')}
         </Paragraph>
