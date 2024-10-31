@@ -1,22 +1,54 @@
 import { QuestionField } from '@/types/form'
-import React from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { useFormStore } from '@/store/form_store'
 import { getValidators } from '@/lib/utils/form-validator'
+import { useFormContext } from 'react-hook-form'
+import { evaluateConditions } from '@/lib/utils/check-visibility'
 import { Paragraph } from '@/components/index'
 
 interface TextInputProps extends QuestionField {}
 
-export const TextInput = ({ field, register, errors }: TextInputProps) => {
+export const TextInput = ({ field }: TextInputProps) => {
+  const [shouldRender, setShouldRender] = useState<boolean>(false)
+  const {
+    watch,
+    setValue,
+    register,
+    formState: { errors },
+  } = useFormContext()
   const t = useTranslations('general.errors')
-  const { formState } = useFormStore()
+  const { formState: formStoreState } = useFormStore()
   const errorMessage = errors[field.key]?.message as string
+
+  const watchValues = watch()
+
+  // Memoize `evaluateConditions` result to prevent unnecessary updates
+  const shouldRenderResult = useMemo(
+    () => evaluateConditions(field.meta, watchValues),
+    [field.meta, watchValues]
+  )
+
+  // Handle visibility changes
+  useEffect(() => {
+    if (shouldRender !== shouldRenderResult) {
+      setShouldRender(shouldRenderResult)
+      if (!shouldRenderResult) {
+        setValue(field.key, null)
+      } else {
+        const defaultValue = getDefaultValueTextInput(field.key)
+        if (defaultValue) {
+          setValue(field.key, defaultValue)
+        }
+      }
+    }
+  }, [shouldRenderResult, shouldRender, field.key, setValue])
 
   // Check if the user has already answered a specific question.
   // Returns the answer if an answer exists, otherwise returns empty string.
   // This is used to determine if the 'defaultValue' property of a text input should be set.
   const getDefaultValueTextInput = (id: string) => {
-    const extraProperties = formState.extra_properties.filter(
+    const extraProperties = formStoreState.extra_properties.filter(
       (question) => question.id === id
     )
 
@@ -29,6 +61,18 @@ export const TextInput = ({ field, register, errors }: TextInputProps) => {
     }
 
     return ''
+  }
+
+  // Register the field immediately with initial value
+  useEffect(() => {
+    const defaultValue = getDefaultValueTextInput(field.key)
+    if (defaultValue && shouldRender) {
+      setValue(field.key, defaultValue)
+    }
+  }, [field.key, setValue, shouldRender])
+
+  if (!shouldRender) {
+    return null
   }
 
   return (
@@ -53,7 +97,6 @@ export const TextInput = ({ field, register, errors }: TextInputProps) => {
         {...register(field.key, getValidators(field, t))}
         type="text"
         placeholder={field.meta.placeholder ? field.meta.placeholder : ''}
-        defaultValue={getDefaultValueTextInput(field.key)}
         id={`${field.key}`}
         aria-describedby={
           field.meta.subtitle ? `${field.key}-${field.key}` : ''

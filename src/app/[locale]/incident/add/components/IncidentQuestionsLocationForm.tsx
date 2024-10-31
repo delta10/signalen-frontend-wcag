@@ -1,6 +1,6 @@
 'use client'
 
-import { useForm } from 'react-hook-form'
+import { FormProvider, useForm } from 'react-hook-form'
 import { useEffect, useState } from 'react'
 import { fetchAdditionalQuestions } from '@/services/additional-questions'
 import { useFormStore } from '@/store/form_store'
@@ -21,13 +21,7 @@ export const IncidentQuestionsLocationForm = () => {
   >([])
   const { addOneStep, setLastCompletedStep } = useStepperStore()
   const router = useRouter()
-  const {
-    register,
-    setError,
-    clearErrors,
-    handleSubmit,
-    formState: { errors },
-  } = useForm()
+  const methods = useForm()
 
   useEffect(() => {
     router.prefetch('/incident/contact')
@@ -36,12 +30,18 @@ export const IncidentQuestionsLocationForm = () => {
   useEffect(() => {
     const appendAdditionalQuestions = async () => {
       try {
-        const additionalQuestions = (await fetchAdditionalQuestions(
-          formStoreState.main_category,
-          formStoreState.sub_category
-        )) as unknown as PublicQuestion[]
+        if (
+          formStoreState.main_category !== 'overig' &&
+          formStoreState.sub_category !== 'overig'
+        ) {
+          const additionalQuestions = (await fetchAdditionalQuestions(
+            formStoreState.main_category,
+            formStoreState.sub_category
+          )) as unknown as PublicQuestion[]
 
-        setAdditionalQuestions(additionalQuestions)
+          setAdditionalQuestions(additionalQuestions)
+        }
+
         setLoading(false)
       } catch (e) {
         console.error('Could not fetch additional questions', e)
@@ -54,14 +54,14 @@ export const IncidentQuestionsLocationForm = () => {
 
   useEffect(() => {
     if (formStoreState.isBlocking) {
-      setError('submit', {
+      methods.setError('submit', {
         type: 'manual',
         message: t('is_blocking'),
       })
     } else {
-      clearErrors('submit')
+      methods.clearErrors('submit')
     }
-  }, [formStoreState.isBlocking, setError, clearErrors])
+  }, [formStoreState.isBlocking, methods.setError, methods.clearErrors])
 
   const onSubmit = (data: any) => {
     const questionKeys = Object.keys(data)
@@ -114,28 +114,26 @@ export const IncidentQuestionsLocationForm = () => {
   }
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col gap-8 items-start"
-    >
-      {errors.submit && (
-        <div className="bg-red-100 rounded-lg p-4">
-          {errors.submit.message?.toString()}
-        </div>
-      )}
-      {additionalQuestions.length ? (
-        <RenderDynamicFields
-          data={additionalQuestions}
-          register={register}
-          errors={errors}
-        />
-      ) : loading ? (
-        /* TODO: Implement nice loading state */
-        <Paragraph>Laden...</Paragraph>
-      ) : (
-        <Paragraph>TODO: Laat hier een LocationSelect zien</Paragraph>
-      )}
-      <IncidentFormFooter errors={errors} />
-    </form>
+    <FormProvider {...methods}>
+      <form
+        onSubmit={methods.handleSubmit(onSubmit)}
+        className="flex flex-col gap-8 items-start"
+      >
+        {methods.formState.errors.submit && (
+          <div className="bg-red-100 rounded-lg p-4">
+            {methods.formState.errors.submit.message?.toString()}
+          </div>
+        )}
+        {additionalQuestions.length ? (
+          <RenderDynamicFields data={additionalQuestions} />
+        ) : loading ? (
+          /* TODO: Implement nice loading state */
+          <Paragraph>Laden...</Paragraph>
+        ) : (
+          <Paragraph>TODO: Laat hier een LocationSelect zien</Paragraph>
+        )}
+        <IncidentFormFooter />
+      </form>
+    </FormProvider>
   )
 }
