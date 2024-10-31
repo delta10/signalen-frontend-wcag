@@ -61,7 +61,7 @@ const FormProgress = ({}: Props) => {
             </Button>
           )}
           <Heading4>Stap {step} van 4</Heading4>
-          {lastCompletedStep && (
+          {step !== 4 && lastCompletedStep === 3 && (
             <ButtonLink
               className="absolute right-0 custom-hover pr-0-overwrite"
               appearance={'subtle-button'}
