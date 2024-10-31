@@ -9,11 +9,16 @@ import { Paragraph } from '@/components/index'
 
 interface TextInputProps extends QuestionField {}
 
-export const TextInput = ({ field, register, errors }: TextInputProps) => {
+export const TextInput = ({ field }: TextInputProps) => {
   const [shouldRender, setShouldRender] = useState<boolean>(false)
-  const { watch, setValue } = useFormContext()
+  const {
+    watch,
+    setValue,
+    register,
+    formState: { errors },
+  } = useFormContext()
   const t = useTranslations('general.errors')
-  const { formState } = useFormStore()
+  const { formState: formStoreState } = useFormStore()
   const errorMessage = errors[field.key]?.message as string
 
   const watchValues = watch()
@@ -43,7 +48,7 @@ export const TextInput = ({ field, register, errors }: TextInputProps) => {
   // Returns the answer if an answer exists, otherwise returns empty string.
   // This is used to determine if the 'defaultValue' property of a text input should be set.
   const getDefaultValueTextInput = (id: string) => {
-    const extraProperties = formState.extra_properties.filter(
+    const extraProperties = formStoreState.extra_properties.filter(
       (question) => question.id === id
     )
 

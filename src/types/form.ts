@@ -3,8 +3,8 @@ import { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form'
 
 export type QuestionField = {
   field: PublicQuestion
-  register: UseFormRegister<FieldValues>
-  errors: FieldErrors<FieldValues>
+  register?: UseFormRegister<FieldValues>
+  errors?: FieldErrors<FieldValues>
 }
 
 export enum FieldTypes {
