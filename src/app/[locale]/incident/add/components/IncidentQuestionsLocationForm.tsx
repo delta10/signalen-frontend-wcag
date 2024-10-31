@@ -107,11 +107,7 @@ export const IncidentQuestionsLocationForm = () => {
         className="flex flex-col gap-8 items-start"
       >
         {additionalQuestions.length ? (
-          <RenderDynamicFields
-            data={additionalQuestions}
-            register={methods.register}
-            errors={methods.formState.errors}
-          />
+          <RenderDynamicFields data={additionalQuestions} />
         ) : loading ? (
           /* TODO: Implement nice loading state */
           <Paragraph>Laden...</Paragraph>

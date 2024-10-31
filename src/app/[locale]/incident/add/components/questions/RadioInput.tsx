@@ -9,11 +9,16 @@ import { Paragraph } from '@/components/index'
 
 interface RadioGroupProps extends QuestionField {}
 
-export const RadioInput = ({ field, register, errors }: RadioGroupProps) => {
+export const RadioInput = ({ field }: RadioGroupProps) => {
   const [shouldRender, setShouldRender] = useState<boolean>(false)
-  const { watch, setValue } = useFormContext()
+  const {
+    watch,
+    register,
+    formState: { errors },
+    setValue,
+  } = useFormContext()
   const t = useTranslations('general.errors')
-  const { formState } = useFormStore()
+  const { formState: formStoreState } = useFormStore()
 
   const errorMessage = errors[field.key]?.message as string
 
@@ -42,7 +47,7 @@ export const RadioInput = ({ field, register, errors }: RadioGroupProps) => {
 
   // Get default value helper function
   const getDefaultValueRadioInput = (id: string) => {
-    const extraProperty = formState.extra_properties.find(
+    const extraProperty = formStoreState.extra_properties.find(
       (question) => question.id === id
     )
 

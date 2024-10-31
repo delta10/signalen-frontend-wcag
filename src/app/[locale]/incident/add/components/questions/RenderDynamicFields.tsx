@@ -6,34 +6,27 @@ import { CheckboxInput } from '@/app/[locale]/incident/add/components/questions/
 import { TextAreaInput } from '@/app/[locale]/incident/add/components/questions/TextAreaInput'
 import { AssetSelect } from '@/app/[locale]/incident/add/components/questions/AssetSelect'
 import { LocationSelect } from '@/app/[locale]/incident/add/components/questions/LocationSelect'
-import { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form'
 
 type RenderDynamicFieldsProps = {
   data: PublicQuestion[]
-  register: UseFormRegister<FieldValues>
-  errors: FieldErrors<FieldValues>
 }
 
-export const RenderDynamicFields = ({
-  data,
-  register,
-  errors,
-}: RenderDynamicFieldsProps) => {
+export const RenderDynamicFields = ({ data }: RenderDynamicFieldsProps) => {
   const additionalQuestionTypes = {
     [FieldTypes.RADIO_INPUT]: (field: PublicQuestion) => (
-      <RadioInput register={register} field={field} errors={errors} />
+      <RadioInput field={field} />
     ),
     [FieldTypes.PLAIN_TEXT]: (field: PublicQuestion) => (
       <PlainText field={field} />
     ),
     [FieldTypes.TEXT_INPUT]: (field: PublicQuestion) => (
-      <TextInput register={register} field={field} errors={errors} />
+      <TextInput field={field} />
     ),
     [FieldTypes.CHECKBOX_INPUT]: (field: PublicQuestion) => (
-      <CheckboxInput register={register} field={field} errors={errors} />
+      <CheckboxInput field={field} />
     ),
     [FieldTypes.TEXT_AREA_INPUT]: (field: PublicQuestion) => (
-      <TextAreaInput register={register} field={field} errors={errors} />
+      <TextAreaInput field={field} />
     ),
     [FieldTypes.ASSET_SELECT]: (field: PublicQuestion) => (
       // TODO: Implement Asset Select

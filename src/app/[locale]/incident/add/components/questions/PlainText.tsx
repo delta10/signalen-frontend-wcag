@@ -8,7 +8,7 @@ interface PlainTextProps extends Omit<QuestionField, 'register' | 'errors'> {}
 
 export const PlainText = ({ field }: PlainTextProps) => {
   const [shouldRender, setShouldRender] = useState<boolean>(false)
-  const { watch, getValues } = useFormContext()
+  const { watch } = useFormContext()
 
   const watchValues = watch()
 

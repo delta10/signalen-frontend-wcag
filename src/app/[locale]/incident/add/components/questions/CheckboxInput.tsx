@@ -9,15 +9,16 @@ import { Paragraph } from '@/components/index'
 
 interface CheckboxInputProps extends QuestionField {}
 
-export const CheckboxInput = ({
-  field,
-  register,
-  errors,
-}: CheckboxInputProps) => {
+export const CheckboxInput = ({ field }: CheckboxInputProps) => {
   const [shouldRender, setShouldRender] = useState<boolean>(false)
-  const { watch, setValue } = useFormContext()
+  const {
+    watch,
+    formState: { errors },
+    register,
+    setValue,
+  } = useFormContext()
   const t = useTranslations('general.errors')
-  const { formState } = useFormStore()
+  const { formState: formStoreState } = useFormStore()
 
   const errorMessage = errors[field.key]?.message as string
 
@@ -46,7 +47,7 @@ export const CheckboxInput = ({
 
   // Get default value helper function
   const getDefaultValueCheckboxInput = (id: string) => {
-    const extraProperty = formState.extra_properties.find(
+    const extraProperty = formStoreState.extra_properties.find(
       (question) => question.id === id
     )
 
