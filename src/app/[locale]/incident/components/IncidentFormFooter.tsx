@@ -6,14 +6,17 @@ import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/Button'
 import { useStepperStore } from '@/store/stepper_store'
 import { steps, usePathname as usePath, useRouter } from '@/routing/navigation'
+import { FieldErrors, FieldValues } from 'react-hook-form'
 
 type IncidentFormFooterProps = {
   handleSignalSubmit?: () => void
+  errors: FieldErrors<FieldValues>
 } & React.HTMLAttributes<HTMLDivElement>
 
 const IncidentFormFooter = ({
   className,
   handleSignalSubmit,
+  errors,
 }: IncidentFormFooterProps) => {
   const t = useTranslations('general.describe_form')
   const { step, addOneStep, removeOneStep } = useStepperStore()
@@ -60,6 +63,7 @@ const IncidentFormFooter = ({
             variant="primary"
             type="submit"
             className="justify-self-end"
+            disabled={!!errors.submit}
             onClick={() => (handleSignalSubmit ? handleSignalSubmit() : null)}
           >
             {t('submit_button')}

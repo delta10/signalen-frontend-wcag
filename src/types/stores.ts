@@ -19,6 +19,7 @@ type FormStoreState = {
     label: string
   }>
   attachments: File[]
+  isBlocking: boolean
 }
 
 type FormStore = {

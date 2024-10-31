@@ -10,8 +10,10 @@ import { useRouter } from '@/routing/navigation'
 import { PublicQuestion } from '@/types/form'
 import { RenderDynamicFields } from '@/app/[locale]/incident/add/components/questions/RenderDynamicFields'
 import { Paragraph } from '@/components/index'
+import { useTranslations } from 'next-intl'
 
 export const IncidentQuestionsLocationForm = () => {
+  const t = useTranslations('general.errors')
   const { formState: formStoreState, updateForm } = useFormStore()
   const [loading, setLoading] = useState<boolean>(true)
   const [additionalQuestions, setAdditionalQuestions] = useState<
@@ -21,6 +23,8 @@ export const IncidentQuestionsLocationForm = () => {
   const router = useRouter()
   const {
     register,
+    setError,
+    clearErrors,
     handleSubmit,
     formState: { errors },
   } = useForm()
@@ -47,6 +51,17 @@ export const IncidentQuestionsLocationForm = () => {
 
     appendAdditionalQuestions()
   }, [formStoreState.main_category, formStoreState.sub_category])
+
+  useEffect(() => {
+    if (formStoreState.isBlocking) {
+      setError('submit', {
+        type: 'manual',
+        message: t('is_blocking'),
+      })
+    } else {
+      clearErrors('submit')
+    }
+  }, [formStoreState.isBlocking, setError, clearErrors])
 
   const onSubmit = (data: any) => {
     const questionKeys = Object.keys(data)
@@ -103,6 +118,11 @@ export const IncidentQuestionsLocationForm = () => {
       onSubmit={handleSubmit(onSubmit)}
       className="flex flex-col gap-8 items-start"
     >
+      {errors.submit && (
+        <div className="bg-red-100 rounded-lg p-4">
+          {errors.submit.message?.toString()}
+        </div>
+      )}
       {additionalQuestions.length ? (
         <RenderDynamicFields
           data={additionalQuestions}
@@ -115,7 +135,7 @@ export const IncidentQuestionsLocationForm = () => {
       ) : (
         <Paragraph>TODO: Laat hier een LocationSelect zien</Paragraph>
       )}
-      <IncidentFormFooter />
+      <IncidentFormFooter errors={errors} />
     </form>
   )
 }

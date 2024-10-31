@@ -13,6 +13,7 @@ const initialFormState: FormStoreState = {
   sharing_allowed: false,
   extra_properties: [],
   attachments: [],
+  isBlocking: false,
 }
 
 const useFormStore = create<FormStore>()(
