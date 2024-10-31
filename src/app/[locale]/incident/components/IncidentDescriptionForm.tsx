@@ -34,7 +34,13 @@ import { Label } from '@amsterdam/design-system-react'
 export const IncidentDescriptionForm = () => {
   const t = useTranslations('describe-report.form')
   const { updateForm, formState } = useFormStore()
-  const { addOneStep, setLastCompletedStep } = useStepperStore()
+  const {
+    addOneStep,
+    setLastCompletedStep,
+    navToSummary,
+    onNavToSummary,
+    goToStep,
+  } = useStepperStore()
   const router = useRouter()
 
   useEffect(() => {
@@ -113,6 +119,21 @@ export const IncidentDescriptionForm = () => {
 
     router.push('/incident/add')
   }
+
+  useEffect(() => {
+    if (navToSummary) {
+      updateForm({
+        ...formState,
+        description: form.getValues('description'),
+        attachments: form.getValues('files'),
+      })
+
+      // kan evt naar store
+      goToStep(4)
+      router.push('/incident/summary')
+      onNavToSummary(false)
+    }
+  }, [navToSummary])
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files

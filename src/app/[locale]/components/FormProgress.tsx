@@ -18,6 +18,7 @@ const FormProgress = ({}: Props) => {
     goToStep,
     setLastCompletedStep,
     removeOneStep,
+    onNavToSummary,
   } = useStepperStore()
   const { resetForm } = useFormStore()
   const router = useRouter()
@@ -61,16 +62,15 @@ const FormProgress = ({}: Props) => {
             </Button>
           )}
           <Heading4>Stap {step} van 4</Heading4>
-          {step !== 4 && lastCompletedStep === 3 && (
-            <ButtonLink
+          {step < 4 && lastCompletedStep === 3 && (
+            <Button
               className="absolute right-0 custom-hover pr-0-overwrite"
               appearance={'subtle-button'}
-              onClick={() => goToStep(4)}
-              href="/incident/summary"
+              onClick={() => onNavToSummary(true)}
             >
               Naar samenvatting
               <FaChevronRight />
-            </ButtonLink>
+            </Button>
           )}
         </div>
         <div className="overflow-hidden bg-gray-200">

@@ -12,7 +12,6 @@ export default function IncidentLayout({ children }: Layout) {
       <div className="max-w-3xl mx-auto gap-16 flex flex-col">
         <div className="">
           <NextIntlClientProvider messages={pick(messages, 'stepper')}>
-            {/*<Stepper />*/}
             <FormProgress />
           </NextIntlClientProvider>
         </div>

@@ -7,6 +7,7 @@ const useStepperStore = create<StepperStore>()(
     (set) => ({
       step: 1,
       lastCompletedStep: 0,
+      navToSummary: false,
 
       goToStep: (step: number) => set(() => ({ step })),
 
@@ -16,6 +17,8 @@ const useStepperStore = create<StepperStore>()(
       removeOneStep: () => set((state) => ({ step: state.step - 1 })),
 
       addOneStep: () => set((state) => ({ step: state.step + 1 })),
+
+      onNavToSummary: (pressed) => set(() => ({ navToSummary: pressed })),
     }),
     {
       name: 'step',
