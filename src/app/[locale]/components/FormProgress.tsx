@@ -56,10 +56,14 @@ const FormProgress = () => {
               onClick={() => goBack()}
             >
               <FaChevronLeft />
-              Vorige
+              {t('back')}
             </Button>
           )}
-          <Heading level={4}>Stap {step} van 4</Heading>
+
+          <Heading level={4}>
+            {t('step', { currentStep: step, totalSteps: 4 })}
+          </Heading>
+
           {step < FormStep.STEP_4_SUMMARY &&
             visitedSteps.includes(FormStep.STEP_3_CONTACT) && (
               <Button
@@ -67,7 +71,7 @@ const FormProgress = () => {
                 appearance={'subtle-button'}
                 onClick={() => onNavToSummary(true)}
               >
-                Naar samenvatting
+                {t('to_summary')}
                 <FaChevronRight />
               </Button>
             )}

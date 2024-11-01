@@ -95,7 +95,7 @@ export const IncidentQuestionsLocationForm = () => {
 
     addVisitedStep(FormStep.STEP_2_ADD)
     addOneStep()
-    router.push(steps[FormStep.STEP_2_ADD])
+    router.push(steps[FormStep.STEP_3_CONTACT])
   }
 
   useEffect(() => {

@@ -27,4 +27,5 @@ export enum FormStep {
   STEP_2_ADD = 2,
   STEP_3_CONTACT = 3,
   STEP_4_SUMMARY = 4,
+  STEP_5_THANK_YOU = 5,
 }

@@ -77,7 +77,7 @@ const IncidentSummaryForm = () => {
       })
       .then((res) => {
         addVisitedStep(FormStep.STEP_4_SUMMARY)
-        router.push(steps[FormStep.STEP_4_SUMMARY])
+        router.push(steps[FormStep.STEP_5_THANK_YOU])
       })
       .catch((err) => console.error(err))
   }

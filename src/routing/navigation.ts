@@ -30,11 +30,12 @@ export const pathnames = {
 
 type Paths = keyof typeof pathnames
 
-export const steps: { [key: string]: Paths } = {
-  '1': '/incident',
-  '2': '/incident/add',
-  '3': '/incident/contact',
-  '4': '/incident/summary',
+export const steps: { [key: number]: Paths } = {
+  1: '/incident',
+  2: '/incident/add',
+  3: '/incident/contact',
+  4: '/incident/summary',
+  5: '/incident/thankyou',
 }
 
 export const { Link, redirect, usePathname, useRouter, getPathname } =
