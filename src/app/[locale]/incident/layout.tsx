@@ -1,5 +1,4 @@
 import { Layout } from '@/types/layout'
-import { Stepper } from '@/app/[locale]/components/Stepper'
 import { NextIntlClientProvider, useMessages } from 'next-intl'
 import pick from 'lodash/pick'
 import FormProgress from '@/app/[locale]/components/FormProgress'

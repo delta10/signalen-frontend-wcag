@@ -6,7 +6,7 @@ import { fetchAdditionalQuestions } from '@/services/additional-questions'
 import { useFormStore } from '@/store/form_store'
 import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentFormFooter'
 import { useStepperStore } from '@/store/stepper_store'
-import { useRouter } from '@/routing/navigation'
+import { steps, useRouter } from '@/routing/navigation'
 import { FormStep, PublicQuestion } from '@/types/form'
 import { RenderDynamicFields } from '@/app/[locale]/incident/add/components/questions/RenderDynamicFields'
 import { Paragraph } from '@/components/index'
@@ -17,7 +17,8 @@ export const IncidentQuestionsLocationForm = () => {
   const [additionalQuestions, setAdditionalQuestions] = useState<
     PublicQuestion[]
   >([])
-  const { addOneStep, addVisitedStep } = useStepperStore()
+  const { addOneStep, addVisitedStep, navToSummary, onNavToSummary, goToStep } =
+    useStepperStore()
   const router = useRouter()
   const {
     register,
@@ -97,6 +98,17 @@ export const IncidentQuestionsLocationForm = () => {
 
     router.push('/incident/contact')
   }
+
+  useEffect(() => {
+    if (navToSummary) {
+      // todo: finish update form when component it fixed
+      // updateForm({})
+
+      goToStep(FormStep.STEP_4_SUMMARY)
+      router.push(steps[FormStep.STEP_4_SUMMARY])
+      onNavToSummary(false)
+    }
+  }, [navToSummary])
 
   return (
     <form

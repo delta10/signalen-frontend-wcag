@@ -14,7 +14,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
 import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentFormFooter'
 import { useStepperStore } from '@/store/stepper_store'
-import { useRouter } from '@/routing/navigation'
+import { steps, useRouter } from '@/routing/navigation'
 import React, { useEffect } from 'react'
 import { getCategoryForDescription } from '@/services/classification'
 import { debounce } from 'lodash'
@@ -123,9 +123,8 @@ export const IncidentDescriptionForm = () => {
         attachments: form.getValues('files'),
       })
 
-      // todo : kan evt naar store
       goToStep(FormStep.STEP_4_SUMMARY)
-      router.push('/incident/summary')
+      router.push(steps[FormStep.STEP_4_SUMMARY])
       onNavToSummary(false)
     }
   }, [navToSummary])

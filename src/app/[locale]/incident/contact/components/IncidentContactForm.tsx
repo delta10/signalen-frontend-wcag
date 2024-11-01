@@ -3,7 +3,7 @@
 import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentFormFooter'
 import { useTranslations } from 'next-intl'
 import { useStepperStore } from '@/store/stepper_store'
-import { useRouter } from '@/routing/navigation'
+import { steps, useRouter } from '@/routing/navigation'
 import * as z from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -26,7 +26,8 @@ import { FormStep } from '@/types/form'
 const IncidentContactForm = () => {
   const t = useTranslations('describe-contact.form')
   const { updateForm, formState } = useFormStore()
-  const { addOneStep, addVisitedStep } = useStepperStore()
+  const { addOneStep, navToSummary, onNavToSummary, goToStep, addVisitedStep } =
+    useStepperStore()
   const router = useRouter()
 
   useEffect(() => {
@@ -65,6 +66,21 @@ const IncidentContactForm = () => {
 
     router.push('/incident/summary')
   }
+
+  useEffect(() => {
+    if (navToSummary) {
+      updateForm({
+        ...formState,
+        email: form.getValues('email'),
+        phone: form.getValues('phone'),
+        sharing_allowed: form.getValues('sharing_allowed'),
+      })
+
+      goToStep(FormStep.STEP_4_SUMMARY)
+      router.push(steps[FormStep.STEP_4_SUMMARY])
+      onNavToSummary(false)
+    }
+  }, [navToSummary])
 
   return (
     <div>
