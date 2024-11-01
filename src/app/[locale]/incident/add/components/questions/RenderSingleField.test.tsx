@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react'
 import { FieldTypes } from '@/types/form'
 import { FormMock } from '../../../../../../../__mocks__/FormMock'
 import { FieldValues } from 'react-hook-form'
-import { RadioInput } from '@/app/[locale]/incident/add/components/questions/RadioInput'
+import { RenderSingleField } from '@/app/[locale]/incident/add/components/questions/RenderSingleField'
 
 const renderWithForm = (
   component: React.ReactElement,
@@ -12,42 +12,32 @@ const renderWithForm = (
   return render(<FormMock defaultValues={defaultValues}>{component}</FormMock>)
 }
 
-// Visiblity tests
-test('should show radio group input', async () => {
+// RenderSingleField visibility tests
+test('should show text input', async () => {
   const field = {
     key: 'Vuurwerk_overlast_simpel',
     field_type: FieldTypes.TEXT_INPUT,
     meta: {
       label: 'Weet u het nummer van de container?',
-      values: {
-        '1': 'test',
-        '2': 'test-twee',
-        '3': 'test-drie',
-      },
     },
     required: false,
   }
 
-  renderWithForm(<RadioInput field={field} />, {})
+  renderWithForm(<RenderSingleField field={field} />, {})
 
   expect(
-    screen.getByRole('radiogroup', {
+    screen.queryByRole('textbox', {
       name: `${field.meta.label} ${field.required ? '' : '(not required)'}`,
     })
   ).toBeInTheDocument()
 })
 
-test('should not show radio group input', async () => {
+test('should not show text input', async () => {
   const field = {
     key: 'Vuurwerk_overlast_simpel',
     field_type: FieldTypes.TEXT_INPUT,
     meta: {
       label: 'Weet u het nummer van de container?',
-      values: {
-        '1': 'test',
-        '2': 'test-twee',
-        '3': 'test-drie',
-      },
       ifOneOf: {
         Bank_type_melding: ['1'],
       },
@@ -55,22 +45,17 @@ test('should not show radio group input', async () => {
     required: false,
   }
 
-  renderWithForm(<RadioInput field={field} />, {})
+  renderWithForm(<RenderSingleField field={field} />, {})
 
-  expect(screen.queryByRole('radiogroup')).not.toBeInTheDocument()
+  expect(screen.queryByRole('textbox')).not.toBeInTheDocument()
 })
 
-test('should show radio group input with ifOneOf resolving to true', async () => {
+test('should show text input with ifOneOf resolving to true', async () => {
   const field = {
     key: 'Vuurwerk_overlast_simpel',
     field_type: FieldTypes.TEXT_INPUT,
     meta: {
       label: 'Weet u het nummer van de container?',
-      values: {
-        '1': 'test',
-        '2': 'test-twee',
-        '3': 'test-drie',
-      },
       ifOneOf: {
         Bank_type_melding: ['1'],
       },
@@ -78,26 +63,23 @@ test('should show radio group input with ifOneOf resolving to true', async () =>
     required: false,
   }
 
-  renderWithForm(<RadioInput field={field} />, { Bank_type_melding: '1' })
+  renderWithForm(<RenderSingleField field={field} />, {
+    Bank_type_melding: '1',
+  })
 
   expect(
-    screen.queryByRole('radiogroup', {
+    screen.queryByRole('textbox', {
       name: `${field.meta.label} ${field.required ? '' : '(not required)'}`,
     })
   ).toBeInTheDocument()
 })
 
-test('should not show radio group input with ifOneOf resolving to false', async () => {
+test('should not show text input with ifOneOf resolving to false', async () => {
   const field = {
     key: 'Vuurwerk_overlast_simpel',
     field_type: FieldTypes.TEXT_INPUT,
     meta: {
       label: 'Weet u het nummer van de container?',
-      values: {
-        '1': 'test',
-        '2': 'test-twee',
-        '3': 'test-drie',
-      },
       ifOneOf: {
         Bank_type_melding: ['1'],
       },
@@ -105,22 +87,19 @@ test('should not show radio group input with ifOneOf resolving to false', async 
     required: false,
   }
 
-  renderWithForm(<RadioInput field={field} />, { Bank_type_melding: '2' })
+  renderWithForm(<RenderSingleField field={field} />, {
+    Bank_type_melding: '2',
+  })
 
-  expect(screen.queryByRole('radiogroup')).not.toBeInTheDocument()
+  expect(screen.queryByRole('textbox')).not.toBeInTheDocument()
 })
 
-test('should show radio group input with ifAllOf condition resolving to true', async () => {
+test('should show text input with ifAllOf condition resolving to true', async () => {
   const field = {
     key: 'Vuurwerk_overlast_simpel',
     field_type: FieldTypes.TEXT_INPUT,
     meta: {
       label: 'Weet u het nummer van de container?',
-      values: {
-        '1': 'test',
-        '2': 'test-twee',
-        '3': 'test-drie',
-      },
       ifAllOf: {
         Bank_type_melding: ['2'],
         Test_type_melding: ['15'],
@@ -129,29 +108,24 @@ test('should show radio group input with ifAllOf condition resolving to true', a
     required: false,
   }
 
-  renderWithForm(<RadioInput field={field} />, {
+  renderWithForm(<RenderSingleField field={field} />, {
     Bank_type_melding: '2',
     Test_type_melding: '15',
   })
 
   expect(
-    screen.queryByRole('radiogroup', {
+    screen.queryByRole('textbox', {
       name: `${field.meta.label} ${field.required ? '' : '(not required)'}`,
     })
   ).toBeInTheDocument()
 })
 
-test('should not show radio group input with ifAllOf condition resolving to false', async () => {
+test('should not show text input with ifAllOf condition resolving to false', async () => {
   const field = {
     key: 'Vuurwerk_overlast_simpel',
     field_type: FieldTypes.TEXT_INPUT,
     meta: {
       label: 'Weet u het nummer van de container?',
-      values: {
-        '1': 'test',
-        '2': 'test-twee',
-        '3': 'test-drie',
-      },
       ifAllOf: {
         Bank_type_melding: ['2'],
         Test_type_melding: ['12'],
@@ -160,61 +134,20 @@ test('should not show radio group input with ifAllOf condition resolving to fals
     required: false,
   }
 
-  renderWithForm(<RadioInput field={field} />, {
+  renderWithForm(<RenderSingleField field={field} />, {
     Bank_type_melding: '2',
     Test_type_melding: '15',
   })
 
-  expect(screen.queryByRole('radiogroup')).not.toBeInTheDocument()
+  expect(screen.queryByRole('textbox')).not.toBeInTheDocument()
 })
 
-test('should show radio group input with ifOneOf nested condition (ifAllOf) resolving to true', async () => {
+test('should show text input with ifOneOf nested condition (ifAllOf) resolving to true', async () => {
   const field = {
     key: 'Vuurwerk_overlast_simpel',
     field_type: FieldTypes.TEXT_INPUT,
     meta: {
       label: 'Weet u het nummer van de container?',
-      values: {
-        '1': 'test',
-        '2': 'test-twee',
-        '3': 'test-drie',
-      },
-      ifOneOf: {
-        ifOneOf: {
-          Bank_type_melding: ['1'],
-        },
-        ifAllOf: {
-          Bank_type_melding: ['2', '3'],
-          Test_type_melding: ['15'],
-        },
-      },
-    },
-    required: false,
-  }
-
-  renderWithForm(<RadioInput field={field} />, {
-    Bank_type_melding: ['2', '3'],
-    Test_type_melding: '15',
-  })
-
-  expect(
-    screen.queryByRole('radiogroup', {
-      name: `${field.meta.label} ${field.required ? '' : '(not required)'}`,
-    })
-  ).toBeInTheDocument()
-})
-
-test('should show radio group input with ifOneOf nested condition (ifOneOf) resolving to true', async () => {
-  const field = {
-    key: 'Vuurwerk_overlast_simpel',
-    field_type: FieldTypes.TEXT_INPUT,
-    meta: {
-      label: 'Weet u het nummer van de container?',
-      values: {
-        '1': 'test',
-        '2': 'test-twee',
-        '3': 'test-drie',
-      },
       ifOneOf: {
         ifOneOf: {
           Bank_type_melding: ['1'],
@@ -228,13 +161,44 @@ test('should show radio group input with ifOneOf nested condition (ifOneOf) reso
     required: false,
   }
 
-  renderWithForm(<RadioInput field={field} />, {
+  renderWithForm(<RenderSingleField field={field} />, {
+    Bank_type_melding: '2',
+    Test_type_melding: '15',
+  })
+
+  expect(
+    screen.queryByRole('textbox', {
+      name: `${field.meta.label} ${field.required ? '' : '(not required)'}`,
+    })
+  ).toBeInTheDocument()
+})
+
+test('should show text input with ifOneOf nested condition (ifOneOf) resolving to true', async () => {
+  const field = {
+    key: 'Vuurwerk_overlast_simpel',
+    field_type: FieldTypes.TEXT_INPUT,
+    meta: {
+      label: 'Weet u het nummer van de container?',
+      ifOneOf: {
+        ifOneOf: {
+          Bank_type_melding: ['1'],
+        },
+        ifAllOf: {
+          Bank_type_melding: ['2'],
+          Test_type_melding: ['15'],
+        },
+      },
+    },
+    required: false,
+  }
+
+  renderWithForm(<RenderSingleField field={field} />, {
     Bank_type_melding: '1',
     Test_type_melding: '15',
   })
 
   expect(
-    screen.queryByRole('radiogroup', {
+    screen.queryByRole('textbox', {
       name: `${field.meta.label} ${field.required ? '' : '(not required)'}`,
     })
   ).toBeInTheDocument()
