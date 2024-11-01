@@ -26,8 +26,15 @@ import { FormStep } from '@/types/form'
 const IncidentContactForm = () => {
   const t = useTranslations('describe-contact.form')
   const { updateForm, formState } = useFormStore()
-  const { addOneStep, navToSummary, onNavToSummary, goToStep, addVisitedStep } =
-    useStepperStore()
+  const {
+    addOneStep,
+    navToSummary,
+    onNavToSummary,
+    goToStep,
+    addVisitedStep,
+    goBack,
+    onGoBack,
+  } = useStepperStore()
   const router = useRouter()
 
   useEffect(() => {
@@ -81,6 +88,21 @@ const IncidentContactForm = () => {
       onNavToSummary(false)
     }
   }, [navToSummary])
+
+  useEffect(() => {
+    if (goBack) {
+      updateForm({
+        ...formState,
+        email: form.getValues('email'),
+        phone: form.getValues('phone'),
+        sharing_allowed: form.getValues('sharing_allowed'),
+      })
+
+      goToStep(FormStep.STEP_2_ADD)
+      router.push(steps[FormStep.STEP_2_ADD])
+      onGoBack(false)
+    }
+  }, [goBack])
 
   return (
     <div>

@@ -35,10 +35,12 @@ type StepperStore = {
   addVisitedStep: (step: FormStep) => void
   resetVisitedSteps: () => void
   navToSummary: boolean
+  goBack: boolean
   goToStep: (step: FormStep) => void
   removeOneStep: () => void
   addOneStep: () => void
   onNavToSummary: (pressed: boolean) => void
+  onGoBack: (pressed: boolean) => void
 }
 
 export type { StepperStore, FormStore, FormStoreState }

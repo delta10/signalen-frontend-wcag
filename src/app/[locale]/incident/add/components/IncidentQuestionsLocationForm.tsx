@@ -17,8 +17,15 @@ export const IncidentQuestionsLocationForm = () => {
   const [additionalQuestions, setAdditionalQuestions] = useState<
     PublicQuestion[]
   >([])
-  const { addOneStep, addVisitedStep, navToSummary, onNavToSummary, goToStep } =
-    useStepperStore()
+  const {
+    addOneStep,
+    addVisitedStep,
+    navToSummary,
+    onNavToSummary,
+    goToStep,
+    goBack,
+    onGoBack,
+  } = useStepperStore()
   const router = useRouter()
   const {
     register,
@@ -108,6 +115,15 @@ export const IncidentQuestionsLocationForm = () => {
       onNavToSummary(false)
     }
   }, [navToSummary])
+
+  useEffect(() => {
+    if (goBack) {
+      // updateForm
+      goToStep(FormStep.STEP_1_DESCRIPTION)
+      router.push(steps[FormStep.STEP_1_DESCRIPTION])
+      onGoBack(false)
+    }
+  }, [goBack])
 
   return (
     <form

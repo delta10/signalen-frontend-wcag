@@ -8,6 +8,7 @@ const useStepperStore = create<StepperStore>()(
     (set) => ({
       step: FormStep.STEP_1_DESCRIPTION,
       navToSummary: false,
+      goBack: false,
       visitedSteps: [],
 
       goToStep: (step: FormStep) => set(() => ({ step })),
@@ -25,7 +26,9 @@ const useStepperStore = create<StepperStore>()(
 
       addOneStep: () => set((state) => ({ step: state.step + 1 })),
 
-      onNavToSummary: (pressed) => set(() => ({ navToSummary: pressed })),
+      onNavToSummary: (clicked) => set(() => ({ navToSummary: clicked })),
+
+      onGoBack: (clicked) => set(() => ({ goBack: clicked })),
     }),
     {
       name: 'step',

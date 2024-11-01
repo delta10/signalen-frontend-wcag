@@ -14,10 +14,10 @@ const FormProgress = () => {
   const {
     step,
     goToStep,
-    removeOneStep,
     onNavToSummary,
     visitedSteps,
     resetVisitedSteps,
+    onGoBack,
   } = useStepperStore()
   const { resetForm } = useFormStore()
   const router = useRouter()
@@ -35,15 +35,6 @@ const FormProgress = () => {
     router.push(steps[FormStep.STEP_1_DESCRIPTION])
   }
 
-  const navigate = () => {
-    router.push(steps[step - 1])
-  }
-
-  const goBack = () => {
-    removeOneStep()
-    navigate()
-  }
-
   if (!visitedSteps.includes(FormStep.STEP_4_SUMMARY)) {
     return (
       <div className="relative flex flex-col-reverse sm:flex-col">
@@ -52,7 +43,7 @@ const FormProgress = () => {
             <Button
               appearance={'subtle-button'}
               className="sm:absolute sm:left-0 sm:-top-2 stepper-button-hover pl-0-overwrite"
-              onClick={() => goBack()}
+              onClick={() => onGoBack(true)}
             >
               <FaChevronLeft />
               {t('back')}
