@@ -98,7 +98,7 @@ h3 {
     padding-right: 0 !important;
 }
 
-.custom-hover:hover:not(:disabled,[aria-disabled=true]) {
+.stepper-button-hover:hover:not(:disabled,[aria-disabled=true]) {
     border: none;
     outline: none;
     text-decoration: underline;

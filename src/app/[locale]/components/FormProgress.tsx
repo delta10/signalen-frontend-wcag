@@ -51,7 +51,7 @@ const FormProgress = () => {
           {step > FormStep.STEP_1_DESCRIPTION && (
             <Button
               appearance={'subtle-button'}
-              className="sm:absolute sm:left-0 sm:-top-2 custom-hover pl-0-overwrite"
+              className="sm:absolute sm:left-0 sm:-top-2 stepper-button-hover pl-0-overwrite"
               onClick={() => goBack()}
             >
               <FaChevronLeft />
@@ -62,7 +62,7 @@ const FormProgress = () => {
           {step < FormStep.STEP_4_SUMMARY &&
             visitedSteps.includes(FormStep.STEP_3_CONTACT) && (
               <Button
-                className="absolute right-0 sm:-top-2 custom-hover pr-0-overwrite"
+                className="absolute right-0 sm:-top-2 stepper-button-hover pr-0-overwrite"
                 appearance={'subtle-button'}
                 onClick={() => onNavToSummary(true)}
               >
