@@ -6,12 +6,40 @@ import { CheckboxInput } from '@/app/[locale]/incident/add/components/questions/
 import { TextAreaInput } from '@/app/[locale]/incident/add/components/questions/TextAreaInput'
 import { AssetSelect } from '@/app/[locale]/incident/add/components/questions/AssetSelect'
 import { LocationSelect } from '@/app/[locale]/incident/add/components/questions/LocationSelect'
+import { useEffect, useMemo, useState } from 'react'
+import { evaluateConditions } from '@/lib/utils/check-visibility'
+import { useFormContext } from 'react-hook-form'
+import { useFormStore } from '@/store/form_store'
 
 type RenderDynamicFieldsProps = {
   data: PublicQuestion[]
 }
 
 export const RenderDynamicFields = ({ data }: RenderDynamicFieldsProps) => {
+  return Object.keys(data).map((value, index, array) => {
+    const question = data[index]
+
+    const fieldName = question.key
+
+    return (
+      <div key={fieldName} className="w-full">
+        <RenderSingleField field={question} />
+      </div>
+    )
+  })
+}
+
+const RenderSingleField = ({ field }: { field: PublicQuestion }) => {
+  const [shouldRender, setShouldRender] = useState<boolean>(false)
+  const {
+    watch,
+    formState: { errors },
+    setValue,
+  } = useFormContext()
+  const { formState: formStoreState } = useFormStore()
+
+  const watchValues = watch()
+
   const additionalQuestionTypes = {
     [FieldTypes.RADIO_INPUT]: (field: PublicQuestion) => (
       <RadioInput field={field} />
@@ -38,15 +66,112 @@ export const RenderDynamicFields = ({ data }: RenderDynamicFieldsProps) => {
     ),
   }
 
-  return Object.keys(data).map((value, index, array) => {
-    const question = data[index]
+  // Memoize `evaluateConditions` result to prevent unnecessary updates
+  const shouldRenderResult = useMemo(
+    () => evaluateConditions(field.meta, watchValues),
+    [field.meta, watchValues]
+  )
 
-    const fieldName = question.key
+  useEffect(() => {
+    console.log('test watch values', watchValues)
+  }, [watchValues])
 
-    return (
-      <div key={fieldName} className="w-full">
-        {additionalQuestionTypes[question.field_type]?.(question)}
-      </div>
+  // Handle visibility changes
+  useEffect(() => {
+    if (shouldRender !== shouldRenderResult) {
+      setShouldRender(shouldRenderResult)
+      if (!shouldRenderResult) {
+        setValue(field.key, null)
+      } else {
+        const defaultValue =
+          field.field_type === FieldTypes.CHECKBOX_INPUT
+            ? getDefaultValueCheckboxInput(field.key)
+            : field.field_type === FieldTypes.RADIO_INPUT
+              ? getDefaultValueRadioInput(field.key)
+              : getDefaultValueTextInput(field.key)
+        if (defaultValue) {
+          setValue(field.key, defaultValue)
+        }
+      }
+    }
+  }, [shouldRenderResult, shouldRender, field.key, setValue])
+
+  // Get default value textbox helper function
+  const getDefaultValueTextInput = (id: string) => {
+    const extraProperties = formStoreState.extra_properties.filter(
+      (question) => question.id === id
     )
-  })
+
+    if (!extraProperties.length) {
+      return ''
+    }
+
+    if (typeof extraProperties[0].answer === 'string') {
+      return extraProperties[0].answer
+    }
+
+    return ''
+  }
+
+  // Get default value checkbox helper function
+  const getDefaultValueCheckboxInput = (id: string) => {
+    const extraProperty = formStoreState.extra_properties.find(
+      (question) => question.id === id
+    )
+
+    if (!extraProperty) return null
+
+    if (typeof extraProperty.answer !== 'string') {
+      // If the answer is an array (of selected checkboxes), map selected IDs
+      const selectedAnswers =
+        typeof extraProperty.answer !== 'string'
+          ? // @ts-ignore
+            extraProperty.answer.map((answer: any) => answer.id)
+          : []
+
+      // Generate the array as expected by react-hook-form, based on options
+      return [
+        'empty',
+        ...Object.keys(field.meta.values).map((key: any) =>
+          selectedAnswers.includes(key) ? key : false
+        ),
+      ]
+    }
+
+    return null
+  }
+
+  // Get default value radio input helper function
+  const getDefaultValueRadioInput = (id: string) => {
+    const extraProperty = formStoreState.extra_properties.find(
+      (question) => question.id === id
+    )
+
+    if (!extraProperty) return null
+
+    if (typeof extraProperty.answer !== 'string' && extraProperty.answer?.id) {
+      return extraProperty.answer.id
+    }
+
+    return null
+  }
+
+  // Register the field immediately with initial value
+  useEffect(() => {
+    const defaultValue =
+      field.field_type === FieldTypes.CHECKBOX_INPUT
+        ? getDefaultValueCheckboxInput(field.key)
+        : field.field_type === FieldTypes.RADIO_INPUT
+          ? getDefaultValueRadioInput(field.key)
+          : getDefaultValueTextInput(field.key)
+    if (defaultValue && shouldRender) {
+      setValue(field.key, defaultValue)
+    }
+  }, [field.key, setValue, shouldRender])
+
+  if (!shouldRender) {
+    return null
+  }
+
+  return additionalQuestionTypes[field.field_type]?.(field)
 }
