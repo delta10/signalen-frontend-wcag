@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl'
 import { Divider } from '@/components/ui/Divider'
 import { LinkWrapper } from '@/components/ui/LinkWrapper'
 import { useStepperStore } from '@/store/stepper_store'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { LocationMap } from '@/components/ui/LocationMap'
 import { signalsClient } from '@/services/client/api-client'
 import { useRouter } from '@/routing/navigation'
@@ -13,11 +13,8 @@ import { postAttachments } from '@/services/attachment/attachments'
 import { useFormStore } from '@/store/form_store'
 import { _NestedLocationModel } from '@/services/client'
 import PreviewFile from '@/components/ui/upload/PreviewFile'
-import {
-  Alert,
-  Paragraph,
-} from '@utrecht/component-library-react/dist/css-module'
-import { Heading, MultilineData } from '@utrecht/component-library-react'
+import { Paragraph } from '@utrecht/component-library-react/dist/css-module'
+import { SubmitAlert } from '@/app/[locale]/incident/summary/components/SubmitAlert'
 
 const IncidentSummaryForm = () => {
   const t = useTranslations('describe-summary')
@@ -99,7 +96,6 @@ const IncidentSummaryForm = () => {
     }
   }
 
-  // @ts-ignore
   return (
     <div className="flex flex-col gap-8">
       <Paragraph>{t('description')}</Paragraph>
@@ -222,50 +218,3 @@ const IncidentSummaryFormAttachments = ({
 }
 
 export { IncidentSummaryForm }
-
-const SubmitAlert = ({
-  error,
-  loading,
-}: {
-  error: boolean
-  loading: boolean
-}) => {
-  const t = useTranslations('describe-summary')
-  const alertRef = useRef<HTMLDivElement | null>(null)
-  const multilineRef = useRef<HTMLPreElement>(null)
-  const exampleText = `
-  This is an example of
-  multiline text that keeps
-  line breaks and indentation
-  `
-  // Scroll to error message when an error occurs
-  useEffect(() => {
-    if ((error || loading) && alertRef.current) {
-      alertRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
-    }
-  }, [error, loading])
-
-  if (loading) {
-    return (
-      <Alert ref={alertRef} id="submit-described-by">
-        <Heading level={3}>{t('submit_alert.loading.heading')}</Heading>
-        <MultilineData ref={multilineRef} className="pt-2">
-          {t('submit_alert.loading.description')}
-        </MultilineData>
-      </Alert>
-    )
-  }
-
-  if (error) {
-    return (
-      <Alert ref={alertRef} type="error" id="submit-described-by">
-        <Heading level={3}>{t('submit_alert.error.heading')}</Heading>
-        <Paragraph className="pt-2">
-          {t('submit_alert.error.description')}
-        </Paragraph>
-      </Alert>
-    )
-  }
-
-  return null
-}
