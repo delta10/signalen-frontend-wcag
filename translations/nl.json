@@ -22,7 +22,6 @@
         "file_size_too_large": "Bestandsgrootte is te groot. Elk bestand moet kleiner zijn dan 20MB.",
         "file_size_too_small": "Bestandsgrootte is te klein. Elk bestand moet minimaal 30KB zijn.",
         "file_limit_exceeded": "U kunt maximaal 3 bestanden uploaden."
-
       }
     }
   },
@@ -90,6 +89,7 @@
   },
   "general": {
     "describe_form": {
+      "pre-heading": "Stap {current} van {max}",
       "back_button": "Vorige",
       "next_button": "Volgende",
       "submit_button": "Verstuur"
