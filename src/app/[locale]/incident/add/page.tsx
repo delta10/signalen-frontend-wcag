@@ -1,6 +1,6 @@
 import { NextIntlClientProvider, useMessages, useTranslations } from 'next-intl'
 import { IncidentQuestionsLocationForm } from '@/app/[locale]/incident/add/components/IncidentQuestionsLocationForm'
-import { Heading1 } from '@utrecht/component-library-react/dist/css-module'
+import { Heading } from '@/components/index'
 
 export default function AddAditionalInformationPage() {
   const t = useTranslations('describe-add')
@@ -8,7 +8,7 @@ export default function AddAditionalInformationPage() {
 
   return (
     <div className="flex flex-col gap-4">
-      <Heading1>{t('heading')}</Heading1>
+      <Heading level={1}>{t('heading')}</Heading>
       <NextIntlClientProvider messages={messages}>
         <IncidentQuestionsLocationForm />
       </NextIntlClientProvider>

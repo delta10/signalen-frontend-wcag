@@ -10,6 +10,7 @@ import { useTranslations } from 'next-intl'
 import { AddressSelect } from '@/app/[locale]/incident/add/components/AddressSelect'
 import * as VisuallyHidden from '@radix-ui/react-visually-hidden'
 import { useFormStore } from '@/store/form_store'
+import { Heading } from '@/components/index'
 
 type MapDialogProps = {
   trigger: React.ReactElement
@@ -62,7 +63,7 @@ const MapDialog = ({ trigger, marker }: MapDialogProps) => {
             </Dialog.Description>
           </VisuallyHidden.Root>
           <div className="col-span-1 p-4 flex flex-col gap-4">
-            <h1>{t('map_heading')}</h1>
+            <Heading level={1}>{t('map_heading')}</Heading>
             <AddressSelect />
           </div>
           <div className="col-span-1 md:col-span-2">

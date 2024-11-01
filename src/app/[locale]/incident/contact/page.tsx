@@ -1,5 +1,6 @@
 import { NextIntlClientProvider, useMessages, useTranslations } from 'next-intl'
 import { IncidentContactForm } from '@/app/[locale]/incident/contact/components/IncidentContactForm'
+import { Heading } from '@/components/index'
 
 export default function AddContactDetailsPage() {
   const t = useTranslations('describe-contact')
@@ -7,7 +8,7 @@ export default function AddContactDetailsPage() {
 
   return (
     <div className="flex flex-col gap-4">
-      <h1>{t('heading')}</h1>
+      <Heading level={1}>{t('heading')}</Heading>
       <NextIntlClientProvider messages={messages}>
         <IncidentContactForm />
       </NextIntlClientProvider>
