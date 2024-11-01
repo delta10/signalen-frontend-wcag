@@ -23,7 +23,7 @@ export const RenderSingleField = ({ field }: { field: PublicQuestion }) => {
       <RadioInput field={field} />
     ),
     [FieldTypes.PLAIN_TEXT]: (field: PublicQuestion) => (
-      <PlainText field={field} />
+      <PlainText field={field} shouldRender={shouldRender} />
     ),
     [FieldTypes.TEXT_INPUT]: (field: PublicQuestion) => (
       <TextInput field={field} />
