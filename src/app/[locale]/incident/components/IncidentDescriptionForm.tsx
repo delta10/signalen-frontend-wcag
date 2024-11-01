@@ -111,8 +111,7 @@ export const IncidentDescriptionForm = () => {
 
     addVisitedStep(FormStep.STEP_1_DESCRIPTION)
     addOneStep()
-
-    router.push('/incident/add')
+    router.push(steps[FormStep.STEP_1_DESCRIPTION])
   }
 
   useEffect(() => {

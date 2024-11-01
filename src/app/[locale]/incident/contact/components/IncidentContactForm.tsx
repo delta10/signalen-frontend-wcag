@@ -64,7 +64,7 @@ const IncidentContactForm = () => {
     addVisitedStep(FormStep.STEP_3_CONTACT)
     addOneStep()
 
-    router.push('/incident/summary')
+    router.push(steps[FormStep.STEP_3_CONTACT])
   }
 
   useEffect(() => {

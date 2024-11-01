@@ -8,7 +8,7 @@ import { useStepperStore } from '@/store/stepper_store'
 import React, { useEffect } from 'react'
 import { LocationMap } from '@/components/ui/LocationMap'
 import { signalsClient } from '@/services/client/api-client'
-import { useRouter } from '@/routing/navigation'
+import { steps, useRouter } from '@/routing/navigation'
 import { postAttachments } from '@/services/attachment/attachments'
 import { useFormStore } from '@/store/form_store'
 import { _NestedLocationModel } from '@/services/client'
@@ -77,7 +77,7 @@ const IncidentSummaryForm = () => {
       })
       .then((res) => {
         addVisitedStep(FormStep.STEP_4_SUMMARY)
-        router.push('/incident/thankyou')
+        router.push(steps[FormStep.STEP_4_SUMMARY])
       })
       .catch((err) => console.error(err))
   }
