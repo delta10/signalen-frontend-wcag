@@ -1,28 +1,26 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { Button, ButtonLink, Heading4 } from '@utrecht/component-library-react'
+import { Button, Heading } from '@utrecht/component-library-react'
 import { useTranslations } from 'next-intl'
 import { useStepperStore } from '@/store/stepper_store'
 import { useFormStore } from '@/store/form_store'
-import { Link } from '@utrecht/component-library-react/dist/css-module'
-import { steps, usePathname, useRouter } from '@/routing/navigation'
+import { steps, useRouter } from '@/routing/navigation'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
-type Props = {}
+import { FormStep } from '@/types/form'
 
-const FormProgress = ({}: Props) => {
+const FormProgress = () => {
   const t = useTranslations('stepper')
   const {
     step,
-    lastCompletedStep,
     goToStep,
-    setLastCompletedStep,
     removeOneStep,
     onNavToSummary,
+    visitedSteps,
+    resetVisitedSteps,
   } = useStepperStore()
   const { resetForm } = useFormStore()
   const router = useRouter()
-  const pathname = usePathname()
 
   const [percentage, setPercentage] = useState<number>(0)
 
@@ -31,9 +29,10 @@ const FormProgress = ({}: Props) => {
   }, [step])
 
   const resetState = () => {
-    setLastCompletedStep(0)
-    goToStep(1)
+    resetVisitedSteps()
+    goToStep(FormStep.STEP_1_DESCRIPTION)
     resetForm()
+    router.push(steps[FormStep.STEP_1_DESCRIPTION])
   }
 
   const navigate = () => {
@@ -42,15 +41,14 @@ const FormProgress = ({}: Props) => {
 
   const goBack = () => {
     removeOneStep()
-
     navigate()
   }
 
-  if (pathname !== '/incident/thankyou') {
+  if (!visitedSteps.includes(FormStep.STEP_4_SUMMARY)) {
     return (
       <div className="flex flex-col w-full gap-3">
         <div className="relative flex justify-center items-center">
-          {step !== 1 && (
+          {step > FormStep.STEP_1_DESCRIPTION && (
             <Button
               ico={'utrecht-icon-chevron-left'}
               appearance={'subtle-button'}
@@ -61,17 +59,18 @@ const FormProgress = ({}: Props) => {
               Vorige
             </Button>
           )}
-          <Heading4>Stap {step} van 4</Heading4>
-          {step < 4 && lastCompletedStep === 3 && (
-            <Button
-              className="absolute right-0 custom-hover pr-0-overwrite"
-              appearance={'subtle-button'}
-              onClick={() => onNavToSummary(true)}
-            >
-              Naar samenvatting
-              <FaChevronRight />
-            </Button>
-          )}
+          <Heading level={4}>Stap {step} van 4</Heading>
+          {step < FormStep.STEP_4_SUMMARY &&
+            visitedSteps.includes(FormStep.STEP_3_CONTACT) && (
+              <Button
+                className="absolute right-0 custom-hover pr-0-overwrite"
+                appearance={'subtle-button'}
+                onClick={() => onNavToSummary(true)}
+              >
+                Naar samenvatting
+                <FaChevronRight />
+              </Button>
+            )}
         </div>
         <div className="overflow-hidden bg-gray-200">
           {/*todo: check how to set primary color */}
@@ -83,11 +82,7 @@ const FormProgress = ({}: Props) => {
       </div>
     )
   }
-  return (
-    <Button onClick={() => resetState()} asChild>
-      <Link href={'/incident'}>{t('new_notification')}</Link>
-    </Button>
-  )
+  return <Button onClick={() => resetState()}>{t('new_notification')}</Button>
 }
 
 export default FormProgress

@@ -7,7 +7,7 @@ import { useFormStore } from '@/store/form_store'
 import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentFormFooter'
 import { useStepperStore } from '@/store/stepper_store'
 import { useRouter } from '@/routing/navigation'
-import { PublicQuestion } from '@/types/form'
+import { FormStep, PublicQuestion } from '@/types/form'
 import { RenderDynamicFields } from '@/app/[locale]/incident/add/components/questions/RenderDynamicFields'
 import { Paragraph } from '@/components/index'
 
@@ -17,7 +17,7 @@ export const IncidentQuestionsLocationForm = () => {
   const [additionalQuestions, setAdditionalQuestions] = useState<
     PublicQuestion[]
   >([])
-  const { addOneStep, setLastCompletedStep } = useStepperStore()
+  const { addOneStep, addVisitedStep } = useStepperStore()
   const router = useRouter()
   const {
     register,
@@ -92,7 +92,7 @@ export const IncidentQuestionsLocationForm = () => {
       extra_properties: answers,
     })
 
-    setLastCompletedStep(2)
+    addVisitedStep(FormStep.STEP_2_ADD)
     addOneStep()
 
     router.push('/incident/contact')

@@ -1,18 +1,25 @@
 import { create } from 'zustand'
 import { StepperStore } from '@/types/stores'
 import { createJSONStorage, persist } from 'zustand/middleware'
+import { FormStep } from '@/types/form'
 
 const useStepperStore = create<StepperStore>()(
   persist(
     (set) => ({
-      step: 1,
-      lastCompletedStep: 0,
+      step: FormStep.STEP_1_DESCRIPTION,
       navToSummary: false,
+      visitedSteps: [],
 
-      goToStep: (step: number) => set(() => ({ step })),
+      goToStep: (step: FormStep) => set(() => ({ step })),
 
-      setLastCompletedStep: (step: number) =>
-        set(() => ({ lastCompletedStep: step })),
+      addVisitedStep: (step: FormStep) =>
+        set((state) => ({
+          visitedSteps: state.visitedSteps.includes(step)
+            ? state.visitedSteps
+            : [...state.visitedSteps, step],
+        })),
+
+      resetVisitedSteps: () => set(() => ({ visitedSteps: [] })),
 
       removeOneStep: () => set((state) => ({ step: state.step - 1 })),
 
@@ -24,7 +31,8 @@ const useStepperStore = create<StepperStore>()(
       name: 'step',
       partialize: (state) => ({
         step: state.step,
-        lastCompletedStep: state.lastCompletedStep,
+        navToSummary: state.navToSummary,
+        visitedSteps: state.visitedSteps,
       }),
       storage: createJSONStorage(() => sessionStorage),
     }

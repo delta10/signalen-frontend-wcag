@@ -13,13 +13,13 @@ import { postAttachments } from '@/services/attachment/attachments'
 import { useFormStore } from '@/store/form_store'
 import { _NestedLocationModel } from '@/services/client'
 import { Paragraph } from '@/components/index'
-import { MAX_NUMBER_FILES } from '@/components/ui/upload/FileUpload'
 import PreviewFile from '@/components/ui/upload/PreviewFile'
+import { FormStep } from '@/types/form'
 
 const IncidentSummaryForm = () => {
   const t = useTranslations('describe-summary')
   const { formState } = useFormStore()
-  const { goToStep } = useStepperStore()
+  const { goToStep, addVisitedStep } = useStepperStore()
   const router = useRouter()
 
   useEffect(() => {
@@ -75,7 +75,10 @@ const IncidentSummaryForm = () => {
           }
         }
       })
-      .then((res) => router.push('/incident/thankyou'))
+      .then((res) => {
+        addVisitedStep(FormStep.STEP_4_SUMMARY)
+        router.push('/incident/thankyou')
+      })
       .catch((err) => console.error(err))
   }
 
@@ -86,7 +89,10 @@ const IncidentSummaryForm = () => {
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-1 md:flex-row justify-between">
           <h3>{t('steps.step_one.title')}</h3>
-          <LinkWrapper href={'/incident'} onClick={() => goToStep(1)}>
+          <LinkWrapper
+            href={'/incident'}
+            onClick={() => goToStep(FormStep.STEP_1_DESCRIPTION)}
+          >
             {t('steps.step_one.edit')}
           </LinkWrapper>
         </div>
@@ -105,7 +111,10 @@ const IncidentSummaryForm = () => {
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-1 md:flex-row justify-between">
           <h3>{t('steps.step_two.title')}</h3>
-          <LinkWrapper href={'/incident/add'} onClick={() => goToStep(2)}>
+          <LinkWrapper
+            href={'/incident/add'}
+            onClick={() => goToStep(FormStep.STEP_2_ADD)}
+          >
             {t('steps.step_two.edit')}
           </LinkWrapper>
         </div>
@@ -117,7 +126,10 @@ const IncidentSummaryForm = () => {
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-1 md:flex-row justify-between">
           <h3>{t('steps.step_three.title')}</h3>
-          <LinkWrapper href={'/incident/contact'} onClick={() => goToStep(3)}>
+          <LinkWrapper
+            href={'/incident/contact'}
+            onClick={() => goToStep(FormStep.STEP_3_CONTACT)}
+          >
             {t('steps.step_three.edit')}
           </LinkWrapper>
         </div>

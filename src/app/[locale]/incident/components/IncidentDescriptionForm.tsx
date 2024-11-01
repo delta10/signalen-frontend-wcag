@@ -4,10 +4,10 @@ import * as z from 'zod'
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormMessage,
-  FormDescription,
 } from '@/components/ui/Form'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -15,11 +15,10 @@ import { useTranslations } from 'next-intl'
 import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentFormFooter'
 import { useStepperStore } from '@/store/stepper_store'
 import { useRouter } from '@/routing/navigation'
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { getCategoryForDescription } from '@/services/classification'
 import { debounce } from 'lodash'
 import { useFormStore } from '@/store/form_store'
-import React from 'react'
 import {
   ACCEPTED_IMAGE_TYPES,
   FileUpload,
@@ -30,17 +29,13 @@ import {
 
 import { FormFieldTextarea } from '@utrecht/component-library-react/dist/css-module'
 import { Label } from '@amsterdam/design-system-react'
+import { FormStep } from '@/types/form'
 
 export const IncidentDescriptionForm = () => {
   const t = useTranslations('describe-report.form')
   const { updateForm, formState } = useFormStore()
-  const {
-    addOneStep,
-    setLastCompletedStep,
-    navToSummary,
-    onNavToSummary,
-    goToStep,
-  } = useStepperStore()
+  const { addOneStep, navToSummary, onNavToSummary, goToStep, addVisitedStep } =
+    useStepperStore()
   const router = useRouter()
 
   useEffect(() => {
@@ -114,7 +109,7 @@ export const IncidentDescriptionForm = () => {
       attachments: values.files,
     })
 
-    setLastCompletedStep(1)
+    addVisitedStep(FormStep.STEP_1_DESCRIPTION)
     addOneStep()
 
     router.push('/incident/add')
@@ -128,8 +123,8 @@ export const IncidentDescriptionForm = () => {
         attachments: form.getValues('files'),
       })
 
-      // kan evt naar store
-      goToStep(4)
+      // todo : kan evt naar store
+      goToStep(FormStep.STEP_4_SUMMARY)
       router.push('/incident/summary')
       onNavToSummary(false)
     }

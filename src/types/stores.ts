@@ -1,3 +1,5 @@
+import { FormStep } from '@/types/form'
+
 type FormStoreState = {
   description: string
   main_category: string
@@ -28,11 +30,12 @@ type FormStore = {
 }
 
 type StepperStore = {
-  step: number
-  lastCompletedStep: number
+  step: FormStep
+  visitedSteps: FormStep[]
+  addVisitedStep: (step: FormStep) => void
+  resetVisitedSteps: () => void
   navToSummary: boolean
-  setLastCompletedStep: (step: number) => void
-  goToStep: (step: number) => void
+  goToStep: (step: FormStep) => void
   removeOneStep: () => void
   addOneStep: () => void
   onNavToSummary: (pressed: boolean) => void

@@ -21,11 +21,12 @@ import { Checkbox } from '@/components/ui/Checkbox'
 import { useFormStore } from '@/store/form_store'
 import { useEffect } from 'react'
 import { Paragraph } from '@/components/index'
+import { FormStep } from '@/types/form'
 
 const IncidentContactForm = () => {
   const t = useTranslations('describe-contact.form')
   const { updateForm, formState } = useFormStore()
-  const { addOneStep, setLastCompletedStep } = useStepperStore()
+  const { addOneStep, addVisitedStep } = useStepperStore()
   const router = useRouter()
 
   useEffect(() => {
@@ -59,7 +60,7 @@ const IncidentContactForm = () => {
       sharing_allowed: values.sharing_allowed,
     })
 
-    setLastCompletedStep(3)
+    addVisitedStep(FormStep.STEP_3_CONTACT)
     addOneStep()
 
     router.push('/incident/summary')
