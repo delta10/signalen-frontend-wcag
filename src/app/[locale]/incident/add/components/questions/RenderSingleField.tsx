@@ -7,14 +7,12 @@ import { PlainText } from '@/app/[locale]/incident/add/components/questions/Plai
 import { TextInput } from '@/app/[locale]/incident/add/components/questions/TextInput'
 import { CheckboxInput } from '@/app/[locale]/incident/add/components/questions/CheckboxInput'
 import { TextAreaInput } from '@/app/[locale]/incident/add/components/questions/TextAreaInput'
-import { AssetSelect } from '@/app/[locale]/incident/add/components/questions/AssetSelect'
-import { LocationSelect } from '@/app/[locale]/incident/add/components/questions/LocationSelect'
 import { evaluateConditions } from '@/lib/utils/check-visibility'
 
 export const RenderSingleField = ({ field }: { field: PublicQuestion }) => {
   const [shouldRender, setShouldRender] = useState<boolean>(false)
   const { watch, setValue } = useFormContext()
-  const { formState: formStoreState } = useFormStore()
+  const { formState: formStoreState, updateForm } = useFormStore()
 
   const watchValues = watch()
 
@@ -23,7 +21,7 @@ export const RenderSingleField = ({ field }: { field: PublicQuestion }) => {
       <RadioInput field={field} />
     ),
     [FieldTypes.PLAIN_TEXT]: (field: PublicQuestion) => (
-      <PlainText field={field} shouldRender={shouldRender} />
+      <PlainText field={field} />
     ),
     [FieldTypes.TEXT_INPUT]: (field: PublicQuestion) => (
       <TextInput field={field} />
@@ -142,6 +140,21 @@ export const RenderSingleField = ({ field }: { field: PublicQuestion }) => {
       setValue(field.key, defaultValue)
     }
   }, [field.key, setValue, shouldRender])
+
+  // control hard stop
+  useEffect(() => {
+    if (field.meta.validators) {
+      const isBlocking =
+        field.meta.validators === 'isBlocking'
+          ? true
+          : !!field.meta.validators.includes('isBlocking')
+
+      updateForm({
+        ...formStoreState,
+        isBlocking: shouldRender ? isBlocking : false,
+      })
+    }
+  }, [field, shouldRender])
 
   if (!shouldRender) {
     return null
