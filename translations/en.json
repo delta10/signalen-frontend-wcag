@@ -89,6 +89,7 @@
   },
   "general": {
     "describe_form": {
+      "pre-heading": "Step {current} of {max}",
       "back_button": "Back",
       "next_button": "Next",
       "submit_button": "Submit"
