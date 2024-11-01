@@ -46,13 +46,12 @@ const FormProgress = () => {
 
   if (!visitedSteps.includes(FormStep.STEP_4_SUMMARY)) {
     return (
-      <div className="flex flex-col w-full gap-3">
-        <div className="relative flex justify-center items-center">
+      <div className="relative flex flex-col-reverse sm:flex-col">
+        <div>
           {step > FormStep.STEP_1_DESCRIPTION && (
             <Button
-              ico={'utrecht-icon-chevron-left'}
               appearance={'subtle-button'}
-              className="absolute left-0 custom-hover pl-0-overwrite"
+              className="sm:absolute sm:left-0 sm:-top-2 custom-hover pl-0-overwrite"
               onClick={() => goBack()}
             >
               <FaChevronLeft />
@@ -60,14 +59,10 @@ const FormProgress = () => {
             </Button>
           )}
 
-          <Heading level={4}>
-            {t('step', { currentStep: step, totalSteps: 4 })}
-          </Heading>
-
           {step < FormStep.STEP_4_SUMMARY &&
             visitedSteps.includes(FormStep.STEP_3_CONTACT) && (
               <Button
-                className="absolute right-0 custom-hover pr-0-overwrite"
+                className="absolute right-0 sm:-top-2 custom-hover pr-0-overwrite"
                 appearance={'subtle-button'}
                 onClick={() => onNavToSummary(true)}
               >
@@ -76,12 +71,18 @@ const FormProgress = () => {
               </Button>
             )}
         </div>
-        <div className="overflow-hidden bg-gray-200">
-          {/*todo: check how to set primary color */}
-          <div
-            style={{ width: `${percentage}%` }}
-            className="h-1  bg-green-700"
-          />
+
+        <div className="flex flex-col justify-center sm:items-center gap-3 pb-2">
+          <Heading level={4}>
+            {t('step', { currentStep: step, totalSteps: 4 })}
+          </Heading>
+          <div className="overflow-hidden bg-gray-200 w-full">
+            {/*todo: check how to set primary color */}
+            <div
+              style={{ width: `${percentage}%` }}
+              className="h-1  bg-green-700"
+            />
+          </div>
         </div>
       </div>
     )
