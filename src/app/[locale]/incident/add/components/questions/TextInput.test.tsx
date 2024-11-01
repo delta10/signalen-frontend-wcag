@@ -25,7 +25,11 @@ test('should show text input', async () => {
 
   renderWithForm(<TextInput field={field} />, {})
 
-  expect(screen.getByRole('textbox')).toBeInTheDocument()
+  expect(
+    screen.queryByRole('textbox', {
+      name: `${field.meta.label} ${field.required ? '' : '(not required)'}`,
+    })
+  ).toBeInTheDocument()
 })
 
 test('should not show text input', async () => {
@@ -61,7 +65,11 @@ test('should show text input with ifOneOf resolving to true', async () => {
 
   renderWithForm(<TextInput field={field} />, { Bank_type_melding: '1' })
 
-  expect(screen.queryByRole('textbox')).toBeInTheDocument()
+  expect(
+    screen.queryByRole('textbox', {
+      name: `${field.meta.label} ${field.required ? '' : '(not required)'}`,
+    })
+  ).toBeInTheDocument()
 })
 
 test('should not show text input with ifOneOf resolving to false', async () => {
@@ -101,7 +109,11 @@ test('should show text input with ifAllOf condition resolving to true', async ()
     Test_type_melding: '15',
   })
 
-  expect(screen.queryByRole('textbox')).toBeInTheDocument()
+  expect(
+    screen.queryByRole('textbox', {
+      name: `${field.meta.label} ${field.required ? '' : '(not required)'}`,
+    })
+  ).toBeInTheDocument()
 })
 
 test('should not show text input with ifAllOf condition resolving to false', async () => {
@@ -150,7 +162,11 @@ test('should show text input with ifOneOf nested condition (ifAllOf) resolving t
     Test_type_melding: '15',
   })
 
-  expect(screen.queryByRole('textbox')).toBeInTheDocument()
+  expect(
+    screen.queryByRole('textbox', {
+      name: `${field.meta.label} ${field.required ? '' : '(not required)'}`,
+    })
+  ).toBeInTheDocument()
 })
 
 test('should show text input with ifOneOf nested condition (ifOneOf) resolving to true', async () => {
@@ -177,5 +193,9 @@ test('should show text input with ifOneOf nested condition (ifOneOf) resolving t
     Test_type_melding: '15',
   })
 
-  expect(screen.queryByRole('textbox')).toBeInTheDocument()
+  expect(
+    screen.queryByRole('textbox', {
+      name: `${field.meta.label} ${field.required ? '' : '(not required)'}`,
+    })
+  ).toBeInTheDocument()
 })

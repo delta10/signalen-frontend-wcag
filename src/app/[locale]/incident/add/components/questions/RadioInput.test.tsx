@@ -30,7 +30,11 @@ test('should show radio group input', async () => {
 
   renderWithForm(<RadioInput field={field} />, {})
 
-  expect(screen.getByRole('radiogroup')).toBeInTheDocument()
+  expect(
+    screen.getByRole('radiogroup', {
+      name: `${field.meta.label} ${field.required ? '' : '(not required)'}`,
+    })
+  ).toBeInTheDocument()
 })
 
 test('should not show radio group input', async () => {
@@ -76,7 +80,11 @@ test('should show radio group input with ifOneOf resolving to true', async () =>
 
   renderWithForm(<RadioInput field={field} />, { Bank_type_melding: '1' })
 
-  expect(screen.queryByRole('radiogroup')).toBeInTheDocument()
+  expect(
+    screen.queryByRole('radiogroup', {
+      name: `${field.meta.label} ${field.required ? '' : '(not required)'}`,
+    })
+  ).toBeInTheDocument()
 })
 
 test('should not show radio group input with ifOneOf resolving to false', async () => {
@@ -126,7 +134,11 @@ test('should show radio group input with ifAllOf condition resolving to true', a
     Test_type_melding: '15',
   })
 
-  expect(screen.queryByRole('radiogroup')).toBeInTheDocument()
+  expect(
+    screen.queryByRole('radiogroup', {
+      name: `${field.meta.label} ${field.required ? '' : '(not required)'}`,
+    })
+  ).toBeInTheDocument()
 })
 
 test('should not show radio group input with ifAllOf condition resolving to false', async () => {
@@ -185,7 +197,11 @@ test('should show radio group input with ifOneOf nested condition (ifAllOf) reso
     Test_type_melding: '15',
   })
 
-  expect(screen.queryByRole('radiogroup')).toBeInTheDocument()
+  expect(
+    screen.queryByRole('radiogroup', {
+      name: `${field.meta.label} ${field.required ? '' : '(not required)'}`,
+    })
+  ).toBeInTheDocument()
 })
 
 test('should show radio group input with ifOneOf nested condition (ifOneOf) resolving to true', async () => {
@@ -217,5 +233,9 @@ test('should show radio group input with ifOneOf nested condition (ifOneOf) reso
     Test_type_melding: '15',
   })
 
-  expect(screen.queryByRole('radiogroup')).toBeInTheDocument()
+  expect(
+    screen.queryByRole('radiogroup', {
+      name: `${field.meta.label} ${field.required ? '' : '(not required)'}`,
+    })
+  ).toBeInTheDocument()
 })

@@ -4,9 +4,10 @@ import { FieldTypes } from '@/types/form'
 import { FormMock } from '../../../../../../../__mocks__/FormMock'
 import { FieldValues } from 'react-hook-form'
 import { TextAreaInput } from '@/app/[locale]/incident/add/components/questions/TextAreaInput'
+import React, { ReactElement } from 'react'
 
 const renderWithForm = (
-  component: React.ReactElement,
+  component: ReactElement,
   defaultValues: FieldValues
 ) => {
   return render(<FormMock defaultValues={defaultValues}>{component}</FormMock>)
@@ -25,7 +26,11 @@ test('should show textarea input', async () => {
 
   renderWithForm(<TextAreaInput field={field} />, {})
 
-  expect(screen.getByRole('textbox')).toBeInTheDocument()
+  expect(
+    screen.getByRole('textbox', {
+      name: `${field.meta.label} ${field.required ? '' : '(not required)'}`,
+    })
+  ).toBeInTheDocument()
 })
 
 test('should not show textarea input', async () => {
@@ -61,7 +66,11 @@ test('should show textarea input with ifOneOf resolving to true', async () => {
 
   renderWithForm(<TextAreaInput field={field} />, { Bank_type_melding: '1' })
 
-  expect(screen.queryByRole('textbox')).toBeInTheDocument()
+  expect(
+    screen.queryByRole('textbox', {
+      name: `${field.meta.label} ${field.required ? '' : '(not required)'}`,
+    })
+  ).toBeInTheDocument()
 })
 
 test('should not show textarea input with ifOneOf resolving to false', async () => {
@@ -101,7 +110,11 @@ test('should show textarea input with ifAllOf condition resolving to true', asyn
     Test_type_melding: '15',
   })
 
-  expect(screen.queryByRole('textbox')).toBeInTheDocument()
+  expect(
+    screen.queryByRole('textbox', {
+      name: `${field.meta.label} ${field.required ? '' : '(not required)'}`,
+    })
+  ).toBeInTheDocument()
 })
 
 test('should not show textarea input with ifAllOf condition resolving to false', async () => {
@@ -150,7 +163,11 @@ test('should show textarea input with ifOneOf nested condition (ifAllOf) resolvi
     Test_type_melding: '15',
   })
 
-  expect(screen.queryByRole('textbox')).toBeInTheDocument()
+  expect(
+    screen.queryByRole('textbox', {
+      name: `${field.meta.label} ${field.required ? '' : '(not required)'}`,
+    })
+  ).toBeInTheDocument()
 })
 
 test('should show textarea input with ifOneOf nested condition (ifOneOf) resolving to true', async () => {
@@ -177,5 +194,9 @@ test('should show textarea input with ifOneOf nested condition (ifOneOf) resolvi
     Test_type_melding: '15',
   })
 
-  expect(screen.queryByRole('textbox')).toBeInTheDocument()
+  expect(
+    screen.queryByRole('textbox', {
+      name: `${field.meta.label} ${field.required ? '' : '(not required)'}`,
+    })
+  ).toBeInTheDocument()
 })
