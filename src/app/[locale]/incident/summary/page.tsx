@@ -1,5 +1,6 @@
 import { NextIntlClientProvider, useMessages, useTranslations } from 'next-intl'
 import { IncidentSummaryForm } from '@/app/[locale]/incident/summary/components/IncidentSummaryForm'
+import { Heading } from '@/components/index'
 
 export default function SummaryDetailsPage() {
   const t = useTranslations('describe-summary')
@@ -7,7 +8,7 @@ export default function SummaryDetailsPage() {
 
   return (
     <div className="flex flex-col gap-4">
-      <h1>{t('heading')}</h1>
+      <Heading level={1}>{t('heading')}</Heading>
       <NextIntlClientProvider messages={messages}>
         <IncidentSummaryForm />
       </NextIntlClientProvider>

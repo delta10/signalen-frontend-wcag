@@ -8,8 +8,8 @@ import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentF
 import { useStepperStore } from '@/store/stepper_store'
 import { useRouter } from '@/routing/navigation'
 import { PublicQuestion } from '@/types/form'
-import { RenderDynamicFields } from '@/app/[locale]/incident/add/components/questions/RenderDynamicFields'
 import { Paragraph } from '@/components/index'
+import { RenderSingleField } from '@/app/[locale]/incident/add/components/questions/RenderSingleField'
 import { useTranslations } from 'next-intl'
 
 export const IncidentQuestionsLocationForm = () => {
@@ -120,7 +120,17 @@ export const IncidentQuestionsLocationForm = () => {
           </div>
         )}
         {additionalQuestions.length ? (
-          <RenderDynamicFields data={additionalQuestions} />
+          Object.keys(additionalQuestions).map((value, index, array) => {
+            const question = additionalQuestions[index]
+
+            const fieldName = question.key
+
+            return (
+              <div key={fieldName} className="w-full">
+                <RenderSingleField field={question} />
+              </div>
+            )
+          })
         ) : loading ? (
           /* TODO: Implement nice loading state */
           <Paragraph>Laden...</Paragraph>
