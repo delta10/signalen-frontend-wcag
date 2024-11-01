@@ -1,89 +1,20 @@
 import { QuestionField } from '@/types/form'
 import { useTranslations } from 'next-intl'
-import { useFormStore } from '@/store/form_store'
 import { getValidators } from '@/lib/utils/form-validator'
-import React, { useEffect, useMemo, useState } from 'react'
-import { evaluateConditions } from '@/lib/utils/check-visibility'
+import React from 'react'
 import { useFormContext } from 'react-hook-form'
 import { Paragraph } from '@/components/index'
 
 interface CheckboxInputProps extends QuestionField {}
 
 export const CheckboxInput = ({ field }: CheckboxInputProps) => {
-  const [shouldRender, setShouldRender] = useState<boolean>(false)
   const {
-    watch,
     formState: { errors },
     register,
-    setValue,
   } = useFormContext()
   const t = useTranslations('general.errors')
-  const { formState: formStoreState } = useFormStore()
 
   const errorMessage = errors[field.key]?.message as string
-
-  const watchValues = watch()
-
-  // Memoize `evaluateConditions` result to prevent unnecessary updates
-  const shouldRenderResult = useMemo(
-    () => evaluateConditions(field.meta, watchValues),
-    [field.meta, watchValues]
-  )
-
-  // Handle visibility changes
-  useEffect(() => {
-    if (shouldRender !== shouldRenderResult) {
-      setShouldRender(shouldRenderResult)
-      if (!shouldRenderResult) {
-        setValue(field.key, null)
-      } else {
-        const defaultValue = getDefaultValueCheckboxInput(field.key)
-        if (defaultValue) {
-          setValue(field.key, defaultValue)
-        }
-      }
-    }
-  }, [shouldRenderResult, shouldRender, field.key, setValue])
-
-  // Get default value helper function
-  const getDefaultValueCheckboxInput = (id: string) => {
-    const extraProperty = formStoreState.extra_properties.find(
-      (question) => question.id === id
-    )
-
-    if (!extraProperty) return null
-
-    if (typeof extraProperty.answer !== 'string') {
-      // If the answer is an array (of selected checkboxes), map selected IDs
-      const selectedAnswers =
-        typeof extraProperty.answer !== 'string'
-          ? // @ts-ignore
-            extraProperty.answer.map((answer: any) => answer.id)
-          : []
-
-      // Generate the array as expected by react-hook-form, based on options
-      return [
-        'empty',
-        ...Object.keys(field.meta.values).map((key: any) =>
-          selectedAnswers.includes(key) ? key : false
-        ),
-      ]
-    }
-
-    return null
-  }
-
-  // Register the field immediately with initial value
-  useEffect(() => {
-    const defaultValue = getDefaultValueCheckboxInput(field.key)
-    if (defaultValue && shouldRender) {
-      setValue(field.key, defaultValue)
-    }
-  }, [field.key, setValue, shouldRender])
-
-  if (!shouldRender) {
-    return null
-  }
 
   return (
     <fieldset aria-invalid={!!errorMessage} data-testid="checkbox-group">

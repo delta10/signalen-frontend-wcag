@@ -30,17 +30,12 @@ export const IncidentQuestionsLocationForm = () => {
   useEffect(() => {
     const appendAdditionalQuestions = async () => {
       try {
-        if (
-          formStoreState.main_category !== 'overig' &&
-          formStoreState.sub_category !== 'overig'
-        ) {
-          const additionalQuestions = (await fetchAdditionalQuestions(
-            formStoreState.main_category,
-            formStoreState.sub_category
-          )) as unknown as PublicQuestion[]
+        const additionalQuestions = await fetchAdditionalQuestions(
+          formStoreState.main_category,
+          formStoreState.sub_category
+        )
 
-          setAdditionalQuestions(additionalQuestions)
-        }
+        setAdditionalQuestions(additionalQuestions)
 
         setLoading(false)
       } catch (e) {

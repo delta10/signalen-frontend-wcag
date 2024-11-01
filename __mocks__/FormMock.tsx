@@ -1,11 +1,12 @@
 import { FieldValues, FormProvider, useForm } from 'react-hook-form'
 import { RootMock } from './RootMock'
+import { ReactNode } from 'react'
 
 export const FormMock = ({
   children,
   defaultValues = {},
 }: {
-  children: React.ReactNode
+  children: ReactNode
   defaultValues?: FieldValues
 }) => {
   const methods = useForm({
