@@ -1,24 +1,43 @@
 import { NextIntlClientProvider, useMessages, useTranslations } from 'next-intl'
+import { getTranslations } from 'next-intl/server'
 import { IncidentDescriptionForm } from '@/app/[locale]/incident/components/IncidentDescriptionForm'
-import { Alert, HeadingGroup, PreHeading, Link } from '@/components/index'
+import {
+  Alert,
+  Heading,
+  HeadingGroup,
+  Paragraph,
+  PreHeading,
+  Link,
+} from '@/components/index'
+import { createTitle } from '@/lib/utils/create-title'
+import { Metadata } from 'next/types'
 
-import { Paragraph, Heading } from '@/components/index'
-// import { Metadata, ResolvingMetadata } from 'next/types'
+// TODO: Consider if these should be static params
+const currentStep = 1
+const maxStep = 4
 
-// type Props = {
-//   params: Promise<object>
-//   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
-// }
+export async function generateMetadata(): Promise<Metadata> {
+  // TODO: Somehow obtain errorMessage status, or remove this code.
+  // Trying to achieve this prefix because of NL Design System guidelines:
+  // "Update het <title> element in de <head>"
+  // https://nldesignsystem.nl/richtlijnen/formulieren/foutmeldingen/screenreaderfeedback
+  const errorMessage = ''
 
-// export async function generateMetadata(
-//   { params, searchParams }: Props,
-//   parent: ResolvingMetadata
-// ): Promise<Metadata> {
-//   const t = useTranslations('describe-report')
-//   return {
-//     title: [t('heading'), 'Gemeente Purmerend'].join(' · '),
-//   }
-// }
+  const t = await getTranslations('describe-report')
+  const tGeneral = await getTranslations('general.describe_form')
+
+  return {
+    title: createTitle(
+      [
+        errorMessage ? tGeneral('title-prefix-error') : '',
+        tGeneral('pre-heading', { current: currentStep, max: maxStep }),
+        t('heading'),
+        'gemeente Voorbeeld',
+      ],
+      tGeneral('title-separator')
+    ),
+  }
+}
 
 export default async function Home() {
   return <IncidentDescriptionPage />
@@ -27,6 +46,7 @@ export default async function Home() {
 function IncidentDescriptionPage() {
   const t = useTranslations('describe-report')
   const tGeneral = useTranslations('general.describe_form')
+  const errorMessage = ''
   const messages = useMessages()
 
   return (
@@ -35,7 +55,7 @@ function IncidentDescriptionPage() {
         <HeadingGroup>
           <Heading level={1}>{t('heading')}</Heading>
           <PreHeading>
-            {tGeneral('pre-heading', { current: 1, max: 4 })}
+            {tGeneral('pre-heading', { current: currentStep, max: maxStep })}
           </PreHeading>
         </HeadingGroup>
         <Alert>
