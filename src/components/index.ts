@@ -6,4 +6,5 @@ export { Select, Container }
 export {
   Paragraph,
   Heading,
+  Button,
 } from '@utrecht/component-library-react/dist/css-module'

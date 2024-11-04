@@ -1,5 +1,5 @@
 import * as Dialog from '@radix-ui/react-dialog'
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import Map, {
   MapLayerMouseEvent,
   Marker,
@@ -10,7 +10,6 @@ import { useTranslations } from 'next-intl'
 import * as VisuallyHidden from '@radix-ui/react-visually-hidden'
 import { useFormStore } from '@/store/form_store'
 import { Heading } from '@/components/index'
-import { Button } from '@/components/ui/Button'
 
 type MapDialogProps = {
   trigger: React.ReactElement
@@ -18,6 +17,7 @@ type MapDialogProps = {
 
 const MapDialog = ({ trigger }: MapDialogProps) => {
   const t = useTranslations('describe-add.map')
+  const [marker, setMarker] = useState<[number, number] | []>([])
   const { updateForm, formState } = useFormStore()
   const { dialogMap } = useMap()
 
@@ -35,10 +35,12 @@ const MapDialog = ({ trigger }: MapDialogProps) => {
     pitch: 0,
   })
 
-  const marker = useMemo(() => {
-    return formState.coordinates
+  // Change marker position on formState.coordinates change
+  useEffect(() => {
+    setMarker([formState.coordinates[0], formState.coordinates[1]])
   }, [formState.coordinates])
 
+  // Handle click on map (flyTo position, after this set the marker position and after this set the view state)
   const handleMapClick = (event: MapLayerMouseEvent) => {
     if (dialogMap) {
       dialogMap.flyTo({
@@ -48,10 +50,7 @@ const MapDialog = ({ trigger }: MapDialogProps) => {
       })
     }
 
-    updateForm({
-      ...formState,
-      coordinates: [event.lngLat.lat, event.lngLat.lng],
-    })
+    setMarker([event.lngLat.lat, event.lngLat.lng])
 
     setViewState({
       ...viewState,
@@ -79,8 +78,12 @@ const MapDialog = ({ trigger }: MapDialogProps) => {
               <Heading level={1}>{t('map_heading')}</Heading>
             </div>
             <div>
-              <Dialog.Close>
-                <Button>Kies locatie</Button>
+              <Dialog.Close
+                onClick={() =>
+                  updateForm({ ...formState, coordinates: marker })
+                }
+              >
+                Kies locatie
               </Dialog.Close>
             </div>
           </div>
@@ -94,7 +97,9 @@ const MapDialog = ({ trigger }: MapDialogProps) => {
               mapStyle={`${process.env.NEXT_PUBLIC_MAPTILER_MAP}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`}
               attributionControl={false}
             >
-              <Marker latitude={marker[0]} longitude={marker[1]}></Marker>
+              {marker.length && (
+                <Marker latitude={marker[0]} longitude={marker[1]}></Marker>
+              )}
             </Map>
           </div>
         </Dialog.Content>

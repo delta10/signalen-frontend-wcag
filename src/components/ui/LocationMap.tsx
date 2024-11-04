@@ -1,6 +1,6 @@
 import Map, { Marker, ViewState } from 'react-map-gl/maplibre'
 import 'maplibre-gl/dist/maplibre-gl.css'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useFormStore } from '@/store/form_store'
 
 const LocationMap = () => {
@@ -19,9 +19,24 @@ const LocationMap = () => {
     pitch: 0,
   })
 
+  // Memoize marker coordinates, dependent on formState.coordinates
+  const marker = useMemo(() => {
+    return [formState.coordinates[0], formState.coordinates[1]]
+  }, [formState.coordinates])
+
+  // Update viewState, to move map view with marker
+  useEffect(() => {
+    setViewState({
+      ...viewState,
+      latitude: marker[0],
+      longitude: marker[1],
+    })
+  }, [marker])
+
   return (
     <Map
       {...viewState}
+      id="locationMap"
       scrollZoom={false}
       doubleClickZoom={false}
       dragPan={false}
@@ -30,10 +45,9 @@ const LocationMap = () => {
       style={{ width: '100%', height: 200 }}
       mapStyle={`${process.env.NEXT_PUBLIC_MAPTILER_MAP}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`}
     >
-      <Marker
-        latitude={viewState.latitude}
-        longitude={viewState.longitude}
-      ></Marker>
+      {marker.length && (
+        <Marker latitude={marker[0]} longitude={marker[1]}></Marker>
+      )}
     </Map>
   )
 }
