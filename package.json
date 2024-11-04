@@ -19,7 +19,7 @@
     "@radix-ui/react-slot": "1.1.0",
     "@radix-ui/react-visually-hidden": "1.1.0",
     "@types/lodash": "4.17.10",
-    "axios-retry": "3.9.1",
+    "axios-retry": "4.5.0",
     "class-variance-authority": "0.7.0",
     "immer": "10.1.1",
     "lodash": "4.17.21",
