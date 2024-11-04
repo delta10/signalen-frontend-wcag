@@ -1,8 +1,9 @@
 import * as Dialog from '@radix-ui/react-dialog'
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import Map, {
   MapLayerMouseEvent,
   Marker,
+  useMap,
   ViewState,
 } from 'react-map-gl/maplibre'
 import { useTranslations } from 'next-intl'
@@ -18,6 +19,7 @@ type MapDialogProps = {
 const MapDialog = ({ trigger }: MapDialogProps) => {
   const t = useTranslations('describe-add.map')
   const { updateForm, formState } = useFormStore()
+  const { dialogMap } = useMap()
 
   const [viewState, setViewState] = useState<ViewState>({
     latitude: formState.coordinates[0],
@@ -33,10 +35,22 @@ const MapDialog = ({ trigger }: MapDialogProps) => {
     pitch: 0,
   })
 
+  const marker = useMemo(() => {
+    return formState.coordinates
+  }, [formState.coordinates])
+
   const handleMapClick = (event: MapLayerMouseEvent) => {
+    if (dialogMap) {
+      dialogMap.flyTo({
+        center: [event.lngLat.lng, event.lngLat.lat],
+        speed: 0.5,
+        zoom: 18,
+      })
+    }
+
     updateForm({
       ...formState,
-      coordinates: [event.lngLat.lng, event.lngLat.lat],
+      coordinates: [event.lngLat.lat, event.lngLat.lng],
     })
 
     setViewState({
@@ -73,16 +87,14 @@ const MapDialog = ({ trigger }: MapDialogProps) => {
           <div className="col-span-1 md:col-span-2">
             <Map
               {...viewState}
+              id="dialogMap"
               onClick={(e) => handleMapClick(e)}
               onMove={(evt) => setViewState(evt.viewState)}
               style={{ width: '100%', height: '100%' }}
               mapStyle={`${process.env.NEXT_PUBLIC_MAPTILER_MAP}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`}
               attributionControl={false}
             >
-              <Marker
-                latitude={viewState.latitude}
-                longitude={viewState.longitude}
-              ></Marker>
+              <Marker latitude={marker[0]} longitude={marker[1]}></Marker>
             </Map>
           </div>
         </Dialog.Content>
