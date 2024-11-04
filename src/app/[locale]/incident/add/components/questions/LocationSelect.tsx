@@ -4,7 +4,7 @@ import { PublicQuestion } from '@/types/form'
 import { MapProvider } from 'react-map-gl/maplibre'
 import { useFormContext } from 'react-hook-form'
 import React from 'react'
-import { Button, Paragraph } from '@utrecht/component-library-react'
+import { Button, Paragraph } from '@/components/index'
 
 export interface LocationSelectProps {
   field?: PublicQuestion

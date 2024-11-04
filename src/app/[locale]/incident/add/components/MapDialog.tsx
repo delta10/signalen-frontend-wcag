@@ -1,5 +1,5 @@
 import * as Dialog from '@radix-ui/react-dialog'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Map, {
   MapLayerMouseEvent,
   Marker,
@@ -11,6 +11,7 @@ import * as VisuallyHidden from '@radix-ui/react-visually-hidden'
 import { useFormStore } from '@/store/form_store'
 import { Heading } from '@/components/index'
 import { useConfig } from '@/hooks/useConfig'
+import { Button } from '@/components/index'
 
 type MapDialogProps = {
   trigger: React.ReactElement
@@ -19,7 +20,7 @@ type MapDialogProps = {
 const MapDialog = ({ trigger }: MapDialogProps) => {
   const t = useTranslations('describe-add.map')
   const [marker, setMarker] = useState<[number, number] | []>([])
-  const { updateForm, formState } = useFormStore()
+  const { formState, updateForm } = useFormStore()
   const { dialogMap } = useMap()
   const { loading, config } = useConfig()
 
@@ -98,11 +99,12 @@ const MapDialog = ({ trigger }: MapDialogProps) => {
             </div>
             <div>
               <Dialog.Close
+                asChild
                 onClick={() =>
                   updateForm({ ...formState, coordinates: marker })
                 }
               >
-                Kies locatie
+                <Button>Kies locatie</Button>
               </Dialog.Close>
             </div>
           </div>
