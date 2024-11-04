@@ -1,14 +1,15 @@
 import { LocationMap } from '@/components/ui/LocationMap'
 import { MapDialog } from '@/app/[locale]/incident/add/components/MapDialog'
 import { Button } from '@/components/ui/Button'
+import { QuestionField } from '@/types/form'
 
-export const LocationSelect = (props: any) => {
+export interface LocationSelectProps extends QuestionField {}
+
+export const LocationSelect = ({ field }: LocationSelectProps) => {
   return (
     <div className="relative">
       <LocationMap />
-      {/* TODO: I can not find the reason why not every element inside this dialog is focusable */}
       <MapDialog
-        marker={props.marker}
         trigger={
           <Button
             className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 border-none"

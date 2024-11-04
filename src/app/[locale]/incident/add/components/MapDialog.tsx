@@ -1,5 +1,4 @@
 import * as Dialog from '@radix-ui/react-dialog'
-import { TbPlus } from 'react-icons/tb'
 import React, { useState } from 'react'
 import Map, {
   MapLayerMouseEvent,
@@ -7,23 +6,22 @@ import Map, {
   ViewState,
 } from 'react-map-gl/maplibre'
 import { useTranslations } from 'next-intl'
-import { AddressSelect } from '@/app/[locale]/incident/add/components/AddressSelect'
 import * as VisuallyHidden from '@radix-ui/react-visually-hidden'
 import { useFormStore } from '@/store/form_store'
 import { Heading } from '@/components/index'
+import { Button } from '@/components/ui/Button'
 
 type MapDialogProps = {
   trigger: React.ReactElement
-  marker: Array<number>
 } & React.HTMLAttributes<HTMLDivElement>
 
-const MapDialog = ({ trigger, marker }: MapDialogProps) => {
+const MapDialog = ({ trigger }: MapDialogProps) => {
   const t = useTranslations('describe-add.map')
   const { updateForm, formState } = useFormStore()
 
   const [viewState, setViewState] = useState<ViewState>({
-    longitude: 5.10448,
-    latitude: 52.092876,
+    latitude: formState.coordinates[0],
+    longitude: formState.coordinates[1],
     zoom: 15,
     bearing: 0,
     padding: {
@@ -62,9 +60,15 @@ const MapDialog = ({ trigger, marker }: MapDialogProps) => {
               Kies een locatie op de kaart voor de locatie van uw melding.
             </Dialog.Description>
           </VisuallyHidden.Root>
-          <div className="col-span-1 p-4 flex flex-col gap-4">
-            <Heading level={1}>{t('map_heading')}</Heading>
-            <AddressSelect />
+          <div className="col-span-1 p-4 flex flex-col justify-between gap-4">
+            <div>
+              <Heading level={1}>{t('map_heading')}</Heading>
+            </div>
+            <div>
+              <Dialog.Close>
+                <Button>Kies locatie</Button>
+              </Dialog.Close>
+            </div>
           </div>
           <div className="col-span-1 md:col-span-2">
             <Map
@@ -73,14 +77,13 @@ const MapDialog = ({ trigger, marker }: MapDialogProps) => {
               onMove={(evt) => setViewState(evt.viewState)}
               style={{ width: '100%', height: '100%' }}
               mapStyle={`${process.env.NEXT_PUBLIC_MAPTILER_MAP}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`}
+              attributionControl={false}
             >
-              <Marker longitude={marker[0]} latitude={marker[1]}></Marker>
+              <Marker
+                latitude={viewState.latitude}
+                longitude={viewState.longitude}
+              ></Marker>
             </Map>
-            <div className="fixed right-0 top-0 p-4 bg-white mt-4 mr-4 w-12 h-12 flex items-center justify-center text-2xl text-black border-border border-2">
-              <Dialog.Close className="rotate-45">
-                <TbPlus />
-              </Dialog.Close>
-            </div>
           </div>
         </Dialog.Content>
       </Dialog.Portal>

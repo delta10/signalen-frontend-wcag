@@ -25,6 +25,7 @@ const IndicatorSeparator = () => {
 const AddressSelect = () => {
   return (
     <Select
+      tabIndex={0}
       options={options}
       components={{ DropdownIndicator, IndicatorSeparator }}
       placeholder="Zoek naar adres"

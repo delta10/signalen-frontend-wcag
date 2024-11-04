@@ -10,6 +10,7 @@ import { useRouter } from '@/routing/navigation'
 import { PublicQuestion } from '@/types/form'
 import { Paragraph } from '@/components/index'
 import { RenderSingleField } from '@/app/[locale]/incident/add/components/questions/RenderSingleField'
+import { useConfig } from '@/hooks/useConfig'
 
 export const IncidentQuestionsLocationForm = () => {
   const { formState: formStoreState, updateForm } = useFormStore()
@@ -20,10 +21,24 @@ export const IncidentQuestionsLocationForm = () => {
   const { addOneStep, setLastCompletedStep } = useStepperStore()
   const router = useRouter()
   const methods = useForm()
+  const { config, loading: configLoading } = useConfig()
 
   useEffect(() => {
     router.prefetch('/incident/contact')
   }, [router])
+
+  useEffect(() => {
+    console.log(config, configLoading)
+
+    if (!configLoading && config) {
+      updateForm({
+        ...formStoreState,
+        coordinates: config.base.map.center,
+      })
+
+      console.log(formStoreState)
+    }
+  }, [configLoading, config])
 
   useEffect(() => {
     const appendAdditionalQuestions = async () => {
