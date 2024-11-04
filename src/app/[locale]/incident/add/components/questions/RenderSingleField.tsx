@@ -98,7 +98,7 @@ export const RenderSingleField = ({ field }: { field: PublicQuestion }) => {
       const selectedAnswers =
         typeof extraProperty.answer !== 'string'
           ? // @ts-ignore
-            extraProperty.answer.map((answer: any) => answer.id)
+            extraProperty.answer.map((answer: any) => answer?.id)
           : []
 
       // Generate the array as expected by react-hook-form, based on options

@@ -10,7 +10,8 @@ import { useRouter } from '@/routing/navigation'
 import { PublicQuestion } from '@/types/form'
 import { Paragraph } from '@/components/index'
 import { RenderSingleField } from '@/app/[locale]/incident/add/components/questions/RenderSingleField'
-import { useConfig } from '@/hooks/useConfig'
+import { LocationSelect } from '@/app/[locale]/incident/add/components/questions/LocationSelect'
+import { useTranslations } from 'next-intl'
 
 export const IncidentQuestionsLocationForm = () => {
   const { formState: formStoreState, updateForm } = useFormStore()
@@ -21,29 +22,22 @@ export const IncidentQuestionsLocationForm = () => {
   const { addOneStep, setLastCompletedStep } = useStepperStore()
   const router = useRouter()
   const methods = useForm()
-  const { config, loading: configLoading } = useConfig()
+  const t = useTranslations('general.errors')
 
   useEffect(() => {
     router.prefetch('/incident/contact')
   }, [router])
 
   useEffect(() => {
-    console.log(config, configLoading)
-
-    if (!configLoading && config) {
-      updateForm({
-        ...formStoreState,
-        coordinates: config.base.map.center,
-      })
-
-      console.log(formStoreState)
-    }
-  }, [configLoading, config])
-
-  useEffect(() => {
     const appendAdditionalQuestions = async () => {
       try {
         const additionalQuestions = await fetchAdditionalQuestions(
+          formStoreState.main_category,
+          formStoreState.sub_category
+        )
+
+        console.log(
+          additionalQuestions,
           formStoreState.main_category,
           formStoreState.sub_category
         )
@@ -59,6 +53,18 @@ export const IncidentQuestionsLocationForm = () => {
 
     appendAdditionalQuestions()
   }, [formStoreState.main_category, formStoreState.sub_category])
+
+  useEffect(() => {
+    if (
+      formStoreState.coordinates &&
+      formStoreState.coordinates[0] === 0 &&
+      formStoreState.coordinates[1] === 0
+    ) {
+      methods.setError('location', { message: t('location_required') })
+    } else {
+      methods.clearErrors('location')
+    }
+  }, [formStoreState.coordinates])
 
   const onSubmit = (data: any) => {
     const questionKeys = Object.keys(data)
@@ -132,7 +138,7 @@ export const IncidentQuestionsLocationForm = () => {
           /* TODO: Implement nice loading state */
           <Paragraph>Laden...</Paragraph>
         ) : (
-          <Paragraph>TODO: Laat hier een LocationSelect zien</Paragraph>
+          <LocationSelect />
         )}
         <IncidentFormFooter />
       </form>

@@ -96,7 +96,8 @@
     "errors": {
       "required": "This field is required",
       "max_length": "This field has a maximal length of {maxLength} characters",
-      "not_required_short": "not required"
+      "not_required_short": "not required",
+      "location_required": "Location is required"
     },
     "button": {
       "upload_file": "Upload file",

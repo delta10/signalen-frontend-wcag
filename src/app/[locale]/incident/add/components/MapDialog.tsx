@@ -10,6 +10,7 @@ import { useTranslations } from 'next-intl'
 import * as VisuallyHidden from '@radix-ui/react-visually-hidden'
 import { useFormStore } from '@/store/form_store'
 import { Heading } from '@/components/index'
+import { useConfig } from '@/hooks/useConfig'
 
 type MapDialogProps = {
   trigger: React.ReactElement
@@ -20,10 +21,11 @@ const MapDialog = ({ trigger }: MapDialogProps) => {
   const [marker, setMarker] = useState<[number, number] | []>([])
   const { updateForm, formState } = useFormStore()
   const { dialogMap } = useMap()
+  const { loading, config } = useConfig()
 
   const [viewState, setViewState] = useState<ViewState>({
-    latitude: formState.coordinates[0],
-    longitude: formState.coordinates[1],
+    latitude: 0,
+    longitude: 0,
     zoom: 15,
     bearing: 0,
     padding: {
@@ -34,6 +36,23 @@ const MapDialog = ({ trigger }: MapDialogProps) => {
     },
     pitch: 0,
   })
+
+  // Set viewState coordinates to configured ones
+  useEffect(() => {
+    if (!loading && config) {
+      setViewState({
+        ...viewState,
+        latitude:
+          formState.coordinates[0] === 0
+            ? config.base.map.center[0]
+            : formState.coordinates[0],
+        longitude:
+          formState.coordinates[1] === 0
+            ? config.base.map.center[1]
+            : formState.coordinates[1],
+      })
+    }
+  }, [loading, config, formState.coordinates])
 
   // Change marker position on formState.coordinates change
   useEffect(() => {
