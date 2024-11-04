@@ -10,7 +10,7 @@
     "new_notification": "New notification"
   },
   "describe-report": {
-    "heading": "1. Describe your report",
+    "heading": "Describe your report",
     "form": {
       "describe_textarea_heading": "What is it about?",
       "describe_textarea_description": "Do not type personal information in this description. We will ask this of you later in this form.",
@@ -26,7 +26,7 @@
     }
   },
   "describe-add": {
-    "heading": "2. Location and questions",
+    "heading": "Location and questions",
     "form": {
       "add_map_heading": "Where is it?",
       "add_choose_location_button": "Choose location",
@@ -39,7 +39,7 @@
     }
   },
   "describe-contact": {
-    "heading": "3. Contact details",
+    "heading": "Contact details",
     "form": {
       "heading": "May we call you for questions? And keep you informed via e-mail?",
       "description": "Often we have another question. With this we can solve the problem faster or better. Or we want to explain something. We would then like to give you a call. Or else we e-mail you.\n\nWe only use your phone number and e-mail address for this report.",
@@ -55,7 +55,7 @@
     }
   },
   "describe-summary": {
-    "heading": "4. Submit",
+    "heading": "Submit",
     "description": "Check your information and submit your report.",
     "steps": {
       "step_one": {
@@ -89,6 +89,9 @@
   },
   "general": {
     "describe_form": {
+      "title-separator": " · ",
+      "title-prefix-error": "Something went wrong!",
+      "pre-heading": "Step {current} of {max}",
       "back_button": "Back",
       "next_button": "Next",
       "submit_button": "Submit"
