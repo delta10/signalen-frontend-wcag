@@ -81,11 +81,11 @@ const IncidentSummaryForm = () => {
 
   return (
     <div className="flex flex-col gap-8">
-      <Paragraph>{t('description')}</Paragraph>
+      <Paragraph appearance="lead">{t('description')}</Paragraph>
       <Divider />
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-1 md:flex-row justify-between">
-          <Heading level={3}>{t('steps.step_one.title')}</Heading>
+          <Heading level={2}>{t('steps.step_one.title')}</Heading>
           <LinkWrapper href={'/incident'} onClick={() => goToStep(1)}>
             {t('steps.step_one.edit')}
           </LinkWrapper>
@@ -104,7 +104,7 @@ const IncidentSummaryForm = () => {
       <Divider />
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-1 md:flex-row justify-between">
-          <Heading level={3}>{t('steps.step_two.title')}</Heading>
+          <Heading level={2}>{t('steps.step_two.title')}</Heading>
           <LinkWrapper href={'/incident/add'} onClick={() => goToStep(2)}>
             {t('steps.step_two.edit')}
           </LinkWrapper>
@@ -131,7 +131,7 @@ const IncidentSummaryForm = () => {
       <Divider />
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-1 md:flex-row justify-between">
-          <Heading level={3}>{t('steps.step_three.title')}</Heading>
+          <Heading level={2}>{t('steps.step_three.title')}</Heading>
           <LinkWrapper href={'/incident/contact'} onClick={() => goToStep(3)}>
             {t('steps.step_three.edit')}
           </LinkWrapper>
@@ -179,7 +179,7 @@ export const IncidentSummaryFormItem = ({
 }) => {
   return (
     <div className="flex flex-col gap-1">
-      <Paragraph className="font-semibold">{title}</Paragraph>
+      <Heading level={3}>{title}</Heading>
       {value !== '' ? (
         <Paragraph>{value}</Paragraph>
       ) : (
