@@ -24,8 +24,6 @@ export default function AppProvider({
 }) {
   const { config, loading, error, refetch } = useConfig()
 
-  console.log(config)
-
   return (
     <AppContext.Provider
       value={{
