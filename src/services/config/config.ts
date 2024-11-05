@@ -8,7 +8,7 @@ import defaultConfiguration from '../../../config.json'
 export async function getServerConfig() {
   const CONFIG_PATH = path.join(process.cwd(), 'config.json')
 
-  let json: AppConfig = defaultConfiguration
+  let json: AppConfig = defaultConfiguration as AppConfig
 
   try {
     const fileBuffer = await fs.readFile(CONFIG_PATH, 'utf8')

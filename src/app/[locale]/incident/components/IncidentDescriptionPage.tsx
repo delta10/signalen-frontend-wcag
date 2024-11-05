@@ -2,20 +2,29 @@
 
 import { useTranslations } from 'next-intl'
 import { useFormStore } from '@/store/form_store'
-import { Heading, Paragraph } from '@/components'
+import { Heading, Paragraph, HeadingGroup, PreHeading } from '@/components'
 import { Alert, Link } from '@utrecht/component-library-react/dist/css-module'
 import { IncidentDescriptionForm } from '@/app/[locale]/incident/components/IncidentDescriptionForm'
+
+const currentStep = 1
+const maxStep = 4
 
 export const IncidentDescriptionPage = () => {
   const t = useTranslations('describe-report')
   const { loaded } = useFormStore()
+  const tGeneral = useTranslations('general.describe_form')
 
   // TODO: implement nice loading state, for if loaded if false. Also create a loading state for Stepper store.
   if (loaded) {
     return (
       <>
         <div className="flex flex-col gap-4">
-          <Heading level={1}>{t('heading')}</Heading>
+          <HeadingGroup>
+            <Heading level={1}>{t('heading')}</Heading>
+            <PreHeading>
+              {tGeneral('pre-heading', { current: currentStep, max: maxStep })}
+            </PreHeading>
+          </HeadingGroup>
           <Alert>
             <Paragraph>
               Lukt het niet om een melding te doen? Bel het telefoonnummer
