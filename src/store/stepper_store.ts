@@ -26,9 +26,9 @@ const useStepperStore = create<StepperStore>()(
 
       addOneStep: () => set((state) => ({ step: state.step + 1 })),
 
-      onNavToSummary: (clicked) => set(() => ({ navToSummary: clicked })),
+      setNavToSummary: (clicked) => set(() => ({ navToSummary: clicked })),
 
-      onGoBack: (clicked) => set(() => ({ goBack: clicked })),
+      setGoBack: (clicked) => set(() => ({ goBack: clicked })),
     }),
     {
       name: 'step',

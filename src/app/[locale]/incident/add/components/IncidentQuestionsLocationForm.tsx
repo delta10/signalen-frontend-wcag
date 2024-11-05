@@ -21,10 +21,10 @@ export const IncidentQuestionsLocationForm = () => {
     addOneStep,
     addVisitedStep,
     navToSummary,
-    onNavToSummary,
+    setNavToSummary,
     goToStep,
     goBack,
-    onGoBack,
+    setGoBack,
   } = useStepperStore()
   const router = useRouter()
   const {
@@ -112,7 +112,7 @@ export const IncidentQuestionsLocationForm = () => {
 
       goToStep(FormStep.STEP_4_SUMMARY)
       router.push(steps[FormStep.STEP_4_SUMMARY])
-      onNavToSummary(false)
+      setNavToSummary(false)
     }
   }, [navToSummary])
 
@@ -121,7 +121,7 @@ export const IncidentQuestionsLocationForm = () => {
       // updateForm
       goToStep(FormStep.STEP_1_DESCRIPTION)
       router.push(steps[FormStep.STEP_1_DESCRIPTION])
-      onGoBack(false)
+      setGoBack(false)
     }
   }, [goBack])
 

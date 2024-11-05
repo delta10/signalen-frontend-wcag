@@ -34,8 +34,13 @@ import { FormStep } from '@/types/form'
 export const IncidentDescriptionForm = () => {
   const t = useTranslations('describe-report.form')
   const { updateForm, formState } = useFormStore()
-  const { addOneStep, navToSummary, onNavToSummary, goToStep, addVisitedStep } =
-    useStepperStore()
+  const {
+    addOneStep,
+    navToSummary,
+    setNavToSummary,
+    goToStep,
+    addVisitedStep,
+  } = useStepperStore()
   const router = useRouter()
 
   useEffect(() => {
@@ -124,7 +129,7 @@ export const IncidentDescriptionForm = () => {
 
       goToStep(FormStep.STEP_4_SUMMARY)
       router.push(steps[FormStep.STEP_4_SUMMARY])
-      onNavToSummary(false)
+      setNavToSummary(false)
     }
   }, [navToSummary])
 

@@ -29,11 +29,11 @@ const IncidentContactForm = () => {
   const {
     addOneStep,
     navToSummary,
-    onNavToSummary,
+    setNavToSummary,
     goToStep,
     addVisitedStep,
     goBack,
-    onGoBack,
+    setGoBack,
   } = useStepperStore()
   const router = useRouter()
 
@@ -85,7 +85,7 @@ const IncidentContactForm = () => {
 
       goToStep(FormStep.STEP_4_SUMMARY)
       router.push(steps[FormStep.STEP_4_SUMMARY])
-      onNavToSummary(false)
+      setNavToSummary(false)
     }
   }, [navToSummary])
 
@@ -100,7 +100,7 @@ const IncidentContactForm = () => {
 
       goToStep(FormStep.STEP_2_ADD)
       router.push(steps[FormStep.STEP_2_ADD])
-      onGoBack(false)
+      setGoBack(false)
     }
   }, [goBack])
 

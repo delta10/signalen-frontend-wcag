@@ -14,15 +14,15 @@ const FormProgress = () => {
   const {
     step,
     goToStep,
-    onNavToSummary,
+    setNavToSummary,
     visitedSteps,
     resetVisitedSteps,
-    onGoBack,
+    setGoBack,
   } = useStepperStore()
   const { resetForm } = useFormStore()
   const router = useRouter()
 
-  const [percentage, setPercentage] = useState<number>(0)
+  const [percentage, setPercentage] = useState<number>(1)
 
   useEffect(() => {
     setPercentage((step / 4) * 100)
@@ -43,7 +43,7 @@ const FormProgress = () => {
             <Button
               appearance={'subtle-button'}
               className="sm:absolute sm:left-0 sm:-top-2 stepper-button-hover pl-0-overwrite"
-              onClick={() => onGoBack(true)}
+              onClick={() => setGoBack(true)}
             >
               <FaChevronLeft />
               {t('back')}
@@ -55,7 +55,7 @@ const FormProgress = () => {
               <Button
                 className="absolute right-0 sm:-top-2 stepper-button-hover pr-0-overwrite"
                 appearance={'subtle-button'}
-                onClick={() => onNavToSummary(true)}
+                onClick={() => setNavToSummary(true)}
               >
                 {t('to_summary')}
                 <FaChevronRight />

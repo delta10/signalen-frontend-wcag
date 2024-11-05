@@ -19,7 +19,7 @@ import { FormStep } from '@/types/form'
 const IncidentSummaryForm = () => {
   const t = useTranslations('describe-summary')
   const { formState } = useFormStore()
-  const { goToStep, addVisitedStep, goBack, onGoBack } = useStepperStore()
+  const { goToStep, addVisitedStep, goBack, setGoBack } = useStepperStore()
   const router = useRouter()
 
   useEffect(() => {
@@ -86,7 +86,7 @@ const IncidentSummaryForm = () => {
     if (goBack) {
       goToStep(FormStep.STEP_3_CONTACT)
       router.push(steps[FormStep.STEP_3_CONTACT])
-      onGoBack(false)
+      setGoBack(false)
     }
   }, [goBack])
 
