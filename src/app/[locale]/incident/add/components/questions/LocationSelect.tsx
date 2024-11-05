@@ -1,6 +1,6 @@
 import { LocationMap } from '@/components/ui/LocationMap'
 import { MapDialog } from '@/app/[locale]/incident/add/components/MapDialog'
-import { Button } from '@/components/ui/Button'
+import { Button } from '@/components/index'
 
 export const LocationSelect = (props: any) => {
   return (
@@ -11,6 +11,7 @@ export const LocationSelect = (props: any) => {
         marker={props.marker}
         trigger={
           <Button
+            appearance="primary-action-button"
             className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 border-none"
             type="button"
           >
