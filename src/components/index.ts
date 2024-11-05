@@ -3,4 +3,11 @@ import { Container } from '@/components/layout'
 
 export { Select, Container }
 
-export { Paragraph } from '@utrecht/component-library-react/dist/css-module'
+export {
+  Alert,
+  Heading,
+  HeadingGroup,
+  Link,
+  Paragraph,
+  PreHeading,
+} from '@utrecht/component-library-react/dist/css-module'

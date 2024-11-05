@@ -1,12 +1,43 @@
 import { NextIntlClientProvider, useMessages, useTranslations } from 'next-intl'
+import { getTranslations } from 'next-intl/server'
 import { IncidentDescriptionForm } from '@/app/[locale]/incident/components/IncidentDescriptionForm'
 import {
-  Heading1,
   Alert,
+  Heading,
+  HeadingGroup,
+  Paragraph,
+  PreHeading,
   Link,
-} from '@utrecht/component-library-react/dist/css-module'
+} from '@/components/index'
+import { createTitle } from '@/lib/utils/create-title'
+import { Metadata } from 'next/types'
 
-import { Paragraph } from '@/components/index'
+// TODO: Consider if these should be static params
+const currentStep = 1
+const maxStep = 4
+
+export async function generateMetadata(): Promise<Metadata> {
+  // TODO: Somehow obtain errorMessage status, or remove this code.
+  // Trying to achieve this prefix because of NL Design System guidelines:
+  // "Update het <title> element in de <head>"
+  // https://nldesignsystem.nl/richtlijnen/formulieren/foutmeldingen/screenreaderfeedback
+  const errorMessage = ''
+
+  const t = await getTranslations('describe-report')
+  const tGeneral = await getTranslations('general.describe_form')
+
+  return {
+    title: createTitle(
+      [
+        errorMessage ? tGeneral('title-prefix-error') : '',
+        tGeneral('pre-heading', { current: currentStep, max: maxStep }),
+        t('heading'),
+        'gemeente Voorbeeld',
+      ],
+      tGeneral('title-separator')
+    ),
+  }
+}
 
 export default async function Home() {
   return <IncidentDescriptionPage />
@@ -14,12 +45,19 @@ export default async function Home() {
 
 function IncidentDescriptionPage() {
   const t = useTranslations('describe-report')
+  const tGeneral = useTranslations('general.describe_form')
+  const errorMessage = ''
   const messages = useMessages()
 
   return (
     <>
       <div className="flex flex-col gap-4">
-        <Heading1>{t('heading')}</Heading1>
+        <HeadingGroup>
+          <Heading level={1}>{t('heading')}</Heading>
+          <PreHeading>
+            {tGeneral('pre-heading', { current: currentStep, max: maxStep })}
+          </PreHeading>
+        </HeadingGroup>
         <Alert>
           <Paragraph>
             Lukt het niet om een melding te doen? Bel het telefoonnummer
