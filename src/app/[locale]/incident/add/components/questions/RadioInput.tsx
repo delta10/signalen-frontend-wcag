@@ -3,7 +3,13 @@ import { useTranslations } from 'next-intl'
 import { QuestionField } from '@/types/form'
 import { getValidators } from '@/lib/utils/form-validator'
 import { useFormContext } from 'react-hook-form'
-import { Paragraph } from '@/components/index'
+import {
+  Fieldset,
+  FieldsetLegend,
+  FormLabel,
+  Paragraph,
+  RadioButton,
+} from '@/components/index'
 
 interface RadioGroupProps extends QuestionField {}
 
@@ -17,12 +23,12 @@ export const RadioInput = ({ field }: RadioGroupProps) => {
   const errorMessage = errors[field.key]?.message as string
 
   return (
-    <fieldset aria-invalid={!!errorMessage} role="radiogroup">
-      <legend>
+    <Fieldset invalid={!!errorMessage} role="radiogroup">
+      <FieldsetLegend>
         {field.meta.label}{' '}
         <span> {field.required ? '' : `(${t('not_required_short')})`}</span>
         {field.meta.subtitle && <span>{field.meta.subtitle}</span>}
-      </legend>
+      </FieldsetLegend>
 
       {errorMessage && (
         <Paragraph
@@ -36,7 +42,7 @@ export const RadioInput = ({ field }: RadioGroupProps) => {
 
       {Object.keys(field.meta.values).map((key: string) => (
         <div key={key}>
-          <input
+          <RadioButton
             {...register(field.key, {
               ...getValidators(field, t),
             })}
@@ -45,11 +51,11 @@ export const RadioInput = ({ field }: RadioGroupProps) => {
             value={key}
             aria-describedby={errorMessage ? `${field.key}-error` : undefined}
           />
-          <label htmlFor={`${field.key}-${key}`}>
+          <FormLabel type="radio" htmlFor={`${field.key}-${key}`}>
             {field.meta.values[key]}
-          </label>
+          </FormLabel>
         </div>
       ))}
-    </fieldset>
+    </Fieldset>
   )
 }

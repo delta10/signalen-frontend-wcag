@@ -13,8 +13,13 @@ import {
   useFormContext,
 } from 'react-hook-form'
 
-import { cn } from '@/lib/utils/style'
-import { Label } from '@/components/ui/Label'
+import {
+  FormField as UtrechtFormField,
+  FormFieldDescription,
+  FormFieldErrorMessage,
+  FormLabel as UtrechtFormLabel,
+  Paragraph,
+} from '@/components/index'
 
 const Form = FormProvider
 
@@ -78,21 +83,12 @@ type FormItemProps = {
 } & React.HTMLAttributes<HTMLDivElement>
 
 const FormItem = React.forwardRef<HTMLDivElement, FormItemProps>(
-  ({ className, error, ...props }, ref) => {
+  ({ error, ...props }, ref) => {
     const id = React.useId()
 
     return (
       <FormItemContext.Provider value={{ id }}>
-        <div
-          ref={ref}
-          className={cn(
-            `flex flex-col items-start gap-4 ${
-              error ? 'border-l-4 border-l-error pl-4' : ''
-            }`,
-            className
-          )}
-          {...props}
-        />
+        <UtrechtFormField invalid={!!error} ref={ref} {...props} />
       </FormItemContext.Provider>
     )
   }
@@ -105,14 +101,7 @@ const FormLabel = React.forwardRef<
 >(({ className, ...props }, ref) => {
   const { error, formItemId } = useFormField()
 
-  return (
-    <Label
-      ref={ref}
-      className={cn(error && 'text-destructive', className)}
-      htmlFor={formItemId}
-      {...props}
-    />
-  )
+  return <UtrechtFormLabel ref={ref} htmlFor={formItemId} {...props} />
 })
 FormLabel.displayName = 'FormLabel'
 const FormControl = React.forwardRef<
@@ -144,12 +133,9 @@ const FormDescription = React.forwardRef<
   const { formDescriptionId } = useFormField()
 
   return (
-    <p
-      ref={ref}
-      id={formDescriptionId}
-      className={cn('font-light text-light_text', className)}
-      {...props}
-    />
+    <FormFieldDescription>
+      <Paragraph ref={ref} id={formDescriptionId} {...props} />
+    </FormFieldDescription>
   )
 })
 FormDescription.displayName = 'FormDescription'
@@ -159,7 +145,7 @@ type FormMessageProps = {
 } & React.HTMLAttributes<HTMLParagraphElement>
 
 const FormMessage = React.forwardRef<HTMLParagraphElement, FormMessageProps>(
-  ({ className, customError, children, ...props }, ref) => {
+  ({ customError, children, ...props }, ref) => {
     const { error, formMessageId } = useFormField()
     const body = customError
       ? String(customError?.message)
@@ -172,14 +158,11 @@ const FormMessage = React.forwardRef<HTMLParagraphElement, FormMessageProps>(
     }
 
     return (
-      <p
-        ref={ref}
-        id={formMessageId}
-        className={cn('font-bold text-error mt-1', className)}
-        {...props}
-      >
-        {body}
-      </p>
+      <FormFieldErrorMessage>
+        <Paragraph ref={ref} id={formMessageId} {...props}>
+          {body}
+        </Paragraph>
+      </FormFieldErrorMessage>
     )
   }
 )
