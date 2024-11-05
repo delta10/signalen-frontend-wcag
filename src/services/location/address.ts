@@ -1,6 +1,6 @@
 import { axiosInstance } from '@/services/client/api-client'
 import { AxiosResponse } from 'axios'
-import { AddressSuggestResponse } from '@/types/pdok'
+import { AddressCoordinateResponse, AddressSuggestResponse } from '@/types/pdok'
 
 export const getSuggestedAddresses = async (
   searchQuery: string,
@@ -16,5 +16,25 @@ export const getSuggestedAddresses = async (
     return response.data
   } catch (error) {
     throw new Error('Could not fetch suggested addresses. Please try again.')
+  }
+}
+
+export const getNearestAddressByCoordinate = async (
+  lat: number,
+  lng: number,
+  distance: number
+) => {
+  const axios = axiosInstance(process.env.NEXT_PUBLIC_PDOK_URL_API)
+
+  try {
+    const response: AxiosResponse<AddressCoordinateResponse> = await axios.get(
+      `/search/v3_1/reverse?lat=${lat}&lon=${lng}&distance=${distance}`
+    )
+
+    return response.data.response.docs.sort(
+      (docA, docB) => docA.afstand - docB.afstand
+    )[0]
+  } catch (error) {
+    throw new Error('Could not fetch address by coordinate. Please try again.')
   }
 }
