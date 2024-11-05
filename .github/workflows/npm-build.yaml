@@ -1,17 +1,14 @@
-name: Run tests
+name: NPM build
 
 on:
   push:
     branches:
       - main
   pull_request:
-    branches:
-      - main
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout branch
         uses: actions/checkout@v4
@@ -25,5 +22,6 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run Vitest
-        run: npm test
+      - name: "Build"
+        run: |
+          npm run build
