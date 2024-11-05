@@ -5,9 +5,12 @@ export { Select, Container }
 
 export {
   Alert,
+  Button,
+  ButtonGroup,
   Heading,
   HeadingGroup,
   Link,
+  Image,
   Paragraph,
   PreHeading,
 } from '@utrecht/component-library-react/dist/css-module'
