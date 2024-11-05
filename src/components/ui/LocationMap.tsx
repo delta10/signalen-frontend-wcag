@@ -3,6 +3,7 @@ import 'maplibre-gl/dist/maplibre-gl.css'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useFormStore } from '@/store/form_store'
 import { useConfig } from '@/hooks/useConfig'
+import { IconMapPinFilled } from '@tabler/icons-react'
 
 const LocationMap = () => {
   const { formState } = useFormStore()
@@ -52,24 +53,31 @@ const LocationMap = () => {
     })
   }, [marker])
 
-  return (
-    <Map
-      {...viewState}
-      id="locationMap"
-      scrollZoom={false}
-      doubleClickZoom={false}
-      dragPan={false}
-      keyboard={false}
-      onMove={(evt) => setViewState(evt.viewState)}
-      style={{ width: '100%', height: 200 }}
-      mapStyle={`${process.env.NEXT_PUBLIC_MAPTILER_MAP}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`}
-      attributionControl={false}
-    >
-      {marker.length && (
-        <Marker latitude={marker[0]} longitude={marker[1]}></Marker>
-      )}
-    </Map>
-  )
+  // TODO: Implement state if loading, and no config is found
+  if (!loading && config) {
+    return (
+      <Map
+        {...viewState}
+        id="locationMap"
+        scrollZoom={false}
+        doubleClickZoom={false}
+        dragPan={false}
+        keyboard={false}
+        onMove={(evt) => setViewState(evt.viewState)}
+        style={{ width: '100%', height: 200 }}
+        mapStyle={`${process.env.NEXT_PUBLIC_MAPTILER_MAP}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`}
+        attributionControl={false}
+      >
+        <Marker latitude={marker[0]} longitude={marker[1]}>
+          <IconMapPinFilled
+            size={42}
+            className="-translate-y-1/2"
+            color={config.base.style.primaryColor}
+          />
+        </Marker>
+      </Map>
+    )
+  }
 }
 
 export { LocationMap }

@@ -12,6 +12,7 @@ import { useFormStore } from '@/store/form_store'
 import { Heading } from '@/components/index'
 import { useConfig } from '@/hooks/useConfig'
 import { Button } from '@/components/index'
+import { IconMapPinFilled } from '@tabler/icons-react'
 
 type MapDialogProps = {
   trigger: React.ReactElement
@@ -71,13 +72,6 @@ const MapDialog = ({ trigger }: MapDialogProps) => {
     }
 
     setMarker([event.lngLat.lat, event.lngLat.lng])
-
-    setViewState({
-      ...viewState,
-      zoom: 16,
-      latitude: event.lngLat.lat,
-      longitude: event.lngLat.lng,
-    })
   }
 
   return (
@@ -85,7 +79,7 @@ const MapDialog = ({ trigger }: MapDialogProps) => {
       <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay />
-        <Dialog.Content className="fixed inset-0 bg-white z-[1000] grid grid-cols-1 md:grid-cols-3">
+        <Dialog.Content className="fixed inset-0 bg-white z-[1000] grid grid-cols-1 md:grid-cols-3 utrecht-theme">
           <VisuallyHidden.Root>
             {/* TODO: Overleggen welke titel hier het meest vriendelijk is voor de gebruiker, multi-language support integreren */}
             <Dialog.Title>Locatie kiezen</Dialog.Title>
@@ -104,25 +98,35 @@ const MapDialog = ({ trigger }: MapDialogProps) => {
                   updateForm({ ...formState, coordinates: marker })
                 }
               >
-                <Button>Kies locatie</Button>
+                <Button appearance="primary-action-button">Kies locatie</Button>
               </Dialog.Close>
             </div>
           </div>
-          <div className="col-span-1 md:col-span-2">
-            <Map
-              {...viewState}
-              id="dialogMap"
-              onClick={(e) => handleMapClick(e)}
-              onMove={(evt) => setViewState(evt.viewState)}
-              style={{ width: '100%', height: '100%' }}
-              mapStyle={`${process.env.NEXT_PUBLIC_MAPTILER_MAP}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`}
-              attributionControl={false}
-            >
-              {marker.length && (
-                <Marker latitude={marker[0]} longitude={marker[1]}></Marker>
-              )}
-            </Map>
-          </div>
+          {/* TODO: Implement state if loading, and no config is found */}
+          {config && (
+            <div className="col-span-1 md:col-span-2">
+              <Map
+                {...viewState}
+                id="dialogMap"
+                onClick={(e) => handleMapClick(e)}
+                onMove={(evt) => setViewState(evt.viewState)}
+                style={{ width: '100%', height: '100%' }}
+                mapStyle={`${process.env.NEXT_PUBLIC_MAPTILER_MAP}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`}
+                attributionControl={false}
+                maxBounds={config.base.map.maxBounds}
+              >
+                {marker.length && (
+                  <Marker latitude={marker[0]} longitude={marker[1]}>
+                    <IconMapPinFilled
+                      size={42}
+                      className="-translate-y-1/2"
+                      color={config.base.style.primaryColor}
+                    />
+                  </Marker>
+                )}
+              </Map>
+            </div>
+          )}
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>
