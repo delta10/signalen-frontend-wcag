@@ -32,38 +32,31 @@ const IncidentFormFooter = ({
 
   return (
     <>
-        <ButtonGroup>
-          {step != 1 && pathname != '/incident' && (
-            <Button
-              appearance="undefined"
-              type="button"
-              className="justify-self-start self-start"
-              onClick={() => goBack()}
-            >
-              {t('back_button')}
-            </Button>
-          )}
-          {step < 4 && (
-            <Button
-              appearance="primary-action-button"
-              type="submit"
-              className="justify-self-end"
-            >
-              {t('next_button')}
-            </Button>
-          )}
-          {step === 4 && (
-            <Button
-              appearance="primary-action-button"
-              type="submit"
-              className="justify-self-end"
-              onClick={() => (handleSignalSubmit ? handleSignalSubmit() : null)}
-            >
-              {t('submit_button')}
-            </Button>
-          )}
-        </ButtonGroup>
-      </div>
+      <ButtonGroup>
+        {step != 1 && pathname != '/incident' && (
+          <Button
+            appearance="secondary-action-button"
+            type="button"
+            onClick={() => goBack()}
+          >
+            {t('back_button')}
+          </Button>
+        )}
+        {step < 4 && (
+          <Button appearance="primary-action-button" type="submit">
+            {t('next_button')}
+          </Button>
+        )}
+        {step === 4 && (
+          <Button
+            appearance="primary-action-button"
+            type="submit"
+            onClick={() => (handleSignalSubmit ? handleSignalSubmit() : null)}
+          >
+            {t('submit_button')}
+          </Button>
+        )}
+      </ButtonGroup>
     </>
   )
 }
