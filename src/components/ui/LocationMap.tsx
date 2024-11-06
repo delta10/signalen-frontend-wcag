@@ -1,16 +1,17 @@
 import Map, { Marker, ViewState } from 'react-map-gl/maplibre'
 import 'maplibre-gl/dist/maplibre-gl.css'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useFormStore } from '@/store/form_store'
+import { useConfig } from '@/hooks/useConfig'
+import { IconMapPinFilled } from '@tabler/icons-react'
+import { Icon } from '@/components/index'
 
-/* TODO: Use center coordinates as configured in config.json */
 const LocationMap = () => {
   const { formState } = useFormStore()
+  const { config, loading } = useConfig()
   const [viewState, setViewState] = useState<ViewState>({
-    longitude:
-      formState.coordinates[0] !== 0 ? formState.coordinates[0] : 5.10448,
-    latitude:
-      formState.coordinates[1] !== 0 ? formState.coordinates[1] : 52.092876,
+    latitude: 0,
+    longitude: 0,
     zoom: 14,
     bearing: 0,
     padding: {
@@ -22,34 +23,63 @@ const LocationMap = () => {
     pitch: 0,
   })
 
-  const marker = formState.coordinates
-
+  // Set viewState coordinates to configured ones
   useEffect(() => {
-    if (formState.coordinates[0] !== 0 && formState.coordinates[1] !== 0) {
+    if (!loading && config) {
       setViewState({
         ...viewState,
-        longitude: formState.coordinates[0],
-        latitude: formState.coordinates[1],
+        latitude:
+          formState.coordinates[0] === 0
+            ? config.base.map.center[0]
+            : formState.coordinates[0],
+        longitude:
+          formState.coordinates[1] === 0
+            ? config.base.map.center[1]
+            : formState.coordinates[1],
       })
     }
+  }, [loading, config, formState.coordinates])
+
+  // Memoize marker coordinates, dependent on formState.coordinates
+  const marker = useMemo(() => {
+    return [formState.coordinates[0], formState.coordinates[1]]
   }, [formState.coordinates])
 
-  return (
-    <Map
-      {...viewState}
-      scrollZoom={false}
-      doubleClickZoom={false}
-      dragPan={false}
-      keyboard={false}
-      onMove={(evt) => setViewState(evt.viewState)}
-      style={{ width: '100%', height: 200 }}
-      mapStyle={`${process.env.NEXT_PUBLIC_MAPTILER_MAP}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`}
-    >
-      {marker[0] !== 0 && marker[1] !== 0 ? (
-        <Marker longitude={marker[0]} latitude={marker[1]}></Marker>
-      ) : null}
-    </Map>
-  )
+  // Update viewState, to move map view with marker
+  useEffect(() => {
+    setViewState({
+      ...viewState,
+      latitude: marker[0],
+      longitude: marker[1],
+    })
+  }, [marker])
+
+  // TODO: Implement state if loading, and no config is found
+  if (!loading && config) {
+    return (
+      <Map
+        {...viewState}
+        id="locationMap"
+        scrollZoom={false}
+        doubleClickZoom={false}
+        dragPan={false}
+        keyboard={false}
+        onMove={(evt) => setViewState(evt.viewState)}
+        style={{ width: '100%', height: 200 }}
+        mapStyle={`${process.env.NEXT_PUBLIC_MAPTILER_MAP}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`}
+        attributionControl={false}
+      >
+        <Marker latitude={marker[0]} longitude={marker[1]}>
+          <Icon className="map-marker-icon">
+            <IconMapPinFilled
+              className="-translate-y-1/2"
+              color={config.base.style.primaryColor}
+            />
+          </Icon>
+        </Marker>
+      </Map>
+    )
+  }
 }
 
 export { LocationMap }

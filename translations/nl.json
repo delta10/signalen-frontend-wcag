@@ -100,7 +100,8 @@
     "errors": {
       "required": "Dit veld is verplicht",
       "max_length": "Dit veld heeft een maximale lengte van {maxLength} karakters",
-      "not_required_short": "niet verplicht"
+      "not_required_short": "niet verplicht",
+      "location_required": "Locatie is verplicht"
     },
     "button": {
       "upload_file": "Upload bestand",

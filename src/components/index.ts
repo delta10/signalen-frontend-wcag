@@ -14,9 +14,11 @@ export {
   FormFieldTextbox,
   FormLabel,
   Heading,
+  Button,
   HeadingGroup,
   Link,
   Paragraph,
   PreHeading,
+  Icon,
   RadioButton,
 } from '@utrecht/component-library-react/dist/css-module'
