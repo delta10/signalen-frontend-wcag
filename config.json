@@ -1,5 +1,25 @@
 {
   "base": {
-    "municipality": "purmerend"
+    "municipality": "purmerend",
+    "style": {
+      "primaryColor": "#24578f"
+    },
+    "map": {
+      "find_address_in_distance": 30,
+      "center": [
+        52.3731081,
+        4.8932945
+      ],
+      "maxBounds": [
+        [
+          4.64034,
+          52.25168
+        ],
+        [
+          5.10737,
+          52.50536
+        ]
+      ]
+    }
   }
 }

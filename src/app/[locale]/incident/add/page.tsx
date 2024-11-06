@@ -1,6 +1,4 @@
-import { NextIntlClientProvider, useMessages, useTranslations } from 'next-intl'
-import { IncidentQuestionsLocationForm } from '@/app/[locale]/incident/add/components/IncidentQuestionsLocationForm'
-import { Heading, HeadingGroup, PreHeading } from '@/components/index'
+import { AdditionalInformationPage } from '@/app/[locale]/incident/add/components/AdditionalInformationPage'
 import { getTranslations } from 'next-intl/server'
 import { createTitle } from '@/lib/utils/create-title'
 import { Metadata } from 'next/types'
@@ -27,21 +25,5 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function AddAditionalInformationPage() {
-  const t = useTranslations('describe-add')
-  const tGeneral = useTranslations('general.describe_form')
-  const messages = useMessages()
-
-  return (
-    <div className="flex flex-col gap-4">
-      <HeadingGroup>
-        <Heading level={1}>{t('heading')}</Heading>
-        <PreHeading>
-          {tGeneral('pre-heading', { current: currentStep, max: maxStep })}
-        </PreHeading>
-      </HeadingGroup>
-      <NextIntlClientProvider messages={messages}>
-        <IncidentQuestionsLocationForm />
-      </NextIntlClientProvider>
-    </div>
-  )
+  return <AdditionalInformationPage />
 }

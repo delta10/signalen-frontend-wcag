@@ -1,6 +1,4 @@
-import { NextIntlClientProvider, useMessages, useTranslations } from 'next-intl'
-import { IncidentSummaryForm } from '@/app/[locale]/incident/summary/components/IncidentSummaryForm'
-import { Heading, HeadingGroup, PreHeading } from '@/components/index'
+import { IncidentSummaryPage } from '@/app/[locale]/incident/summary/components/IncidentSummaryPage'
 import { getTranslations } from 'next-intl/server'
 import { createTitle } from '@/lib/utils/create-title'
 import { Metadata } from 'next/types'
@@ -27,21 +25,5 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function SummaryDetailsPage() {
-  const t = useTranslations('describe-summary')
-  const tGeneral = useTranslations('general.describe_form')
-  const messages = useMessages()
-
-  return (
-    <div className="flex flex-col gap-4">
-      <HeadingGroup>
-        <Heading level={1}>{t('heading')}</Heading>
-        <PreHeading>
-          {tGeneral('pre-heading', { current: currentStep, max: maxStep })}
-        </PreHeading>
-      </HeadingGroup>
-      <NextIntlClientProvider messages={messages}>
-        <IncidentSummaryForm />
-      </NextIntlClientProvider>
-    </div>
-  )
+  return <IncidentSummaryPage />
 }
