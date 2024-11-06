@@ -12,6 +12,7 @@ export {
   FormFieldDescription,
   FormFieldErrorMessage,
   FormFieldTextbox,
+  FormFieldTextarea,
   FormLabel,
   Heading,
   Button,

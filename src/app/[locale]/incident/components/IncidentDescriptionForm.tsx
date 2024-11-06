@@ -28,7 +28,7 @@ import {
   MIN_FILE_SIZE,
 } from '@/components/ui/upload/FileUpload'
 
-import { FormFieldTextarea } from '@utrecht/component-library-react/dist/css-module'
+import { FormFieldTextarea } from '@/components/index'
 import { Label } from '@amsterdam/design-system-react'
 
 export const IncidentDescriptionForm = () => {
@@ -129,6 +129,8 @@ export const IncidentDescriptionForm = () => {
     const updatedFiles = form.getValues('files').filter((_, i) => i !== index)
     form.setValue('files', updatedFiles)
   }
+
+  // TODO: in the best scenario we remove this Radix Form component completely, this is not needed anymore (but we should first refactor FileUpload FormField and Description FormField)
 
   return (
     <Form {...form}>

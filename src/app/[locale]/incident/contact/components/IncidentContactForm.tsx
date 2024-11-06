@@ -7,17 +7,7 @@ import { useRouter } from '@/routing/navigation'
 import * as z from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/Form'
 import validator from 'validator'
-import { Input } from '@/components/ui/Input'
-import { Checkbox } from '@/components/ui/Checkbox'
 import { useFormStore } from '@/store/form_store'
 import { useEffect } from 'react'
 import {
@@ -73,9 +63,6 @@ const IncidentContactForm = () => {
 
     router.push('/incident/summary')
   }
-
-  const invalidTODO = false
-  const errorMessageTODO = ''
 
   return (
     <div>
