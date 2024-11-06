@@ -3,7 +3,6 @@ import React from 'react'
 import { useTranslations } from 'next-intl'
 import { getValidators } from '@/lib/utils/form-validator'
 import { useFormContext } from 'react-hook-form'
-import { Paragraph } from '@/components/index'
 import { FormFieldTextbox } from '@/components'
 
 interface TextInputProps extends QuestionField {}
