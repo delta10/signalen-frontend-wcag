@@ -32,14 +32,6 @@ const IncidentFormFooter = ({
 
   return (
     <>
-      <div
-        className={cn(
-          `bg-gray-200 w-full p-4 flex ${
-            step != 1 && pathname != '/incident' ? 'justify-between' : ''
-          }`,
-          className
-        )}
-      >
         <ButtonGroup>
           {step != 1 && pathname != '/incident' && (
             <Button
