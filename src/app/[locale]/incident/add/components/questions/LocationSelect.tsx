@@ -4,13 +4,12 @@ import { PublicQuestion } from '@/types/form'
 import { MapProvider } from 'react-map-gl/maplibre'
 import { useFormContext } from 'react-hook-form'
 import React, { useEffect, useState } from 'react'
-import { Button, Paragraph } from '@/components/index'
+import { Button, Paragraph, LinkButton } from '@/components/index'
 import { useFormStore } from '@/store/form_store'
 import { getNearestAddressByCoordinate } from '@/services/location/address'
 import { useConfig } from '@/hooks/useConfig'
 import { isCoordinates } from '@/lib/utils/map'
 import { Alert } from '@utrecht/component-library-react/dist/css-module'
-import { LinkButton } from '@utrecht/component-library-react'
 
 export interface LocationSelectProps {
   field?: PublicQuestion
