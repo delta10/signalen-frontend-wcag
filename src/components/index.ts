@@ -11,4 +11,5 @@ export {
   Link,
   Paragraph,
   PreHeading,
+  Icon,
 } from '@utrecht/component-library-react/dist/css-module'

@@ -4,6 +4,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { useFormStore } from '@/store/form_store'
 import { useConfig } from '@/hooks/useConfig'
 import { IconMapPinFilled } from '@tabler/icons-react'
+import { Icon } from '@/components/index'
 
 const LocationMap = () => {
   const { formState } = useFormStore()
@@ -69,11 +70,12 @@ const LocationMap = () => {
         attributionControl={false}
       >
         <Marker latitude={marker[0]} longitude={marker[1]}>
-          <IconMapPinFilled
-            size={42}
-            className="-translate-y-1/2"
-            color={config.base.style.primaryColor}
-          />
+          <Icon className="map-marker-icon">
+            <IconMapPinFilled
+              className="-translate-y-1/2"
+              color={config.base.style.primaryColor}
+            />
+          </Icon>
         </Marker>
       </Map>
     )

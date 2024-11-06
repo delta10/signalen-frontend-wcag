@@ -9,7 +9,7 @@ import Map, {
 import { useTranslations } from 'next-intl'
 import * as VisuallyHidden from '@radix-ui/react-visually-hidden'
 import { useFormStore } from '@/store/form_store'
-import { Heading } from '@/components/index'
+import { Heading, Icon } from '@/components/index'
 import { useConfig } from '@/hooks/useConfig'
 import { Button } from '@/components/index'
 import { IconMapPinFilled } from '@tabler/icons-react'
@@ -110,18 +110,19 @@ const MapDialog = ({ trigger }: MapDialogProps) => {
                 id="dialogMap"
                 onClick={(e) => handleMapClick(e)}
                 onMove={(evt) => setViewState(evt.viewState)}
-                style={{ width: '100%', height: '100%' }}
+                style={{ blockSize: '100%', inlineSize: '100%' }}
                 mapStyle={`${process.env.NEXT_PUBLIC_MAPTILER_MAP}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`}
                 attributionControl={false}
                 maxBounds={config.base.map.maxBounds}
               >
                 {marker.length && (
                   <Marker latitude={marker[0]} longitude={marker[1]}>
-                    <IconMapPinFilled
-                      size={42}
-                      className="-translate-y-1/2"
-                      color={config.base.style.primaryColor}
-                    />
+                    <Icon className="map-marker-icon">
+                      <IconMapPinFilled
+                        className="-translate-y-1/2"
+                        color={config.base.style.primaryColor}
+                      />
+                    </Icon>
                   </Marker>
                 )}
               </Map>

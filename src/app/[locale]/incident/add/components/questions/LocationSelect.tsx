@@ -7,6 +7,10 @@ import React, { useEffect, useState } from 'react'
 import { Button, Paragraph } from '@/components/index'
 import { useFormStore } from '@/store/form_store'
 import { getNearestAddressByCoordinate } from '@/services/location/address'
+import { useConfig } from '@/hooks/useConfig'
+import { isCoordinates } from '@/lib/utils/map'
+import { Alert } from '@utrecht/component-library-react/dist/css-module'
+import { LinkButton } from '@utrecht/component-library-react'
 
 export interface LocationSelectProps {
   field?: PublicQuestion
@@ -19,13 +23,14 @@ export const LocationSelect = ({ field }: LocationSelectProps) => {
   const errorMessage = errors['location']?.message as string
   const { formState: formStoreState } = useFormStore()
   const [address, setAddress] = useState<string | null>(null)
+  const { config } = useConfig()
 
   useEffect(() => {
     const getAddress = async () => {
       const result = await getNearestAddressByCoordinate(
         formStoreState.coordinates[0],
         formStoreState.coordinates[1],
-        10
+        config ? config.base.map.find_address_in_distance : 30
       )
 
       if (result) {
@@ -39,41 +44,36 @@ export const LocationSelect = ({ field }: LocationSelectProps) => {
   }, [formStoreState.coordinates])
 
   return (
-    <div className="relative w-full">
-      {errorMessage && (
-        <Paragraph
-          id="location-error"
-          aria-live="assertive"
-          style={{ color: 'red' }}
-        >
-          {errorMessage}
-        </Paragraph>
-      )}
+    <div className="w-full">
+      {errorMessage && <Alert type="error">{errorMessage}</Alert>}
       <label htmlFor="location-button">
         {field ? field.meta.label : 'Waar is het?'}
       </label>
-      <LocationMap />
-      <Paragraph>{address}</Paragraph>
-      <MapProvider>
-        <MapDialog
-          trigger={
-            formStoreState.coordinates[0] === 0 &&
-            formStoreState.coordinates[1] === 0 ? (
-              <Button
-                id="location-button"
-                className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 border-none"
-                type="button"
-              >
-                Kies locatie
-              </Button>
-            ) : (
-              <button id="location-button" type="button">
-                Wijzig locatie
-              </button>
-            )
-          }
-        />
-      </MapProvider>
+      <div className="relative w-full">
+        <LocationMap />
+        <Paragraph>{address}</Paragraph>
+        <MapProvider>
+          <MapDialog
+            trigger={
+              isCoordinates(formStoreState.coordinates) &&
+              formStoreState.coordinates[0] === 0 &&
+              formStoreState.coordinates[1] === 0 ? (
+                <Button
+                  id="location-button"
+                  className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 border-none"
+                  type="button"
+                >
+                  Kies locatie
+                </Button>
+              ) : (
+                <LinkButton inline={true} id="location-button" type="button">
+                  Wijzig locatie
+                </LinkButton>
+              )
+            }
+          />
+        </MapProvider>
+      </div>
       {/* TODO: toon locatie, straatnaam bijv. */}
     </div>
   )

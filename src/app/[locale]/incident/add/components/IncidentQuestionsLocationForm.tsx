@@ -12,6 +12,7 @@ import { Paragraph } from '@/components/index'
 import { RenderSingleField } from '@/app/[locale]/incident/add/components/questions/RenderSingleField'
 import { LocationSelect } from '@/app/[locale]/incident/add/components/questions/LocationSelect'
 import { useTranslations } from 'next-intl'
+import { isCoordinates } from '@/lib/utils/map'
 
 export const IncidentQuestionsLocationForm = () => {
   const { formState: formStoreState, updateForm } = useFormStore()
@@ -36,12 +37,6 @@ export const IncidentQuestionsLocationForm = () => {
           formStoreState.sub_category
         )
 
-        console.log(
-          additionalQuestions,
-          formStoreState.main_category,
-          formStoreState.sub_category
-        )
-
         setAdditionalQuestions(additionalQuestions)
 
         setLoading(false)
@@ -56,7 +51,7 @@ export const IncidentQuestionsLocationForm = () => {
 
   useEffect(() => {
     if (
-      formStoreState.coordinates &&
+      isCoordinates(formStoreState.coordinates) &&
       formStoreState.coordinates[0] === 0 &&
       formStoreState.coordinates[1] === 0
     ) {
