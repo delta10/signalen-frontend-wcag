@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "3.9.0",
+    "@nl-design-system-unstable/voorbeeld-design-tokens": "3.1.0",
     "@radix-ui/react-checkbox": "1.1.2",
     "@radix-ui/react-dialog": "1.1.2",
     "@radix-ui/react-form": "0.1.0",
