@@ -9,10 +9,17 @@ import Map, {
 import { useTranslations } from 'next-intl'
 import * as VisuallyHidden from '@radix-ui/react-visually-hidden'
 import { useFormStore } from '@/store/form_store'
-import { Heading, Icon } from '@/components/index'
+import { ClosableAlert, Heading, Icon } from '@/components/index'
 import { useConfig } from '@/hooks/useConfig'
 import { Button } from '@/components/index'
-import { IconMapPinFilled } from '@tabler/icons-react'
+import {
+  IconCurrentLocation,
+  IconMapPinFilled,
+  IconMinus,
+  IconPlus,
+} from '@tabler/icons-react'
+import { ButtonGroup } from '@utrecht/component-library-react'
+import { isCoordinateInsideMaxBound } from '@/lib/utils/map'
 
 type MapDialogProps = {
   trigger: React.ReactElement
@@ -21,6 +28,9 @@ type MapDialogProps = {
 const MapDialog = ({ trigger }: MapDialogProps) => {
   const t = useTranslations('describe-add.map')
   const [marker, setMarker] = useState<[number, number] | []>([])
+  const [outsideMaxBoundError, setOutsideMaxBoundError] = useState<
+    string | null
+  >(null)
   const { formState, updateForm } = useFormStore()
   const { dialogMap } = useMap()
   const { loading, config } = useConfig()
@@ -61,17 +71,51 @@ const MapDialog = ({ trigger }: MapDialogProps) => {
     setMarker([formState.coordinates[0], formState.coordinates[1]])
   }, [formState.coordinates])
 
-  // Handle click on map (flyTo position, after this set the marker position and after this set the view state)
-  const handleMapClick = (event: MapLayerMouseEvent) => {
+  // Update position, flyTo position, after this set the marker position
+  const updatePosition = (lat: number, lng: number) => {
     if (dialogMap) {
       dialogMap.flyTo({
-        center: [event.lngLat.lng, event.lngLat.lat],
+        center: [lng, lat],
         speed: 0.5,
         zoom: 18,
       })
     }
 
-    setMarker([event.lngLat.lat, event.lngLat.lng])
+    setMarker([lat, lng])
+  }
+
+  // Handle click on map
+  const handleMapClick = (event: MapLayerMouseEvent) => {
+    updatePosition(event.lngLat.lat, event.lngLat.lng)
+  }
+
+  // set current location of user
+  const setCurrentLocation = () => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const isInsideMaxBound = isCoordinateInsideMaxBound(
+          position.coords.latitude,
+          position.coords.longitude,
+          config
+            ? config.base.map.maxBounds
+            : [
+                [0, 0],
+                [0, 0],
+              ]
+        )
+
+        if (isInsideMaxBound) {
+          updatePosition(position.coords.latitude, position.coords.longitude)
+          setOutsideMaxBoundError(null)
+          return
+        }
+
+        setOutsideMaxBoundError(t('outside_max_bound_error'))
+      },
+      (locationError) => {
+        setOutsideMaxBoundError(locationError.message)
+      }
+    )
   }
 
   return (
@@ -82,10 +126,8 @@ const MapDialog = ({ trigger }: MapDialogProps) => {
         <Dialog.Content className="fixed inset-0 bg-white z-[1000] grid grid-cols-1 md:grid-cols-3 utrecht-theme">
           <VisuallyHidden.Root>
             {/* TODO: Overleggen welke titel hier het meest vriendelijk is voor de gebruiker, multi-language support integreren */}
-            <Dialog.Title>Locatie kiezen</Dialog.Title>
-            <Dialog.Description>
-              Kies een locatie op de kaart voor de locatie van uw melding.
-            </Dialog.Description>
+            <Dialog.Title>{t('dialog_title')}</Dialog.Title>
+            <Dialog.Description>{t('dialog_description')}</Dialog.Description>
           </VisuallyHidden.Root>
           <div className="col-span-1 p-4 flex flex-col justify-between gap-4">
             <div>
@@ -98,13 +140,15 @@ const MapDialog = ({ trigger }: MapDialogProps) => {
                   updateForm({ ...formState, coordinates: marker })
                 }
               >
-                <Button appearance="primary-action-button">Kies locatie</Button>
+                <Button appearance="primary-action-button">
+                  {t('choose_location')}
+                </Button>
               </Dialog.Close>
             </div>
           </div>
           {/* TODO: Implement state if loading, and no config is found */}
           {config && (
-            <div className="col-span-1 md:col-span-2">
+            <div className="col-span-1 md:col-span-2 relative">
               <Map
                 {...viewState}
                 id="dialogMap"
@@ -126,6 +170,38 @@ const MapDialog = ({ trigger }: MapDialogProps) => {
                   </Marker>
                 )}
               </Map>
+              <div className="map-location-group">
+                <Button onClick={() => setCurrentLocation()}>
+                  <IconCurrentLocation />
+                  {t('current_location')}
+                </Button>
+                {outsideMaxBoundError && (
+                  <ClosableAlert
+                    visible={!!outsideMaxBoundError}
+                    setVisibility={(value: boolean) => {
+                      setOutsideMaxBoundError(null)
+                    }}
+                    className="map-location-alert"
+                    type="error"
+                  >
+                    {outsideMaxBoundError}
+                  </ClosableAlert>
+                )}
+              </div>
+              <ButtonGroup direction="column" className="map-zoom-button-group">
+                <Button
+                  className="map-zoom-button"
+                  onClick={() => dialogMap?.flyTo({ zoom: viewState.zoom + 1 })}
+                >
+                  <IconPlus />
+                </Button>
+                <Button
+                  className="map-zoom-button"
+                  onClick={() => dialogMap?.flyTo({ zoom: viewState.zoom - 1 })}
+                >
+                  <IconMinus />
+                </Button>
+              </ButtonGroup>
             </div>
           )}
         </Dialog.Content>

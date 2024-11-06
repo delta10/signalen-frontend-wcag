@@ -12,4 +12,7 @@ export {
   Paragraph,
   PreHeading,
   Icon,
+  LinkButton,
 } from '@utrecht/component-library-react/dist/css-module'
+
+export { ClosableAlert } from '@/components/ui/ClosableAlert'

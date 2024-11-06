@@ -6,3 +6,14 @@ export const isCoordinates = (arg: unknown): arg is [number, number] => {
     typeof arg[1] === 'number'
   )
 }
+
+export const isCoordinateInsideMaxBound = (
+  lat: number,
+  lng: number,
+  maxBounds: [[number, number], [number, number]]
+): boolean => {
+  const [minLng, minLat] = maxBounds[0]
+  const [maxLng, maxLat] = maxBounds[1]
+
+  return lat >= minLat && lat <= maxLat && lng >= minLng && lng <= maxLng
+}
