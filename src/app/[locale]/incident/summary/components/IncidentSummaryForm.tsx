@@ -120,6 +120,10 @@ const IncidentSummaryForm = () => {
                   ? answer.answer
                   : Array.isArray(answer.answer)
                     ? answer.answer
+                        .filter(
+                          (singleAnswer) =>
+                            singleAnswer !== false && singleAnswer !== 'empty'
+                        )
                         .map((singleAnswer) => singleAnswer.label)
                         .join(', ')
                     : answer.answer.label
@@ -179,7 +183,7 @@ export const IncidentSummaryFormItem = ({
 }) => {
   return (
     <div className="flex flex-col gap-1">
-      <Heading level={3}>{title}</Heading>
+      {value !== '' && <Heading level={3}>{title}</Heading>}
       {value !== '' ? (
         <Paragraph>{value}</Paragraph>
       ) : (
