@@ -5,7 +5,8 @@ import { Container } from '@/components'
 import { Header } from '@/app/[locale]/components/Header'
 import localFont from 'next/font/local'
 import AppProvider from '@/components/providers/AppProvider'
-import { Document } from '@utrecht/component-library-react/dist/css-module'
+import { Document, Surface } from '@/components/index'
+import { clsx } from 'clsx'
 
 const font = localFont({
   src: '../../../public/fonts/open-sans.woff2',
@@ -23,16 +24,25 @@ export default function LocaleLayout({
   if (!getAllAvailableLocales().includes(locale as any)) notFound()
 
   return (
-    <html lang={locale} className={`${font.variable}`}>
-      <body className="bg-gray-100">
-        <AppProvider>
-          <Document className="utrecht-theme">
-            <Container className="bg-white">
-              <Header />
-              {children}
-            </Container>
-          </Document>
-        </AppProvider>
+    <html
+      lang={locale}
+      className={clsx(
+        'utrecht-theme',
+        'utrecht-theme--media-query-color-scheme',
+        `${font.variable}`
+      )}
+    >
+      <body>
+        <Surface className="utrecht-surface">
+          <AppProvider>
+            <Document>
+              <Container>
+                <Header />
+                {children}
+              </Container>
+            </Document>
+          </AppProvider>
+        </Surface>
       </body>
     </html>
   )
