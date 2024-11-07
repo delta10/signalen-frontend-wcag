@@ -24,7 +24,7 @@ export const TextAreaInput = ({ field }: TextAreaInputProps) => {
         description={field.meta.subtitle}
         required={field.required}
         id={`${field.key}`}
-        label={field.meta.label}
+        label={`${field.meta.label} ${field.required ? `(${t('required_short')})` : `(${t('not_required_short')})`}`}
         aria-describedby={
           field.meta.subtitle ? `${field.key}-${field.key}` : ''
         }

@@ -145,7 +145,7 @@ export const IncidentDescriptionForm = () => {
             <FormFieldTextarea
               rows={5}
               description={t('describe_textarea_description')}
-              label={t('describe_textarea_heading')}
+              label={`${t('describe_textarea_heading')} (${t('required_short')})`}
               errorMessage={errors.description?.message}
               invalid={Boolean(errors.description?.message)}
               {...field}

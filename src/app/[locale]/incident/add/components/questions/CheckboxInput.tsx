@@ -18,7 +18,7 @@ export const CheckboxInput = ({ field }: CheckboxInputProps) => {
 
   return (
     <CheckboxGroup
-      label={field.meta.label}
+      label={`${field.meta.label} ${field.required ? `(${t('required_short')})` : `(${t('not_required_short')})`}`}
       required={field.required}
       id={`${field.key}`}
       // @ts-ignore

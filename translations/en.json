@@ -22,7 +22,8 @@
         "file_size_too_large": "File size too large. Each file must be less than 20MB.",
         "file_size_too_small": "File size too small. Each file must be at least 30KB.",
         "file_limit_exceeded": "Maximum number of files is 3."
-      }
+      },
+      "required_short": "required"
     }
   },
   "describe-add": {
@@ -51,7 +52,8 @@
       "errors": {
         "number_not_valid": "Use a valid telephone number",
         "email_not_valid": "Use a valid mail address"
-      }
+      },
+      "not_required_short": "not required"
     }
   },
   "describe-summary": {
@@ -101,6 +103,7 @@
       "required": "This field is required",
       "max_length": "This field has a maximal length of {maxLength} characters",
       "not_required_short": "not required",
+      "required_short": "required",
       "location_required": "Location is required"
     },
     "button": {

@@ -85,7 +85,7 @@ const IncidentContactForm = () => {
         className="flex flex-col gap-8 items-start"
       >
         <FormFieldTextbox
-          label={t('describe_phone_input_heading')}
+          label={`${t('describe_mail_input_heading')} (${t('not_required_short')})`}
           autoComplete="phone"
           errorMessage={form.formState.errors.phone?.message}
           invalid={Boolean(form.formState.errors.phone?.message)}
@@ -93,7 +93,7 @@ const IncidentContactForm = () => {
           {...form.register('phone')}
         />
         <FormFieldTextbox
-          label={t('describe_mail_input_heading')}
+          label={`${t('describe_mail_input_heading')} (${t('not_required_short')})`}
           type="email"
           autoComplete="email"
           errorMessage={form.formState.errors.email?.message}

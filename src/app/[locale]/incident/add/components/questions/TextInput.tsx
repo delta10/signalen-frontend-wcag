@@ -20,7 +20,7 @@ export const TextInput = ({ field }: TextInputProps) => {
       {/* TODO: implement (not required) for label*/}
       <FormFieldTextbox
         {...register(field.key, getValidators(field, t))}
-        label={field.meta.label}
+        label={`${field.meta.label} ${field.required ? `(${t('required_short')})` : `(${t('not_required_short')})`}`}
         required={field.required}
         id={`${field.key}`}
         errorMessage={errorMessage}
