@@ -1,14 +1,6 @@
 'use client'
 
 import * as z from 'zod'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-  FormDescription,
-} from '@/components/ui/Form'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
@@ -29,7 +21,12 @@ import {
 } from '@/components/ui/upload/FileUpload'
 
 import { FormFieldTextarea } from '@/components/index'
-import { Label } from '@amsterdam/design-system-react'
+import {
+  Fieldset,
+  FieldsetLegend,
+  FormFieldDescription,
+  FormFieldErrorMessage,
+} from '@utrecht/component-library-react'
 
 export const IncidentDescriptionForm = () => {
   const t = useTranslations('describe-report.form')
@@ -130,57 +127,44 @@ export const IncidentDescriptionForm = () => {
     form.setValue('files', updatedFiles)
   }
 
-  // TODO: in the best scenario we remove this Radix Form component completely, this is not needed anymore (but we should first refactor FileUpload FormField and Description FormField)
-
   return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-8 items-start"
-      >
-        <FormField
-          name={'description'}
-          control={form.control}
-          render={({ field, formState: { errors } }) => (
-            <FormFieldTextarea
-              rows={5}
-              description={t('describe_textarea_description')}
-              label={`${t('describe_textarea_heading')} (${t('required_short')})`}
-              errorMessage={errors.description?.message}
-              invalid={Boolean(errors.description?.message)}
-              {...field}
-            />
-          )}
-        />
+    <form
+      onSubmit={form.handleSubmit(onSubmit)}
+      className="flex flex-col gap-8 items-start"
+    >
+      <FormFieldTextarea
+        rows={5}
+        description={t('describe_textarea_description')}
+        label={`${t('describe_textarea_heading')} (${t('required_short')})`}
+        errorMessage={form.formState.errors.description?.message}
+        invalid={Boolean(form.formState.errors.description?.message)}
+        {...form.register('description')}
+      />
 
-        <FormField
-          name={'files'}
-          control={form.control}
-          render={({ formState: { errors } }) => (
-            <FormItem>
-              <div>
-                <Label onClick={() => setFocus('files')}>
-                  {t('describe_upload_heading')}
-                </Label>
-                <FormDescription>
-                  {t('describe_upload_description')}
-                </FormDescription>
-                <FormMessage />
-              </div>
-              <FormControl>
-                {/*@ts-ignore*/}
-                <FileUpload
-                  onFileUpload={(e) => handleFileChange(e)}
-                  onDelete={(index) => deleteFile(index)}
-                  files={form.getValues('files')}
-                  {...register('files', { required: false })}
-                />
-              </FormControl>
-            </FormItem>
+      <Fieldset invalid={Boolean(form.formState.errors.files?.message)}>
+        <FieldsetLegend>{`${t('describe_textarea_heading')} (${t('not_required_short')})`}</FieldsetLegend>
+
+        <FormFieldDescription>
+          {t('describe_upload_description')}
+        </FormFieldDescription>
+
+        {Boolean(form.formState.errors.files?.message) &&
+          form.formState.errors.files?.message && (
+            <FormFieldErrorMessage>
+              {form.formState.errors.files?.message}
+            </FormFieldErrorMessage>
           )}
+
+        {/* @ts-ignore */}
+        <FileUpload
+          onFileUpload={(e) => handleFileChange(e)}
+          onDelete={(index) => deleteFile(index)}
+          files={form.getValues('files')}
+          {...register('files', { required: false })}
         />
-        <IncidentFormFooter />
-      </form>
-    </Form>
+      </Fieldset>
+
+      <IncidentFormFooter />
+    </form>
   )
 }
