@@ -1,6 +1,6 @@
 'use client'
 
-import { useForm } from 'react-hook-form'
+import { FormProvider, useForm } from 'react-hook-form'
 import { useEffect, useState } from 'react'
 import { fetchAdditionalQuestions } from '@/services/additional-questions'
 import { useFormStore } from '@/store/form_store'
@@ -8,8 +8,11 @@ import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentF
 import { useStepperStore } from '@/store/stepper_store'
 import { useRouter } from '@/routing/navigation'
 import { PublicQuestion } from '@/types/form'
-import { RenderDynamicFields } from '@/app/[locale]/incident/add/components/questions/RenderDynamicFields'
 import { Paragraph } from '@/components/index'
+import { RenderSingleField } from '@/app/[locale]/incident/add/components/questions/RenderSingleField'
+import { LocationSelect } from '@/app/[locale]/incident/add/components/questions/LocationSelect'
+import { useTranslations } from 'next-intl'
+import { isCoordinates } from '@/lib/utils/map'
 
 export const IncidentQuestionsLocationForm = () => {
   const { formState: formStoreState, updateForm } = useFormStore()
@@ -19,11 +22,8 @@ export const IncidentQuestionsLocationForm = () => {
   >([])
   const { addOneStep, setLastCompletedStep } = useStepperStore()
   const router = useRouter()
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm()
+  const methods = useForm()
+  const t = useTranslations('general.errors')
 
   useEffect(() => {
     router.prefetch('/incident/contact')
@@ -32,12 +32,13 @@ export const IncidentQuestionsLocationForm = () => {
   useEffect(() => {
     const appendAdditionalQuestions = async () => {
       try {
-        const additionalQuestions = (await fetchAdditionalQuestions(
+        const additionalQuestions = await fetchAdditionalQuestions(
           formStoreState.main_category,
           formStoreState.sub_category
-        )) as unknown as PublicQuestion[]
+        )
 
         setAdditionalQuestions(additionalQuestions)
+
         setLoading(false)
       } catch (e) {
         console.error('Could not fetch additional questions', e)
@@ -47,6 +48,18 @@ export const IncidentQuestionsLocationForm = () => {
 
     appendAdditionalQuestions()
   }, [formStoreState.main_category, formStoreState.sub_category])
+
+  useEffect(() => {
+    if (
+      isCoordinates(formStoreState.coordinates) &&
+      formStoreState.coordinates[0] === 0 &&
+      formStoreState.coordinates[1] === 0
+    ) {
+      methods.setError('location', { message: t('location_required') })
+    } else {
+      methods.clearErrors('location')
+    }
+  }, [formStoreState.coordinates])
 
   const onSubmit = (data: any) => {
     const questionKeys = Object.keys(data)
@@ -99,23 +112,31 @@ export const IncidentQuestionsLocationForm = () => {
   }
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col gap-8 items-start"
-    >
-      {additionalQuestions.length ? (
-        <RenderDynamicFields
-          data={additionalQuestions}
-          register={register}
-          errors={errors}
-        />
-      ) : loading ? (
-        /* TODO: Implement nice loading state */
-        <Paragraph>Laden...</Paragraph>
-      ) : (
-        <Paragraph>TODO: Laat hier een LocationSelect zien</Paragraph>
-      )}
-      <IncidentFormFooter />
-    </form>
+    <FormProvider {...methods}>
+      <form
+        onSubmit={methods.handleSubmit(onSubmit)}
+        className="flex flex-col gap-8 items-start"
+      >
+        {additionalQuestions.length ? (
+          Object.keys(additionalQuestions).map((value, index, array) => {
+            const question = additionalQuestions[index]
+
+            const fieldName = question.key
+
+            return (
+              <div key={fieldName} className="w-full">
+                <RenderSingleField field={question} />
+              </div>
+            )
+          })
+        ) : loading ? (
+          /* TODO: Implement nice loading state */
+          <Paragraph>Laden...</Paragraph>
+        ) : (
+          <LocationSelect />
+        )}
+        <IncidentFormFooter />
+      </form>
+    </FormProvider>
   )
 }

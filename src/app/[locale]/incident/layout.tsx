@@ -14,7 +14,9 @@ export default function IncidentLayout({ children }: Layout) {
             <Stepper />
           </NextIntlClientProvider>
         </div>
-        <div className="col-span-1 md:col-span-8">{children}</div>
+        <NextIntlClientProvider messages={messages}>
+          <div className="col-span-1 md:col-span-8">{children}</div>
+        </NextIntlClientProvider>
       </div>
     </main>
   )

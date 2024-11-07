@@ -12,8 +12,8 @@ import { useRouter } from '@/routing/navigation'
 import { postAttachments } from '@/services/attachment/attachments'
 import { useFormStore } from '@/store/form_store'
 import { _NestedLocationModel } from '@/services/client'
+import { Paragraph, Heading } from '@/components/index'
 import PreviewFile from '@/components/ui/upload/PreviewFile'
-import { Paragraph } from '@utrecht/component-library-react/dist/css-module'
 import { SubmitAlert } from '@/app/[locale]/incident/summary/components/SubmitAlert'
 
 const IncidentSummaryForm = () => {
@@ -98,11 +98,11 @@ const IncidentSummaryForm = () => {
 
   return (
     <div className="flex flex-col gap-8">
-      <Paragraph>{t('description')}</Paragraph>
+      <Paragraph appearance="lead">{t('description')}</Paragraph>
       <Divider />
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-1 md:flex-row justify-between">
-          <h3>{t('steps.step_one.title')}</h3>
+          <Heading level={2}>{t('steps.step_one.title')}</Heading>
           <LinkWrapper href={'/incident'} onClick={() => goToStep(1)}>
             {t('steps.step_one.edit')}
           </LinkWrapper>
@@ -121,19 +121,34 @@ const IncidentSummaryForm = () => {
       <Divider />
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-1 md:flex-row justify-between">
-          <h3>{t('steps.step_two.title')}</h3>
+          <Heading level={2}>{t('steps.step_two.title')}</Heading>
           <LinkWrapper href={'/incident/add'} onClick={() => goToStep(2)}>
             {t('steps.step_two.edit')}
           </LinkWrapper>
         </div>
-        <IncidentSummaryFormItem title={t('steps.step_two.input_heading')}>
-          <LocationMap />
-        </IncidentSummaryFormItem>
+        {/* TODO: AssetSelect en LocationSelect hier tonen, indien een / beide zijn ingevuld */}
+        {formState.extra_properties.map((answer) => {
+          return (
+            <IncidentSummaryFormItem
+              title={answer.label}
+              key={answer.id}
+              value={
+                typeof answer.answer === 'string'
+                  ? answer.answer
+                  : Array.isArray(answer.answer)
+                    ? answer.answer
+                        .map((singleAnswer) => singleAnswer.label)
+                        .join(', ')
+                    : answer.answer.label
+              }
+            />
+          )
+        })}
       </div>
       <Divider />
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-1 md:flex-row justify-between">
-          <h3>{t('steps.step_three.title')}</h3>
+          <Heading level={2}>{t('steps.step_three.title')}</Heading>
           <LinkWrapper href={'/incident/contact'} onClick={() => goToStep(3)}>
             {t('steps.step_three.edit')}
           </LinkWrapper>
@@ -188,7 +203,7 @@ export const IncidentSummaryFormItem = ({
 }) => {
   return (
     <div className="flex flex-col gap-1">
-      <Paragraph className="font-semibold">{title}</Paragraph>
+      <Heading level={3}>{title}</Heading>
       {value !== '' ? (
         <Paragraph>{value}</Paragraph>
       ) : (
