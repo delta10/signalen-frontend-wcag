@@ -23,7 +23,6 @@ export const TextInput = ({ field }: TextInputProps) => {
         label={field.meta.label}
         required={field.required}
         id={`${field.key}`}
-        autoComplete="phone"
         errorMessage={errorMessage}
         placeholder={field.meta.placeholder ? field.meta.placeholder : ''}
         invalid={Boolean(errorMessage)}

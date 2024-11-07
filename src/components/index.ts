@@ -23,3 +23,5 @@ export {
   Icon,
   RadioButton,
 } from '@utrecht/component-library-react/dist/css-module'
+
+export { RadioGroup } from '@utrecht/radio-group-react'
