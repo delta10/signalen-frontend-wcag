@@ -26,7 +26,7 @@ import {
   FieldsetLegend,
   FormFieldDescription,
   FormFieldErrorMessage,
-} from '@utrecht/component-library-react'
+} from '@/components/index'
 
 export const IncidentDescriptionForm = () => {
   const t = useTranslations('describe-report.form')

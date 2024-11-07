@@ -1,6 +1,6 @@
 import { QuestionField } from '@/types/form'
 import Markdown from 'react-markdown'
-import { Alert } from '@utrecht/component-library-react/dist/css-module'
+import { Alert } from '@/components'
 
 interface PlainTextProps extends QuestionField {}
 

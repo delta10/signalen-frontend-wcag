@@ -20,6 +20,7 @@ export {
   Link,
   Paragraph,
   PreHeading,
+  LinkButton,
   Icon,
   RadioButton,
 } from '@utrecht/component-library-react/dist/css-module'

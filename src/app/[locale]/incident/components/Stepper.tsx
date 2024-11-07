@@ -5,7 +5,7 @@ import { Paths, usePathname } from '@/routing/navigation'
 import { useStepperStore } from '@/store/stepper_store'
 import { useEffect, useRef } from 'react'
 import { useFormStore } from '@/store/form_store'
-import { Button, Link } from '@utrecht/component-library-react/dist/css-module'
+import { Button, Link } from '@/components'
 
 import { Paragraph } from '@/components/index'
 

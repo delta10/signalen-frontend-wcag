@@ -37,7 +37,9 @@
       }
     },
     "map": {
-      "map_heading": "Choose your location"
+      "map_heading": "Choose your location",
+      "map_label": "Where is the location?",
+      "required_short": "required"
     }
   },
   "describe-contact": {

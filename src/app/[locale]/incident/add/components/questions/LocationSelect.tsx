@@ -9,8 +9,9 @@ import { useFormStore } from '@/store/form_store'
 import { getNearestAddressByCoordinate } from '@/services/location/address'
 import { useConfig } from '@/hooks/useConfig'
 import { isCoordinates } from '@/lib/utils/map'
-import { Alert } from '@utrecht/component-library-react/dist/css-module'
-import { LinkButton } from '@utrecht/component-library-react'
+import { Fieldset, FieldsetLegend, LinkButton } from '@/components/index'
+import { useTranslations } from 'next-intl'
+import { FormFieldErrorMessage } from '@/components'
 
 export interface LocationSelectProps {
   field?: PublicQuestion
@@ -24,6 +25,7 @@ export const LocationSelect = ({ field }: LocationSelectProps) => {
   const { formState: formStoreState } = useFormStore()
   const [address, setAddress] = useState<string | null>(null)
   const { config } = useConfig()
+  const t = useTranslations('describe-add.map')
 
   useEffect(() => {
     const getAddress = async () => {
@@ -44,11 +46,17 @@ export const LocationSelect = ({ field }: LocationSelectProps) => {
   }, [formStoreState.coordinates])
 
   return (
-    <div className="w-full">
-      {errorMessage && <Alert type="error">{errorMessage}</Alert>}
-      <label htmlFor="location-button">
-        {field ? field.meta.label : 'Waar is het?'}
-      </label>
+    <Fieldset invalid={Boolean(errorMessage)} className="w-full">
+      <FieldsetLegend>
+        {field
+          ? `${field.meta.label} (${t('required_short')})`
+          : `${t('map_label')} (${t('required_short')})`}
+      </FieldsetLegend>
+
+      {Boolean(errorMessage) && errorMessage && (
+        <FormFieldErrorMessage>{errorMessage}</FormFieldErrorMessage>
+      )}
+
       <div className="relative w-full">
         <LocationMap />
         <Paragraph>{address}</Paragraph>
@@ -74,7 +82,6 @@ export const LocationSelect = ({ field }: LocationSelectProps) => {
           />
         </MapProvider>
       </div>
-      {/* TODO: toon locatie, straatnaam bijv. */}
-    </div>
+    </Fieldset>
   )
 }

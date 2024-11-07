@@ -37,7 +37,9 @@
       }
     },
     "map": {
-      "map_heading": "Kies uw locatie"
+      "map_heading": "Kies uw locatie",
+      "map_label": "Waar is het?",
+      "required_short": "verplicht"
     }
   },
   "describe-contact": {
