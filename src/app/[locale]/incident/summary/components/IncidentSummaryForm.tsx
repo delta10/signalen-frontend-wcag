@@ -140,9 +140,10 @@ const IncidentSummaryForm = () => {
             {t('steps.step_three.edit')}
           </LinkWrapper>
         </div>
-        {formState.phone === undefined &&
-        formState.email === undefined &&
-        formState.sharing_allowed === false ? (
+        {formState.phone === '' ||
+        (formState.phone === undefined && formState.email === '') ||
+        (formState.email === undefined &&
+          formState.sharing_allowed === false) ? (
           <Paragraph>{t('steps.step_three.no_contact_details')}</Paragraph>
         ) : (
           <>

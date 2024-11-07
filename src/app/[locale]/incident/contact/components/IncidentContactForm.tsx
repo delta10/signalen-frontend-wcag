@@ -34,11 +34,21 @@ const IncidentContactForm = () => {
   const incidentContactFormSchema = z.object({
     phone: z
       .string()
-      .refine(validator.isMobilePhone, t('errors.number_not_valid'))
-      .optional()
-      .nullable(),
-    email: z.string().email(t('errors.email_not_valid')).optional().nullable(),
-    sharing_allowed: z.boolean().optional(),
+      .refine(
+        (value) => value == '' || validator.isMobilePhone(value),
+        t('errors.number_not_valid')
+      )
+      .nullable()
+      .optional(),
+    email: z
+      .string()
+      .refine(
+        (value) => value == '' || validator.isEmail(value),
+        t('errors.email_not_valid')
+      )
+      .nullable()
+      .optional(),
+    sharing_allowed: z.boolean(),
   })
 
   const form = useForm<z.infer<typeof incidentContactFormSchema>>({
@@ -79,7 +89,7 @@ const IncidentContactForm = () => {
           autoComplete="phone"
           errorMessage={form.formState.errors.phone?.message}
           invalid={Boolean(form.formState.errors.phone?.message)}
-          description={tGeneral('not-required')}
+          required={false}
           {...form.register('phone')}
         />
         <FormFieldTextbox
@@ -88,7 +98,7 @@ const IncidentContactForm = () => {
           autoComplete="email"
           errorMessage={form.formState.errors.email?.message}
           invalid={Boolean(form.formState.errors.email?.message)}
-          description={tGeneral('not-required')}
+          required={false}
           {...form.register('email')}
         />
         <Fieldset aria-describedby="todo-id">
