@@ -1,7 +1,7 @@
 import { QuestionField } from '@/types/form'
 import Markdown from 'react-markdown'
 
-interface PlainTextProps extends Omit<QuestionField, 'register' | 'errors'> {}
+interface PlainTextProps extends QuestionField {}
 
 export const PlainText = ({ field }: PlainTextProps) => {
   // TODO: Discuss if alert is the only used PlainText type in Signalen, style Markdown

@@ -6,8 +6,10 @@ export { Select, Container }
 export {
   Alert,
   Heading,
+  Button,
   HeadingGroup,
   Link,
   Paragraph,
   PreHeading,
+  Icon,
 } from '@utrecht/component-library-react/dist/css-module'

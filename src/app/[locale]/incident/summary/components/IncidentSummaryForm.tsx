@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl'
 import { Divider } from '@/components/ui/Divider'
 import { LinkWrapper } from '@/components/ui/LinkWrapper'
 import { useStepperStore } from '@/store/stepper_store'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { LocationMap } from '@/components/ui/LocationMap'
 import { signalsClient } from '@/services/client/api-client'
 import { steps, useRouter } from '@/routing/navigation'
@@ -14,6 +14,7 @@ import { useFormStore } from '@/store/form_store'
 import { _NestedLocationModel } from '@/services/client'
 import { Paragraph, Heading } from '@/components/index'
 import PreviewFile from '@/components/ui/upload/PreviewFile'
+import { SubmitAlert } from '@/app/[locale]/incident/summary/components/SubmitAlert'
 import { FormStep } from '@/types/form'
 
 const IncidentSummaryForm = () => {
@@ -21,6 +22,8 @@ const IncidentSummaryForm = () => {
   const { formState } = useFormStore()
   const { goToStep, addVisitedStep, goBack, setGoBack } = useStepperStore()
   const router = useRouter()
+  const [error, setError] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false)
 
   useEffect(() => {
     router.prefetch('/incident/thankyou')
@@ -36,8 +39,11 @@ const IncidentSummaryForm = () => {
    * generated types with the real API requirements.
    */
   const handleSignalSubmit = async () => {
-    await signalsClient.v1
-      .v1PublicSignalsCreate({
+    setError(false)
+    setLoading(true)
+
+    try {
+      const res = await signalsClient.v1.v1PublicSignalsCreate({
         text: formState.description,
         // @ts-ignore
         location: {
@@ -62,24 +68,32 @@ const IncidentSummaryForm = () => {
         incident_date_start: new Date().toISOString(),
         extra_properties: formState.extra_properties,
       })
-      .then((res) => {
-        if (formState.attachments.length > 0) {
-          const signalId = res.signal_id
-          if (signalId) {
-            formState.attachments.forEach((attachment) => {
-              const formData = new FormData()
-              formData.append('signal_id', signalId)
-              formData.append('file', attachment)
-              postAttachments(signalId, formData)
-            })
+
+      if (formState.attachments.length > 0) {
+        const signalId = res.signal_id
+        if (signalId) {
+          try {
+            await Promise.all(
+              formState.attachments.map(async (attachment) => {
+                const formData = new FormData()
+                formData.append('signal_id', signalId)
+                formData.append('file', attachment)
+                return postAttachments(signalId, formData)
+              })
+            )
+          } catch (e) {
+            // Note: the report does not have fail when one or more of the attachments is not uploaded successfully.
+            console.error('One of the attachments failed while uploading', e)
           }
         }
-      })
-      .then((res) => {
-        addVisitedStep(FormStep.STEP_4_SUMMARY)
-        router.push(steps[FormStep.STEP_5_THANK_YOU])
-      })
-      .catch((err) => console.error(err))
+
+      router.push('/incident/thankyou')
+    } catch (err) {
+      console.error(err)
+      setError(true)
+    } finally {
+      setLoading(false)
+    }
   }
 
   useEffect(() => {
@@ -183,7 +197,14 @@ const IncidentSummaryForm = () => {
           </>
         )}
       </div>
-      <IncidentFormFooter handleSignalSubmit={handleSignalSubmit} />
+
+      <SubmitAlert error={error} loading={loading} />
+
+      <IncidentFormFooter
+        handleSignalSubmit={handleSignalSubmit}
+        ariaDescribedById="submit-described-by"
+        loading={loading}
+      />
     </div>
   )
 }

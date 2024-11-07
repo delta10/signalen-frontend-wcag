@@ -5,32 +5,32 @@
 /* fonts */
 
 .address__select {
-    @apply flex transition duration-100 bg-white p-3 justify-between min-w-[150px] ring-1 ring-border hover:ring-2 hover:bg-hover focus:ring-2 focus:ring-focus outline-none focus-visible:outline-dashed focus-visible:outline-focus_visible focus-within:ring-2 focus-within:ring-focus focus-within:outline-dashed focus-within:outline-focus_visible;
+  @apply flex transition duration-100 bg-white p-3 justify-between min-w-[150px] ring-1 ring-border hover:ring-2 hover:bg-hover focus:ring-2 focus:ring-focus outline-none focus-visible:outline-dashed focus-visible:outline-focus_visible focus-within:ring-2 focus-within:ring-focus focus-within:outline-dashed focus-within:outline-focus_visible;
 }
 
 .address__select-menu {
-    @apply bg-white mt-[2px] border border-border w-full -ml-[2px];
-    min-width: calc(100% + 4px);
+  @apply bg-white mt-[2px] border border-border w-full -ml-[2px];
+  min-width: calc(100% + 4px);
 }
 
 .address__select-option {
-    @apply px-3 py-3 border-y border-x border-transparent;
+  @apply px-3 py-3 border-y border-x border-transparent;
 }
 
 .address__select-option__selected {
-    @apply bg-hover;
+  @apply bg-hover;
 }
 
 .address__select-option__focused {
-    @apply bg-hover border-y border-focus border-x-transparent;
+  @apply bg-hover border-y border-focus border-x-transparent;
 }
 
 .address__select-option__focused:is(:first-child) {
-    @apply border-t-transparent;
+  @apply border-t-transparent;
 }
 
 .address__select-option__focused:is(:last-child) {
-    @apply border-b-transparent;
+  @apply border-b-transparent;
 }
 
 .empty-box {
@@ -88,4 +88,9 @@
     border: none;
     outline: none;
     text-decoration: underline;
+}
+
+/* map */
+.map-marker-icon {
+    --utrecht-icon-size: 42px;
 }

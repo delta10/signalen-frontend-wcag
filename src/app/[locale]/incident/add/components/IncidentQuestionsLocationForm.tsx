@@ -10,6 +10,9 @@ import { steps, useRouter } from '@/routing/navigation'
 import { FormStep, PublicQuestion } from '@/types/form'
 import { Paragraph } from '@/components/index'
 import { RenderSingleField } from '@/app/[locale]/incident/add/components/questions/RenderSingleField'
+import { LocationSelect } from '@/app/[locale]/incident/add/components/questions/LocationSelect'
+import { useTranslations } from 'next-intl'
+import { isCoordinates } from '@/lib/utils/map'
 
 export const IncidentQuestionsLocationForm = () => {
   const { formState: formStoreState, updateForm } = useFormStore()
@@ -28,6 +31,7 @@ export const IncidentQuestionsLocationForm = () => {
   } = useStepperStore()
   const router = useRouter()
   const methods = useForm()
+  const t = useTranslations('general.errors')
 
   useEffect(() => {
     router.prefetch('/incident/contact')
@@ -52,6 +56,18 @@ export const IncidentQuestionsLocationForm = () => {
 
     appendAdditionalQuestions()
   }, [formStoreState.main_category, formStoreState.sub_category])
+
+  useEffect(() => {
+    if (
+      isCoordinates(formStoreState.coordinates) &&
+      formStoreState.coordinates[0] === 0 &&
+      formStoreState.coordinates[1] === 0
+    ) {
+      methods.setError('location', { message: t('location_required') })
+    } else {
+      methods.clearErrors('location')
+    }
+  }, [formStoreState.coordinates])
 
   const onSubmit = (data: any) => {
     const questionKeys = Object.keys(data)
@@ -144,7 +160,7 @@ export const IncidentQuestionsLocationForm = () => {
           /* TODO: Implement nice loading state */
           <Paragraph>Laden...</Paragraph>
         ) : (
-          <Paragraph>TODO: Laat hier een LocationSelect zien</Paragraph>
+          <LocationSelect />
         )}
         <IncidentFormFooter />
       </form>

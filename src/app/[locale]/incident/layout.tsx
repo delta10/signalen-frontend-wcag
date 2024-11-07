@@ -14,7 +14,9 @@ export default function IncidentLayout({ children }: Layout) {
             <FormProgress />
           </NextIntlClientProvider>
         </div>
-        <div className="">{children}</div>
+        <NextIntlClientProvider messages={messages}>
+          <div className="col-span-1 md:col-span-8">{children}</div>
+        </NextIntlClientProvider>
       </div>
     </main>
   )
