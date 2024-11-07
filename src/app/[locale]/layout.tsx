@@ -26,7 +26,7 @@ export default function LocaleLayout({
     <html lang={locale} className={`${font.variable}`}>
       <body className="bg-gray-100">
         <AppProvider>
-          <Document className="utrecht-theme">
+          <Document className="voorbeeld-theme">
             <Container className="bg-white">
               <Header />
               {children}
