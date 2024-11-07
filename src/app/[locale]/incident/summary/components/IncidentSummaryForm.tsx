@@ -86,7 +86,7 @@ const IncidentSummaryForm = () => {
             console.error('One of the attachments failed while uploading', e)
           }
         }
-
+      }
       router.push('/incident/thankyou')
     } catch (err) {
       console.error(err)
