@@ -12,4 +12,6 @@ export {
   Paragraph,
   PreHeading,
   Icon,
+  Surface,
+  Document,
 } from '@utrecht/component-library-react/dist/css-module'
