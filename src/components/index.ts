@@ -25,3 +25,4 @@ export {
 } from '@utrecht/component-library-react/dist/css-module'
 
 export { RadioGroup } from '@utrecht/radio-group-react'
+export { CheckboxGroup } from '@utrecht/checkbox-group-react'
