@@ -48,7 +48,7 @@ const IncidentSummaryForm = () => {
         location: {
           geometrie: {
             type: _NestedLocationModel.type.POINT,
-            coordinates: [5.0604774524196685, 52.09154226805159], //todo: niet vergeten weg te halen!
+            coordinates: formState.coordinates,
           },
         },
         // @ts-ignore
@@ -77,7 +77,7 @@ const IncidentSummaryForm = () => {
                 const formData = new FormData()
                 formData.append('signal_id', signalId)
                 formData.append('file', attachment)
-                await postAttachments(signalId, formData)
+                return postAttachments(signalId, formData)
               })
             )
           } catch (e) {
