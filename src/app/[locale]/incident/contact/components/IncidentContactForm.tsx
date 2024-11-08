@@ -7,23 +7,22 @@ import { useRouter } from '@/routing/navigation'
 import * as z from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/Form'
 import validator from 'validator'
-import { Input } from '@/components/ui/Input'
-import { Checkbox } from '@/components/ui/Checkbox'
 import { useFormStore } from '@/store/form_store'
 import { useEffect } from 'react'
-import { Paragraph, Heading } from '@/components/index'
+import {
+  Fieldset,
+  FieldsetLegend,
+  FormFieldCheckbox,
+  FormFieldDescription,
+  FormFieldTextbox,
+  Heading,
+  Paragraph,
+} from '@/components/index'
 
 const IncidentContactForm = () => {
   const t = useTranslations('describe-contact.form')
+  const tGeneral = useTranslations('general.describe_form')
   const { updateForm, formState } = useFormStore()
   const { addOneStep, setLastCompletedStep } = useStepperStore()
   const router = useRouter()
@@ -35,11 +34,21 @@ const IncidentContactForm = () => {
   const incidentContactFormSchema = z.object({
     phone: z
       .string()
-      .refine(validator.isMobilePhone, t('errors.number_not_valid'))
-      .optional()
-      .nullable(),
-    email: z.string().email(t('errors.email_not_valid')).optional().nullable(),
-    sharing_allowed: z.boolean().optional(),
+      .refine(
+        (value) => value == '' || validator.isMobilePhone(value),
+        t('errors.number_not_valid')
+      )
+      .nullable()
+      .optional(),
+    email: z
+      .string()
+      .refine(
+        (value) => value == '' || validator.isEmail(value),
+        t('errors.email_not_valid')
+      )
+      .nullable()
+      .optional(),
+    sharing_allowed: z.boolean(),
   })
 
   const form = useForm<z.infer<typeof incidentContactFormSchema>>({
@@ -67,76 +76,53 @@ const IncidentContactForm = () => {
 
   return (
     <div>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col gap-8 items-start"
-        >
-          <div className="flex flex-col gap-4">
-            <Heading level={2}>{t('heading')}</Heading>
-            <Paragraph>{t('description')}</Paragraph>
-          </div>
-          <FormField
-            name={'phone'}
-            control={form.control}
-            render={({ field, formState: { errors } }) => (
-              <FormItem error={errors.phone}>
-                <div>
-                  <FormLabel>{t('describe_phone_input_heading')}</FormLabel>
-                  <FormMessage />
-                </div>
-                <FormControl>
-                  <Input {...field} value={field.value!} />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-          <FormField
-            name={'email'}
-            control={form.control}
-            render={({ field, formState: { errors } }) => (
-              <FormItem error={errors.email}>
-                <div>
-                  <FormLabel>{t('describe_mail_input_heading')}</FormLabel>
-                  <FormMessage />
-                </div>
-                <FormControl>
-                  <Input {...field} value={field.value!} />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-          <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4">
+        <Heading level={2}>{t('heading')}</Heading>
+        <Paragraph>{t('description')}</Paragraph>
+      </div>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex flex-col gap-8 items-start"
+      >
+        <FormFieldTextbox
+          label={`${t('describe_mail_input_heading')} (${t('not_required_short')})`}
+          autoComplete="phone"
+          errorMessage={form.formState.errors.phone?.message}
+          invalid={Boolean(form.formState.errors.phone?.message)}
+          required={false}
+          {...form.register('phone')}
+        />
+        <FormFieldTextbox
+          label={`${t('describe_mail_input_heading')} (${t('not_required_short')})`}
+          type="email"
+          autoComplete="email"
+          errorMessage={form.formState.errors.email?.message}
+          invalid={Boolean(form.formState.errors.email?.message)}
+          required={false}
+          {...form.register('email')}
+        />
+        <Fieldset aria-describedby="todo-id">
+          <FieldsetLegend>
             <Heading level={2}>{t('send_to_other_instance_heading')}</Heading>
-            <Paragraph>{t('send_to_other_instance_description')}</Paragraph>
+          </FieldsetLegend>
+          <div className="flex flex-col gap-4">
+            <FormFieldDescription id="todo-id">
+              <Paragraph>{t('send_to_other_instance_description')}</Paragraph>
+            </FormFieldDescription>
+            <div className="bg-gray-200 w-full p-4">
+              <FormFieldCheckbox
+                label={t('describe_checkbox_input_description')}
+                errorMessage={form.formState.errors.sharing_allowed?.message}
+                invalid={Boolean(
+                  form.formState.errors.sharing_allowed?.message
+                )}
+                {...form.register('sharing_allowed')}
+              ></FormFieldCheckbox>
+            </div>
           </div>
-          <div className="bg-gray-200 w-full p-4">
-            <FormField
-              name={'sharing_allowed'}
-              control={form.control}
-              render={({ field, formState: { errors } }) => (
-                <FormItem
-                  error={errors.sharing_allowed}
-                  className="flex flex-row gap-4"
-                >
-                  <FormControl>
-                    <Checkbox
-                      {...field}
-                      checked={field.value}
-                      value={undefined}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormLabel className="font-normal">
-                    {t('describe_checkbox_input_description')}
-                  </FormLabel>
-                </FormItem>
-              )}
-            />
-          </div>
-          <IncidentFormFooter />
-        </form>
-      </Form>
+        </Fieldset>
+        <IncidentFormFooter />
+      </form>
     </div>
   )
 }
