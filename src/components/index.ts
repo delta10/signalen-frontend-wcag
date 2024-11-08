@@ -8,7 +8,6 @@ export {
   Button,
   ButtonGroup,
   Heading,
-  Button,
   HeadingGroup,
   Link,
   Image,
