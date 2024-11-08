@@ -151,7 +151,7 @@ export const IncidentQuestionsLocationForm = () => {
         ) : (
           <LocationSelect />
         )}
-        <IncidentFormFooter />
+        <IncidentFormFooter errors={methods.formState.errors} />
       </form>
     </FormProvider>
   )
