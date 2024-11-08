@@ -8,12 +8,13 @@ import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentF
 import { useStepperStore } from '@/store/stepper_store'
 import { useRouter } from '@/routing/navigation'
 import { PublicQuestion } from '@/types/form'
-import { Paragraph } from '@/components/index'
+import { Paragraph, Alert } from '@/components/index'
 import { RenderSingleField } from '@/app/[locale]/incident/add/components/questions/RenderSingleField'
+import { LocationSelect } from '@/app/[locale]/incident/add/components/questions/LocationSelect'
 import { useTranslations } from 'next-intl'
+import { isCoordinates } from '@/lib/utils/map'
 
 export const IncidentQuestionsLocationForm = () => {
-  const t = useTranslations('general.errors')
   const { formState: formStoreState, updateForm } = useFormStore()
   const [loading, setLoading] = useState<boolean>(true)
   const [additionalQuestions, setAdditionalQuestions] = useState<
@@ -22,6 +23,7 @@ export const IncidentQuestionsLocationForm = () => {
   const { addOneStep, setLastCompletedStep } = useStepperStore()
   const router = useRouter()
   const methods = useForm()
+  const t = useTranslations('general.errors')
 
   useEffect(() => {
     router.prefetch('/incident/contact')
@@ -46,6 +48,18 @@ export const IncidentQuestionsLocationForm = () => {
 
     appendAdditionalQuestions()
   }, [formStoreState.main_category, formStoreState.sub_category])
+
+  useEffect(() => {
+    if (
+      isCoordinates(formStoreState.coordinates) &&
+      formStoreState.coordinates[0] === 0 &&
+      formStoreState.coordinates[1] === 0
+    ) {
+      methods.setError('location', { message: t('location_required') })
+    } else {
+      methods.clearErrors('location')
+    }
+  }, [formStoreState.coordinates])
 
   useEffect(() => {
     if (formStoreState.isBlocking) {
@@ -115,9 +129,9 @@ export const IncidentQuestionsLocationForm = () => {
         className="flex flex-col gap-8 items-start"
       >
         {methods.formState.errors.submit && (
-          <div className="bg-red-100 rounded-lg p-4">
+          <Alert type="error">
             {methods.formState.errors.submit.message?.toString()}
-          </div>
+          </Alert>
         )}
         {additionalQuestions.length ? (
           Object.keys(additionalQuestions).map((value, index, array) => {
@@ -135,7 +149,7 @@ export const IncidentQuestionsLocationForm = () => {
           /* TODO: Implement nice loading state */
           <Paragraph>Laden...</Paragraph>
         ) : (
-          <Paragraph>TODO: Laat hier een LocationSelect zien</Paragraph>
+          <LocationSelect />
         )}
         <IncidentFormFooter />
       </form>

@@ -1,17 +1,29 @@
-import { NextIntlClientProvider, useMessages, useTranslations } from 'next-intl'
-import { IncidentQuestionsLocationForm } from '@/app/[locale]/incident/add/components/IncidentQuestionsLocationForm'
-import { Heading } from '@/components/index'
+import { AdditionalInformationPage } from '@/app/[locale]/incident/add/components/AdditionalInformationPage'
+import { getTranslations } from 'next-intl/server'
+import { createTitle } from '@/lib/utils/create-title'
+import { Metadata } from 'next/types'
+
+const currentStep = 2
+const maxStep = 4
+
+export async function generateMetadata(): Promise<Metadata> {
+  const errorMessage = ''
+  const t = await getTranslations('describe-add')
+  const tGeneral = await getTranslations('general.describe_form')
+
+  return {
+    title: createTitle(
+      [
+        errorMessage ? tGeneral('title-prefix-error') : '',
+        tGeneral('pre-heading', { current: currentStep, max: maxStep }),
+        t('heading'),
+        'gemeente Voorbeeld',
+      ],
+      tGeneral('title-separator')
+    ),
+  }
+}
 
 export default function AddAditionalInformationPage() {
-  const t = useTranslations('describe-add')
-  const messages = useMessages()
-
-  return (
-    <div className="flex flex-col gap-4">
-      <Heading level={1}>{t('heading')}</Heading>
-      <NextIntlClientProvider messages={messages}>
-        <IncidentQuestionsLocationForm />
-      </NextIntlClientProvider>
-    </div>
-  )
+  return <AdditionalInformationPage />
 }

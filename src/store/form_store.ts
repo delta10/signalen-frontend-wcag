@@ -22,15 +22,22 @@ const useFormStore = create<FormStore>()(
       formState: {
         ...initialFormState,
       },
+      loaded: false,
       updateForm: (obj) =>
         set((state) => {
           state.formState = obj
         }),
       resetForm: () => set(() => ({ formState: initialFormState })),
+      setLoaded: () => set(() => ({ loaded: true })),
     })),
     {
       name: 'form',
       storage: createJSONStorage(() => sessionStorage),
+      onRehydrateStorage: () => (state) => {
+        if (state) {
+          state.setLoaded()
+        }
+      },
     }
   )
 )

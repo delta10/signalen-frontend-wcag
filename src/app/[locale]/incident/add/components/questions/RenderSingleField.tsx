@@ -7,6 +7,7 @@ import { PlainText } from '@/app/[locale]/incident/add/components/questions/Plai
 import { TextInput } from '@/app/[locale]/incident/add/components/questions/TextInput'
 import { CheckboxInput } from '@/app/[locale]/incident/add/components/questions/CheckboxInput'
 import { TextAreaInput } from '@/app/[locale]/incident/add/components/questions/TextAreaInput'
+import { LocationSelect } from '@/app/[locale]/incident/add/components/questions/LocationSelect'
 import { evaluateConditions } from '@/lib/utils/check-visibility'
 
 export const RenderSingleField = ({ field }: { field: PublicQuestion }) => {
@@ -36,9 +37,8 @@ export const RenderSingleField = ({ field }: { field: PublicQuestion }) => {
       // TODO: Implement Asset Select
       <></>
     ),
-    [FieldTypes.LOCATION_SELECT]: (props: any) => (
-      // TODO: Implement Location Select
-      <></>
+    [FieldTypes.LOCATION_SELECT]: (field: PublicQuestion) => (
+      <LocationSelect field={field} />
     ),
   }
 
@@ -98,7 +98,7 @@ export const RenderSingleField = ({ field }: { field: PublicQuestion }) => {
       const selectedAnswers =
         typeof extraProperty.answer !== 'string'
           ? // @ts-ignore
-            extraProperty.answer.map((answer: any) => answer.id)
+            extraProperty.answer.map((answer: any) => answer?.id)
           : []
 
       // Generate the array as expected by react-hook-form, based on options

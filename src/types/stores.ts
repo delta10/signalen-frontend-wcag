@@ -23,9 +23,11 @@ type FormStoreState = {
 }
 
 type FormStore = {
+  loaded: boolean
   formState: FormStoreState
   updateForm: (obj: FormStoreState) => void
   resetForm: () => void
+  setLoaded: () => void
 }
 
 type StepperStore = {
