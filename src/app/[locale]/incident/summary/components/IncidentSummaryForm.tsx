@@ -3,10 +3,8 @@
 import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentFormFooter'
 import { useTranslations } from 'next-intl'
 import { Divider } from '@/components/ui/Divider'
-import { LinkWrapper } from '@/components/ui/LinkWrapper'
 import { useStepperStore } from '@/store/stepper_store'
 import React, { useEffect, useState } from 'react'
-import { LocationMap } from '@/components/ui/LocationMap'
 import { signalsClient } from '@/services/client/api-client'
 import { useRouter } from '@/routing/navigation'
 import { postAttachments } from '@/services/attachment/attachments'
@@ -15,6 +13,7 @@ import { _NestedLocationModel } from '@/services/client'
 import { Paragraph, Heading } from '@/components/index'
 import PreviewFile from '@/components/ui/upload/PreviewFile'
 import { SubmitAlert } from '@/app/[locale]/incident/summary/components/SubmitAlert'
+import { NextLinkWrapper } from '@/components/ui/NextLinkWrapper'
 
 const IncidentSummaryForm = () => {
   const t = useTranslations('describe-summary')
@@ -103,9 +102,9 @@ const IncidentSummaryForm = () => {
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-1 md:flex-row justify-between">
           <Heading level={2}>{t('steps.step_one.title')}</Heading>
-          <LinkWrapper href={'/incident'} onClick={() => goToStep(1)}>
+          <NextLinkWrapper href={'/incident'} onClick={() => goToStep(1)}>
             {t('steps.step_one.edit')}
-          </LinkWrapper>
+          </NextLinkWrapper>
         </div>
         <IncidentSummaryFormItem
           title={t('steps.step_one.input_heading')}
@@ -122,9 +121,9 @@ const IncidentSummaryForm = () => {
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-1 md:flex-row justify-between">
           <Heading level={2}>{t('steps.step_two.title')}</Heading>
-          <LinkWrapper href={'/incident/add'} onClick={() => goToStep(2)}>
+          <NextLinkWrapper href={'/incident/add'} onClick={() => goToStep(2)}>
             {t('steps.step_two.edit')}
-          </LinkWrapper>
+          </NextLinkWrapper>
         </div>
         {/* TODO: AssetSelect en LocationSelect hier tonen, indien een / beide zijn ingevuld */}
         {formState.extra_properties.map((answer) => {
@@ -137,6 +136,10 @@ const IncidentSummaryForm = () => {
                   ? answer.answer
                   : Array.isArray(answer.answer)
                     ? answer.answer
+                        .filter(
+                          (singleAnswer) =>
+                            singleAnswer !== false && singleAnswer !== 'empty'
+                        )
                         .map((singleAnswer) => singleAnswer.label)
                         .join(', ')
                     : answer.answer.label
@@ -149,13 +152,17 @@ const IncidentSummaryForm = () => {
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-1 md:flex-row justify-between">
           <Heading level={2}>{t('steps.step_three.title')}</Heading>
-          <LinkWrapper href={'/incident/contact'} onClick={() => goToStep(3)}>
+          <NextLinkWrapper
+            href={'/incident/contact'}
+            onClick={() => goToStep(3)}
+          >
             {t('steps.step_three.edit')}
-          </LinkWrapper>
+          </NextLinkWrapper>
         </div>
-        {formState.phone === undefined &&
-        formState.email === undefined &&
-        formState.sharing_allowed === false ? (
+        {formState.phone === '' ||
+        (formState.phone === undefined && formState.email === '') ||
+        (formState.email === undefined &&
+          formState.sharing_allowed === false) ? (
           <Paragraph>{t('steps.step_three.no_contact_details')}</Paragraph>
         ) : (
           <>
@@ -203,7 +210,7 @@ export const IncidentSummaryFormItem = ({
 }) => {
   return (
     <div className="flex flex-col gap-1">
-      <Heading level={3}>{title}</Heading>
+      {value !== '' && <Heading level={3}>{title}</Heading>}
       {value !== '' ? (
         <Paragraph>{value}</Paragraph>
       ) : (
