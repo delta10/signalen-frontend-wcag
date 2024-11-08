@@ -78,6 +78,17 @@
         "input_sharing_heading": "Melding delen",
         "input_sharing_allowed": "Ja, ik geef de gemeente Amsterdam toestemming om mijn melding door te sturen naar andere organisaties als de melding niet voor de gemeente is bestemd."
       }
+    },
+    "submit_alert": {
+      "error": {
+        "heading": "Versturen mislukt",
+        "description": "Wegens een technische fout kon de melding niet worden verzonden. We hebben uw gegevens niet ontvangen. Probeer het over een paar minuten opnieuw."
+
+      },
+      "loading": {
+        "heading": "Bezig met afhandelen",
+        "description": "Uw melding wordt afgehandeld. U gaat automatisch naar de volgende pagina zodra de melding is ontvangen.\n\nEen ogenblik geduld alstublieft..."
+      }
     }
   },
   "describe-thankyou": {
@@ -99,7 +110,8 @@
     "errors": {
       "required": "Dit veld is verplicht",
       "max_length": "Dit veld heeft een maximale lengte van {maxLength} karakters",
-      "not_required_short": "niet verplicht"
+      "not_required_short": "niet verplicht",
+      "location_required": "Locatie is verplicht"
     },
     "button": {
       "upload_file": "Upload bestand",

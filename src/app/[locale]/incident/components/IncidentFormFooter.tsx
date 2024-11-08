@@ -1,19 +1,23 @@
 'use client'
 
 import React from 'react'
-import { cn } from '@/lib/utils/style'
 import { useTranslations } from 'next-intl'
 import { Button, ButtonGroup } from '@/components/index'
 import { useStepperStore } from '@/store/stepper_store'
 import { steps, usePathname as usePath, useRouter } from '@/routing/navigation'
+import { ImSpinner8 } from 'react-icons/im'
 
 type IncidentFormFooterProps = {
   handleSignalSubmit?: () => void
+  loading?: boolean
+  ariaDescribedById?: string
 } & React.HTMLAttributes<HTMLDivElement>
 
 const IncidentFormFooter = ({
   className,
   handleSignalSubmit,
+  loading,
+  ariaDescribedById,
 }: IncidentFormFooterProps) => {
   const t = useTranslations('general.describe_form')
   const { step, addOneStep, removeOneStep } = useStepperStore()
@@ -51,8 +55,12 @@ const IncidentFormFooter = ({
           <Button
             appearance="primary-action-button"
             type="submit"
+            disabled={loading}
+            tabIndex={loading ? 0 : undefined}
+            aria-describedby={ariaDescribedById}
             onClick={() => (handleSignalSubmit ? handleSignalSubmit() : null)}
           >
+            {loading && <ImSpinner8 className="animate-spin" />}
             {t('submit_button')}
           </Button>
         )}

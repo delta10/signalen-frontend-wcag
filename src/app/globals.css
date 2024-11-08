@@ -69,3 +69,8 @@
     border-radius: 50%;
     border: 1px solid rgb(0, 32, 92);
 }
+
+/* map */
+.map-marker-icon {
+    --utrecht-icon-size: 42px;
+}

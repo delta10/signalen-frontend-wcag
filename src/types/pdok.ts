@@ -16,3 +16,21 @@ export type AddressSuggestDoc = {
   centroide_ll: string
   straatnaam: string
 }
+
+export type AddressCoordinateResponse = {
+  response: {
+    numFound: number
+    start: number
+    maxScore: number
+    numFoundExact: boolean
+    docs: Array<AddressCoordinateDoc>
+  }
+}
+
+export type AddressCoordinateDoc = {
+  afstand: number
+  id: string
+  score: number
+  type: string
+  weergavenaam: string
+}

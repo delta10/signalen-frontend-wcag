@@ -8,9 +8,11 @@ export {
   Button,
   ButtonGroup,
   Heading,
+  Button,
   HeadingGroup,
   Link,
   Image,
   Paragraph,
   PreHeading,
+  Icon,
 } from '@utrecht/component-library-react/dist/css-module'
