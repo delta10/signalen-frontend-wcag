@@ -59,6 +59,7 @@ export const LocationSelect = ({ field }: LocationSelectProps) => {
               formStoreState.coordinates[0] === 0 &&
               formStoreState.coordinates[1] === 0 ? (
                 <Button
+                  appearance="primary-action-button"
                   id="location-button"
                   className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 border-none"
                   type="button"

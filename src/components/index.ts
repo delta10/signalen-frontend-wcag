@@ -5,10 +5,12 @@ export { Select, Container }
 
 export {
   Alert,
-  Heading,
   Button,
+  ButtonGroup,
+  Heading,
   HeadingGroup,
   Link,
+  Image,
   Paragraph,
   PreHeading,
   Icon,
