@@ -3,7 +3,6 @@
 import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentFormFooter'
 import { useTranslations } from 'next-intl'
 import { Divider } from '@/components/ui/Divider'
-import { LinkWrapper } from '@/components/ui/LinkWrapper'
 import { useStepperStore } from '@/store/stepper_store'
 import React, { useEffect, useState } from 'react'
 import { signalsClient } from '@/services/client/api-client'
@@ -11,9 +10,10 @@ import { useRouter } from '@/routing/navigation'
 import { postAttachments } from '@/services/attachment/attachments'
 import { useFormStore } from '@/store/form_store'
 import { _NestedLocationModel } from '@/services/client'
-import { Paragraph, Heading, Link as NLDSLink } from '@/components/index'
+import { Paragraph, Heading } from '@/components/index'
 import PreviewFile from '@/components/ui/upload/PreviewFile'
 import { SubmitAlert } from '@/app/[locale]/incident/summary/components/SubmitAlert'
+import { NextLinkWrapper } from '@/components/ui/NextLinkWrapper'
 
 const IncidentSummaryForm = () => {
   const t = useTranslations('describe-summary')
@@ -102,9 +102,9 @@ const IncidentSummaryForm = () => {
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-1 md:flex-row justify-between">
           <Heading level={2}>{t('steps.step_one.title')}</Heading>
-          <NLDSLink href={'/incident'} onClick={() => goToStep(1)}>
+          <NextLinkWrapper href={'/incident'} onClick={() => goToStep(1)}>
             {t('steps.step_one.edit')}
-          </NLDSLink>
+          </NextLinkWrapper>
         </div>
         <IncidentSummaryFormItem
           title={t('steps.step_one.input_heading')}
@@ -121,9 +121,9 @@ const IncidentSummaryForm = () => {
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-1 md:flex-row justify-between">
           <Heading level={2}>{t('steps.step_two.title')}</Heading>
-          <NLDSLink href={'/incident/add'} onClick={() => goToStep(2)}>
+          <NextLinkWrapper href={'/incident/add'} onClick={() => goToStep(2)}>
             {t('steps.step_two.edit')}
-          </NLDSLink>
+          </NextLinkWrapper>
         </div>
         {/* TODO: AssetSelect en LocationSelect hier tonen, indien een / beide zijn ingevuld */}
         {formState.extra_properties.map((answer) => {
@@ -148,9 +148,12 @@ const IncidentSummaryForm = () => {
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-1 md:flex-row justify-between">
           <Heading level={2}>{t('steps.step_three.title')}</Heading>
-          <NLDSLink href={'/incident/contact'} onClick={() => goToStep(3)}>
+          <NextLinkWrapper
+            href={'/incident/contact'}
+            onClick={() => goToStep(3)}
+          >
             {t('steps.step_three.edit')}
-          </NLDSLink>
+          </NextLinkWrapper>
         </div>
         {formState.phone === undefined &&
         formState.email === undefined &&
