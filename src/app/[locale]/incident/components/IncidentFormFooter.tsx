@@ -1,9 +1,8 @@
 'use client'
 
 import React from 'react'
-import { cn } from '@/lib/utils/style'
 import { useTranslations } from 'next-intl'
-import { Button } from '@/components/ui/Button'
+import { Button, ButtonGroup } from '@/components/index'
 import { useStepperStore } from '@/store/stepper_store'
 import { steps, usePathname as usePath, useRouter } from '@/routing/navigation'
 import { ImSpinner8 } from 'react-icons/im'
@@ -37,45 +36,35 @@ const IncidentFormFooter = ({
 
   return (
     <>
-      <div
-        className={cn(
-          `bg-gray-200 w-full p-4 flex justify-end ${
-            step != 1 && pathname != '/incident' ? 'justify-between' : ''
-          }`,
-          className
-        )}
-      >
+      <ButtonGroup>
         {step != 1 && pathname != '/incident' && (
           <Button
-            variant="transparent"
+            appearance="secondary-action-button"
             type="button"
-            className="justify-self-start self-start"
             onClick={() => goBack()}
           >
             {t('back_button')}
           </Button>
         )}
         {step < 4 && (
-          <Button variant="primary" type="submit" className="justify-self-end">
+          <Button appearance="primary-action-button" type="submit">
             {t('next_button')}
           </Button>
         )}
         {step === 4 && (
-          // Note: current button has no visual indicator when disabled.
           <Button
-            variant="primary"
+            appearance="primary-action-button"
             type="submit"
             disabled={loading}
             tabIndex={loading ? 0 : undefined}
             aria-describedby={ariaDescribedById}
-            className="flex items-center gap-2 justify-self-end"
             onClick={() => (handleSignalSubmit ? handleSignalSubmit() : null)}
           >
             {loading && <ImSpinner8 className="animate-spin" />}
             {t('submit_button')}
           </Button>
         )}
-      </div>
+      </ButtonGroup>
     </>
   )
 }

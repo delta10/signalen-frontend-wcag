@@ -3,7 +3,7 @@
 import { useTranslations } from 'next-intl'
 import { useFormStore } from '@/store/form_store'
 import { Heading, Paragraph, HeadingGroup, PreHeading } from '@/components'
-import { Alert, Link } from '@utrecht/component-library-react/dist/css-module'
+import { Alert, Link } from '@/components'
 import { IncidentDescriptionForm } from '@/app/[locale]/incident/components/IncidentDescriptionForm'
 
 const currentStep = 1

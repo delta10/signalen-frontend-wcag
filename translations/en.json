@@ -13,7 +13,7 @@
     "form": {
       "describe_textarea_heading": "What is it about?",
       "describe_textarea_description": "Do not type personal information in this description. We will ask this of you later in this form.",
-      "describe_upload_heading": "Add photos (not required)",
+      "describe_upload_heading": "Add photos",
       "describe_upload_description": "Add a photo to clarify the situation (maximum of 5 photos).",
       "errors": {
         "textarea_required": "This is a required field",
@@ -21,7 +21,9 @@
         "file_size_too_large": "File size too large. Each file must be less than 20MB.",
         "file_size_too_small": "File size too small. Each file must be at least 30KB.",
         "file_limit_exceeded": "Maximum number of files is 3."
-      }
+      },
+      "required_short": "required",
+      "not_required_short": "not required"
     }
   },
   "describe-add": {
@@ -34,7 +36,9 @@
       }
     },
     "map": {
-      "map_heading": "Choose your location"
+      "map_heading": "Choose your location",
+      "map_label": "Where is the location?",
+      "required_short": "required"
     }
   },
   "describe-contact": {
@@ -44,13 +48,14 @@
       "description": "Often we have another question. With this we can solve the problem faster or better. Or we want to explain something. We would then like to give you a call. Or else we e-mail you.\n\nWe only use your phone number and e-mail address for this report.",
       "send_to_other_instance_heading": "May we forward your report?",
       "send_to_other_instance_description": "Sometimes the municipality cannot do anything. Another organization must then get to work. If so, we can sometimes forward your report. We send your phone number or e-mail address along with it. But we only do that if you agree.",
-      "describe_phone_input_heading": "What is your telephone number? (not required)",
-      "describe_mail_input_heading": "What is your e-mail address? (not required)",
+      "describe_phone_input_heading": "What is your telephone number?",
+      "describe_mail_input_heading": "What is your e-mail address?",
       "describe_checkbox_input_description": "Yes, I give the Municipality of Amsterdam permission to forward my report to other organizations if the report is not intended for the Municipality.",
       "errors": {
         "number_not_valid": "Use a valid telephone number",
         "email_not_valid": "Use a valid mail address"
-      }
+      },
+      "not_required_short": "not required"
     }
   },
   "describe-summary": {
@@ -103,12 +108,14 @@
       "pre-heading": "Step {current} of {max}",
       "back_button": "Back",
       "next_button": "Next",
-      "submit_button": "Submit"
+      "submit_button": "Submit",
+      "not-required": "This field is not required."
     },
     "errors": {
       "required": "This field is required",
       "max_length": "This field has a maximal length of {maxLength} characters",
       "not_required_short": "not required",
+      "required_short": "required",
       "location_required": "Location is required"
     },
     "button": {
