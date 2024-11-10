@@ -130,5 +130,10 @@
   "routing": {
     "notifications-map": "/notifications-map",
     "incident": "/incident"
+  },
+  "current-organisation": {
+    "name": "City of Utrecht",
+    "homepage-label": "homepage",
+    "logo-label": "Coat of arms of the city of Utrecht"
   }
 }
