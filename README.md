@@ -4,7 +4,7 @@ We ([Delta10](https://www.delta10.nl) and [Frameless](https://www.frameless.io))
 
 Our goals are to:
 
-- be fully compliant with WCAG 2.1 conformance level AA for [compliance with Dutch law](https://www.digitoegankelijk.nl/wetgeving/wat-is-verplicht) (<span lang="nl">"[Toegankelijkheidsstatus A](https://www.digitoegankelijk.nl/toegankelijkheidsverklaring/status)"</span>).
+- be fully compliant with WCAG 2.1 conformance level AA for [compliance with Dutch law](https://www.digitoegankelijk.nl/wetgeving/wat-is-verplicht) (<span lang="nl">"[Toegankelijkheidsstatus A](https://www.digitoegankelijk.nl/toegankelijkheidsverklaring/status)"</span>);
 - support [NL Design System](https://nldesignsystem.nl);
 - and have multi-language support.
 
