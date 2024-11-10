@@ -40,6 +40,7 @@
       "dialog_title": "Locatie kiezen",
       "dialog_description": "Kies een locatie op de kaart voor de locatie van uw melding.",
       "current_location": "Mijn locatie",
+      "address_search_label": "Zoek op adres",
       "outside_max_bound_error": "Uw locatie valt buiten de kaart en is daardoor niet te zien."
     }
   },
