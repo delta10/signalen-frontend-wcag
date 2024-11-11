@@ -117,7 +117,8 @@
       "max_length": "This field has a maximal length of {maxLength} characters",
       "not_required_short": "not required",
       "required_short": "required",
-      "location_required": "Location is required"
+      "location_required": "Location is required",
+      "is_blocking": "You cannot complete this form any further. Read below the answers where you can, however, submit your report."
     },
     "button": {
       "upload_file": "Upload file",

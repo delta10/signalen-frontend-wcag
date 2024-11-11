@@ -6,18 +6,20 @@ import { Button, ButtonGroup } from '@/components/index'
 import { useStepperStore } from '@/store/stepper_store'
 import { steps, usePathname as usePath, useRouter } from '@/routing/navigation'
 import { ImSpinner8 } from 'react-icons/im'
+import { FieldErrors } from 'react-hook-form'
 
 type IncidentFormFooterProps = {
   handleSignalSubmit?: () => void
   loading?: boolean
   ariaDescribedById?: string
+  errors?: FieldErrors
 } & React.HTMLAttributes<HTMLDivElement>
 
 const IncidentFormFooter = ({
-  className,
   handleSignalSubmit,
   loading,
   ariaDescribedById,
+  errors,
 }: IncidentFormFooterProps) => {
   const t = useTranslations('general.describe_form')
   const { step, addOneStep, removeOneStep } = useStepperStore()
@@ -55,7 +57,7 @@ const IncidentFormFooter = ({
           <Button
             appearance="primary-action-button"
             type="submit"
-            disabled={loading}
+            disabled={loading || !!errors?.submit}
             tabIndex={loading ? 0 : undefined}
             aria-describedby={ariaDescribedById}
             onClick={() => (handleSignalSubmit ? handleSignalSubmit() : null)}
