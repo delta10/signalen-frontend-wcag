@@ -41,6 +41,7 @@
   },
   "devDependencies": {
     "@amsterdam/design-system-react": "0.13.0",
+    "@nl-design-system-unstable/voorbeeld-design-tokens": "3.1.0",
     "@testing-library/dom": "10.4.0",
     "@testing-library/jest-dom": "6.6.2",
     "@testing-library/react": "16.0.1",
