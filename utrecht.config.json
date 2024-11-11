@@ -24,10 +24,10 @@
     },
     "i18n": {
       "nl": {
-        "lukt-t-niet": "Bla <br/> Foo"
+        "alert lukt t niet": "lukt niet"
       },
       "en": {
-        "lukt-t-niet": "Bla <br/> Foo"
+        "alert lukt t niet": "does not work"
       }
     }
   }
