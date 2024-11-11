@@ -9,9 +9,8 @@ import Map, {
 import { useTranslations } from 'next-intl'
 import * as VisuallyHidden from '@radix-ui/react-visually-hidden'
 import { useFormStore } from '@/store/form_store'
-import { Heading, Icon } from '@/components/index'
+import { Button, Heading, Icon } from '@/components/index'
 import { useConfig } from '@/hooks/useConfig'
-import { Button } from '@/components/index'
 import { IconMapPinFilled } from '@tabler/icons-react'
 
 type MapDialogProps = {
