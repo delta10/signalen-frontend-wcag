@@ -19,5 +19,13 @@ export type AppConfig = {
       center: [number, number]
       maxBounds: [[number, number], [number, number]]
     }
+    i18n: {
+      en: {
+        [key: string]: string
+      }
+      nl: {
+        [key: string]: string
+      }
+    }
   }
 }
