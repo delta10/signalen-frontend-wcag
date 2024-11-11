@@ -5,6 +5,8 @@ export { Select, Container }
 
 export {
   Alert,
+  Button,
+  ButtonGroup,
   Fieldset,
   FieldsetLegend,
   FormField,
@@ -14,17 +16,15 @@ export {
   FormFieldTextbox,
   FormFieldTextarea,
   FormLabel,
-  Button,
-  ButtonGroup,
   Heading,
   HeadingGroup,
-  Link,
+  Icon,
   Image,
+  Link,
+  LinkButton,
   Logo,
   Paragraph,
   PreHeading,
-  LinkButton,
-  Icon,
   RadioButton,
 } from '@utrecht/component-library-react/dist/css-module'
 
