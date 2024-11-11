@@ -220,7 +220,7 @@ const MapDialog = ({ trigger }: MapDialogProps) => {
                     <Icon className="map-marker-icon">
                       <IconMapPinFilled
                         className="-translate-y-1/2"
-                        color={config.base.style.primaryColor}
+                        color={config.base.style?.primaryColor}
                       />
                     </Icon>
                   </Marker>
