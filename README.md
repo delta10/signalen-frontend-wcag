@@ -1,8 +1,10 @@
-We ([Delta10](https://www.delta10.nl) and [Frameless](https://www.frameless.io)) are developing a new  web form for [Signalen](https://www.signalen.org), an open source application for municipalities for reports about the public space.
+# Signalen web form
+
+We ([Delta10](https://www.delta10.nl) and [Frameless](https://www.frameless.io)) are developing a new web form for [Signalen](https://www.signalen.org), an open source application for municipalities for reports about the public space.
 
 Our goals are to:
 
-- be fully compliant with WCAG2.1 AA (Toegankelijkheidsstatus  A);
+- be fully compliant with WCAG 2.1 conformance level AA for [compliance with Dutch law](https://www.digitoegankelijk.nl/wetgeving/wat-is-verplicht) (<span lang="nl">"[Toegankelijkheidsstatus A](https://www.digitoegankelijk.nl/toegankelijkheidsverklaring/status)"</span>);
 - support [NL Design System](https://nldesignsystem.nl);
 - and have multi-language support.
 
@@ -12,31 +14,37 @@ The frontend can easily be customized by configuring a single JSON file.
 
 First, install the dependencies:
 
-```bash
+```sh
 npm install
 ```
 
-Set the environment variables in a ```.env``` or ```.env.local``` file:
+Set the environment variables in a `.env` file:
 
-```bash
+```sh
 NEXT_PUBLIC_BASE_URL_API=http://127.0.0.1:8000
-NEXT_PUBLIC_MAPTILER_API_KEY=your_maptiler_api_key_here
-NEXT_PUBLIC_MAPTILER_MAP=your_maptiler_map_url_here
+NEXT_PUBLIC_MAPTILER_API_KEY=
+NEXT_PUBLIC_MAPTILER_MAP=https://api.maptiler.com/maps/nl-cartiqo-topo
+NEXT_PUBLIC_PDOK_URL_API=https://api.pdok.nl/bzk/locatieserver/
 ```
 
-Then run the Next development server:
+Customize the `.env` configuration file for yourself:
 
-```bash
+- `NEXT_PUBLIC_MAPTILER_API_KEY`: visit the MapTiler website and create a free account. Login to go to the [API Keys page for MapTiler Cloud](https://cloud.maptiler.com/account/keys/). Create a new key for your development computer. Allow `localhost` as origin. Copy the key and assign it to `NEXT_PUBLIC_MAPTILER_API_KEY` in `.env`.
+- `NEXT_PUBLIC_MAPTILER_MAP`: go the to [Maps page for MapTiler Cloud](https://cloud.maptiler.com/maps/) and either pick an existing map or create a new map. Copy the first part of the "Use vector style" URL, everything before `/style.json?key=`. Assign that first part of the URL to `NEXT_PUBLIC_MAPTILER_MAP`.
+
+Then start the Next.js development server:
+
+```sh
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the application.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the web form.
 
 ## Techniques
-We’ve decided to use [Next.js](https://nextjs.org) with the App Router for this application. Alongside that, we’re utilizing [Radix UI](https://www.radix-ui.com/) for components and [React Hook Form](https://react-hook-form.com/) for form logic, validation, and more. For object validation, we’re using [Zod](https://zod.dev/), and for global state management, we rely on [zustand](https://zustand-demo.pmnd.rs/). Additionally, we’re incorporating [next-intl](https://next-intl-docs.vercel.app/) for internationalization (i18n), enabling multi-language support in the frontend.
+
+- [Next.js](https://nextjs.org) with the App Router for the web application.
+- [NL Design System](https://www.nldesignsystem.nl/) for components.
+- [React Hook Form](https://react-hook-form.com/) for form logic, validation, and more.
+- [Zod](https://zod.dev/) for object validation.
+- [zustand](https://zustand-demo.pmnd.rs/) for global state management.
+- [next-intl](https://next-intl-docs.vercel.app/) for internationalization (i18n), enabling multi-language support in the frontend.

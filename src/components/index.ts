@@ -5,14 +5,29 @@ export { Select, Container }
 
 export {
   Alert,
-  Heading,
+  Fieldset,
+  FieldsetLegend,
+  FormField,
+  FormFieldCheckbox,
+  FormFieldDescription,
+  FormFieldErrorMessage,
+  FormFieldTextbox,
+  FormFieldTextarea,
+  FormLabel,
   Button,
+  ButtonGroup,
+  Heading,
   HeadingGroup,
   Link,
+  Image,
+  Logo,
   Paragraph,
   PreHeading,
   Icon,
+  RadioButton,
   LinkButton,
-  ButtonGroup,
   AlertDialog,
 } from '@utrecht/component-library-react/dist/css-module'
+
+export { RadioGroup } from '@utrecht/radio-group-react'
+export { CheckboxGroup } from '@utrecht/checkbox-group-react'

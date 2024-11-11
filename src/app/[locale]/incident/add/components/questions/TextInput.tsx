@@ -3,7 +3,7 @@ import React from 'react'
 import { useTranslations } from 'next-intl'
 import { getValidators } from '@/lib/utils/form-validator'
 import { useFormContext } from 'react-hook-form'
-import { Paragraph } from '@/components/index'
+import { FormFieldTextbox } from '@/components'
 
 interface TextInputProps extends QuestionField {}
 
@@ -17,30 +17,16 @@ export const TextInput = ({ field }: TextInputProps) => {
 
   return (
     <div className="flex flex-col gap-2">
-      {errorMessage && (
-        <Paragraph
-          id={`${field.key}-error`}
-          aria-live="assertive"
-          style={{ color: 'red' }}
-        >
-          {errorMessage}
-        </Paragraph>
-      )}
-      <label htmlFor={`${field.key}`}>
-        {field.meta.label}{' '}
-        <span> {field.required ? '' : `(${t('not_required_short')})`}</span>
-      </label>
-      {field.meta.subtitle && (
-        <span id={`${field.key}-${field.key}`}>{field.meta.subtitle}</span>
-      )}
-      <input
+      {/* TODO: implement (not required) for label*/}
+      <FormFieldTextbox
         {...register(field.key, getValidators(field, t))}
-        type="text"
-        placeholder={field.meta.placeholder ? field.meta.placeholder : ''}
+        label={`${field.meta.label} ${field.required ? `(${t('required_short')})` : `(${t('not_required_short')})`}`}
+        required={field.required}
         id={`${field.key}`}
-        aria-describedby={
-          field.meta.subtitle ? `${field.key}-${field.key}` : ''
-        }
+        errorMessage={errorMessage}
+        placeholder={field.meta.placeholder ? field.meta.placeholder : ''}
+        invalid={Boolean(errorMessage)}
+        description={field.meta.subtitle}
       />
     </div>
   )

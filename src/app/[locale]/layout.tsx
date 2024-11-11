@@ -6,6 +6,7 @@ import { Header } from '@/app/[locale]/components/Header'
 import localFont from 'next/font/local'
 import AppProvider from '@/components/providers/AppProvider'
 import { Document } from '@utrecht/component-library-react/dist/css-module'
+import { useTranslations } from 'next-intl'
 
 const font = localFont({
   src: '../../../public/fonts/open-sans.woff2',
@@ -21,6 +22,7 @@ export default function LocaleLayout({
   params: { locale: any }
 }) {
   if (!getAllAvailableLocales().includes(locale as any)) notFound()
+  const t = useTranslations('current-organisation')
 
   return (
     <html lang={locale} className={`${font.variable}`}>
@@ -28,7 +30,16 @@ export default function LocaleLayout({
         <AppProvider>
           <Document className="utrecht-theme">
             <Container className="bg-white">
-              <Header />
+              <Header
+                homepage={{
+                  href: '/',
+                  label: t('homepage-label'),
+                }}
+                logo={{
+                  src: '/assets/utrecht.webp',
+                  label: t('logo-label'),
+                }}
+              />
               {children}
             </Container>
           </Document>
