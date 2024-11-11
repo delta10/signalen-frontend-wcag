@@ -1,10 +1,14 @@
 import * as Dialog from '@radix-ui/react-dialog'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import Map, {
   MapLayerMouseEvent,
+  MapRef,
   Marker,
   useMap,
   ViewState,
+  Source,
+  CircleLayer,
+  Layer,
 } from 'react-map-gl/maplibre'
 import { useTranslations } from 'next-intl'
 import * as VisuallyHidden from '@radix-ui/react-visually-hidden'
@@ -30,12 +34,15 @@ import { ButtonGroup } from '@/components'
 import { isCoordinateInsideMaxBound } from '@/lib/utils/map'
 import { getSuggestedAddresses } from '@/services/location/address'
 import { getServerConfig } from '@/services/config/config'
+import { FeatureCollection } from 'geojson'
 
 type MapDialogProps = {
   trigger: React.ReactElement
+  onMapReady?: (map: MapRef) => void
+  features?: FeatureCollection | null
 } & React.HTMLAttributes<HTMLDivElement>
 
-const MapDialog = ({ trigger }: MapDialogProps) => {
+const MapDialog = ({ trigger, onMapReady, features }: MapDialogProps) => {
   const t = useTranslations('describe-add.map')
   const [marker, setMarker] = useState<[number, number] | []>([])
   const [outsideMaxBoundError, setOutsideMaxBoundError] = useState<
@@ -60,6 +67,16 @@ const MapDialog = ({ trigger }: MapDialogProps) => {
     },
     pitch: 0,
   })
+
+  const layerStyle: CircleLayer = {
+    source: '',
+    id: 'point',
+    type: 'circle',
+    paint: {
+      'circle-radius': 10,
+      'circle-color': '#007cbf',
+    },
+  }
 
   // Set viewState coordinates to configured ones
   useEffect(() => {
@@ -131,6 +148,13 @@ const MapDialog = ({ trigger }: MapDialogProps) => {
       }
     )
   }
+
+  // Set dialog map in parent component
+  useEffect(() => {
+    if (dialogMap && onMapReady) {
+      onMapReady(dialogMap)
+    }
+  }, [dialogMap, onMapReady])
 
   return (
     <Dialog.Root>
@@ -224,6 +248,11 @@ const MapDialog = ({ trigger }: MapDialogProps) => {
                       />
                     </Icon>
                   </Marker>
+                )}
+                {onMapReady && dialogMap && dialogMap.getZoom() > 17 && (
+                  <Source id="my-data" type="geojson" data={features}>
+                    <Layer {...layerStyle} />
+                  </Source>
                 )}
               </Map>
               <div className="map-location-group">
