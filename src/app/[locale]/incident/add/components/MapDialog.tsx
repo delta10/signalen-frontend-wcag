@@ -1,5 +1,5 @@
 import * as Dialog from '@radix-ui/react-dialog'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Map, {
   MapLayerMouseEvent,
   Marker,
@@ -9,23 +9,18 @@ import Map, {
 import { useTranslations } from 'next-intl'
 import * as VisuallyHidden from '@radix-ui/react-visually-hidden'
 import { useFormStore } from '@/store/form_store'
-import {
-  ClosableAlert,
-  FormField,
-  Heading,
-  Icon,
+import { Heading, Icon, AlertDialog, Paragraph, Button,   FormField,
   ListboxOptionProps,
   SelectCombobox,
-} from '@/components/index'
+} from '@/components'
 import { useConfig } from '@/hooks/useConfig'
-import { Button } from '@/components/index'
 import {
   IconCurrentLocation,
   IconMapPinFilled,
   IconMinus,
   IconPlus,
 } from '@tabler/icons-react'
-import { ButtonGroup } from '@utrecht/component-library-react'
+import { ButtonGroup } from '@/components'
 import { isCoordinateInsideMaxBound } from '@/lib/utils/map'
 import { getSuggestedAddresses } from '@/services/location/address'
 import { getServerConfig } from '@/services/config/config'
@@ -44,6 +39,7 @@ const MapDialog = ({ trigger }: MapDialogProps) => {
   const { formState, updateForm } = useFormStore()
   const { dialogMap } = useMap()
   const { loading, config } = useConfig()
+  const dialogRef = useRef<HTMLDialogElement>(null)
 
   const [viewState, setViewState] = useState<ViewState>({
     latitude: 0,
@@ -121,9 +117,11 @@ const MapDialog = ({ trigger }: MapDialogProps) => {
         }
 
         setOutsideMaxBoundError(t('outside_max_bound_error'))
+        dialogRef.current?.showModal()
       },
       (locationError) => {
         setOutsideMaxBoundError(locationError.message)
+        dialogRef.current?.showModal()
       }
     )
   }
@@ -139,6 +137,21 @@ const MapDialog = ({ trigger }: MapDialogProps) => {
             <Dialog.Title>{t('dialog_title')}</Dialog.Title>
             <Dialog.Description>{t('dialog_description')}</Dialog.Description>
           </VisuallyHidden.Root>
+          <AlertDialog type="error" ref={dialogRef} style={{ marginTop: 128 }}>
+            <form method="dialog" className="map-alert-dialog__content">
+              <Paragraph>{outsideMaxBoundError}</Paragraph>
+              <ButtonGroup>
+                <Button
+                  appearance="secondary-action-button"
+                  hint="danger"
+                  type="submit"
+                  onClick={() => dialogRef.current?.close()}
+                >
+                  {t('close_alert_notification')}
+                </Button>
+              </ButtonGroup>
+            </form>
+          </AlertDialog>
           <div className="col-span-1 p-4 flex flex-col justify-between gap-4">
             <div>
               <Heading level={1}>{t('map_heading')}</Heading>
@@ -214,18 +227,6 @@ const MapDialog = ({ trigger }: MapDialogProps) => {
                   <IconCurrentLocation />
                   {t('current_location')}
                 </Button>
-                {outsideMaxBoundError && (
-                  <ClosableAlert
-                    visible={!!outsideMaxBoundError}
-                    setVisibility={(value: boolean) => {
-                      setOutsideMaxBoundError(null)
-                    }}
-                    className="map-location-alert"
-                    type="error"
-                  >
-                    {outsideMaxBoundError}
-                  </ClosableAlert>
-                )}
               </div>
               <ButtonGroup direction="column" className="map-zoom-button-group">
                 <Button

@@ -5,9 +5,8 @@ import { Paths, usePathname } from '@/routing/navigation'
 import { useStepperStore } from '@/store/stepper_store'
 import { useEffect, useRef } from 'react'
 import { useFormStore } from '@/store/form_store'
-import { Button, Link } from '@utrecht/component-library-react/dist/css-module'
-
-import { Paragraph } from '@/components/index'
+import { Button, Paragraph } from '@/components/index'
+import { NextLinkWrapper } from '@/components/ui/NextLinkWrapper'
 
 type StepperProps = {}
 
@@ -93,7 +92,7 @@ export const Stepper = ({}: StepperProps) => {
         >
           {items.map((item, index) => {
             return (
-              <Link
+              <NextLinkWrapper
                 onClick={() => goToStep(index + 1)}
                 href={item.path}
                 key={item.path}
@@ -116,7 +115,7 @@ export const Stepper = ({}: StepperProps) => {
                 >
                   {item.name}
                 </Paragraph>
-              </Link>
+              </NextLinkWrapper>
             )
           })}
         </div>
@@ -125,8 +124,10 @@ export const Stepper = ({}: StepperProps) => {
   }
 
   return (
-    <Button onClick={() => resetState()}>
-      <Link href={'/incident'}>{t('new_notification')}</Link>
+    <Button onClick={() => resetState()} asChild>
+      <NextLinkWrapper href={'/incident'}>
+        {t('new_notification')}
+      </NextLinkWrapper>
     </Button>
   )
 }
