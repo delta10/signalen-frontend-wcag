@@ -9,7 +9,13 @@ import Map, {
 import { useTranslations } from 'next-intl'
 import * as VisuallyHidden from '@radix-ui/react-visually-hidden'
 import { useFormStore } from '@/store/form_store'
-import { Heading, Icon, AlertDialog, Paragraph, Button,   FormField,
+import {
+  Heading,
+  Icon,
+  AlertDialog,
+  Paragraph,
+  Button,
+  FormField,
   ListboxOptionProps,
   SelectCombobox,
 } from '@/components'
@@ -144,7 +150,6 @@ const MapDialog = ({ trigger }: MapDialogProps) => {
                 <Button
                   appearance="secondary-action-button"
                   hint="danger"
-                  type="submit"
                   onClick={() => dialogRef.current?.close()}
                 >
                   {t('close_alert_notification')}
@@ -162,7 +167,6 @@ const MapDialog = ({ trigger }: MapDialogProps) => {
                     name="address"
                     options={addressOptions}
                     type="search"
-                    expanded
                     onChange={async (evt: any) => {
                       const municipality = (await getServerConfig())['base'][
                         'municipality'
