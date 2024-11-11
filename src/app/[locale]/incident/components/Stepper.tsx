@@ -124,7 +124,7 @@ export const Stepper = ({}: StepperProps) => {
   }
 
   return (
-    <Button onClick={() => resetState()} asChild>
+    <Button onClick={() => resetState()}>
       <NextLinkWrapper href={'/incident'}>
         {t('new_notification')}
       </NextLinkWrapper>
