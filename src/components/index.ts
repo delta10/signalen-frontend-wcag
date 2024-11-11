@@ -1,3 +1,4 @@
+export type * from '@utrecht/component-library-react/dist/css-module'
 import { Select } from '@/components/ui'
 import { Container } from '@/components/layout'
 
@@ -31,3 +32,4 @@ export {
 
 export { RadioGroup } from '@utrecht/radio-group-react'
 export { CheckboxGroup } from '@utrecht/checkbox-group-react'
+export { SelectCombobox } from '@/components/ui/SelectCombobox'

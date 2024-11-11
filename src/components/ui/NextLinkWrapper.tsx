@@ -1,5 +1,5 @@
 import { Link as DesignSystemLink } from '@/components'
-import type { LinkProps as DesignSystemLinkProps } from '@utrecht/component-library-react/dist/Link'
+import type { LinkProps as DesignSystemLinkProps } from '@utrecht/component-library-react/dist'
 import clsx from 'clsx'
 import { Link as NextLink, usePathname } from '@/routing/navigation'
 import React, { ForwardedRef, forwardRef } from 'react'

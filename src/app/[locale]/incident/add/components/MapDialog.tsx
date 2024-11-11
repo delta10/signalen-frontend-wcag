@@ -9,7 +9,10 @@ import Map, {
 import { useTranslations } from 'next-intl'
 import * as VisuallyHidden from '@radix-ui/react-visually-hidden'
 import { useFormStore } from '@/store/form_store'
-import { Heading, Icon, AlertDialog, Paragraph, Button } from '@/components'
+import { Heading, Icon, AlertDialog, Paragraph, Button,   FormField,
+  ListboxOptionProps,
+  SelectCombobox,
+} from '@/components'
 import { useConfig } from '@/hooks/useConfig'
 import {
   IconCurrentLocation,
@@ -19,6 +22,8 @@ import {
 } from '@tabler/icons-react'
 import { ButtonGroup } from '@/components'
 import { isCoordinateInsideMaxBound } from '@/lib/utils/map'
+import { getSuggestedAddresses } from '@/services/location/address'
+import { getServerConfig } from '@/services/config/config'
 
 type MapDialogProps = {
   trigger: React.ReactElement
@@ -30,6 +35,7 @@ const MapDialog = ({ trigger }: MapDialogProps) => {
   const [outsideMaxBoundError, setOutsideMaxBoundError] = useState<
     string | null
   >(null)
+  const [addressOptions, setAddressOptions] = useState<ListboxOptionProps[]>([])
   const { formState, updateForm } = useFormStore()
   const { dialogMap } = useMap()
   const { loading, config } = useConfig()
@@ -149,6 +155,35 @@ const MapDialog = ({ trigger }: MapDialogProps) => {
           <div className="col-span-1 p-4 flex flex-col justify-between gap-4">
             <div>
               <Heading level={1}>{t('map_heading')}</Heading>
+              <FormField
+                label={t('address_search_label')}
+                input={
+                  <SelectCombobox
+                    name="address"
+                    options={addressOptions}
+                    type="search"
+                    expanded
+                    onChange={async (evt: any) => {
+                      const municipality = (await getServerConfig())['base'][
+                        'municipality'
+                      ]
+                      const apiCall = await getSuggestedAddresses(
+                        evt.target.value,
+                        municipality
+                      )
+
+                      // TODO: Prevent out-of-order responses showing up
+                      setAddressOptions([])
+                      setAddressOptions(
+                        apiCall.response.docs.map((item) => ({
+                          children: item.weergavenaam,
+                          value: item.weergavenaam,
+                        }))
+                      )
+                    }}
+                  />
+                }
+              ></FormField>
             </div>
             <div>
               <Dialog.Close
