@@ -13,6 +13,6 @@ export {
   PreHeading,
   Icon,
   LinkButton,
+  ButtonGroup,
+  AlertDialog,
 } from '@utrecht/component-library-react/dist/css-module'
-
-export { ClosableAlert } from '@/components/ui/ClosableAlert'
