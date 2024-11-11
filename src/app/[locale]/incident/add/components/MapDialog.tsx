@@ -17,7 +17,7 @@ import {
   Button,
   FormField,
   ListboxOptionProps,
-  SelectCombobox,
+  // SelectCombobox,
 } from '@/components'
 import { useConfig } from '@/hooks/useConfig'
 import {
@@ -160,34 +160,34 @@ const MapDialog = ({ trigger }: MapDialogProps) => {
           <div className="col-span-1 p-4 flex flex-col justify-between gap-4">
             <div>
               <Heading level={1}>{t('map_heading')}</Heading>
-              <FormField
-                label={t('address_search_label')}
-                input={
-                  <SelectCombobox
-                    name="address"
-                    options={addressOptions}
-                    type="search"
-                    onChange={async (evt: any) => {
-                      const municipality = (await getServerConfig())['base'][
-                        'municipality'
-                      ]
-                      const apiCall = await getSuggestedAddresses(
-                        evt.target.value,
-                        municipality
-                      )
+              {/*<FormField*/}
+              {/*  label={t('address_search_label')}*/}
+              {/*  input={*/}
+              {/*    <SelectCombobox*/}
+              {/*      name="address"*/}
+              {/*      options={addressOptions}*/}
+              {/*      type="search"*/}
+              {/*      onChange={async (evt: any) => {*/}
+              {/*        const municipality = (await getServerConfig())['base'][*/}
+              {/*          'municipality'*/}
+              {/*        ]*/}
+              {/*        const apiCall = await getSuggestedAddresses(*/}
+              {/*          evt.target.value,*/}
+              {/*          municipality*/}
+              {/*        )*/}
 
-                      // TODO: Prevent out-of-order responses showing up
-                      setAddressOptions([])
-                      setAddressOptions(
-                        apiCall.response.docs.map((item) => ({
-                          children: item.weergavenaam,
-                          value: item.weergavenaam,
-                        }))
-                      )
-                    }}
-                  />
-                }
-              ></FormField>
+              {/*        // TODO: Prevent out-of-order responses showing up*/}
+              {/*        setAddressOptions([])*/}
+              {/*        setAddressOptions(*/}
+              {/*          apiCall.response.docs.map((item) => ({*/}
+              {/*            children: item.weergavenaam,*/}
+              {/*            value: item.weergavenaam,*/}
+              {/*          }))*/}
+              {/*        )*/}
+              {/*      }}*/}
+              {/*    />*/}
+              {/*  }*/}
+              {/*></FormField>*/}
             </div>
             <div>
               <Dialog.Close
