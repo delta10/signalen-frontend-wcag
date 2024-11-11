@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { FaRegTrashCan } from 'react-icons/fa6'
+import { IconTrash } from '@tabler/icons-react'
 import { useTranslations } from 'next-intl'
 
 type Props = {
@@ -32,7 +32,8 @@ const PreviewFile = ({ file, allowDelete = false, onDelete }: Props) => {
           aria-label={t('button.delete_file')}
           className="absolute bottom-0 right-0 bg-gray-900 bg-opacity-50 text-white w-full flex justify-center items-center py-2 hover:bg-opacity-80 transition-colors duration-200 delay-100"
         >
-          <FaRegTrashCan className="w-5 h-5" />
+          {/* TODO: create IconButton to put around Icon */}
+          <IconTrash className="w-5 h-5" />
         </button>
       )}
     </div>

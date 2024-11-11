@@ -2,7 +2,8 @@
 
 import * as Select from '@radix-ui/react-select'
 import React from 'react'
-import { TbChevronDown } from 'react-icons/tb'
+import { IconChevronDown } from '@tabler/icons-react'
+import { Icon } from '@/components/index'
 
 type SelectProps = {
   value: string
@@ -29,7 +30,10 @@ export default function S({
         {value}
         <Select.Value />
         <Select.Icon>
-          <TbChevronDown />
+          {/* TODO: add Icon style? of <IconButton> component? */}
+          <Icon>
+            <IconChevronDown />
+          </Icon>
         </Select.Icon>
       </Select.Trigger>
 

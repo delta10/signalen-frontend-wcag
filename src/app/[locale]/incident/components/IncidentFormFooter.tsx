@@ -5,7 +5,8 @@ import { useTranslations } from 'next-intl'
 import { Button, ButtonGroup } from '@/components/index'
 import { useStepperStore } from '@/store/stepper_store'
 import { steps, usePathname as usePath, useRouter } from '@/routing/navigation'
-import { ImSpinner8 } from 'react-icons/im'
+import { IconLoader2 } from '@tabler/icons-react'
+import { Icon } from '@/components/index'
 
 type IncidentFormFooterProps = {
   handleSignalSubmit?: () => void
@@ -60,7 +61,8 @@ const IncidentFormFooter = ({
             aria-describedby={ariaDescribedById}
             onClick={() => (handleSignalSubmit ? handleSignalSubmit() : null)}
           >
-            {loading && <ImSpinner8 className="animate-spin" />}
+            {/* TODO: (how to) put this icon in <Icon>? */}
+            {loading && <IconLoader2 className="animate-spin" />}
             {t('submit_button')}
           </Button>
         )}
