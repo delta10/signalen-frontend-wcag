@@ -63,7 +63,7 @@ export const LocationSelect = ({ field }: LocationSelectProps) => {
       )}
 
       <div className="relative w-full">
-        <div style={{ minHeight: 200 }}>
+        <div style={{ minHeight: 200, height: 200 }}>
           <LocationMap />
         </div>
         <Paragraph>{address}</Paragraph>
