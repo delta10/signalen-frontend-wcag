@@ -21,14 +21,6 @@
         [4.64034, 52.25168],
         [5.10737, 52.50536]
       ]
-    },
-    "i18n": {
-      "nl": {
-        "alert lukt t niet": "lukt niet"
-      },
-      "en": {
-        "alert lukt t niet": "does not work"
-      }
     }
   }
 }
