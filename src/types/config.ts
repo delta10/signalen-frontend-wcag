@@ -13,6 +13,12 @@ export type AppConfig = {
     }
     style?: {
       primaryColor?: string
+    },
+  },
+    URL: {
+      BackendURL: string,
+      URL: string,
+    
     }
     map: {
       find_address_in_distance: number
@@ -25,6 +31,9 @@ export type AppConfig = {
       }
       nl: {
         [key: string]: string
+      }
+      contact: {
+        tel: string
       }
     }
   }
