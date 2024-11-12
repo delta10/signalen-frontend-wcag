@@ -1,6 +1,5 @@
 {
   "base": {
-    "URL": "http://localhost:3000",
     "municipality": "voorbeeld",
     "className": "voorbeeld-theme",
     "naam": "gemeente Voorbeeld",
@@ -10,6 +9,10 @@
         "url": "/assets/voorbeeld.svg"
       },
       "title": "Gemeente Voorbeeld"
+    },
+    "URL": {
+      "BackendURL": "https://api.meldingen.demo.meierijstad.delta10.cloud",
+      "URL": "http://localhost:3000"
     },
     "style": {
       "primaryColor": "#24578f"
@@ -21,6 +24,17 @@
         [4.64034, 52.25168],
         [5.10737, 52.50536]
       ]
+    },
+    "i18n": {
+      "nl": {
+        "Lukt het niet": "Lukt het niet"
+      },
+      "en": {
+        "Lukt het niet": "Lukt het niet"
+      },
+      "contact": {
+        "tel": "453 453"
+      }
     }
   }
 }

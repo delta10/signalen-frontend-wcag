@@ -1,6 +1,5 @@
 {
   "base": {
-    "URL": "http://localhost:3000",
     "municipality": "purmerend",
     "className": "purmerend-theme",
     "naam": "Gemeente Purmerend",
@@ -10,6 +9,10 @@
         "alt": "Logo Gemeente Purmerend"
       },
       "title": "Gemeente Purmerend"
+    },
+    "URL": {
+      "BackendURL": "https://api.meldingen.demo.meierijstad.delta10.cloud",
+      "URL": "http://localhost:3000"
     },
     "style": {
       "primaryColor": "#24578f"

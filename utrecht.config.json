@@ -1,26 +1,31 @@
 {
-  "base": {
-    "URL": "http://localhost:3000",
-    "municipality": "Utrecht",
-    "className": "utrecht-theme",
-    "naam": "gemeente Utrecht",
-    "header": {
-      "logo": {
-        "alt": "Logo Gemeente Utrecht",
-        "url": "/assets/utrecht.webp"
-      },
-      "title": "Gemeente Utrecht"
+  "base": {},
+  "municipality": "Utrecht",
+  "className": "utrecht-theme",
+  "naam": "gemeente Utrecht",
+  "header": {
+    "logo": {
+      "alt": "Logo Gemeente Utrecht",
+      "url": "/assets/utrecht.webp"
     },
-    "style": {
-      "primaryColor": "#24578f"
+    "title": "Gemeente Utrecht"
+  },
+  "URL": {
+    "BackendURL": "https://api.meldingen.demo.meierijstad.delta10.cloud",
+    "URL": "http://localhost:3000"
+  },
+  "style": {
+    "primaryColor": "#24578f"
+  },
+  "i18n": {
+    "nl": {
+      "Lukt het niet": "Lukt het niet"
     },
-    "map": {
-      "find_address_in_distance": 30,
-      "center": [52.3731081, 4.8932945],
-      "maxBounds": [
-        [4.64034, 52.25168],
-        [5.10737, 52.50536]
-      ]
+    "en": {
+      "Lukt het niet": "Having trouble?"
+    },
+    "contact": {
+      "tel": "14 030"
     }
   }
 }
