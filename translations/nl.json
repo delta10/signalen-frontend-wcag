@@ -4,7 +4,6 @@
   },
   "stepper": {
     "back": "Vorige",
-    "to_summary": "Naar overzicht",
     "step": "Stap {currentStep} van {totalSteps}",
     "new_notification": "Nieuwe melding"
   },

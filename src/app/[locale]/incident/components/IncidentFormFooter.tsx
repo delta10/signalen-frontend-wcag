@@ -7,6 +7,7 @@ import { steps, usePathname, useRouter } from '@/routing/navigation'
 import { ImSpinner8 } from 'react-icons/im'
 import { FieldErrors } from 'react-hook-form'
 import { getCurrentStep, getPreviousStep } from '@/lib/utils/stepper'
+import { FormStep } from '@/types/form'
 
 type IncidentFormFooterProps = {
   handleSignalSubmit?: () => void
@@ -34,7 +35,7 @@ const IncidentFormFooter = ({
   return (
     <>
       <ButtonGroup>
-        {step.number != 1 && pathname != '/incident' && (
+        {step.number > FormStep.STEP_1_DESCRIPTION && (
           <Button
             appearance="secondary-action-button"
             type="button"
@@ -43,12 +44,12 @@ const IncidentFormFooter = ({
             {t('back_button')}
           </Button>
         )}
-        {step.number < 4 && (
+        {step.number < FormStep.STEP_4_SUMMARY && (
           <Button appearance="primary-action-button" type="submit">
             {t('next_button')}
           </Button>
         )}
-        {step.number === 4 && (
+        {step.number === FormStep.STEP_4_SUMMARY && (
           <Button
             appearance="primary-action-button"
             type="submit"

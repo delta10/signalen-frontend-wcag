@@ -19,7 +19,7 @@ import {
   Paragraph,
 } from '@/components/index'
 import { FormStep } from '@/types/form'
-import { getCurrentStep } from '@/lib/utils/stepper'
+import { getCurrentStep, getNextStep } from '@/lib/utils/stepper'
 
 const IncidentContactForm = () => {
   const t = useTranslations('describe-contact.form')
@@ -69,10 +69,8 @@ const IncidentContactForm = () => {
       sharing_allowed: form.getValues('sharing_allowed'),
     })
 
-    // addVisitedStep(FormStep.STEP_3_CONTACT)
-    // addOneStep()
-    // todo vervang
-    router.push(steps[FormStep.STEP_4_SUMMARY])
+    const nextStep = getNextStep(step.number)
+    router.push(steps[nextStep.number])
   }
 
   return (

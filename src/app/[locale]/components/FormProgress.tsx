@@ -7,7 +7,7 @@ import { useFormStore } from '@/store/form_store'
 import { steps, usePathname, useRouter } from '@/routing/navigation'
 import { FaChevronLeft } from 'react-icons/fa'
 import { FormStep } from '@/types/form'
-import { getCurrentStep } from '@/lib/utils/stepper'
+import { getCurrentStep, getPreviousStep } from '@/lib/utils/stepper'
 
 const FormProgress = () => {
   const t = useTranslations('stepper')
@@ -28,7 +28,8 @@ const FormProgress = () => {
   }
 
   const back = async () => {
-    router.push(steps[step.number - 1])
+    const previousStep = getPreviousStep(step.number)
+    router.push(steps[previousStep.number])
   }
 
   if (step.number < FormStep.STEP_5_THANK_YOU) {

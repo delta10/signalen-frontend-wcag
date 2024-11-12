@@ -4,7 +4,6 @@
   },
   "stepper": {
     "back": "Back",
-    "to_summary": "To overview",
     "step": "Step {currentStep} of {totalSteps}",
     "new_notification": "New notification"
   },
