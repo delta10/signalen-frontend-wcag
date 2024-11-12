@@ -113,14 +113,15 @@ const MapDialog = ({
     setMarker([lat, lng])
   }
 
-  // Handle click on map
+  // Handle click on map, setIsMapSelected to true
+  // TODO: Reset selectedFeatures if click was right on map? (open for discussion)
   const handleMapClick = (event: MapLayerMouseEvent) => {
     updatePosition(event.lngLat.lat, event.lngLat.lng)
 
     setIsMapSelected(true)
   }
 
-  // Handle click on feature marker
+  // Handle click on feature marker, set selectedFeatures and show error if maxNumberOfAssets is reached
   const handleFeatureMarkerClick = (event: MarkerEvent, feature: Feature) => {
     // @ts-ignore
     const featureId = getFeatureIdByCoordinates(feature.geometry.coordinates)
