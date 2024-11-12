@@ -17,3 +17,12 @@ export const isCoordinateInsideMaxBound = (
 
   return lat >= minLat && lat <= maxLat && lng >= minLng && lng <= maxLng
 }
+
+// This function was created to address uncertainty regarding the presence of an `ID` field in every random GeoJSON feature that Signalen renders.
+// While the existence of an `ID` field is not guaranteed, we can reliably assume that every feature includes a `geometry` field
+// with associated coordinates. By building this function, we ensure consistent handling of GeoJSON features without depending on an `ID` field.
+export const getFeatureIdByCoordinates = (
+  coordinates: [number, number]
+): number => {
+  return coordinates.reduce((first, second) => first + second)
+}

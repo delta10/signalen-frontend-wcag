@@ -1,6 +1,7 @@
 {
   "base": {
     "municipality": "purmerend",
+    "assets_url": "https://meldingen.demo.meierijstad.delta10.cloud",
     "style": {
       "primaryColor": "#24578f"
     },

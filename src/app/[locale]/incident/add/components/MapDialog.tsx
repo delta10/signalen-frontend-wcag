@@ -4,11 +4,9 @@ import Map, {
   MapLayerMouseEvent,
   MapRef,
   Marker,
+  MarkerEvent,
   useMap,
   ViewState,
-  Source,
-  CircleLayer,
-  Layer,
 } from 'react-map-gl/maplibre'
 import { useTranslations } from 'next-intl'
 import * as VisuallyHidden from '@radix-ui/react-visually-hidden'
@@ -31,28 +29,40 @@ import {
   IconPlus,
 } from '@tabler/icons-react'
 import { ButtonGroup } from '@/components'
-import { isCoordinateInsideMaxBound } from '@/lib/utils/map'
+import {
+  getFeatureIdByCoordinates,
+  isCoordinateInsideMaxBound,
+} from '@/lib/utils/map'
 import { getSuggestedAddresses } from '@/services/location/address'
 import { getServerConfig } from '@/services/config/config'
-import { FeatureCollection } from 'geojson'
+import { Feature, FeatureCollection } from 'geojson'
+import { PublicQuestion } from '@/types/form'
 
 type MapDialogProps = {
   trigger: React.ReactElement
   onMapReady?: (map: MapRef) => void
   features?: FeatureCollection | null
+  field?: PublicQuestion
 } & React.HTMLAttributes<HTMLDivElement>
 
-const MapDialog = ({ trigger, onMapReady, features }: MapDialogProps) => {
+const MapDialog = ({
+  trigger,
+  onMapReady,
+  features,
+  field,
+}: MapDialogProps) => {
   const t = useTranslations('describe-add.map')
   const [marker, setMarker] = useState<[number, number] | []>([])
-  const [outsideMaxBoundError, setOutsideMaxBoundError] = useState<
-    string | null
-  >(null)
+  const [error, setError] = useState<string | null>(null)
   const [addressOptions, setAddressOptions] = useState<ListboxOptionProps[]>([])
   const { formState, updateForm } = useFormStore()
   const { dialogMap } = useMap()
   const { loading, config } = useConfig()
   const dialogRef = useRef<HTMLDialogElement>(null)
+  const [selectedFeatureIds, setSelectedFeatureIds] = useState<Set<number>>(
+    new Set()
+  )
+  const [isMapSelected, setIsMapSelected] = useState<boolean>(false)
 
   const [viewState, setViewState] = useState<ViewState>({
     latitude: 0,
@@ -67,16 +77,6 @@ const MapDialog = ({ trigger, onMapReady, features }: MapDialogProps) => {
     },
     pitch: 0,
   })
-
-  const layerStyle: CircleLayer = {
-    source: '',
-    id: 'point',
-    type: 'circle',
-    paint: {
-      'circle-radius': 10,
-      'circle-color': '#007cbf',
-    },
-  }
 
   // Set viewState coordinates to configured ones
   useEffect(() => {
@@ -116,6 +116,35 @@ const MapDialog = ({ trigger, onMapReady, features }: MapDialogProps) => {
   // Handle click on map
   const handleMapClick = (event: MapLayerMouseEvent) => {
     updatePosition(event.lngLat.lat, event.lngLat.lng)
+
+    setIsMapSelected(true)
+  }
+
+  // Handle click on feature marker
+  const handleFeatureMarkerClick = (event: MarkerEvent, feature: Feature) => {
+    // @ts-ignore
+    const featureId = getFeatureIdByCoordinates(feature.geometry.coordinates)
+    const maxNumberOfAssets = field?.meta.maxNumberOfAssets || 1
+
+    if (dialogMap && featureId) {
+      const newSelectedFeatureIds = new Set([...selectedFeatureIds])
+
+      if (newSelectedFeatureIds.has(featureId)) {
+        newSelectedFeatureIds.delete(featureId)
+      } else {
+        if (newSelectedFeatureIds.size >= maxNumberOfAssets) {
+          setError(t('max_number_of_assets_error', { max: maxNumberOfAssets }))
+          dialogRef.current?.showModal()
+
+          return
+        }
+
+        newSelectedFeatureIds.add(featureId)
+      }
+
+      setSelectedFeatureIds(newSelectedFeatureIds)
+      setTimeout(() => setIsMapSelected(false), 0)
+    }
   }
 
   // set current location of user
@@ -135,15 +164,15 @@ const MapDialog = ({ trigger, onMapReady, features }: MapDialogProps) => {
 
         if (isInsideMaxBound) {
           updatePosition(position.coords.latitude, position.coords.longitude)
-          setOutsideMaxBoundError(null)
+          setError(null)
           return
         }
 
-        setOutsideMaxBoundError(t('outside_max_bound_error'))
+        setError(t('outside_max_bound_error'))
         dialogRef.current?.showModal()
       },
       (locationError) => {
-        setOutsideMaxBoundError(locationError.message)
+        setError(locationError.message)
         dialogRef.current?.showModal()
       }
     )
@@ -169,7 +198,7 @@ const MapDialog = ({ trigger, onMapReady, features }: MapDialogProps) => {
           </VisuallyHidden.Root>
           <AlertDialog type="error" ref={dialogRef} style={{ marginTop: 128 }}>
             <form method="dialog" className="map-alert-dialog__content">
-              <Paragraph>{outsideMaxBoundError}</Paragraph>
+              <Paragraph>{error}</Paragraph>
               <ButtonGroup>
                 <Button
                   appearance="secondary-action-button"
@@ -239,7 +268,7 @@ const MapDialog = ({ trigger, onMapReady, features }: MapDialogProps) => {
                 attributionControl={false}
                 maxBounds={config.base.map.maxBounds}
               >
-                {marker.length && (
+                {marker.length && isMapSelected && (
                   <Marker latitude={marker[0]} longitude={marker[1]}>
                     <Icon className="map-marker-icon">
                       <IconMapPinFilled
@@ -249,11 +278,38 @@ const MapDialog = ({ trigger, onMapReady, features }: MapDialogProps) => {
                     </Icon>
                   </Marker>
                 )}
-                {onMapReady && dialogMap && dialogMap.getZoom() > 17 && (
-                  <Source id="my-data" type="geojson" data={features}>
-                    <Layer {...layerStyle} />
-                  </Source>
-                )}
+                {onMapReady &&
+                  dialogMap &&
+                  dialogMap.getZoom() > 17 &&
+                  features?.features.map((feature) => {
+                    const id = getFeatureIdByCoordinates(
+                      // @ts-ignore
+                      feature.geometry.coordinates
+                    )
+
+                    return (
+                      <Marker
+                        key={id}
+                        // @ts-ignore
+                        longitude={feature.geometry?.coordinates[0]}
+                        // @ts-ignore
+                        latitude={feature.geometry?.coordinates[1]}
+                        // @ts-ignore
+                        onClick={(e) => handleFeatureMarkerClick(e, feature)}
+                      >
+                        {!selectedFeatureIds.has(id) ? (
+                          <img src={field?.meta.featureTypes[0].icon.iconUrl} />
+                        ) : (
+                          <img
+                            src={
+                              config.base.assets_url +
+                              '/assets/images/feature-selected-marker.svg'
+                            }
+                          />
+                        )}
+                      </Marker>
+                    )
+                  })}
               </Map>
               <div className="map-location-group">
                 <Button onClick={() => setCurrentLocation()}>

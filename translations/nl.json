@@ -46,7 +46,8 @@
       "current_location": "Mijn locatie",
       "outside_max_bound_error": "Uw locatie valt buiten de kaart en is daardoor niet te zien.",
       "close_alert_notification": "Sluit melding",
-      "address_search_label": "Zoek op adres"
+      "address_search_label": "Zoek op adres",
+      "max_number_of_assets_error": "U kunt maximaal {max, plural, one {# object} other {# objecten}} selecteren."
     }
   },
   "describe-contact": {

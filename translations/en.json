@@ -46,7 +46,8 @@
       "current_location": "My location",
       "close_alert_notification": "Close notification",
       "address_search_label": "Search by address",
-      "outside_max_bound_error": "Your location is outside the map bounds and is therefore not visible."
+      "outside_max_bound_error": "Your location is outside the map bounds and is therefore not visible.",
+      "max_number_of_assets_error": "You can select at most {max, plural, one {# object} other {# objects}}."
     }
   },
   "describe-contact": {

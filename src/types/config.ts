@@ -1,6 +1,7 @@
 export type AppConfig = {
   base: {
     municipality: string
+    assets_url: string
     style: {
       primaryColor: string
     }
