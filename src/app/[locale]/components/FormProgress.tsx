@@ -4,10 +4,10 @@ import React, { useEffect, useState } from 'react'
 import { Button, Heading } from '@utrecht/component-library-react'
 import { useTranslations } from 'next-intl'
 import { useFormStore } from '@/store/form_store'
-import { steps, usePathname, useRouter } from '@/routing/navigation'
+import { stepToPath, usePathname, useRouter } from '@/routing/navigation'
 import { FaChevronLeft } from 'react-icons/fa'
 import { FormStep } from '@/types/form'
-import { getCurrentStep, getPreviousStep } from '@/lib/utils/stepper'
+import { getCurrentStep, getPreviousStepPath } from '@/lib/utils/stepper'
 
 const FormProgress = () => {
   const t = useTranslations('stepper')
@@ -19,24 +19,26 @@ const FormProgress = () => {
   const [percentage, setPercentage] = useState<number>(1)
 
   useEffect(() => {
-    setPercentage((step.number / 4) * 100)
+    setPercentage((step / 4) * 100)
   }, [step])
 
   const resetState = () => {
     resetForm()
-    router.push(steps[FormStep.STEP_1_DESCRIPTION])
+    router.push(stepToPath[FormStep.STEP_1_DESCRIPTION])
   }
 
-  const back = async () => {
-    const previousStep = getPreviousStep(step.number)
-    router.push(steps[previousStep.number])
+  const back = () => {
+    const previousStep = getPreviousStepPath(step)
+    if (previousStep != null) {
+      router.push(previousStep)
+    }
   }
 
-  if (step.number < FormStep.STEP_5_THANK_YOU) {
+  if (step < FormStep.STEP_5_THANK_YOU) {
     return (
       <div className="relative flex flex-col-reverse sm:flex-col">
         <div>
-          {step.number > FormStep.STEP_1_DESCRIPTION && (
+          {step > FormStep.STEP_1_DESCRIPTION && (
             <Button
               appearance={'subtle-button'}
               className="sm:absolute sm:left-0 sm:-top-2 stepper-button-hover pl-0-overwrite"
@@ -50,7 +52,7 @@ const FormProgress = () => {
 
         <div className="flex flex-col justify-center sm:items-center gap-3 pb-2">
           <Heading level={4}>
-            {t('step', { currentStep: step.number, totalSteps: 4 })}
+            {t('step', { currentStep: step, totalSteps: 4 })}
           </Heading>
           <div className="overflow-hidden bg-gray-200 w-full">
             {/*todo: check how to set primary color */}

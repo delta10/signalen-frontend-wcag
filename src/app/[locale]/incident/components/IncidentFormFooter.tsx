@@ -3,10 +3,10 @@
 import React from 'react'
 import { useTranslations } from 'next-intl'
 import { Button, ButtonGroup } from '@/components/index'
-import { steps, usePathname, useRouter } from '@/routing/navigation'
+import { usePathname, useRouter } from '@/routing/navigation'
 import { ImSpinner8 } from 'react-icons/im'
 import { FieldErrors } from 'react-hook-form'
-import { getCurrentStep, getPreviousStep } from '@/lib/utils/stepper'
+import { getCurrentStep, getPreviousStepPath } from '@/lib/utils/stepper'
 import { FormStep } from '@/types/form'
 
 type IncidentFormFooterProps = {
@@ -28,14 +28,16 @@ const IncidentFormFooter = ({
   const step = getCurrentStep(pathname)
 
   const goBack = () => {
-    const previousStep = getPreviousStep(step.number)
-    router.push(steps[previousStep.number])
+    const previousStep = getPreviousStepPath(step)
+    if (previousStep != null) {
+      router.push(previousStep)
+    }
   }
 
   return (
     <>
       <ButtonGroup>
-        {step.number > FormStep.STEP_1_DESCRIPTION && (
+        {step > FormStep.STEP_1_DESCRIPTION && (
           <Button
             appearance="secondary-action-button"
             type="button"
@@ -44,12 +46,12 @@ const IncidentFormFooter = ({
             {t('back_button')}
           </Button>
         )}
-        {step.number < FormStep.STEP_4_SUMMARY && (
+        {step < FormStep.STEP_4_SUMMARY && (
           <Button appearance="primary-action-button" type="submit">
             {t('next_button')}
           </Button>
         )}
-        {step.number === FormStep.STEP_4_SUMMARY && (
+        {step === FormStep.STEP_4_SUMMARY && (
           <Button
             appearance="primary-action-button"
             type="submit"

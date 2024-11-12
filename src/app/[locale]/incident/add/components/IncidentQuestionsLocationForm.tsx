@@ -5,14 +5,14 @@ import { useEffect, useState } from 'react'
 import { fetchAdditionalQuestions } from '@/services/additional-questions'
 import { useFormStore } from '@/store/form_store'
 import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentFormFooter'
-import { steps, usePathname, useRouter } from '@/routing/navigation'
+import { usePathname, useRouter } from '@/routing/navigation'
 import { PublicQuestion } from '@/types/form'
 import { Paragraph, Alert } from '@/components/index'
 import { RenderSingleField } from '@/app/[locale]/incident/add/components/questions/RenderSingleField'
 import { LocationSelect } from '@/app/[locale]/incident/add/components/questions/LocationSelect'
 import { useTranslations } from 'next-intl'
 import { isCoordinates } from '@/lib/utils/map'
-import { getCurrentStep, getNextStep } from '@/lib/utils/stepper'
+import { getCurrentStep, getNextStepPath } from '@/lib/utils/stepper'
 
 export const IncidentQuestionsLocationForm = () => {
   const { formState: formStoreState, updateForm } = useFormStore()
@@ -117,8 +117,10 @@ export const IncidentQuestionsLocationForm = () => {
       extra_properties: answers,
     })
 
-    const nextStep = getNextStep(step.number)
-    router.push(steps[nextStep.number])
+    const nextStep = getNextStepPath(step)
+    if (nextStep != null) {
+      router.push(nextStep)
+    }
   }
 
   return (

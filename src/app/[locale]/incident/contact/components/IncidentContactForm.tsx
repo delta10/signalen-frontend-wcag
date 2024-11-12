@@ -2,7 +2,7 @@
 
 import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentFormFooter'
 import { useTranslations } from 'next-intl'
-import { steps, usePathname, useRouter } from '@/routing/navigation'
+import { usePathname, useRouter } from '@/routing/navigation'
 import * as z from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -18,8 +18,7 @@ import {
   Heading,
   Paragraph,
 } from '@/components/index'
-import { FormStep } from '@/types/form'
-import { getCurrentStep, getNextStep } from '@/lib/utils/stepper'
+import { getCurrentStep, getNextStepPath } from '@/lib/utils/stepper'
 
 const IncidentContactForm = () => {
   const t = useTranslations('describe-contact.form')
@@ -69,8 +68,10 @@ const IncidentContactForm = () => {
       sharing_allowed: form.getValues('sharing_allowed'),
     })
 
-    const nextStep = getNextStep(step.number)
-    router.push(steps[nextStep.number])
+    const nextStep = getNextStepPath(step)
+    if (nextStep != null) {
+      router.push(nextStep)
+    }
   }
 
   return (

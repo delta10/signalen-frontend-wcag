@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
 import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentFormFooter'
-import { steps, usePathname, useRouter } from '@/routing/navigation'
+import { usePathname, useRouter } from '@/routing/navigation'
 import React, { useEffect } from 'react'
 import { getCategoryForDescription } from '@/services/classification'
 import { debounce } from 'lodash'
@@ -25,7 +25,7 @@ import {
   FormFieldDescription,
   FormFieldErrorMessage,
 } from '@/components/index'
-import { getCurrentStep, getNextStep } from '@/lib/utils/stepper'
+import { getCurrentStep, getNextStepPath } from '@/lib/utils/stepper'
 
 export const IncidentDescriptionForm = () => {
   const t = useTranslations('describe-report.form')
@@ -105,8 +105,10 @@ export const IncidentDescriptionForm = () => {
       attachments: values.files,
     })
 
-    const nextStep = getNextStep(step.number)
-    router.push(steps[nextStep.number])
+    const nextStep = getNextStepPath(step)
+    if (nextStep != null) {
+      router.push(nextStep)
+    }
   }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {

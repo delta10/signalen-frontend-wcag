@@ -1,38 +1,14 @@
 import { FormStep } from '@/types/form'
+import { Paths, pathToStep, stepToPath } from '@/routing/navigation'
 
-export const steps = [
-  {
-    path: '/incident',
-    number: FormStep.STEP_1_DESCRIPTION,
-  },
-  {
-    path: '/incident/add',
-    number: FormStep.STEP_2_ADD,
-  },
-  {
-    path: '/incident/contact',
-    number: FormStep.STEP_3_CONTACT,
-  },
-  {
-    path: '/incident/summary',
-    number: FormStep.STEP_4_SUMMARY,
-  },
-  {
-    path: '/incident/thankyou',
-    number: FormStep.STEP_5_THANK_YOU,
-  },
-]
-
-export const getCurrentStep = (path: string) => {
-  return steps.find((step) => step.path === path) || steps[0]
+export const getCurrentStep = (path: string): FormStep => {
+  return pathToStep[path] || FormStep.STEP_1_DESCRIPTION
 }
 
-export const getNextStep = (stepNumber: FormStep) => {
-  const nextStepNumber = Math.min(stepNumber + 1, FormStep.STEP_5_THANK_YOU)
-  return steps.find((step) => step.number === nextStepNumber) || steps[0]
+export const getNextStepPath = (currentStep: FormStep): Paths | null => {
+  return stepToPath[currentStep + 1] ? stepToPath[currentStep + 1] : null
 }
 
-export const getPreviousStep = (stepNumber: FormStep) => {
-  const nextStepNumber = Math.max(stepNumber - 1, FormStep.STEP_1_DESCRIPTION)
-  return steps.find((step) => step.number === nextStepNumber) || steps[0]
+export const getPreviousStepPath = (currentStep: FormStep): Paths | null => {
+  return stepToPath[currentStep - 1] ? stepToPath[currentStep - 1] : null
 }
