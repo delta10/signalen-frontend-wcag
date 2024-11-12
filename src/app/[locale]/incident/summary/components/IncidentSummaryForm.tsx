@@ -45,7 +45,7 @@ const IncidentSummaryForm = () => {
         location: {
           geometrie: {
             type: _NestedLocationModel.type.POINT,
-            coordinates: formState.coordinates,
+            coordinates: [formState.coordinates[1], formState.coordinates[0]],
           },
         },
         // @ts-ignore

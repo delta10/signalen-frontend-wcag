@@ -4,12 +4,17 @@ import { PublicQuestion } from '@/types/form'
 import { MapProvider } from 'react-map-gl/maplibre'
 import { useFormContext } from 'react-hook-form'
 import React, { useEffect, useState } from 'react'
-import { Button, Paragraph } from '@/components/index'
+import {
+  Button,
+  Paragraph,
+  LinkButton,
+  Fieldset,
+  FieldsetLegend,
+} from '@/components/index'
 import { useFormStore } from '@/store/form_store'
 import { getNearestAddressByCoordinate } from '@/services/location/address'
 import { useConfig } from '@/hooks/useConfig'
 import { isCoordinates } from '@/lib/utils/map'
-import { Fieldset, FieldsetLegend, LinkButton } from '@/components/index'
 import { useTranslations } from 'next-intl'
 import { FormFieldErrorMessage } from '@/components'
 
@@ -58,7 +63,9 @@ export const LocationSelect = ({ field }: LocationSelectProps) => {
       )}
 
       <div className="relative w-full">
-        <LocationMap />
+        <div style={{ minHeight: 200, height: 200 }}>
+          <LocationMap />
+        </div>
         <Paragraph>{address}</Paragraph>
         <MapProvider>
           <MapDialog

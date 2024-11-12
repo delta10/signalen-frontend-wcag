@@ -38,7 +38,14 @@
     "map": {
       "map_heading": "Choose your location",
       "map_label": "Where is the location?",
-      "required_short": "required"
+      "required_short": "required",
+      "choose_location": "Use this location",
+      "dialog_title": "Choose Location",
+      "dialog_description": "Choose a location on the map for the location of your report.",
+      "current_location": "My location",
+      "close_alert_notification": "Close notification",
+      "address_search_label": "Search by address",
+      "outside_max_bound_error": "Your location is outside the map bounds and is therefore not visible."
     }
   },
   "describe-contact": {
@@ -116,7 +123,8 @@
       "max_length": "This field has a maximal length of {maxLength} characters",
       "not_required_short": "not required",
       "required_short": "required",
-      "location_required": "Location is required"
+      "location_required": "Location is required",
+      "is_blocking": "You cannot complete this form any further. Read below the answers where you can, however, submit your report."
     },
     "button": {
       "upload_file": "Upload file",
@@ -129,5 +137,10 @@
   "routing": {
     "notifications-map": "/notifications-map",
     "incident": "/incident"
+  },
+  "current-organisation": {
+    "name": "City of Utrecht",
+    "homepage-label": "homepage",
+    "logo-label": "Coat of arms of the city of Utrecht"
   }
 }

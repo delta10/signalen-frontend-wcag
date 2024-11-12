@@ -13,7 +13,7 @@ import { evaluateConditions } from '@/lib/utils/check-visibility'
 export const RenderSingleField = ({ field }: { field: PublicQuestion }) => {
   const [shouldRender, setShouldRender] = useState<boolean>(false)
   const { watch, setValue } = useFormContext()
-  const { formState: formStoreState } = useFormStore()
+  const { formState: formStoreState, updateForm } = useFormStore()
 
   const watchValues = watch()
 
@@ -140,6 +140,21 @@ export const RenderSingleField = ({ field }: { field: PublicQuestion }) => {
       setValue(field.key, defaultValue)
     }
   }, [field.key, setValue, shouldRender])
+
+  // control hard stop
+  useEffect(() => {
+    if (field.meta.validators) {
+      const isBlocking =
+        field.meta.validators === 'isBlocking'
+          ? true
+          : !!field.meta.validators.includes('isBlocking')
+
+      updateForm({
+        ...formStoreState,
+        isBlocking: shouldRender ? isBlocking : false,
+      })
+    }
+  }, [field, shouldRender])
 
   if (!shouldRender) {
     return null
