@@ -3,10 +3,9 @@
 import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentFormFooter'
 import { useTranslations } from 'next-intl'
 import { Divider } from '@/components/ui/Divider'
-import { useStepperStore } from '@/store/stepper_store'
 import React, { useEffect, useState } from 'react'
 import { signalsClient } from '@/services/client/api-client'
-import { steps, useRouter } from '@/routing/navigation'
+import { useRouter } from '@/routing/navigation'
 import { postAttachments } from '@/services/attachment/attachments'
 import { useFormStore } from '@/store/form_store'
 import { _NestedLocationModel } from '@/services/client'
@@ -14,12 +13,10 @@ import { Paragraph, Heading } from '@/components/index'
 import PreviewFile from '@/components/ui/upload/PreviewFile'
 import { SubmitAlert } from '@/app/[locale]/incident/summary/components/SubmitAlert'
 import { NextLinkWrapper } from '@/components/ui/NextLinkWrapper'
-import { FormStep } from '@/types/form'
 
 const IncidentSummaryForm = () => {
   const t = useTranslations('describe-summary')
   const { formState } = useFormStore()
-  const { goToStep, addVisitedStep, goBack, setGoBack } = useStepperStore()
   const router = useRouter()
   const [error, setError] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
@@ -95,14 +92,6 @@ const IncidentSummaryForm = () => {
     }
   }
 
-  useEffect(() => {
-    if (goBack) {
-      goToStep(FormStep.STEP_3_CONTACT)
-      router.push(steps[FormStep.STEP_3_CONTACT])
-      setGoBack(false)
-    }
-  }, [goBack])
-
   return (
     <div className="flex flex-col gap-8">
       <Paragraph appearance="lead">{t('description')}</Paragraph>
@@ -110,7 +99,7 @@ const IncidentSummaryForm = () => {
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-1 md:flex-row justify-between">
           <Heading level={2}>{t('steps.step_one.title')}</Heading>
-          <NextLinkWrapper href={'/incident'} onClick={() => goToStep(FormStep.STEP_1_DESCRIPTION)}>
+          <NextLinkWrapper href={'/incident'}>
             {t('steps.step_one.edit')}
           </NextLinkWrapper>
         </div>
@@ -129,7 +118,7 @@ const IncidentSummaryForm = () => {
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-1 md:flex-row justify-between">
           <Heading level={2}>{t('steps.step_two.title')}</Heading>
-          <NextLinkWrapper href={'/incident/add'} onClick={() => goToStep(FormStep.STEP_2_ADD)}>
+          <NextLinkWrapper href={'/incident/add'}>
             {t('steps.step_two.edit')}
           </NextLinkWrapper>
         </div>
@@ -160,10 +149,7 @@ const IncidentSummaryForm = () => {
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-1 md:flex-row justify-between">
           <Heading level={2}>{t('steps.step_three.title')}</Heading>
-          <NextLinkWrapper
-            href={'/incident/contact'}
-            onClick={() => goToStep(FormStep.STEP_3_CONTACT)}
-          >
+          <NextLinkWrapper href={'/incident/contact'}>
             {t('steps.step_three.edit')}
           </NextLinkWrapper>
         </div>

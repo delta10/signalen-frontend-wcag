@@ -5,9 +5,8 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
 import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentFormFooter'
-import { useStepperStore } from '@/store/stepper_store'
-import { steps, useRouter } from '@/routing/navigation'
-import React, { useEffect, useRef } from 'react'
+import { steps, usePathname, useRouter } from '@/routing/navigation'
+import React, { useEffect } from 'react'
 import { getCategoryForDescription } from '@/services/classification'
 import { debounce } from 'lodash'
 import { useFormStore } from '@/store/form_store'
@@ -26,21 +25,14 @@ import {
   FormFieldDescription,
   FormFieldErrorMessage,
 } from '@/components/index'
-import { FormStep } from '@/types/form'
+import { getCurrentStep, getNextStep } from '@/lib/utils/stepper'
 
 export const IncidentDescriptionForm = () => {
   const t = useTranslations('describe-report.form')
   const { updateForm, formState } = useFormStore()
-  const {
-    addOneStep,
-    navToSummary,
-    setNavToSummary,
-    goToStep,
-    addVisitedStep,
-    setForm,
-    setFormRef,
-  } = useStepperStore()
   const router = useRouter()
+  const pathname = usePathname()
+  const step = getCurrentStep(pathname)
 
   useEffect(() => {
     router.prefetch('/incident/add')
@@ -86,14 +78,6 @@ export const IncidentDescriptionForm = () => {
 
   const { description } = form.watch()
 
-  const formRef = useRef<HTMLFormElement>(null)
-
-  useEffect(() => {
-    // @ts-ignore
-    setForm(form)
-    setFormRef(formRef)
-  }, [])
-
   useEffect(() => {
     const debouncedWatch = debounce(async (value) => {
       if (value) {
@@ -121,24 +105,9 @@ export const IncidentDescriptionForm = () => {
       attachments: values.files,
     })
 
-    // addVisitedStep(FormStep.STEP_1_DESCRIPTION)
-    // addOneStep()
-    // router.push(steps[FormStep.STEP_2_ADD])
+    const nextStep = getNextStep(step.number)
+    router.push(steps[nextStep.number])
   }
-
-  useEffect(() => {
-    if (navToSummary) {
-      updateForm({
-        ...formState,
-        description: form.getValues('description'),
-        attachments: form.getValues('files'),
-      })
-
-      goToStep(FormStep.STEP_4_SUMMARY)
-      router.push(steps[FormStep.STEP_4_SUMMARY])
-      setNavToSummary(false)
-    }
-  }, [navToSummary])
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
@@ -158,7 +127,6 @@ export const IncidentDescriptionForm = () => {
 
   return (
     <form
-      ref={formRef}
       onSubmit={form.handleSubmit(onSubmit)}
       className="flex flex-col gap-8 items-start"
     >

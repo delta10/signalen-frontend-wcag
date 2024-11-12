@@ -1,18 +1,18 @@
 'use client'
 
 import { FormProvider, useForm } from 'react-hook-form'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { fetchAdditionalQuestions } from '@/services/additional-questions'
 import { useFormStore } from '@/store/form_store'
 import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentFormFooter'
-import { useStepperStore } from '@/store/stepper_store'
-import { steps, useRouter } from '@/routing/navigation'
-import { FormStep, PublicQuestion } from '@/types/form'
+import { steps, usePathname, useRouter } from '@/routing/navigation'
+import { PublicQuestion } from '@/types/form'
 import { Paragraph } from '@/components/index'
 import { RenderSingleField } from '@/app/[locale]/incident/add/components/questions/RenderSingleField'
 import { LocationSelect } from '@/app/[locale]/incident/add/components/questions/LocationSelect'
 import { useTranslations } from 'next-intl'
 import { isCoordinates } from '@/lib/utils/map'
+import { getCurrentStep, getNextStep } from '@/lib/utils/stepper'
 
 export const IncidentQuestionsLocationForm = () => {
   const { formState: formStoreState, updateForm } = useFormStore()
@@ -20,20 +20,11 @@ export const IncidentQuestionsLocationForm = () => {
   const [additionalQuestions, setAdditionalQuestions] = useState<
     PublicQuestion[]
   >([])
-  const {
-    addOneStep,
-    addVisitedStep,
-    navToSummary,
-    setNavToSummary,
-    goToStep,
-    goBack,
-    setGoBack,
-    setForm,
-    setFormRef,
-  } = useStepperStore()
   const router = useRouter()
   const methods = useForm()
   const t = useTranslations('general.errors')
+  const pathname = usePathname()
+  const step = getCurrentStep(pathname)
 
   useEffect(() => {
     router.prefetch('/incident/contact')
@@ -71,13 +62,6 @@ export const IncidentQuestionsLocationForm = () => {
     }
   }, [formStoreState.coordinates])
 
-  const formRef = useRef<HTMLFormElement>(null)
-
-  useEffect(() => {
-    // @ts-ignore
-    setForm(methods)
-    setFormRef(formRef)
-  }, [])
   const onSubmit = (data: any) => {
     const questionKeys = Object.keys(data)
     const questionsToSubmit = additionalQuestions.filter(
@@ -122,35 +106,13 @@ export const IncidentQuestionsLocationForm = () => {
       extra_properties: answers,
     })
 
-    // addVisitedStep(FormStep.STEP_2_ADD)
-    // addOneStep()
-    // router.push(steps[FormStep.STEP_3_CONTACT])
+    const nextStep = getNextStep(step.number)
+    router.push(steps[nextStep.number])
   }
-
-  useEffect(() => {
-    if (navToSummary) {
-      // todo: finish update form when component it fixed
-      // updateForm({})
-
-      goToStep(FormStep.STEP_4_SUMMARY)
-      router.push(steps[FormStep.STEP_4_SUMMARY])
-      setNavToSummary(false)
-    }
-  }, [navToSummary])
-
-  useEffect(() => {
-    if (goBack) {
-      // updateForm
-      goToStep(FormStep.STEP_1_DESCRIPTION)
-      router.push(steps[FormStep.STEP_1_DESCRIPTION])
-      setGoBack(false)
-    }
-  }, [goBack])
 
   return (
     <FormProvider {...methods}>
       <form
-        ref={formRef}
         onSubmit={methods.handleSubmit(onSubmit)}
         className="flex flex-col gap-8 items-start"
       >

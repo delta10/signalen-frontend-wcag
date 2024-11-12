@@ -2,14 +2,13 @@
 
 import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentFormFooter'
 import { useTranslations } from 'next-intl'
-import { useStepperStore } from '@/store/stepper_store'
-import { steps, useRouter } from '@/routing/navigation'
+import { steps, usePathname, useRouter } from '@/routing/navigation'
 import * as z from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import validator from 'validator'
 import { useFormStore } from '@/store/form_store'
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import {
   Fieldset,
   FieldsetLegend,
@@ -20,35 +19,18 @@ import {
   Paragraph,
 } from '@/components/index'
 import { FormStep } from '@/types/form'
+import { getCurrentStep } from '@/lib/utils/stepper'
 
 const IncidentContactForm = () => {
   const t = useTranslations('describe-contact.form')
-  const tGeneral = useTranslations('general.describe_form')
   const { updateForm, formState } = useFormStore()
-  const {
-    addOneStep,
-    navToSummary,
-    setNavToSummary,
-    goToStep,
-    addVisitedStep,
-    goBack,
-    setGoBack,
-    setForm,
-    setFormRef,
-  } = useStepperStore()
   const router = useRouter()
+  const pathname = usePathname()
+  const step = getCurrentStep(pathname)
 
   useEffect(() => {
     router.prefetch('/incident/summary')
   }, [router])
-
-  const formRef = useRef<HTMLFormElement>(null)
-
-  useEffect(() => {
-    // @ts-ignore
-    setForm(form)
-    setFormRef(formRef)
-  }, [])
 
   const incidentContactFormSchema = z.object({
     phone: z
@@ -89,39 +71,9 @@ const IncidentContactForm = () => {
 
     // addVisitedStep(FormStep.STEP_3_CONTACT)
     // addOneStep()
-    //
-    // router.push(steps[FormStep.STEP_4_SUMMARY])
+    // todo vervang
+    router.push(steps[FormStep.STEP_4_SUMMARY])
   }
-
-  useEffect(() => {
-    if (navToSummary) {
-      updateForm({
-        ...formState,
-        email: form.getValues('email'),
-        phone: form.getValues('phone'),
-        sharing_allowed: form.getValues('sharing_allowed'),
-      })
-
-      goToStep(FormStep.STEP_4_SUMMARY)
-      router.push(steps[FormStep.STEP_4_SUMMARY])
-      setNavToSummary(false)
-    }
-  }, [navToSummary])
-
-  useEffect(() => {
-    if (goBack) {
-      updateForm({
-        ...formState,
-        email: form.getValues('email'),
-        phone: form.getValues('phone'),
-        sharing_allowed: form.getValues('sharing_allowed'),
-      })
-
-      goToStep(FormStep.STEP_2_ADD)
-      router.push(steps[FormStep.STEP_2_ADD])
-      setGoBack(false)
-    }
-  }, [goBack])
 
   return (
     <div>
@@ -130,7 +82,6 @@ const IncidentContactForm = () => {
         <Paragraph>{t('description')}</Paragraph>
       </div>
       <form
-        ref={formRef}
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col gap-8 items-start"
       >

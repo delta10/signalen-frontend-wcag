@@ -3,9 +3,9 @@
 import React from 'react'
 import { useTranslations } from 'next-intl'
 import { Button, ButtonGroup } from '@/components/index'
-import { useStepperStore } from '@/store/stepper_store'
-import { steps, usePathname as usePath, useRouter } from '@/routing/navigation'
+import { steps, usePathname, useRouter } from '@/routing/navigation'
 import { ImSpinner8 } from 'react-icons/im'
+import { getCurrentStep, getPreviousStep } from '@/lib/utils/stepper'
 
 type IncidentFormFooterProps = {
   handleSignalSubmit?: () => void
@@ -20,37 +20,19 @@ const IncidentFormFooter = ({
   ariaDescribedById,
 }: IncidentFormFooterProps) => {
   const t = useTranslations('general.describe_form')
-  const { step, addOneStep, removeOneStep, form, formRef } = useStepperStore()
-  const pathname = usePath()
+  const pathname = usePathname()
   const router = useRouter()
-
-  const navigate = () => {
-    router.push(steps[step - 1])
-  }
+  const step = getCurrentStep(pathname)
 
   const goBack = () => {
-    removeOneStep()
-
-    navigate()
-  }
-
-  const nextStep = async () => {
-    console.log('next', form)
-    if (form) {
-      const isValid = await form.trigger()
-
-      if (isValid && formRef?.current) {
-        formRef.current.requestSubmit()
-        addOneStep()
-        router.push(steps[step + 1])
-      }
-    }
+    const previousStep = getPreviousStep(step.number)
+    router.push(steps[previousStep.number])
   }
 
   return (
     <>
       <ButtonGroup>
-        {step != 1 && pathname != '/incident' && (
+        {step.number != 1 && pathname != '/incident' && (
           <Button
             appearance="secondary-action-button"
             type="button"
@@ -59,16 +41,12 @@ const IncidentFormFooter = ({
             {t('back_button')}
           </Button>
         )}
-        {step < 4 && (
-          <Button
-            appearance="primary-action-button"
-            type="button"
-            onClick={() => nextStep()}
-          >
+        {step.number < 4 && (
+          <Button appearance="primary-action-button" type="submit">
             {t('next_button')}
           </Button>
         )}
-        {step === 4 && (
+        {step.number === 4 && (
           <Button
             appearance="primary-action-button"
             type="submit"
