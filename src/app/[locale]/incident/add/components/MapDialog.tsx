@@ -1,5 +1,5 @@
 import * as Dialog from '@radix-ui/react-dialog'
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Map, {
   MapLayerMouseEvent,
   MapRef,
@@ -320,14 +320,20 @@ const MapDialog = ({
                         onClick={(e) => handleFeatureMarkerClick(e, feature)}
                       >
                         {!selectedFeatureIds.has(id) ? (
-                          <img src={field?.meta.featureTypes[0].icon.iconUrl} />
+                          <Icon>
+                            <img
+                              src={field?.meta.featureTypes[0].icon.iconUrl}
+                            />
+                          </Icon>
                         ) : (
-                          <img
-                            src={
-                              config.base.assets_url +
-                              '/assets/images/feature-selected-marker.svg'
-                            }
-                          />
+                          <Icon>
+                            <img
+                              src={
+                                config.base.assets_url +
+                                '/assets/images/feature-selected-marker.svg'
+                              }
+                            />
+                          </Icon>
                         )}
                       </Marker>
                     )
