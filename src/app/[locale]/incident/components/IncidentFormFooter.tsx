@@ -20,7 +20,7 @@ const IncidentFormFooter = ({
   ariaDescribedById,
 }: IncidentFormFooterProps) => {
   const t = useTranslations('general.describe_form')
-  const { step, addOneStep, removeOneStep } = useStepperStore()
+  const { step, addOneStep, removeOneStep, form, formRef } = useStepperStore()
   const pathname = usePath()
   const router = useRouter()
 
@@ -32,6 +32,19 @@ const IncidentFormFooter = ({
     removeOneStep()
 
     navigate()
+  }
+
+  const nextStep = async () => {
+    console.log('next', form)
+    if (form) {
+      const isValid = await form.trigger()
+
+      if (isValid && formRef?.current) {
+        formRef.current.requestSubmit()
+        addOneStep()
+        router.push(steps[step + 1])
+      }
+    }
   }
 
   return (
@@ -47,7 +60,11 @@ const IncidentFormFooter = ({
           </Button>
         )}
         {step < 4 && (
-          <Button appearance="primary-action-button" type="submit">
+          <Button
+            appearance="primary-action-button"
+            type="button"
+            onClick={() => nextStep()}
+          >
             {t('next_button')}
           </Button>
         )}

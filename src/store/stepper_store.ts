@@ -10,6 +10,8 @@ const useStepperStore = create<StepperStore>()(
       navToSummary: false,
       goBack: false,
       visitedSteps: [],
+      form: null,
+      formRef: null,
 
       goToStep: (step: FormStep) => set(() => ({ step })),
 
@@ -22,6 +24,7 @@ const useStepperStore = create<StepperStore>()(
 
       resetVisitedSteps: () => set(() => ({ visitedSteps: [] })),
 
+      // gebruik max functie
       removeOneStep: () => set((state) => ({ step: state.step - 1 })),
 
       addOneStep: () => set((state) => ({ step: state.step + 1 })),
@@ -29,6 +32,10 @@ const useStepperStore = create<StepperStore>()(
       setNavToSummary: (clicked) => set(() => ({ navToSummary: clicked })),
 
       setGoBack: (clicked) => set(() => ({ goBack: clicked })),
+
+      setFormRef: (ref: React.RefObject<HTMLFormElement> | null) =>
+        set(() => ({ formRef: ref })),
+      setForm: (form: any) => set(() => ({ form: form })),
     }),
     {
       name: 'step',

@@ -1,4 +1,6 @@
 import { FormStep } from '@/types/form'
+import React from 'react'
+import { FieldValues, UseFormReturn } from 'react-hook-form'
 
 type FormStoreState = {
   description: string
@@ -43,6 +45,10 @@ type StepperStore = {
   addOneStep: () => void
   setNavToSummary: (pressed: boolean) => void
   setGoBack: (pressed: boolean) => void
+  form: UseFormReturn<FieldValues> | null
+  setForm: (form: UseFormReturn<FieldValues> | null) => void
+  formRef: React.RefObject<HTMLFormElement> | null
+  setFormRef: (form: React.RefObject<HTMLFormElement> | null) => void
 }
 
 export type { StepperStore, FormStore, FormStoreState }

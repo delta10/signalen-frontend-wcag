@@ -7,7 +7,7 @@ import { useTranslations } from 'next-intl'
 import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentFormFooter'
 import { useStepperStore } from '@/store/stepper_store'
 import { steps, useRouter } from '@/routing/navigation'
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { getCategoryForDescription } from '@/services/classification'
 import { debounce } from 'lodash'
 import { useFormStore } from '@/store/form_store'
@@ -37,6 +37,8 @@ export const IncidentDescriptionForm = () => {
     setNavToSummary,
     goToStep,
     addVisitedStep,
+    setForm,
+    setFormRef,
   } = useStepperStore()
   const router = useRouter()
 
@@ -84,6 +86,14 @@ export const IncidentDescriptionForm = () => {
 
   const { description } = form.watch()
 
+  const formRef = useRef<HTMLFormElement>(null)
+
+  useEffect(() => {
+    // @ts-ignore
+    setForm(form)
+    setFormRef(formRef)
+  }, [])
+
   useEffect(() => {
     const debouncedWatch = debounce(async (value) => {
       if (value) {
@@ -111,9 +121,9 @@ export const IncidentDescriptionForm = () => {
       attachments: values.files,
     })
 
-    addVisitedStep(FormStep.STEP_1_DESCRIPTION)
-    addOneStep()
-    router.push(steps[FormStep.STEP_2_ADD])
+    // addVisitedStep(FormStep.STEP_1_DESCRIPTION)
+    // addOneStep()
+    // router.push(steps[FormStep.STEP_2_ADD])
   }
 
   useEffect(() => {
@@ -148,6 +158,7 @@ export const IncidentDescriptionForm = () => {
 
   return (
     <form
+      ref={formRef}
       onSubmit={form.handleSubmit(onSubmit)}
       className="flex flex-col gap-8 items-start"
     >

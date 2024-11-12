@@ -1,7 +1,7 @@
 'use client'
 
 import { FormProvider, useForm } from 'react-hook-form'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { fetchAdditionalQuestions } from '@/services/additional-questions'
 import { useFormStore } from '@/store/form_store'
 import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentFormFooter'
@@ -28,6 +28,8 @@ export const IncidentQuestionsLocationForm = () => {
     goToStep,
     goBack,
     setGoBack,
+    setForm,
+    setFormRef,
   } = useStepperStore()
   const router = useRouter()
   const methods = useForm()
@@ -69,6 +71,13 @@ export const IncidentQuestionsLocationForm = () => {
     }
   }, [formStoreState.coordinates])
 
+  const formRef = useRef<HTMLFormElement>(null)
+
+  useEffect(() => {
+    // @ts-ignore
+    setForm(methods)
+    setFormRef(formRef)
+  }, [])
   const onSubmit = (data: any) => {
     const questionKeys = Object.keys(data)
     const questionsToSubmit = additionalQuestions.filter(
@@ -113,9 +122,9 @@ export const IncidentQuestionsLocationForm = () => {
       extra_properties: answers,
     })
 
-    addVisitedStep(FormStep.STEP_2_ADD)
-    addOneStep()
-    router.push(steps[FormStep.STEP_3_CONTACT])
+    // addVisitedStep(FormStep.STEP_2_ADD)
+    // addOneStep()
+    // router.push(steps[FormStep.STEP_3_CONTACT])
   }
 
   useEffect(() => {
@@ -141,6 +150,7 @@ export const IncidentQuestionsLocationForm = () => {
   return (
     <FormProvider {...methods}>
       <form
+        ref={formRef}
         onSubmit={methods.handleSubmit(onSubmit)}
         className="flex flex-col gap-8 items-start"
       >

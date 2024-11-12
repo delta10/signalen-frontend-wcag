@@ -9,7 +9,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import validator from 'validator'
 import { useFormStore } from '@/store/form_store'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import {
   Fieldset,
   FieldsetLegend,
@@ -33,12 +33,22 @@ const IncidentContactForm = () => {
     addVisitedStep,
     goBack,
     setGoBack,
+    setForm,
+    setFormRef,
   } = useStepperStore()
   const router = useRouter()
 
   useEffect(() => {
     router.prefetch('/incident/summary')
   }, [router])
+
+  const formRef = useRef<HTMLFormElement>(null)
+
+  useEffect(() => {
+    // @ts-ignore
+    setForm(form)
+    setFormRef(formRef)
+  }, [])
 
   const incidentContactFormSchema = z.object({
     phone: z
@@ -69,18 +79,18 @@ const IncidentContactForm = () => {
     },
   })
 
-  const onSubmit = (values: z.infer<typeof incidentContactFormSchema>) => {
+  const onSubmit = () => {
     updateForm({
       ...formState,
-      email: values.email,
-      phone: values.phone,
-      sharing_allowed: values.sharing_allowed,
+      email: form.getValues('email'),
+      phone: form.getValues('phone'),
+      sharing_allowed: form.getValues('sharing_allowed'),
     })
 
-    addVisitedStep(FormStep.STEP_3_CONTACT)
-    addOneStep()
-
-    router.push(steps[FormStep.STEP_4_SUMMARY])
+    // addVisitedStep(FormStep.STEP_3_CONTACT)
+    // addOneStep()
+    //
+    // router.push(steps[FormStep.STEP_4_SUMMARY])
   }
 
   useEffect(() => {
@@ -120,6 +130,7 @@ const IncidentContactForm = () => {
         <Paragraph>{t('description')}</Paragraph>
       </div>
       <form
+        ref={formRef}
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col gap-8 items-start"
       >
