@@ -117,6 +117,7 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
             onMapReady={onMapReady}
             features={features}
             field={field}
+            isAssetSelect
             trigger={
               isCoordinates(formStoreState.coordinates) &&
               formStoreState.coordinates[0] === 0 &&

@@ -43,6 +43,7 @@ type MapDialogProps = {
   onMapReady?: (map: MapRef) => void
   features?: FeatureCollection | null
   field?: PublicQuestion
+  isAssetSelect?: boolean
 } & React.HTMLAttributes<HTMLDivElement>
 
 const MapDialog = ({
@@ -50,6 +51,7 @@ const MapDialog = ({
   onMapReady,
   features,
   field,
+  isAssetSelect = false,
 }: MapDialogProps) => {
   const t = useTranslations('describe-add.map')
   const [marker, setMarker] = useState<[number, number] | []>([])
@@ -186,6 +188,8 @@ const MapDialog = ({
     }
   }, [dialogMap, onMapReady])
 
+  console.log(field)
+
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
@@ -194,7 +198,11 @@ const MapDialog = ({
         <Dialog.Content className="fixed inset-0 bg-white z-[1000] grid grid-cols-1 md:grid-cols-3 utrecht-theme">
           <VisuallyHidden.Root>
             {/* TODO: Overleggen welke titel hier het meest vriendelijk is voor de gebruiker, multi-language support integreren */}
-            <Dialog.Title>{t('dialog_title')}</Dialog.Title>
+            <Dialog.Title>
+              {field?.meta.language.title
+                ? field.meta.language.title
+                : t('dialog_title')}
+            </Dialog.Title>
             <Dialog.Description>{t('dialog_description')}</Dialog.Description>
           </VisuallyHidden.Root>
           <AlertDialog type="error" ref={dialogRef} style={{ marginTop: 128 }}>
@@ -213,7 +221,12 @@ const MapDialog = ({
           </AlertDialog>
           <div className="col-span-1 p-4 flex flex-col justify-between gap-4">
             <div>
-              <Heading level={1}>{t('map_heading')}</Heading>
+              <Heading level={1}>
+                {field?.meta.language.title
+                  ? field.meta.language.title
+                  : t('map_heading')}
+              </Heading>
+              {/* TODO: add address select */}
               {/*<FormField*/}
               {/*  label={t('address_search_label')}*/}
               {/*  input={*/}
@@ -251,7 +264,15 @@ const MapDialog = ({
                 }
               >
                 <Button appearance="primary-action-button">
-                  {t('choose_location')}
+                  {isAssetSelect
+                    ? field?.meta.language.submitPlural &&
+                      selectedFeatureIds.size > 1
+                      ? field.meta.language.submitPlural
+                      : field?.meta.language.submit &&
+                          selectedFeatureIds.size === 1
+                        ? field.meta.language.submit
+                        : t('go_further_without_selected_object')
+                    : t('choose_location')}
                 </Button>
               </Dialog.Close>
             </div>
