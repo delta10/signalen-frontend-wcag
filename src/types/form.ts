@@ -18,3 +18,12 @@ export interface PublicQuestion
   extends Omit<PublicQuestionSerializerDetail, 'field_type'> {
   field_type: FieldTypes
 }
+
+export type FeatureType = {
+  icon: {
+    iconUrl: string
+  }
+  label: string
+  idField: string
+  description: string
+}

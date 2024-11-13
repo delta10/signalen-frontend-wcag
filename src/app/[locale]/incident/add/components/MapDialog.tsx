@@ -17,7 +17,6 @@ import {
   AlertDialog,
   Paragraph,
   Button,
-  FormField,
   ListboxOptionProps,
   // SelectCombobox,
 } from '@/components'
@@ -37,6 +36,7 @@ import { getSuggestedAddresses } from '@/services/location/address'
 import { getServerConfig } from '@/services/config/config'
 import { Feature, FeatureCollection } from 'geojson'
 import { PublicQuestion } from '@/types/form'
+import { FeatureListItem } from '@/app/[locale]/incident/add/components/FeatureListItem'
 
 type MapDialogProps = {
   trigger: React.ReactElement
@@ -188,8 +188,6 @@ const MapDialog = ({
     }
   }, [dialogMap, onMapReady])
 
-  console.log(field)
-
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
@@ -219,8 +217,8 @@ const MapDialog = ({
               </ButtonGroup>
             </form>
           </AlertDialog>
-          <div className="col-span-1 p-4 flex flex-col justify-between gap-4">
-            <div>
+          <div className="col-span-1 p-4 flex flex-col max-h-screen justify-between gap-4">
+            <div className="flex flex-col overflow-hidden gap-4">
               <Heading level={1}>
                 {field?.meta.language.title
                   ? field.meta.language.title
@@ -255,6 +253,25 @@ const MapDialog = ({
               {/*    />*/}
               {/*  }*/}
               {/*></FormField>*/}
+              {field && (
+                <ul className="flex-1 overflow-scroll">
+                  {features?.features.map((feature) => (
+                    <FeatureListItem
+                      selectedFeatureIds={selectedFeatureIds}
+                      feature={feature}
+                      key={getFeatureIdByCoordinates(
+                        // @ts-ignore
+                        feature.geometry.coordinates
+                      )}
+                      field={field}
+                      map={dialogMap}
+                      setError={setError}
+                      dialogRef={dialogRef}
+                      setSelectedFeatureIds={setSelectedFeatureIds}
+                    />
+                  ))}
+                </ul>
+              )}
             </div>
             <div>
               <Dialog.Close
