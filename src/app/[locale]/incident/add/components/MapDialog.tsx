@@ -274,6 +274,7 @@ const MapDialog = ({
                   {mapFeatures?.features.map((feature) => (
                     <FeatureListItem
                       selectedFeatureIds={selectedFeatureIds}
+                      configUrl={config?.base.assets_url}
                       feature={feature}
                       key={feature.id}
                       field={field}

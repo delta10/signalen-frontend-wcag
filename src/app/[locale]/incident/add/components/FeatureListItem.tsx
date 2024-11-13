@@ -20,6 +20,7 @@ type FeatureListItemProps = {
   setError: Dispatch<SetStateAction<string | null>>
   dialogRef: RefObject<HTMLDialogElement>
   features: FeatureCollection | null
+  configUrl?: string
 }
 
 export const FeatureListItem = ({
@@ -31,6 +32,7 @@ export const FeatureListItem = ({
   setError,
   dialogRef,
   features,
+  configUrl,
 }: FeatureListItemProps) => {
   const { config } = useConfig()
   const t = useTranslations('describe-add.map')
@@ -96,10 +98,7 @@ export const FeatureListItem = ({
         ) : (
           <Icon>
             <img
-              src={
-                config.base.assets_url +
-                '/assets/images/feature-selected-marker.svg'
-              }
+              src={configUrl + '/assets/images/feature-selected-marker.svg'}
             />
           </Icon>
         )}
