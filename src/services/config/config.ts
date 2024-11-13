@@ -6,7 +6,7 @@ import { promises as fs } from 'fs'
 import defaultConfiguration from '../../../config.json'
 
 export async function getServerConfig() {
-  const CONFIG_PATH = path.join(process.cwd(), 'config.json')
+  const CONFIG_PATH = path.join(process.cwd(), 'voorbeeld.config.json')
 
   let json: AppConfig = defaultConfiguration as AppConfig
 
