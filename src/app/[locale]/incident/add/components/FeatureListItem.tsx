@@ -4,7 +4,7 @@ import {
   getFeatureIdByCoordinates,
   getFeatureType,
 } from '@/lib/utils/map'
-import { Feature } from 'geojson'
+import { Feature, FeatureCollection } from 'geojson'
 import { PublicQuestion } from '@/types/form'
 import { useConfig } from '@/hooks/useConfig'
 import { MapRef } from 'react-map-gl/maplibre'
@@ -19,6 +19,7 @@ type FeatureListItemProps = {
   map: MapRef | undefined
   setError: Dispatch<SetStateAction<string | null>>
   dialogRef: RefObject<HTMLDialogElement>
+  features: FeatureCollection | null
 }
 
 export const FeatureListItem = ({
@@ -29,15 +30,14 @@ export const FeatureListItem = ({
   setSelectedFeatureIds,
   setError,
   dialogRef,
+  features,
 }: FeatureListItemProps) => {
   const { config } = useConfig()
   const t = useTranslations('describe-add.map')
 
   const featureId = useMemo(() => {
-    return getFeatureIdByCoordinates(
-      // @ts-ignore
-      feature.geometry.coordinates
-    )
+    const featureId = feature.id as number
+    return featureId
   }, [feature.geometry])
 
   const featureType = useMemo(() => {
@@ -54,6 +54,9 @@ export const FeatureListItem = ({
 
   const addOrRemoveFeature = (value: boolean) => {
     const newSelectedFeatureIds = new Set([...selectedFeatureIds])
+    const selectedFeature = features?.features.filter(
+      (feature) => feature.id === featureId
+    )[0]
 
     if (value) {
       if (newSelectedFeatureIds.size >= maxNumberOfAssets) {
@@ -64,6 +67,17 @@ export const FeatureListItem = ({
       }
 
       newSelectedFeatureIds.add(featureId)
+
+      if (map && selectedFeature && selectedFeature.properties) {
+        map.flyTo({
+          center: [
+            selectedFeature.properties.longitude,
+            selectedFeature.properties.latitude,
+          ],
+          speed: 0.5,
+          zoom: 18,
+        })
+      }
     } else {
       newSelectedFeatureIds.delete(featureId)
     }

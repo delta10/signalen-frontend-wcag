@@ -65,6 +65,7 @@ const MapDialog = ({
     new Set()
   )
   const [isMapSelected, setIsMapSelected] = useState<boolean>(false)
+  const [mapFeatures, setMapFeatures] = useState<FeatureCollection | null>()
 
   const [viewState, setViewState] = useState<ViewState>({
     latitude: 0,
@@ -126,7 +127,7 @@ const MapDialog = ({
   // Handle click on feature marker, set selectedFeatures and show error if maxNumberOfAssets is reached
   const handleFeatureMarkerClick = (event: MarkerEvent, feature: Feature) => {
     // @ts-ignore
-    const featureId = getFeatureIdByCoordinates(feature.geometry.coordinates)
+    const featureId = feature.id as number
     const maxNumberOfAssets = field?.meta.maxNumberOfAssets || 1
 
     if (dialogMap && featureId) {
@@ -187,6 +188,21 @@ const MapDialog = ({
       onMapReady(dialogMap)
     }
   }, [dialogMap, onMapReady])
+
+  // Set new map features with ID
+  useEffect(() => {
+    if (features) {
+      const featuresWithId = features.features.map((feature) => {
+        return {
+          ...feature,
+          // @ts-ignore
+          id: getFeatureIdByCoordinates(feature.geometry.coordinates),
+        }
+      })
+
+      setMapFeatures({ ...features, features: featuresWithId })
+    }
+  }, [features])
 
   return (
     <Dialog.Root>
@@ -255,17 +271,15 @@ const MapDialog = ({
               {/*></FormField>*/}
               {field && (
                 <ul className="flex-1 overflow-scroll">
-                  {features?.features.map((feature) => (
+                  {mapFeatures?.features.map((feature) => (
                     <FeatureListItem
                       selectedFeatureIds={selectedFeatureIds}
                       feature={feature}
-                      key={getFeatureIdByCoordinates(
-                        // @ts-ignore
-                        feature.geometry.coordinates
-                      )}
+                      key={feature.id}
                       field={field}
                       map={dialogMap}
                       setError={setError}
+                      features={mapFeatures}
                       dialogRef={dialogRef}
                       setSelectedFeatureIds={setSelectedFeatureIds}
                     />
@@ -320,11 +334,8 @@ const MapDialog = ({
                 {onMapReady &&
                   dialogMap &&
                   dialogMap.getZoom() > 17 &&
-                  features?.features.map((feature) => {
-                    const id = getFeatureIdByCoordinates(
-                      // @ts-ignore
-                      feature.geometry.coordinates
-                    )
+                  mapFeatures?.features.map((feature) => {
+                    const id = feature.id as number
 
                     return (
                       <Marker
