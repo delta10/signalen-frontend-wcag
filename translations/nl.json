@@ -134,7 +134,8 @@
     },
     "file": {
       "preview": "Voorbeeld weergave"
-    }
+    },
+    "loading": "Laden"
   },
   "routing": {
     "notifications-map": "/meldingen-kaart",

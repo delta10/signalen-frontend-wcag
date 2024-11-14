@@ -133,7 +133,8 @@
     },
     "file": {
       "preview": "Preview image"
-    }
+    },
+    "loading": "Loading"
   },
   "routing": {
     "notifications-map": "/notifications-map",
