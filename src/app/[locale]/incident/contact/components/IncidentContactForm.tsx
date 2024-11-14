@@ -2,8 +2,7 @@
 
 import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentFormFooter'
 import { useTranslations } from 'next-intl'
-import { useStepperStore } from '@/store/stepper_store'
-import { useRouter } from '@/routing/navigation'
+import { usePathname, useRouter } from '@/routing/navigation'
 import * as z from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -19,13 +18,14 @@ import {
   Heading,
   Paragraph,
 } from '@/components/index'
+import { getCurrentStep, getNextStepPath } from '@/lib/utils/stepper'
 
 const IncidentContactForm = () => {
   const t = useTranslations('describe-contact.form')
-  const tGeneral = useTranslations('general.describe_form')
   const { updateForm, formState } = useFormStore()
-  const { addOneStep, setLastCompletedStep } = useStepperStore()
   const router = useRouter()
+  const pathname = usePathname()
+  const step = getCurrentStep(pathname)
 
   useEffect(() => {
     router.prefetch('/incident/summary')
@@ -60,18 +60,18 @@ const IncidentContactForm = () => {
     },
   })
 
-  const onSubmit = (values: z.infer<typeof incidentContactFormSchema>) => {
+  const onSubmit = () => {
     updateForm({
       ...formState,
-      email: values.email,
-      phone: values.phone,
-      sharing_allowed: values.sharing_allowed,
+      email: form.getValues('email'),
+      phone: form.getValues('phone'),
+      sharing_allowed: form.getValues('sharing_allowed'),
     })
 
-    setLastCompletedStep(3)
-    addOneStep()
-
-    router.push('/incident/summary')
+    const nextStep = getNextStepPath(step)
+    if (nextStep != null) {
+      router.push(nextStep)
+    }
   }
 
   return (

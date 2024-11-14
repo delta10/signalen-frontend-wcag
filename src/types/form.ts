@@ -18,3 +18,11 @@ export interface PublicQuestion
   extends Omit<PublicQuestionSerializerDetail, 'field_type'> {
   field_type: FieldTypes
 }
+
+export enum FormStep {
+  STEP_1_DESCRIPTION = 1,
+  STEP_2_ADD = 2,
+  STEP_3_CONTACT = 3,
+  STEP_4_SUMMARY = 4,
+  STEP_5_THANK_YOU = 5,
+}
