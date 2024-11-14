@@ -6,7 +6,6 @@ import {
 } from '@/lib/utils/map'
 import { Feature, FeatureCollection } from 'geojson'
 import { PublicQuestion } from '@/types/form'
-import { useConfig } from '@/hooks/useConfig'
 import { MapRef } from 'react-map-gl/maplibre'
 import { FormField, FormFieldCheckbox, Icon } from '@/components/index'
 import { useTranslations } from 'next-intl'
@@ -34,7 +33,6 @@ export const FeatureListItem = ({
   features,
   configUrl,
 }: FeatureListItemProps) => {
-  const { config } = useConfig()
   const t = useTranslations('describe-add.map')
 
   const featureId = useMemo(() => {
@@ -88,7 +86,7 @@ export const FeatureListItem = ({
   }
 
   // TODO: iets van een label toevoegen zodat voor een SR duidelijk wordt om welke lantaarnpaal, adres etc het gaat?
-  return featureDescription && config ? (
+  return featureDescription ? (
     <li className="py-4 border-t border-gray-200">
       <FormField className="flex flex-row items-center gap-2">
         {!selectedFeatureIds.has(featureId) ? (
