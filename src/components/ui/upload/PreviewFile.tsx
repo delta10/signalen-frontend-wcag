@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useTranslations } from 'next-intl'
-import { Icon } from '@/components'
+import { IconButton } from '@/components'
 import { IconTrash } from '@tabler/icons-react'
 
 type Props = {
@@ -28,16 +28,15 @@ const PreviewFile = ({ file, allowDelete = false, onDelete }: Props) => {
         alt={t('file.preview', { file: file.name })}
       />
       {allowDelete && (
-        <button
+        <IconButton
+          className="iconbutton-trash absolute bottom-0 right-0 w-full flex justify-center items-center py-2"
+          // absolute bottom-0 bg-gray-900 bg-opacity-50 text-white w-full flex justify-center items-center py-2 hover:bg-opacity-80 transition-colors duration-200 delay-100
           onClick={onDelete}
           type="button"
-          aria-label={t('button.delete_file', { file: file.name })}
-          className="absolute bottom-0 right-0 w-full flex justify-center items-center py-2"
+          label={t('button.delete_file')}
         >
-          <Icon>
-            <IconTrash className="w-5 h-5" />
-          </Icon>
-        </button>
+          <IconTrash className="iconbutton__icon" />
+        </IconButton>
       )}
     </div>
   )
