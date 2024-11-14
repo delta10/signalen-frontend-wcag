@@ -13,8 +13,8 @@ import { useTranslations } from 'next-intl'
 type FeatureListItemProps = {
   feature: Feature
   field: PublicQuestion
-  selectedFeatureIds: Set<number>
-  setSelectedFeatureIds: Dispatch<SetStateAction<Set<number>>>
+  newSelectedFeatures: Feature[]
+  setNewSelectedFeatures: Dispatch<SetStateAction<Feature[]>>
   map: MapRef | undefined
   setError: Dispatch<SetStateAction<string | null>>
   dialogRef: RefObject<HTMLDialogElement>
@@ -25,9 +25,9 @@ type FeatureListItemProps = {
 export const FeatureListItem = ({
   feature,
   field,
-  selectedFeatureIds,
+  newSelectedFeatures,
   map,
-  setSelectedFeatureIds,
+  setNewSelectedFeatures,
   setError,
   dialogRef,
   features,
@@ -53,43 +53,44 @@ export const FeatureListItem = ({
   }, [field])
 
   const addOrRemoveFeature = (value: boolean) => {
-    const newSelectedFeatureIds = new Set([...selectedFeatureIds])
-    const selectedFeature = features?.features.filter(
+    const newSelectedFeatureArray = Array.from(
+      newSelectedFeatures ? newSelectedFeatures : []
+    )
+    const index = newSelectedFeatureArray.findIndex(
       (feature) => feature.id === featureId
-    )[0]
+    )
 
     if (value) {
-      if (newSelectedFeatureIds.size >= maxNumberOfAssets) {
+      if (newSelectedFeatureArray.length >= maxNumberOfAssets) {
         setError(t('max_number_of_assets_error', { max: maxNumberOfAssets }))
         dialogRef.current?.showModal()
 
         return
       }
 
-      newSelectedFeatureIds.add(featureId)
+      newSelectedFeatureArray.push(feature)
 
-      if (map && selectedFeature && selectedFeature.properties) {
+      if (map && feature && feature.properties) {
         map.flyTo({
-          center: [
-            selectedFeature.properties.longitude,
-            selectedFeature.properties.latitude,
-          ],
+          center: [feature.properties.longitude, feature.properties.latitude],
           speed: 0.5,
           zoom: 18,
         })
       }
     } else {
-      newSelectedFeatureIds.delete(featureId)
+      newSelectedFeatureArray.splice(index, 1) // Remove the feature at the found index
     }
 
-    setSelectedFeatureIds(newSelectedFeatureIds)
+    setNewSelectedFeatures(newSelectedFeatureArray)
   }
 
   // TODO: iets van een label toevoegen zodat voor een SR duidelijk wordt om welke lantaarnpaal, adres etc het gaat?
   return featureDescription ? (
     <li className="py-4 border-t border-gray-200">
       <FormField className="flex flex-row items-center gap-2">
-        {!selectedFeatureIds.has(featureId) ? (
+        {!newSelectedFeatures.some(
+          (featureItem) => featureItem.id === featureId
+        ) ? (
           <Icon>
             <img src={featureType?.icon.iconUrl} />
           </Icon>
@@ -103,7 +104,9 @@ export const FeatureListItem = ({
         <FormFieldCheckbox
           label={featureDescription}
           className="!mt-1"
-          checked={selectedFeatureIds.has(featureId)}
+          checked={newSelectedFeatures.some(
+            (featureItem) => featureItem.id === featureId
+          )}
           id={featureId.toString()}
           // @ts-ignore
           onChange={(e) => addOrRemoveFeature(e.target.checked)}

@@ -61,11 +61,9 @@ const MapDialog = ({
   const { dialogMap } = useMap()
   const { loading, config } = useConfig()
   const dialogRef = useRef<HTMLDialogElement>(null)
-  const [selectedFeatureIds, setSelectedFeatureIds] = useState<Set<number>>(
-    new Set()
-  )
   const [isMapSelected, setIsMapSelected] = useState<boolean>(false)
   const [mapFeatures, setMapFeatures] = useState<FeatureCollection | null>()
+  const [newSelectedFeatures, setNewSelectedFeatures] = useState<Feature[]>([])
 
   const [viewState, setViewState] = useState<ViewState>({
     latitude: 0,
@@ -131,22 +129,28 @@ const MapDialog = ({
     const maxNumberOfAssets = field?.meta.maxNumberOfAssets || 1
 
     if (dialogMap && featureId) {
-      const newSelectedFeatureIds = new Set([...selectedFeatureIds])
+      const newSelectedFeatureArray = Array.from(
+        newSelectedFeatures ? newSelectedFeatures : []
+      )
 
-      if (newSelectedFeatureIds.has(featureId)) {
-        newSelectedFeatureIds.delete(featureId)
+      const index = newSelectedFeatureArray.findIndex(
+        (feature) => feature.id === featureId
+      )
+
+      if (index !== -1) {
+        newSelectedFeatureArray.splice(index, 1) // Remove the feature at the found index
       } else {
-        if (newSelectedFeatureIds.size >= maxNumberOfAssets) {
+        if (newSelectedFeatureArray.length >= maxNumberOfAssets) {
           setError(t('max_number_of_assets_error', { max: maxNumberOfAssets }))
           dialogRef.current?.showModal()
 
           return
         }
 
-        newSelectedFeatureIds.add(featureId)
+        newSelectedFeatureArray.push(feature)
       }
 
-      setSelectedFeatureIds(newSelectedFeatureIds)
+      setNewSelectedFeatures(newSelectedFeatureArray)
       setTimeout(() => setIsMapSelected(false), 0)
     }
   }
@@ -271,20 +275,41 @@ const MapDialog = ({
               {/*></FormField>*/}
               {field && (
                 <ul className="flex-1 overflow-scroll">
-                  {mapFeatures?.features.map((feature) => (
-                    <FeatureListItem
-                      selectedFeatureIds={selectedFeatureIds}
-                      configUrl={config?.base.assets_url}
-                      feature={feature}
-                      key={feature.id}
-                      field={field}
-                      map={dialogMap}
-                      setError={setError}
-                      features={mapFeatures}
-                      dialogRef={dialogRef}
-                      setSelectedFeatureIds={setSelectedFeatureIds}
-                    />
-                  ))}
+                  {mapFeatures &&
+                    newSelectedFeatures.map((feature) => (
+                      <FeatureListItem
+                        newSelectedFeatures={newSelectedFeatures}
+                        configUrl={config?.base.assets_url}
+                        feature={feature}
+                        key={feature.id}
+                        field={field}
+                        map={dialogMap}
+                        setError={setError}
+                        features={mapFeatures}
+                        dialogRef={dialogRef}
+                        setNewSelectedFeatures={setNewSelectedFeatures}
+                      />
+                    ))}
+
+                  {mapFeatures?.features.map(
+                    (feature) =>
+                      !newSelectedFeatures.some(
+                        (featureItem) => featureItem.id === feature.id
+                      ) && (
+                        <FeatureListItem
+                          newSelectedFeatures={newSelectedFeatures}
+                          configUrl={config?.base.assets_url}
+                          feature={feature}
+                          key={feature.id}
+                          field={field}
+                          map={dialogMap}
+                          setError={setError}
+                          features={mapFeatures}
+                          dialogRef={dialogRef}
+                          setNewSelectedFeatures={setNewSelectedFeatures}
+                        />
+                      )
+                  )}
                 </ul>
               )}
             </div>
@@ -298,10 +323,10 @@ const MapDialog = ({
                 <Button appearance="primary-action-button">
                   {isAssetSelect
                     ? field?.meta.language.submitPlural &&
-                      selectedFeatureIds.size > 1
+                      newSelectedFeatures.length > 1
                       ? field.meta.language.submitPlural
                       : field?.meta.language.submit &&
-                          selectedFeatureIds.size === 1
+                          newSelectedFeatures.length === 1
                         ? field.meta.language.submit
                         : t('go_further_without_selected_object')
                     : t('choose_location')}
@@ -348,7 +373,9 @@ const MapDialog = ({
                         // @ts-ignore
                         onClick={(e) => handleFeatureMarkerClick(e, feature)}
                       >
-                        {!selectedFeatureIds.has(id) ? (
+                        {!newSelectedFeatures.some(
+                          (featureItem) => featureItem.id === feature.id
+                        ) ? (
                           <Icon>
                             <img
                               src={field?.meta.featureTypes[0].icon.iconUrl}
