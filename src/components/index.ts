@@ -6,6 +6,8 @@ export { Container }
 export { IconButton } from '@/components/ui/IconButton'
 export { StatusText, AlertText } from '@/components/ui/LiveText'
 
+export { IconButton } from '@/components/ui/IconButton'
+
 export {
   Alert,
   Fieldset,
