@@ -14,26 +14,24 @@ export interface HeaderProps {
 }
 
 const Header = ({ homepage, logo }: HeaderProps) => {
-  let logoElement = (
+  const logoElement = (
     <Logo>
       <Image src={logo.src} alt={logo.label} width={275} height={150} />
     </Logo>
   )
 
-  if (homepage) {
-    logoElement = (
-      <Link boxContent href={homepage.href} aria-labelledby="logo-link-label">
-        <span id="logo-link-label" hidden>
-          {homepage.label}
-        </span>
-        {logoElement}
-      </Link>
-    )
-  }
-
   return (
     <header>
-      {logoElement}
+      {homepage ? (
+        <Link boxContent href={homepage.href} aria-labelledby="logo-link-label">
+          <span id="logo-link-label" hidden>
+            {homepage.label}
+          </span>
+          {logoElement}
+        </Link>
+      ) : (
+        logoElement
+      )}
       <Navigation />
     </header>
   )
