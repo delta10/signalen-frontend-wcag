@@ -4,6 +4,8 @@ import { Container } from '@/components/layout'
 
 export { Select, Container }
 
+export { IconButton } from '@/components/ui/IconButton'
+
 export {
   Alert,
   Fieldset,
