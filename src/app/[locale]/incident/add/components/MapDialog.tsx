@@ -29,7 +29,9 @@ import {
 } from '@tabler/icons-react'
 import { ButtonGroup } from '@/components'
 import {
+  getFeatureDescription,
   getFeatureIdByCoordinates,
+  getFeatureType,
   isCoordinateInsideMaxBound,
 } from '@/lib/utils/map'
 import { getSuggestedAddresses } from '@/services/location/address'
@@ -195,12 +197,18 @@ const MapDialog = ({
 
   // Set new map features with ID
   useEffect(() => {
-    if (features) {
+    if (features && field) {
       const featuresWithId = features.features.map((feature) => {
+        const featureType = getFeatureType(
+          field.meta.featureTypes,
+          feature.properties
+        )
+
         return {
           ...feature,
           // @ts-ignore
           id: getFeatureIdByCoordinates(feature.geometry.coordinates),
+          description: getFeatureDescription(featureType, feature.properties),
         }
       })
 
@@ -276,23 +284,22 @@ const MapDialog = ({
               {field && (
                 <ul className="flex-1 overflow-scroll">
                   {mapFeatures &&
-                    newSelectedFeatures.map((feature) => (
+                    newSelectedFeatures.map((feature: any) => (
                       <FeatureListItem
+                        feature={feature}
                         newSelectedFeatures={newSelectedFeatures}
                         configUrl={config?.base.assets_url}
-                        feature={feature}
                         key={feature.id}
                         field={field}
                         map={dialogMap}
                         setError={setError}
-                        features={mapFeatures}
                         dialogRef={dialogRef}
                         setNewSelectedFeatures={setNewSelectedFeatures}
                       />
                     ))}
 
                   {mapFeatures?.features.map(
-                    (feature) =>
+                    (feature: any) =>
                       !newSelectedFeatures.some(
                         (featureItem) => featureItem.id === feature.id
                       ) && (
@@ -304,7 +311,6 @@ const MapDialog = ({
                           field={field}
                           map={dialogMap}
                           setError={setError}
-                          features={mapFeatures}
                           dialogRef={dialogRef}
                           setNewSelectedFeatures={setNewSelectedFeatures}
                         />

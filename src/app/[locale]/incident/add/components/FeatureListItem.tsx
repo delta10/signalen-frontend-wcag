@@ -1,24 +1,20 @@
 import React, { Dispatch, RefObject, SetStateAction, useMemo } from 'react'
-import {
-  getFeatureDescription,
-  getFeatureIdByCoordinates,
-  getFeatureType,
-} from '@/lib/utils/map'
+import { getFeatureType } from '@/lib/utils/map'
 import { Feature, FeatureCollection } from 'geojson'
 import { PublicQuestion } from '@/types/form'
 import { MapRef } from 'react-map-gl/maplibre'
 import { FormField, FormFieldCheckbox, Icon } from '@/components/index'
 import { useTranslations } from 'next-intl'
+import { FeatureWithDescription } from '@/types/map'
 
 type FeatureListItemProps = {
-  feature: Feature
+  feature: FeatureWithDescription
   field: PublicQuestion
   newSelectedFeatures: Feature[]
   setNewSelectedFeatures: Dispatch<SetStateAction<Feature[]>>
   map: MapRef | undefined
   setError: Dispatch<SetStateAction<string | null>>
   dialogRef: RefObject<HTMLDialogElement>
-  features: FeatureCollection | null
   configUrl?: string
 }
 
@@ -30,28 +26,20 @@ export const FeatureListItem = ({
   setNewSelectedFeatures,
   setError,
   dialogRef,
-  features,
   configUrl,
 }: FeatureListItemProps) => {
   const t = useTranslations('describe-add.map')
 
-  const featureId = useMemo(() => {
-    const featureId = feature.id as number
-    return featureId
-  }, [feature.geometry])
+  const featureId = feature.id
+  const featureDescription = feature.description
+  const maxNumberOfAssets = field ? field.meta.maxNumberOfAssets : 1
 
+  // Get feature type of asset
   const featureType = useMemo(() => {
     return getFeatureType(field.meta.featureTypes, feature.properties)
   }, [field.meta.featureTypes, feature.properties])
 
-  const featureDescription = useMemo(() => {
-    return getFeatureDescription(featureType, feature.properties)
-  }, [featureType, feature.properties])
-
-  const maxNumberOfAssets = useMemo(() => {
-    return field ? field.meta.maxNumberOfAssets : 1
-  }, [field])
-
+  // Add or remove feature to / from the newSelectedFeature state declared in DialogMap
   const addOrRemoveFeature = (value: boolean) => {
     const newSelectedFeatureArray = Array.from(
       newSelectedFeatures ? newSelectedFeatures : []
