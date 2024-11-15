@@ -7,7 +7,7 @@ export default function IncidentLayout({ children }: Layout) {
   const messages = useMessages()
 
   return (
-    <main className="p-8">
+    <main className="py-8 flex-auto">
       <div className="max-w-3xl mx-auto gap-16 flex flex-col">
         <div className="">
           <NextIntlClientProvider messages={pick(messages, 'stepper')}>
