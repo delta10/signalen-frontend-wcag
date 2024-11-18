@@ -1,6 +1,6 @@
 'use client'
 
-import { useTransition } from 'react'
+import { ChangeEvent, useTransition } from 'react'
 import { usePathname, useRouter } from '@/routing/navigation'
 import { Select } from '@/components'
 import { getAllAvailableLocales } from '@/lib/utils/locale'
@@ -13,19 +13,18 @@ const LanguageSwitch = () => {
   const pathname = usePathname()
   const [isPending, startTransition] = useTransition()
 
-  const onSelectChange = (locale: string) => {
+  const onSelectChange = (evt: ChangeEvent<HTMLSelectElement>) => {
     startTransition(() => {
-      router.replace(pathname, { locale: locale })
+      router.replace(pathname, { locale: evt.target.value })
     })
   }
 
   return (
-    <Select
-      value={locale}
-      values={getAllAvailableLocales()}
-      onSelectChange={onSelectChange}
-      disabled={isPending}
-    />
+    <Select value={locale} onChange={onSelectChange} disabled={isPending}>
+      {getAllAvailableLocales().map((lang, index) => (
+        <option key={index}>{lang}</option>
+      ))}
+    </Select>
   )
 }
 

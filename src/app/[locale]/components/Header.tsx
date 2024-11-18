@@ -1,5 +1,5 @@
 import { Navigation } from '@/app/[locale]/components/Navigation'
-import { Link, Logo } from '@/components/index'
+import { Link, Logo, PageHeader } from '@/components/index'
 import Image from 'next/image'
 
 export interface HeaderProps {
@@ -21,19 +21,25 @@ const Header = ({ homepage, logo }: HeaderProps) => {
   )
 
   return (
-    <header className="bg-white">
-      {homepage ? (
-        <Link boxContent href={homepage.href} aria-labelledby="logo-link-label">
-          <span id="logo-link-label" hidden>
-            {homepage.label}
-          </span>
-          {logoElement}
-        </Link>
-      ) : (
-        logoElement
-      )}
+    <>
+      <PageHeader>
+        {homepage ? (
+          <Link
+            boxContent
+            href={homepage.href}
+            aria-labelledby="logo-link-label"
+          >
+            <span id="logo-link-label" hidden>
+              {homepage.label}
+            </span>
+            {logoElement}
+          </Link>
+        ) : (
+          logoElement
+        )}
+      </PageHeader>
       <Navigation />
-    </header>
+    </>
   )
 }
 

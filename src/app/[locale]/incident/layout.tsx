@@ -7,9 +7,9 @@ export default function IncidentLayout({ children }: Layout) {
   const messages = useMessages()
 
   return (
-    <main className="py-8 flex-auto bg-white">
-      <div className="max-w-3xl mx-auto gap-16 flex flex-col">
-        <div className="">
+    <main>
+      <div>
+        <div>
           <NextIntlClientProvider messages={pick(messages, 'stepper')}>
             <FormProgress />
           </NextIntlClientProvider>
