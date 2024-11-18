@@ -33,7 +33,9 @@ export default function Thankyou() {
         <Heading level={3}>{t('what_do_we_do_heading')}</Heading>
         <Paragraph>{t('what_do_we_do_description')}</Paragraph>
       </div>
-      <Button onClick={() => resetState()}>{t('new_notification')}</Button>
+      <Button appearance="primary-action-button" onClick={() => resetState()}>
+        {t('new_notification')}
+      </Button>
     </div>
   )
 }
