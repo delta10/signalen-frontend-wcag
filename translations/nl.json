@@ -93,7 +93,6 @@
       "error": {
         "heading": "Versturen mislukt",
         "description": "Wegens een technische fout kon de melding niet worden verzonden. We hebben uw gegevens niet ontvangen. Probeer het over een paar minuten opnieuw."
-
       },
       "loading": {
         "heading": "Bezig met afhandelen",
@@ -143,5 +142,10 @@
     "name": "gemeente Utrecht",
     "homepage-label": "homepage",
     "logo-label": "Wapen van de gemeente Utrecht"
+  },
+  "footer": {
+    "about": "Over deze site",
+    "privacy": "Privacy",
+    "accessibility": "Toegankelijkheid"
   }
 }

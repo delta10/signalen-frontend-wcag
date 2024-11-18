@@ -9,5 +9,12 @@ export type AppConfig = {
       center: [number, number]
       maxBounds: [[number, number], [number, number]]
     }
+    links: {
+      about: string
+      accessibility: string
+      help: string
+      home: string
+      privacy: string
+    }
   }
 }

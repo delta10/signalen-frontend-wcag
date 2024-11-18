@@ -142,5 +142,10 @@
     "name": "City of Utrecht",
     "homepage-label": "homepage",
     "logo-label": "Coat of arms of the city of Utrecht"
+  },
+  "footer": {
+    "about": "About",
+    "privacy": "Privacy",
+    "accessibility": "Accessibility"
   }
 }
