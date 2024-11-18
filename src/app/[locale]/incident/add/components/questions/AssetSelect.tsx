@@ -63,7 +63,7 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
   useEffect(() => {
     const setNewFeatures = async () => {
       const bounds = dialogMap?.getBounds()
-      const zoom = config?.base.map.minimal_zoom
+      const zoom = dialogMap?.getZoom()
 
       if (
         field &&
@@ -71,7 +71,8 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
         field.meta &&
         field.meta.endpoint &&
         zoom &&
-        zoom > 17
+        config &&
+        zoom > config.base.map.minimal_zoom
       ) {
         const endpoint = field.meta.endpoint
           .replace('{west}', bounds.getWest())

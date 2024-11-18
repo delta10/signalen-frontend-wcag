@@ -327,37 +327,37 @@ const MapDialog = ({
               {/*    />*/}
               {/*  }*/}
               {/*></FormField>*/}
-              {field && (
+              {field && dialogMap && config && (
                 <ul className="flex-1 overflow-scroll">
-                  {mapFeatures &&
-                    formState.selectedFeatures.map((feature: any) => (
-                      <FeatureListItem
-                        feature={feature}
-                        configUrl={config?.base.assets_url}
-                        key={feature.id}
-                        field={field}
-                        map={dialogMap}
-                        setError={setError}
-                        dialogRef={dialogRef}
-                      />
-                    ))}
+                  {formState.selectedFeatures.map((feature: any) => (
+                    <FeatureListItem
+                      feature={feature}
+                      configUrl={config?.base.assets_url}
+                      key={feature.id}
+                      field={field}
+                      map={dialogMap}
+                      setError={setError}
+                      dialogRef={dialogRef}
+                    />
+                  ))}
 
-                  {mapFeatures?.features.map(
-                    (feature: any) =>
-                      !formState.selectedFeatures.some(
-                        (featureItem) => featureItem.id === feature.id
-                      ) && (
-                        <FeatureListItem
-                          configUrl={config?.base.assets_url}
-                          feature={feature}
-                          key={feature.id}
-                          field={field}
-                          map={dialogMap}
-                          setError={setError}
-                          dialogRef={dialogRef}
-                        />
-                      )
-                  )}
+                  {dialogMap.getZoom() > config.base.map.minimal_zoom &&
+                    mapFeatures?.features.map(
+                      (feature: any) =>
+                        !formState.selectedFeatures.some(
+                          (featureItem) => featureItem.id === feature.id
+                        ) && (
+                          <FeatureListItem
+                            configUrl={config?.base.assets_url}
+                            feature={feature}
+                            key={feature.id}
+                            field={field}
+                            map={dialogMap}
+                            setError={setError}
+                            dialogRef={dialogRef}
+                          />
+                        )
+                    )}
                 </ul>
               )}
             </div>
