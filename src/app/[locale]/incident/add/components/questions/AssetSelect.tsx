@@ -61,9 +61,9 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
 
   // Extract and log map bounds on zoom or view change
   useEffect(() => {
-    const logMapBounds = async () => {
+    const setNewFeatures = async () => {
       const bounds = dialogMap?.getBounds()
-      const zoom = dialogMap?.getZoom()
+      const zoom = config?.base.map.minimal_zoom
 
       if (
         field &&
@@ -86,12 +86,12 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
     }
 
     if (dialogMap) {
-      dialogMap.on('moveend', logMapBounds)
+      dialogMap.on('moveend', setNewFeatures)
     }
 
     return () => {
       if (dialogMap) {
-        dialogMap.off('moveend', logMapBounds)
+        dialogMap.off('moveend', setNewFeatures)
       }
     }
   }, [dialogMap])

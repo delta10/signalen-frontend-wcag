@@ -401,7 +401,7 @@ const MapDialog = ({
                 )}
                 {onMapReady &&
                   dialogMap &&
-                  dialogMap.getZoom() > 17 &&
+                  dialogMap.getZoom() > config.base.map.minimal_zoom &&
                   mapFeatures?.features.map((feature) => {
                     const id = feature.id as number
 
