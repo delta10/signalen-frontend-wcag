@@ -70,7 +70,6 @@ const MapDialog = ({
   const dialogRef = useRef<HTMLDialogElement>(null)
   const [isMapSelected, setIsMapSelected] = useState<boolean>(false)
   const [mapFeatures, setMapFeatures] = useState<FeatureCollection | null>()
-  const [newSelectedFeatures, setNewSelectedFeatures] = useState<Feature[]>([])
   const { setValue } = useFormContext()
 
   const [viewState, setViewState] = useState<ViewState>({
@@ -138,7 +137,7 @@ const MapDialog = ({
 
     if (dialogMap && featureId) {
       const newSelectedFeatureArray = Array.from(
-        newSelectedFeatures ? newSelectedFeatures : []
+        formState.selectedFeatures ? formState.selectedFeatures : []
       )
 
       const index = newSelectedFeatureArray.findIndex(
@@ -158,7 +157,10 @@ const MapDialog = ({
         newSelectedFeatureArray.push(feature)
       }
 
-      setNewSelectedFeatures(newSelectedFeatureArray)
+      updateForm({
+        ...formState,
+        selectedFeatures: newSelectedFeatureArray,
+      })
       setTimeout(() => setIsMapSelected(false), 0)
     }
   }
@@ -228,7 +230,7 @@ const MapDialog = ({
     // Todo: implement asset select logic
     if (isAssetSelect && field) {
       const formValues = await Promise.all(
-        newSelectedFeatures.map(async (feature) => {
+        formState.selectedFeatures.map(async (feature) => {
           const address = await getNearestAddressByCoordinate(
             // @ts-ignore
             feature.geometry.coordinates[1],
@@ -329,27 +331,24 @@ const MapDialog = ({
               {field && (
                 <ul className="flex-1 overflow-scroll">
                   {mapFeatures &&
-                    newSelectedFeatures.map((feature: any) => (
+                    formState.selectedFeatures.map((feature: any) => (
                       <FeatureListItem
                         feature={feature}
-                        newSelectedFeatures={newSelectedFeatures}
                         configUrl={config?.base.assets_url}
                         key={feature.id}
                         field={field}
                         map={dialogMap}
                         setError={setError}
                         dialogRef={dialogRef}
-                        setNewSelectedFeatures={setNewSelectedFeatures}
                       />
                     ))}
 
                   {mapFeatures?.features.map(
                     (feature: any) =>
-                      !newSelectedFeatures.some(
+                      !formState.selectedFeatures.some(
                         (featureItem) => featureItem.id === feature.id
                       ) && (
                         <FeatureListItem
-                          newSelectedFeatures={newSelectedFeatures}
                           configUrl={config?.base.assets_url}
                           feature={feature}
                           key={feature.id}
@@ -357,7 +356,6 @@ const MapDialog = ({
                           map={dialogMap}
                           setError={setError}
                           dialogRef={dialogRef}
-                          setNewSelectedFeatures={setNewSelectedFeatures}
                         />
                       )
                   )}
@@ -369,10 +367,10 @@ const MapDialog = ({
                 <Button appearance="primary-action-button">
                   {isAssetSelect
                     ? field?.meta.language.submitPlural &&
-                      newSelectedFeatures.length > 1
+                      formState.selectedFeatures.length > 1
                       ? field.meta.language.submitPlural
                       : field?.meta.language.submit &&
-                          newSelectedFeatures.length === 1
+                          formState.selectedFeatures.length === 1
                         ? field.meta.language.submit
                         : t('go_further_without_selected_object')
                     : t('choose_location')}
@@ -418,7 +416,7 @@ const MapDialog = ({
                         // @ts-ignore
                         onClick={(e) => handleFeatureMarkerClick(e, feature)}
                       >
-                        {!newSelectedFeatures.some(
+                        {!formState.selectedFeatures.some(
                           (featureItem) => featureItem.id === feature.id
                         ) ? (
                           <Icon>

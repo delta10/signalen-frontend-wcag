@@ -35,6 +35,7 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
   const t = useTranslations('describe-add.map')
   const [dialogMap, setDialogMap] = useState<MapRef | null>(null)
   const [features, setFeatures] = useState<FeatureCollection | null>(null)
+  const { formState } = useFormStore()
 
   useEffect(() => {
     const getAddress = async () => {
@@ -112,6 +113,9 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
           <LocationMap />
         </div>
         <Paragraph>{address}</Paragraph>
+        {formStoreState.selectedFeatures.map((feature: any) => (
+          <Paragraph key={feature.id}>{feature.description}</Paragraph>
+        ))}
         <MapProvider>
           <MapDialog
             onMapReady={onMapReady}

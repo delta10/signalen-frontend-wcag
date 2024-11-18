@@ -6,12 +6,11 @@ import { MapRef } from 'react-map-gl/maplibre'
 import { FormField, FormFieldCheckbox, Icon } from '@/components/index'
 import { useTranslations } from 'next-intl'
 import { FeatureWithDescription } from '@/types/map'
+import { useFormStore } from '@/store/form_store'
 
 type FeatureListItemProps = {
   feature: FeatureWithDescription
   field: PublicQuestion
-  newSelectedFeatures: Feature[]
-  setNewSelectedFeatures: Dispatch<SetStateAction<Feature[]>>
   map: MapRef | undefined
   setError: Dispatch<SetStateAction<string | null>>
   dialogRef: RefObject<HTMLDialogElement>
@@ -21,14 +20,13 @@ type FeatureListItemProps = {
 export const FeatureListItem = ({
   feature,
   field,
-  newSelectedFeatures,
   map,
-  setNewSelectedFeatures,
   setError,
   dialogRef,
   configUrl,
 }: FeatureListItemProps) => {
   const t = useTranslations('describe-add.map')
+  const { formState, updateForm } = useFormStore()
 
   const featureId = feature.id
   const featureDescription = feature.description
@@ -42,7 +40,7 @@ export const FeatureListItem = ({
   // Add or remove feature to / from the newSelectedFeature state declared in DialogMap
   const addOrRemoveFeature = (value: boolean) => {
     const newSelectedFeatureArray = Array.from(
-      newSelectedFeatures ? newSelectedFeatures : []
+      formState.selectedFeatures ? formState.selectedFeatures : []
     )
     const index = newSelectedFeatureArray.findIndex(
       (feature) => feature.id === featureId
@@ -69,14 +67,17 @@ export const FeatureListItem = ({
       newSelectedFeatureArray.splice(index, 1) // Remove the feature at the found index
     }
 
-    setNewSelectedFeatures(newSelectedFeatureArray)
+    updateForm({
+      ...formState,
+      selectedFeatures: newSelectedFeatureArray,
+    })
   }
 
   // TODO: iets van een label toevoegen zodat voor een SR duidelijk wordt om welke lantaarnpaal, adres etc het gaat?
   return featureDescription ? (
     <li className="py-4 border-t border-gray-200">
       <FormField className="flex flex-row items-center gap-2">
-        {!newSelectedFeatures.some(
+        {!formState.selectedFeatures.some(
           (featureItem) => featureItem.id === featureId
         ) ? (
           <Icon>
@@ -92,7 +93,7 @@ export const FeatureListItem = ({
         <FormFieldCheckbox
           label={featureDescription}
           className="!mt-1"
-          checked={newSelectedFeatures.some(
+          checked={formState.selectedFeatures.some(
             (featureItem) => featureItem.id === featureId
           )}
           id={featureId.toString()}
