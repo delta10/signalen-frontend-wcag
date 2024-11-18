@@ -3,15 +3,13 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Heading } from '@utrecht/component-library-react'
 import { useTranslations } from 'next-intl'
-import { useFormStore } from '@/store/form_store'
-import { stepToPath, usePathname, useRouter } from '@/routing/navigation'
+import { usePathname, useRouter } from '@/routing/navigation'
 import { FaChevronLeft } from 'react-icons/fa'
 import { FormStep } from '@/types/form'
 import { getCurrentStep, getPreviousStepPath } from '@/lib/utils/stepper'
 
 const FormProgress = () => {
   const t = useTranslations('stepper')
-  const { resetForm } = useFormStore()
   const router = useRouter()
   const pathname = usePathname()
   const step = getCurrentStep(pathname)
@@ -21,11 +19,6 @@ const FormProgress = () => {
   useEffect(() => {
     setPercentage((step / 4) * 100)
   }, [step])
-
-  const resetState = () => {
-    resetForm()
-    router.push(stepToPath[FormStep.STEP_1_DESCRIPTION])
-  }
 
   const back = () => {
     const previousStep = getPreviousStepPath(step)
@@ -65,7 +58,6 @@ const FormProgress = () => {
       </div>
     )
   }
-  return <Button onClick={() => resetState()}>{t('new_notification')}</Button>
 }
 
 export default FormProgress
