@@ -16,7 +16,6 @@ import { getCurrentStep, getNextStepPath } from '@/lib/utils/stepper'
 
 export const IncidentQuestionsLocationForm = () => {
   const { formState: formStoreState, updateForm } = useFormStore()
-  const [loading, setLoading] = useState<boolean>(true)
   const [additionalQuestions, setAdditionalQuestions] = useState<
     PublicQuestion[]
   >([])
@@ -39,11 +38,8 @@ export const IncidentQuestionsLocationForm = () => {
         )
 
         setAdditionalQuestions(additionalQuestions)
-
-        setLoading(false)
       } catch (e) {
         console.error('Could not fetch additional questions', e)
-        setLoading(false)
       }
     }
 
@@ -146,9 +142,6 @@ export const IncidentQuestionsLocationForm = () => {
               </div>
             )
           })
-        ) : loading ? (
-          /* TODO: Implement nice loading state */
-          <Paragraph>Laden...</Paragraph>
         ) : (
           <LocationSelect />
         )}

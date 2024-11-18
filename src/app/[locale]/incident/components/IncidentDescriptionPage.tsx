@@ -14,7 +14,6 @@ export const IncidentDescriptionPage = () => {
   const { loaded } = useFormStore()
   const tGeneral = useTranslations('general.describe_form')
 
-  // TODO: implement nice loading state, for if loaded if false. Also create a loading state for Stepper store.
   if (loaded) {
     return (
       <>

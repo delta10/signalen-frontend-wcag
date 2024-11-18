@@ -13,7 +13,6 @@ export const IncidentContactPage = () => {
   const tGeneral = useTranslations('general.describe_form')
   const { loaded } = useFormStore()
 
-  // TODO: implement nice loading state, for if loaded if false. Also create a loading state for Stepper store.
   if (loaded) {
     return (
       <div className="flex flex-col gap-4">
