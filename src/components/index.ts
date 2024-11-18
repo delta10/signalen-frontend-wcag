@@ -33,3 +33,4 @@ export {
 export { RadioGroup } from '@utrecht/radio-group-react'
 export { CheckboxGroup } from '@utrecht/checkbox-group-react'
 // export { SelectCombobox } from '@/components/ui/SelectCombobox'
+export { MapMarker } from './ui/MapMarker'

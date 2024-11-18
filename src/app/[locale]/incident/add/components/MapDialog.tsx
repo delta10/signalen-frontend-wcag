@@ -18,14 +18,10 @@ import {
   Paragraph,
   Alert,
   Button,
+  MapMarker,
 } from '@/components'
 import { useConfig } from '@/hooks/useConfig'
-import {
-  IconCurrentLocation,
-  IconMapPinFilled,
-  IconMinus,
-  IconPlus,
-} from '@tabler/icons-react'
+import { IconCurrentLocation, IconMinus, IconPlus } from '@tabler/icons-react'
 import { ButtonGroup } from '@/components'
 import {
   formatAddressToSignalenInput,
@@ -365,12 +361,7 @@ const MapDialog = ({
               >
                 {marker.length && isMapSelected && (
                   <Marker latitude={marker[0]} longitude={marker[1]}>
-                    <Icon className="map-marker-icon">
-                      <IconMapPinFilled
-                        className="-translate-y-1/2"
-                        color={config.base.style.primaryColor}
-                      />
-                    </Icon>
+                    <MapMarker />
                   </Marker>
                 )}
                 {onMapReady &&

@@ -3,8 +3,7 @@ import 'maplibre-gl/dist/maplibre-gl.css'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useFormStore } from '@/store/form_store'
 import { useConfig } from '@/hooks/useConfig'
-import { IconMapPinFilled } from '@tabler/icons-react'
-import { Icon } from '@/components/index'
+import { MapMarker } from './MapMarker'
 
 const LocationMap = () => {
   const { formState } = useFormStore()
@@ -69,12 +68,7 @@ const LocationMap = () => {
         attributionControl={false}
       >
         <Marker latitude={marker[0]} longitude={marker[1]}>
-          <Icon className="map-marker-icon">
-            <IconMapPinFilled
-              className="-translate-y-1/2"
-              color={config.base.style.primaryColor}
-            />
-          </Icon>
+          <MapMarker />
         </Marker>
       </Map>
     )
