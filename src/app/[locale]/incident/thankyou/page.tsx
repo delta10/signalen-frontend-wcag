@@ -2,11 +2,7 @@
 
 import { useTranslations } from 'next-intl'
 import { Paragraph, Heading } from '@/components/index'
-import {
-  Button,
-  NumberData,
-  PreserveData,
-} from '@utrecht/component-library-react'
+import { Button, PreserveData } from '@utrecht/component-library-react'
 import React from 'react'
 import { stepToPath, useRouter } from '@/routing/navigation'
 import { FormStep } from '@/types/form'
