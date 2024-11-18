@@ -21,15 +21,6 @@ export const isCoordinateInsideMaxBound = (
   return lat >= minLat && lat <= maxLat && lng >= minLng && lng <= maxLng
 }
 
-// This function was created to address uncertainty regarding the presence of an `ID` field in every random GeoJSON feature that Signalen renders.
-// While the existence of an `ID` field is not guaranteed, we can reliably assume that every feature includes a `geometry` field
-// with associated coordinates. By building this function, we ensure consistent handling of GeoJSON features without depending on an `ID` field.
-export const getFeatureIdByCoordinates = (
-  coordinates: [number, number]
-): number => {
-  return coordinates.reduce((first, second) => first + second)
-}
-
 // This function takes a GeoJsonProperties object and a featureType object (which is a field.meta AssetSelect question in Signalen) and returns either null or a formatted string.
 // The purpose is to match a feature with its corresponding featureType, as an AssetSelect question can have multiple featureTypes.
 // This ensures that the correct icon, title, and other details are displayed.
@@ -74,4 +65,51 @@ export const getFeatureDescription = (
   }
 
   return null
+}
+
+// This function returns the feature id of a feature
+export const getFeatureId = (
+  featureType: FeatureType | null,
+  properties: GeoJsonProperties
+): number | undefined => {
+  if (featureType) {
+    const idField = featureType.idField || null
+
+    if (idField && properties && properties[idField]) {
+      return properties[idField]
+    }
+
+    return undefined
+  }
+
+  return undefined
+}
+
+// This function formats a given "PDOK weergavenaam" into a object with seperate postal code, huisnummer, openbare_ruimte (street name) and woonplaats
+export const formatAddressToSignalenInput = (input: string) => {
+  if (input === '') {
+    return {}
+  }
+
+  // Split the main components by ","
+  const [streetAndNumber, postcodeAndCity] = input
+    .split(',')
+    .map((part) => part.trim())
+
+  // Extract street and house number
+  const streetMatch = streetAndNumber.match(/(.+)\s(\d+)$/) // Matches "N.C.B.-laan" and "17"
+  const openbare_ruimte = streetMatch ? streetMatch[1] : null
+  const huisnummer = streetMatch ? streetMatch[2] : null
+
+  // Extract postal code and city
+  const postcodeMatch = postcodeAndCity.match(/^([0-9A-Z]+)\s(.+)$/) // Matches "5462GA" and "Veghel"
+  const postcode = postcodeMatch ? postcodeMatch[1] : null
+  const woonplaats = postcodeMatch ? postcodeMatch[2] : null
+
+  return {
+    huisnummer,
+    openbare_ruimte,
+    postcode,
+    woonplaats,
+  }
 }
