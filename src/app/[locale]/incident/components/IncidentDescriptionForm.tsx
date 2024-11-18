@@ -5,13 +5,11 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
 import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentFormFooter'
-import { useStepperStore } from '@/store/stepper_store'
-import { useRouter } from '@/routing/navigation'
-import { useEffect } from 'react'
+import { usePathname, useRouter } from '@/routing/navigation'
+import React, { useEffect } from 'react'
 import { getCategoryForDescription } from '@/services/classification'
 import { debounce } from 'lodash'
 import { useFormStore } from '@/store/form_store'
-import React from 'react'
 import {
   ACCEPTED_IMAGE_TYPES,
   FileUpload,
@@ -27,12 +25,14 @@ import {
   FormFieldDescription,
   FormFieldErrorMessage,
 } from '@/components/index'
+import { getCurrentStep, getNextStepPath } from '@/lib/utils/stepper'
 
 export const IncidentDescriptionForm = () => {
   const t = useTranslations('describe-report.form')
   const { updateForm, formState } = useFormStore()
-  const { addOneStep, setLastCompletedStep } = useStepperStore()
   const router = useRouter()
+  const pathname = usePathname()
+  const step = getCurrentStep(pathname)
 
   useEffect(() => {
     router.prefetch('/incident/add')
@@ -105,10 +105,10 @@ export const IncidentDescriptionForm = () => {
       attachments: values.files,
     })
 
-    setLastCompletedStep(1)
-    addOneStep()
-
-    router.push('/incident/add')
+    const nextStep = getNextStepPath(step)
+    if (nextStep != null) {
+      router.push(nextStep)
+    }
   }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {

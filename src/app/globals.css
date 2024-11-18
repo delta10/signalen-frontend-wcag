@@ -37,6 +37,7 @@
     width: 100px;
     height: 100px;
 }
+
 .empty-box.border {
     border: 1px dashed rgb(118, 118, 118);
 }
@@ -47,7 +48,7 @@
     border: 1px dashed rgb(118, 118, 118);
 }
 
-.file-upload-box > label{
+.file-upload-box > label {
     position: relative;
     display: inline-block;
     cursor: pointer;
@@ -68,6 +69,25 @@
     left: 29px;
     border-radius: 50%;
     border: 1px solid rgb(0, 32, 92);
+}
+
+.utrecht-button:focus:not(:disabled,[aria-disabled=true],.utrecht-button--disabled) {
+    border: none;
+}
+
+/*todo: niet best practice met !important maar weet even niet hoe ik anders makkelijk de default styling moet overschrijven*/
+.pl-0-overwrite {
+    padding-left: 0 !important;
+}
+
+.pr-0-overwrite {
+    padding-right: 0 !important;
+}
+
+.stepper-button-hover:hover:not(:disabled,[aria-disabled=true]) {
+    border: none;
+    outline: none;
+    text-decoration: underline;
 }
 
 /* map */

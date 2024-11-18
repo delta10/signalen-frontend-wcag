@@ -3,10 +3,8 @@
     "welcome": "1. Beschrijf uw melding"
   },
   "stepper": {
-    "step_one": "Beschrijf uw melding",
-    "step_two": "Locatie en vragen",
-    "step_three": "Contactgegevens",
-    "step_four": "Versturen",
+    "back": "Vorige",
+    "step": "Stap {currentStep} van {totalSteps}",
     "new_notification": "Nieuwe melding"
   },
   "describe-report": {
@@ -136,7 +134,8 @@
     },
     "file": {
       "preview": "Voorbeeld weergave"
-    }
+    },
+    "loading": "Laden"
   },
   "routing": {
     "notifications-map": "/meldingen-kaart",
