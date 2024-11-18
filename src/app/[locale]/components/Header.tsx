@@ -21,7 +21,7 @@ const Header = ({ homepage, logo }: HeaderProps) => {
   )
 
   return (
-    <header>
+    <header className="bg-white">
       {homepage ? (
         <Link boxContent href={homepage.href} aria-labelledby="logo-link-label">
           <span id="logo-link-label" hidden>

@@ -20,6 +20,7 @@ const Footer = () => {
     if (!loading && config) {
       const newLinks: footerLink[] = []
 
+      // Note: for now we only choose to show the 3 links below (about, privacy, accessibility).
       if (config.base.links['about']) {
         newLinks.push({ label: t('about'), href: config.base.links['about'] })
       }
@@ -40,7 +41,7 @@ const Footer = () => {
   }, [config, loading])
 
   return (
-    <footer>
+    <footer className="bg-white">
       <div className="w-full h-16 md:h-24 bg-neutral-500"></div>
       {/* todo: set organisation hover color */}
       <div className="max-w-3xl mx-auto flex flex-col md:flex-row gap-3 md:gap-12 py-3">
