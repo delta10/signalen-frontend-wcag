@@ -2,7 +2,11 @@
 
 import { useTranslations } from 'next-intl'
 import { Paragraph, Heading } from '@/components/index'
-import { Button } from '@utrecht/component-library-react'
+import {
+  Button,
+  NumberData,
+  PreserveData,
+} from '@utrecht/component-library-react'
 import React from 'react'
 import { stepToPath, useRouter } from '@/routing/navigation'
 import { FormStep } from '@/types/form'
@@ -23,9 +27,8 @@ export default function Thankyou() {
       <Heading level={1}>{t('heading')}</Heading>
       <div className="flex flex-col gap-2">
         <Paragraph>
-          {t('description_notification_number', {
-            sig_number: formState.sig_number,
-          })}
+          {t('description_notification_number')}
+          <PreserveData> {formState.sig_number}</PreserveData>
         </Paragraph>
         <Paragraph>{t('description_notification_email')}</Paragraph>
       </div>

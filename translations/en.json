@@ -101,7 +101,7 @@
   },
   "describe-thankyou": {
     "heading": "Thank you!",
-    "description_notification_number": "Your notification is registered with us under number: {sig_number}",
+    "description_notification_number": "Your notification is registered with us under number:",
     "description_notification_email": "Did you provide an email address? You will receive an email with all the details of your notification.",
     "what_do_we_do_heading": "What do we do with your notification?",
     "what_do_we_do_description": "Your notification is scheduled: we will inform you within 5 working days about how and when your notification will be handled. We will do this via email.",
