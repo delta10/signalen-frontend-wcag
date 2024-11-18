@@ -15,6 +15,7 @@ const initialFormState: FormStoreState = {
   attachments: [],
   isBlocking: false,
   selectedFeatures: [],
+  sig_number: '',
 }
 
 const useFormStore = create<FormStore>()(

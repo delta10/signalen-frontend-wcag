@@ -22,6 +22,13 @@
           51.6957026
         ]
       ]
+    },
+    "links": {
+      "about": "https://signalen.org",
+      "accessibility": "https://signalen.org",
+      "help": "https://signalen.org/",
+      "home": "https://signalen.org/",
+      "privacy": "https://vng.nl/privacyverklaring-vereniging-van-nederlandse-gemeenten"
     }
   }
 }

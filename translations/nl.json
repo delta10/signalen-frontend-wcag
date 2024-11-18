@@ -4,8 +4,7 @@
   },
   "stepper": {
     "back": "Vorige",
-    "step": "Stap {currentStep} van {totalSteps}",
-    "new_notification": "Nieuwe melding"
+    "step": "Stap {currentStep} van {totalSteps}"
   },
   "describe-report": {
     "heading": "Beschrijf uw melding",
@@ -96,7 +95,6 @@
       "error": {
         "heading": "Versturen mislukt",
         "description": "Wegens een technische fout kon de melding niet worden verzonden. We hebben uw gegevens niet ontvangen. Probeer het over een paar minuten opnieuw."
-
       },
       "loading": {
         "heading": "Bezig met afhandelen",
@@ -106,10 +104,11 @@
   },
   "describe-thankyou": {
     "heading": "Bedankt!",
-    "description_notification_number": "Uw melding is bij ons bekend.",
+    "description_notification_number": "Uw melding is bij ons bekend onder nummer:",
     "description_notification_email": "Hebt u een e-mailadres ingevuld? Dan ontvangt u een e-mail met alle gegevens van uw melding.",
     "what_do_we_do_heading": "Wat doen we met uw melding?",
-    "what_do_we_do_description": "Uw melding wordt ingepland: wij laten u binnen 5 werkdagen weten hoe en wanneer uw melding wordt afgehandeld. Dat doen we via e-mail."
+    "what_do_we_do_description": "Uw melding wordt ingepland: wij laten u binnen 5 werkdagen weten hoe en wanneer uw melding wordt afgehandeld. Dat doen we via e-mail.",
+    "new_notification": "Nieuwe melding"
   },
   "general": {
     "describe_form": {
@@ -146,5 +145,10 @@
     "name": "gemeente Utrecht",
     "homepage-label": "homepage",
     "logo-label": "Wapen van de gemeente Utrecht"
+  },
+  "footer": {
+    "about": "Over deze site",
+    "privacy": "Privacy",
+    "accessibility": "Toegankelijkheid"
   }
 }

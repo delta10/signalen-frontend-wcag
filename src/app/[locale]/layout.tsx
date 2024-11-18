@@ -6,7 +6,9 @@ import { Header } from '@/app/[locale]/components/Header'
 import localFont from 'next/font/local'
 import AppProvider from '@/components/providers/AppProvider'
 import { Document } from '@utrecht/component-library-react/dist/css-module'
-import { useTranslations } from 'next-intl'
+import { NextIntlClientProvider, useMessages, useTranslations } from 'next-intl'
+import { Footer } from '@/app/[locale]/components/Footer'
+import pick from 'lodash/pick'
 
 const font = localFont({
   src: '../../../public/fonts/open-sans.woff2',
@@ -21,6 +23,8 @@ export default function LocaleLayout({
   children: React.ReactNode
   params: { locale: any }
 }) {
+  const messages = useMessages()
+
   if (!getAllAvailableLocales().includes(locale as any)) notFound()
   const t = useTranslations('current-organisation')
 
@@ -29,7 +33,7 @@ export default function LocaleLayout({
       <body className="bg-gray-100">
         <AppProvider>
           <Document className="utrecht-theme">
-            <Container className="bg-white">
+            <Container className="bg-white h-dvh flex flex-col">
               <Header
                 homepage={{
                   href: '/',
@@ -41,6 +45,9 @@ export default function LocaleLayout({
                 }}
               />
               {children}
+              <NextIntlClientProvider messages={pick(messages, 'footer')}>
+                <Footer />
+              </NextIntlClientProvider>
             </Container>
           </Document>
         </AppProvider>
