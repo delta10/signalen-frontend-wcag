@@ -227,7 +227,6 @@ const MapDialog = ({
   const closeMapDialog = async () => {
     updateForm({ ...formState, coordinates: marker })
 
-    // Todo: implement asset select logic
     if (isAssetSelect && field) {
       const formValues = await Promise.all(
         formState.selectedFeatures.map(async (feature) => {
