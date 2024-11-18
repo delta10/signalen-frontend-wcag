@@ -17,7 +17,7 @@ import { FormStep } from '@/types/form'
 
 const IncidentSummaryForm = () => {
   const t = useTranslations('describe-summary')
-  const { formState } = useFormStore()
+  const { updateForm, formState } = useFormStore()
   const router = useRouter()
   const [error, setError] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
@@ -65,6 +65,9 @@ const IncidentSummaryForm = () => {
         incident_date_start: new Date().toISOString(),
         extra_properties: formState.extra_properties,
       })
+
+      // Set SIG number
+      updateForm({ ...formState, sig_number: res.id_display })
 
       if (formState.attachments.length > 0) {
         const signalId = res.signal_id
