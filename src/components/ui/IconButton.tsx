@@ -4,13 +4,14 @@ import React, {
   forwardRef,
   ForwardedRef,
   useId,
+  ReactNode,
 } from 'react'
 import { Button, Icon } from '@/components/index'
 import clsx from 'clsx'
 
 export interface IconButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
-  label: any
+  label: ReactNode
 }
 
 export const IconButton = forwardRef(
@@ -19,7 +20,6 @@ export const IconButton = forwardRef(
       label,
       id,
       children,
-      type,
       className,
       ...restProps
     }: PropsWithChildren<IconButtonProps>,
