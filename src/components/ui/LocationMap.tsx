@@ -54,7 +54,6 @@ const LocationMap = () => {
     })
   }, [marker])
 
-  // TODO: Implement state if loading, and no config is found
   if (!loading && config) {
     return (
       <Map

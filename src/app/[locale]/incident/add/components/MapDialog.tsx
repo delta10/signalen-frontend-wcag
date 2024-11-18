@@ -202,7 +202,6 @@ const MapDialog = ({ trigger }: MapDialogProps) => {
               </Dialog.Close>
             </div>
           </div>
-          {/* TODO: Implement state if loading, and no config is found */}
           {config && (
             <div className="col-span-1 md:col-span-2 relative">
               <Map

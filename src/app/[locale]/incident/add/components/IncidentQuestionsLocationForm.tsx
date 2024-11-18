@@ -145,9 +145,6 @@ export const IncidentQuestionsLocationForm = () => {
               </div>
             )
           })
-        ) : loading ? (
-          /* TODO: Implement nice loading state */
-          <Paragraph>Laden...</Paragraph>
         ) : (
           <LocationSelect />
         )}
