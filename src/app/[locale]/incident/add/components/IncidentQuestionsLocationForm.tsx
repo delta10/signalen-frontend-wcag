@@ -16,7 +16,6 @@ import { isCoordinates } from '@/lib/utils/map'
 
 export const IncidentQuestionsLocationForm = () => {
   const { formState: formStoreState, updateForm } = useFormStore()
-  const [loading, setLoading] = useState<boolean>(true)
   const [additionalQuestions, setAdditionalQuestions] = useState<
     PublicQuestion[]
   >([])
@@ -38,11 +37,8 @@ export const IncidentQuestionsLocationForm = () => {
         )
 
         setAdditionalQuestions(additionalQuestions)
-
-        setLoading(false)
       } catch (e) {
         console.error('Could not fetch additional questions', e)
-        setLoading(false)
       }
     }
 
