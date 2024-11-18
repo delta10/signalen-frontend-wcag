@@ -46,7 +46,8 @@
       "close_alert_notification": "Sluit melding",
       "address_search_label": "Zoek op adres",
       "max_number_of_assets_error": "U kunt maximaal {max, plural, one {# object} other {# objecten}} selecteren.",
-      "go_further_without_selected_object": "Ga verder zonder object"
+      "go_further_without_selected_object": "Ga verder zonder object",
+      "zoom_for_object": "Zoom in om de objecten te zien"
     }
   },
   "describe-contact": {

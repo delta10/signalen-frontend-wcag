@@ -16,6 +16,7 @@ import {
   Icon,
   AlertDialog,
   Paragraph,
+  Alert,
   Button,
   ListboxOptionProps,
   // SelectCombobox,
@@ -327,6 +328,12 @@ const MapDialog = ({
               {/*    />*/}
               {/*  }*/}
               {/*></FormField>*/}
+              {isAssetSelect &&
+                dialogMap &&
+                config &&
+                dialogMap.getZoom() < config.base.map.minimal_zoom && (
+                  <Alert type="error">{t('zoom_for_object')}</Alert>
+                )}
               {field && dialogMap && config && (
                 <ul className="flex-1 overflow-scroll">
                   {formState.selectedFeatures.map((feature: any) => (
