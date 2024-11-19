@@ -20,7 +20,30 @@ export const IncidentQuestionsLocationForm = () => {
     PublicQuestion[]
   >([])
   const router = useRouter()
-  const methods = useForm()
+  const methods = useForm({
+    // todo:  gaat al iets beter alleen mag de validatei gelijk uit wanneer er wel een goed adres is opgegeven
+    //        plus, wanneer er bij coordinaten geen adres is wat doen we dan? morgen bespreken?
+    resolver: (values) => {
+      const errors: Record<string, any> = {}
+
+      // Location validation
+      if (
+        !isCoordinates(formStoreState.coordinates) ||
+        (formStoreState.coordinates[0] === 0 &&
+          formStoreState.coordinates[1] === 0)
+      ) {
+        errors.location = {
+          type: 'manual',
+          message: 'Location is required',
+        }
+      }
+
+      return {
+        values,
+        errors,
+      }
+    },
+  })
   const t = useTranslations('general.errors')
   const pathname = usePathname()
   const step = getCurrentStep(pathname)
@@ -46,29 +69,6 @@ export const IncidentQuestionsLocationForm = () => {
     appendAdditionalQuestions()
   }, [formStoreState.main_category, formStoreState.sub_category])
 
-  useEffect(() => {
-    if (
-      isCoordinates(formStoreState.coordinates) &&
-      formStoreState.coordinates[0] === 0 &&
-      formStoreState.coordinates[1] === 0
-    ) {
-      methods.setError('location', { message: t('location_required') })
-    } else {
-      methods.clearErrors('location')
-    }
-  }, [formStoreState.coordinates])
-
-  useEffect(() => {
-    if (formStoreState.isBlocking) {
-      methods.setError('submit', {
-        type: 'manual',
-        message: t('is_blocking'),
-      })
-    } else {
-      methods.clearErrors('submit')
-    }
-  }, [formStoreState.isBlocking, methods.setError, methods.clearErrors])
-
   const onSubmit = (data: any) => {
     const questionKeys = Object.keys(data)
     const questionsToSubmit = additionalQuestions.filter(
@@ -84,7 +84,6 @@ export const IncidentQuestionsLocationForm = () => {
         ? id.filter((value: any) => value !== false && value !== 'empty')
         : []
 
-      // If checkboxAnswers has a length, map over them to return a list of answer objects
       const answer =
         checkboxAnswers.length > 0
           ? checkboxAnswers.map((answerId) => ({
@@ -130,10 +129,14 @@ export const IncidentQuestionsLocationForm = () => {
             {methods.formState.errors.submit.message?.toString()}
           </Alert>
         )}
+        {methods.formState.errors.location && (
+          <Alert type="error">
+            {methods.formState.errors.location.message?.toString()}
+          </Alert>
+        )}
         {additionalQuestions.length ? (
           Object.keys(additionalQuestions).map((value, index, array) => {
             const question = additionalQuestions[index]
-
             const fieldName = question.key
 
             return (
