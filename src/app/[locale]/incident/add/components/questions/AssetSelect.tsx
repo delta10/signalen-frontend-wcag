@@ -35,7 +35,6 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
   const t = useTranslations('describe-add.map')
   const [dialogMap, setDialogMap] = useState<MapRef | null>(null)
   const [features, setFeatures] = useState<FeatureCollection | null>(null)
-  const { formState } = useFormStore()
 
   useEffect(() => {
     const getAddress = async () => {
@@ -59,7 +58,7 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
     setDialogMap(map)
   }
 
-  // Extract and log map bounds on zoom or view change
+  // Set new features on map move or zoom
   useEffect(() => {
     const setNewFeatures = async () => {
       const bounds = dialogMap?.getBounds()
