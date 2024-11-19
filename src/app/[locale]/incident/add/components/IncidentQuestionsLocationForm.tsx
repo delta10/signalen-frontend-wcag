@@ -107,7 +107,9 @@ export const IncidentQuestionsLocationForm = () => {
 
       return {
         id: question.key,
-        label: question.meta.label,
+        label: question.meta.shortLabel
+          ? question.meta.shortLabel
+          : question.meta.label,
         category_url: `/signals/v1/public/terms/categories/${formStoreState.sub_category}/sub_categories/${formStoreState.main_category}`,
         answer,
       }
