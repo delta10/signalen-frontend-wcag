@@ -335,7 +335,7 @@ const MapDialog = ({
                   <Alert type="error">{t('zoom_for_object')}</Alert>
                 )}
               {field && dialogMap && config && (
-                <ul className="flex-1 overflow-scroll">
+                <ul className="flex-1 overflow-y-auto">
                   {formState.selectedFeatures.map((feature: any) => (
                     <FeatureListItem
                       feature={feature}
