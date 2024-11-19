@@ -46,9 +46,6 @@ export const FeatureListItem = ({
     const newSelectedFeatureArray = Array.from(
       formState.selectedFeatures ? formState.selectedFeatures : []
     )
-    const index = newSelectedFeatureArray.findIndex(
-      (feature) => feature.id === featureId
-    )
 
     if (checked) {
       if (newSelectedFeatureArray.length >= maxNumberOfAssets) {
@@ -73,6 +70,10 @@ export const FeatureListItem = ({
         })
       }
     } else {
+      const index = newSelectedFeatureArray.findIndex(
+        (feature) => feature.id === featureId
+      )
+
       newSelectedFeatureArray.splice(index, 1) // Remove the feature at the found index
     }
 
