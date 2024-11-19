@@ -287,7 +287,7 @@ const MapDialog = ({
               </ButtonGroup>
             </form>
           </AlertDialog>
-          <div className="col-span-1 p-4 flex flex-col max-h-screen justify-between gap-4">
+          <div className="col-span-1 p-4 flex flex-col max-h-screen gap-4">
             <div className="flex flex-col overflow-hidden gap-4">
               <Heading level={1}>
                 {field?.meta.language.title
@@ -417,15 +417,22 @@ const MapDialog = ({
                   {t('current_location')}
                 </Button>
               </div>
+              <div className="map-close-button">
+                <Dialog.Close asChild>
+                  <Button className="map-button">
+                    <IconPlus className="transform rotate-45" />
+                  </Button>
+                </Dialog.Close>
+              </div>
               <ButtonGroup direction="column" className="map-zoom-button-group">
                 <Button
-                  className="map-zoom-button"
+                  className="map-button"
                   onClick={() => dialogMap?.flyTo({ zoom: viewState.zoom + 1 })}
                 >
                   <IconPlus />
                 </Button>
                 <Button
-                  className="map-zoom-button"
+                  className="map-button"
                   onClick={() => dialogMap?.flyTo({ zoom: viewState.zoom - 1 })}
                 >
                   <IconMinus />
