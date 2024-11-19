@@ -1,3 +1,5 @@
+import { Feature } from 'geojson'
+
 type FormStoreState = {
   description: string
   main_category: string
@@ -5,6 +7,7 @@ type FormStoreState = {
   coordinates: number[]
   email?: string | null
   phone?: string | null
+  selectedFeatures: Feature[]
   sharing_allowed?: boolean
   extra_properties: Array<{
     answer:

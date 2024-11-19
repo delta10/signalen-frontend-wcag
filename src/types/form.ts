@@ -19,6 +19,15 @@ export interface PublicQuestion
   field_type: FieldTypes
 }
 
+export type FeatureType = {
+  icon: {
+    iconUrl: string
+  }
+  label: string
+  idField: string
+  description: string
+}
+
 export enum FormStep {
   STEP_1_DESCRIPTION = 1,
   STEP_2_ADD = 2,

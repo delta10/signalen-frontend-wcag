@@ -9,6 +9,7 @@ import { CheckboxInput } from '@/app/[locale]/incident/add/components/questions/
 import { TextAreaInput } from '@/app/[locale]/incident/add/components/questions/TextAreaInput'
 import { LocationSelect } from '@/app/[locale]/incident/add/components/questions/LocationSelect'
 import { evaluateConditions } from '@/lib/utils/check-visibility'
+import { AssetSelect } from '@/app/[locale]/incident/add/components/questions/AssetSelect'
 
 export const RenderSingleField = ({ field }: { field: PublicQuestion }) => {
   const [shouldRender, setShouldRender] = useState<boolean>(false)
@@ -34,8 +35,7 @@ export const RenderSingleField = ({ field }: { field: PublicQuestion }) => {
       <TextAreaInput field={field} />
     ),
     [FieldTypes.ASSET_SELECT]: (field: PublicQuestion) => (
-      // TODO: Implement Asset Select
-      <></>
+      <AssetSelect field={field} />
     ),
     [FieldTypes.LOCATION_SELECT]: (field: PublicQuestion) => (
       <LocationSelect field={field} />
