@@ -2,6 +2,10 @@ import { axiosInstance } from '@/services/client/api-client'
 import { AxiosResponse } from 'axios'
 import { FeatureCollection } from 'geojson'
 
+// Fetches GeoJSON feature collection from a specified URL
+// @param {string} url - Base URL for the GeoJSON endpoint
+// @returns {Promise<FeatureCollection>} - Promise resolving to a GeoJSON feature collection
+// @throws {Error} - Throws an error if the request fails
 export const getGeoJsonFeatures = async (
   url: string
 ): Promise<FeatureCollection> => {
@@ -12,6 +16,6 @@ export const getGeoJsonFeatures = async (
 
     return response.data
   } catch (error) {
-    throw new Error('Could not fetch suggested addresses. Please try again.')
+    throw new Error('Could not fetch suggested features. Please try again.')
   }
 }

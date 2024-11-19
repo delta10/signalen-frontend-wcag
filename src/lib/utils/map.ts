@@ -1,6 +1,9 @@
 import { FeatureType } from '@/types/form'
 import { GeoJsonProperties } from 'geojson'
 
+// Validates if the argument is a coordinate pair [longitude, latitude]
+// @param {unknown} arg - Input to validate
+// @returns {arg is [number, number]} - Type predicate for coordinate tuple
 export const isCoordinates = (arg: unknown): arg is [number, number] => {
   return (
     Array.isArray(arg) &&
@@ -10,6 +13,11 @@ export const isCoordinates = (arg: unknown): arg is [number, number] => {
   )
 }
 
+// Checks if coordinates are within specified geographical bounds
+// @param {number} lat - Latitude to check
+// @param {number} lng - Longitude to check
+// @param {[[number, number], [number, number]]} maxBounds - Geographical boundary coordinates
+// @returns {boolean} - Whether coordinates are inside bounds
 export const isCoordinateInsideMaxBound = (
   lat: number,
   lng: number,
@@ -21,9 +29,10 @@ export const isCoordinateInsideMaxBound = (
   return lat >= minLat && lat <= maxLat && lng >= minLng && lng <= maxLng
 }
 
-// This function takes a GeoJsonProperties object and a featureType object (which is a field.meta AssetSelect question in Signalen) and returns either null or a formatted string.
-// The purpose is to match a feature with its corresponding featureType, as an AssetSelect question can have multiple featureTypes.
-// This ensures that the correct icon, title, and other details are displayed.
+// Matches a GeoJSON feature with its corresponding feature type
+// @param {FeatureType[]} featureType - Array of possible feature types
+// @param {GeoJsonProperties} properties - Properties of the GeoJSON feature
+// @returns {FeatureType | null} - Matching feature type or null
 export const getFeatureType = (
   featureType: FeatureType[],
   properties: GeoJsonProperties
@@ -39,10 +48,10 @@ export const getFeatureType = (
   return null
 }
 
-// This function takes in a GeoJsonProperties object and a featureType object (which is a field.meta AssetSelect question in Signalen) and returns either null or a formatted string.
-// The featureType object usually contains a property called description, which might look like "Mastverlichting - {{ nummer }}", for example.
-// In the properties field of the GeoJsonProperties object, there is then a corresponding property, such as "Nummer", with a value like "308".
-// If these conditions are met, the function will return the string "Mastverlichting - 308".
+// Generates a human-readable description for a geographic feature
+// @param {FeatureType | null} featureType - Feature type definition
+// @param {GeoJsonProperties} properties - Feature properties
+// @returns {string | null} - Formatted feature description
 export const getFeatureDescription = (
   featureType: FeatureType | null,
   properties: GeoJsonProperties
@@ -67,7 +76,10 @@ export const getFeatureDescription = (
   return null
 }
 
-// This function returns the feature id of a feature
+// Extracts the unique identifier for a geographic feature
+// @param {FeatureType | null} featureType - Feature type definition
+// @param {GeoJsonProperties} properties - Feature properties
+// @returns {number | undefined} - Feature ID or undefined
 export const getFeatureId = (
   featureType: FeatureType | null,
   properties: GeoJsonProperties
@@ -85,24 +97,30 @@ export const getFeatureId = (
   return undefined
 }
 
-// This function formats a given "PDOK weergavenaam" into a object with seperate postal code, huisnummer, openbare_ruimte (street name) and woonplaats
-export const formatAddressToSignalenInput = (input: string) => {
+// Parses a PDOK address format into separate components
+// @param {string} input - Full address string
+// @returns {Object} - Parsed address components
+export const formatAddressToSignalenInput = (
+  input: string
+): {
+  huisnummer?: string | null
+  openbare_ruimte?: string | null
+  postcode?: string | null
+  woonplaats?: string | null
+} => {
   if (input === '') {
     return {}
   }
 
-  // Split the main components by ","
   const [streetAndNumber, postcodeAndCity] = input
     .split(',')
     .map((part) => part.trim())
 
-  // Extract street and house number
-  const streetMatch = streetAndNumber.match(/(.+)\s(\d+)$/) // Matches "N.C.B.-laan" and "17"
+  const streetMatch = streetAndNumber.match(/(.+)\s(\d+)$/)
   const openbare_ruimte = streetMatch ? streetMatch[1] : null
   const huisnummer = streetMatch ? streetMatch[2] : null
 
-  // Extract postal code and city
-  const postcodeMatch = postcodeAndCity.match(/^([0-9A-Z]+)\s(.+)$/) // Matches "5462GA" and "Veghel"
+  const postcodeMatch = postcodeAndCity.match(/^([0-9A-Z]+)\s(.+)$/)
   const postcode = postcodeMatch ? postcodeMatch[1] : null
   const woonplaats = postcodeMatch ? postcodeMatch[2] : null
 
