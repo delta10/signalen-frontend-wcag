@@ -14,6 +14,7 @@ import PreviewFile from '@/components/ui/upload/PreviewFile'
 import { SubmitAlert } from '@/app/[locale]/incident/summary/components/SubmitAlert'
 import { NextLinkWrapper } from '@/components/ui/NextLinkWrapper'
 import { FormStep } from '@/types/form'
+import { LocationMap } from '@/components/ui/LocationMap'
 
 const IncidentSummaryForm = () => {
   const t = useTranslations('describe-summary')
@@ -123,6 +124,16 @@ const IncidentSummaryForm = () => {
             {t('steps.step_two.edit')}
           </NextLinkWrapper>
         </div>
+
+        <IncidentSummaryFormItem
+          title={t('steps.step_two.input_heading')}
+          value={formState.address}
+        >
+          <div style={{ minHeight: 200, height: 200 }}>
+            <LocationMap />
+          </div>
+        </IncidentSummaryFormItem>
+
         {/* TODO: AssetSelect en LocationSelect hier tonen, indien een / beide zijn ingevuld */}
         {formState.extra_properties.map((answer) => {
           return (
@@ -200,17 +211,14 @@ export const IncidentSummaryFormItem = ({
   children,
 }: {
   title: string
-  value?: string
+  value: string | null | undefined
   children?: React.ReactElement
 }) => {
   return (
     <div className="flex flex-col gap-1">
-      {value !== '' && <Heading level={3}>{title}</Heading>}
-      {value !== '' ? (
-        <Paragraph>{value}</Paragraph>
-      ) : (
-        <div className="mt-2">{children}</div>
-      )}
+      {title !== '' && <Heading level={3}>{title}</Heading>}
+      {children && <div className="mt-2">{children}</div>}
+      {value !== '' && <Paragraph>{value}</Paragraph>}
     </div>
   )
 }

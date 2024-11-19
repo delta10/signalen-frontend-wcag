@@ -14,6 +14,7 @@ const initialFormState: FormStoreState = {
   extra_properties: [],
   attachments: [],
   isBlocking: false,
+  address: null,
 }
 
 const useFormStore = create<FormStore>()(

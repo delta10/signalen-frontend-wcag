@@ -20,6 +20,7 @@ type FormStoreState = {
   }>
   attachments: File[]
   isBlocking: boolean
+  address: string | null
 }
 
 type FormStore = {
