@@ -56,9 +56,14 @@ export const FeatureListItem = ({
 
       newSelectedFeatureArray.push(feature)
 
-      if (map && feature && feature.properties) {
+      if (map && feature && feature.geometry) {
         map.flyTo({
-          center: [feature.properties.longitude, feature.properties.latitude],
+          center: [
+            // @ts-ignore
+            feature.geometry.coordinates[0],
+            // @ts-ignore
+            feature.geometry.coordinates[1],
+          ],
           speed: 0.5,
           zoom: 18,
         })

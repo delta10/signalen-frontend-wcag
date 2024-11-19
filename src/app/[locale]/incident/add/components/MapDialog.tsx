@@ -372,13 +372,14 @@ const MapDialog = ({
               <Dialog.Close asChild onClick={() => closeMapDialog()}>
                 <Button appearance="primary-action-button">
                   {isAssetSelect
-                    ? field?.meta.language.submitPlural &&
-                      formState.selectedFeatures.length > 1
-                      ? field.meta.language.submitPlural
-                      : field?.meta.language.submit &&
-                          formState.selectedFeatures.length === 1
-                        ? field.meta.language.submit
-                        : t('go_further_without_selected_object')
+                    ? formState.selectedFeatures.length === 0
+                      ? t('go_further_without_selected_object')
+                      : formState.selectedFeatures.length === 1
+                        ? field?.meta.language.submit ||
+                          t('go_further_without_selected_object')
+                        : field?.meta.language.submitPlural ||
+                          field?.meta.language.submit ||
+                          t('go_further_without_selected_object')
                     : t('choose_location')}
                 </Button>
               </Dialog.Close>

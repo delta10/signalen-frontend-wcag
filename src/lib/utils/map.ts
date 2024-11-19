@@ -58,10 +58,10 @@ export const getFeatureDescription = (
 
       return string
         ? featureType.description.replace(propertyToReplace, string)
-        : null
+        : `${featureType.description} - ${getFeatureId(featureType, properties)}`
     }
 
-    return null
+    return `${featureType.description} - ${getFeatureId(featureType, properties)}`
   }
 
   return null

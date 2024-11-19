@@ -75,6 +75,7 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
         zoom > config.base.map.minimal_zoom
       ) {
         const endpoint = field.meta.endpoint
+          .replaceAll('{srsName}', 'EPSG:4326')
           .replace('{west}', bounds.getWest())
           .replace('{north}', bounds.getNorth())
           .replace('{south}', bounds.getSouth())
