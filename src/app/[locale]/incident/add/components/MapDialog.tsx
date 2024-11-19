@@ -18,8 +18,6 @@ import {
   Paragraph,
   Alert,
   Button,
-  ListboxOptionProps,
-  // SelectCombobox,
 } from '@/components'
 import { useConfig } from '@/hooks/useConfig'
 import {
@@ -36,11 +34,7 @@ import {
   getFeatureType,
   isCoordinateInsideMaxBound,
 } from '@/lib/utils/map'
-import {
-  getNearestAddressByCoordinate,
-  getSuggestedAddresses,
-} from '@/services/location/address'
-import { getServerConfig } from '@/services/config/config'
+import { getNearestAddressByCoordinate } from '@/services/location/address'
 import { Feature, FeatureCollection } from 'geojson'
 import { PublicQuestion } from '@/types/form'
 import { FeatureListItem } from '@/app/[locale]/incident/add/components/FeatureListItem'
@@ -64,7 +58,6 @@ const MapDialog = ({
   const t = useTranslations('describe-add.map')
   const [marker, setMarker] = useState<[number, number] | []>([])
   const [error, setError] = useState<string | null>(null)
-  const [addressOptions, setAddressOptions] = useState<ListboxOptionProps[]>([])
   const { formState, updateForm } = useFormStore()
   const { dialogMap } = useMap()
   const { loading, config } = useConfig()
@@ -301,35 +294,6 @@ const MapDialog = ({
                   ? field.meta.language.title
                   : t('map_heading')}
               </Heading>
-              {/* TODO: add address select */}
-              {/*<FormField*/}
-              {/*  label={t('address_search_label')}*/}
-              {/*  input={*/}
-              {/*    <SelectCombobox*/}
-              {/*      name="address"*/}
-              {/*      options={addressOptions}*/}
-              {/*      type="search"*/}
-              {/*      onChange={async (evt: any) => {*/}
-              {/*        const municipality = (await getServerConfig())['base'][*/}
-              {/*          'municipality'*/}
-              {/*        ]*/}
-              {/*        const apiCall = await getSuggestedAddresses(*/}
-              {/*          evt.target.value,*/}
-              {/*          municipality*/}
-              {/*        )*/}
-
-              {/*        // TODO: Prevent out-of-order responses showing up*/}
-              {/*        setAddressOptions([])*/}
-              {/*        setAddressOptions(*/}
-              {/*          apiCall.response.docs.map((item) => ({*/}
-              {/*            children: item.weergavenaam,*/}
-              {/*            value: item.weergavenaam,*/}
-              {/*          }))*/}
-              {/*        )*/}
-              {/*      }}*/}
-              {/*    />*/}
-              {/*  }*/}
-              {/*></FormField>*/}
               {isAssetSelect &&
                 dialogMap &&
                 config &&
