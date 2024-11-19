@@ -35,6 +35,6 @@ export const getNearestAddressByCoordinate = async (
       (docA, docB) => docA.afstand - docB.afstand
     )[0]
   } catch (error) {
-    throw new Error('Could not fetch address by coordinate. Please try again.')
+    return null
   }
 }

@@ -241,7 +241,9 @@ const MapDialog = ({
 
           return {
             address: {
-              ...formatAddressToSignalenInput(address.weergavenaam),
+              ...formatAddressToSignalenInput(
+                address ? address.weergavenaam : ''
+              ),
             },
             id: feature.id?.toString(),
             coordinates: {
