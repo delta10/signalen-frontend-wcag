@@ -14,6 +14,7 @@ const initialFormState: FormStoreState = {
   extra_properties: [],
   attachments: [],
   isBlocking: false,
+  selectedFeatures: [],
   sig_number: '',
   address: null,
 }
