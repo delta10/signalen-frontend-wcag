@@ -5,6 +5,7 @@
     "style": {
       "primaryColor": "#24578f"
     },
+    "multilanguage": true,
     "map": {
       "find_address_in_distance": 30,
       "minimal_zoom": 17,

@@ -5,6 +5,7 @@ export type AppConfig = {
     style: {
       primaryColor: string
     }
+    multilanguage: boolean
     map: {
       find_address_in_distance: number
       minimal_zoom: number

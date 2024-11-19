@@ -1,31 +1,41 @@
-'use client'
-
-import { useTransition } from 'react'
-import { usePathname, useRouter } from '@/routing/navigation'
-import { Select } from '@/components'
-import { getAllAvailableLocales } from '@/lib/utils/locale'
-import { useLocale } from 'next-intl'
+import { ButtonGroup, LinkButton } from '@/components'
 
 const LanguageSwitch = () => {
-  const locales = getAllAvailableLocales()
-  const locale = useLocale()
-  const router = useRouter()
-  const pathname = usePathname()
-  const [isPending, startTransition] = useTransition()
-
-  const onSelectChange = (locale: string) => {
-    startTransition(() => {
-      router.replace(pathname, { locale: locale })
-    })
+  const languageSwitchItems = {
+    items: [
+      {
+        label: 'This page in English',
+        lang: 'en',
+        current: true,
+        textContent: 'EN',
+      },
+      {
+        label: 'Deze pagina in Nederlands',
+        lang: 'nl',
+        current: false,
+        textContent: 'NL',
+      },
+    ],
   }
 
   return (
-    <Select
-      value={locale}
-      values={getAllAvailableLocales()}
-      onSelectChange={onSelectChange}
-      disabled={isPending}
-    />
+    <div className="pr-4">
+      <ButtonGroup>
+        {languageSwitchItems.items.map(
+          ({ current, label, lang, textContent }) => (
+            <LinkButton
+              inline
+              pressed={current}
+              lang={lang}
+              aria-label={label}
+              key={lang}
+            >
+              {textContent}
+            </LinkButton>
+          )
+        )}
+      </ButtonGroup>
+    </div>
   )
 }
 
