@@ -30,7 +30,11 @@ export const FeatureListItem = ({
 
   const featureId = feature.id
   const featureDescription = feature.description
-  const maxNumberOfAssets = field ? field.meta.maxNumberOfAssets : 1
+  const maxNumberOfAssets = field
+    ? field.meta.maxNumberOfAssets
+      ? field.meta.maxNumberOfAssets
+      : 1
+    : 1
 
   // Get feature type of asset
   const featureType = useMemo(() => {
