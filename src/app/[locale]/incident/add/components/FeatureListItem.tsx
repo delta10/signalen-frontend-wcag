@@ -42,7 +42,7 @@ export const FeatureListItem = ({
   }, [field.meta.featureTypes, feature.properties])
 
   // Add or remove feature to / from the newSelectedFeature state declared in DialogMap
-  const addOrRemoveFeature = (value: boolean) => {
+  const addOrRemoveFeature = (checked: boolean) => {
     const newSelectedFeatureArray = Array.from(
       formState.selectedFeatures ? formState.selectedFeatures : []
     )
@@ -50,7 +50,7 @@ export const FeatureListItem = ({
       (feature) => feature.id === featureId
     )
 
-    if (value) {
+    if (checked) {
       if (newSelectedFeatureArray.length >= maxNumberOfAssets) {
         setError(t('max_number_of_assets_error', { max: maxNumberOfAssets }))
         dialogRef.current?.showModal()
