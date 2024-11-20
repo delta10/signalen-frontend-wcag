@@ -2,39 +2,5 @@
   "general": {
     "default_locale": "en",
     "available_locales": ["nl", "en"]
-  },
-  "theme": {
-    "primary_colour": "#5315F6",
-    "secondary_colour": "#5315F6",
-    "outline_colour": "#0A2750",
-    "error_colour": "#D2262E",
-    "border_colour": "#7A8AA0",
-    "active_colour": "#290B7A",
-    "hover_colour": "#F9F9FA",
-    "focus_colour": "#000000",
-    "focus_visible_colour": "#5315F6",
-    "font": "Open Sans",
-    "link": {
-      "colour": "#5315F6",
-      "active_colour": "#290B7A",
-      "hover_colour": "#3F10BC",
-      "focus_colour": "#EBE3FF",
-      "focus_visible_colour": "#5315F6"
-    },
-    "button": {
-      "primary": "#5315F6",
-      "secondary": "#5315F6",
-      "outline": "#0A2750",
-      "active": "#290B7A",
-      "hover": "#3F10BC",
-      "focus": "#EBE3FF",
-      "focus_visible": "#5315F6",
-      "action": "#F2F4F6"
-    },
-    "light_text": "#767676"
-  },
-  "logo": {
-    "link": "https://huisstijl.utrecht.nl/fileadmin/uploads/documenten/zz-huisstijl/logo/logo-gemeente-utrecht-nederlands-klein-300.png",
-    "max_height": 150
   }
 }
