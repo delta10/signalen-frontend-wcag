@@ -40,7 +40,12 @@
       "current_location": "Mijn locatie",
       "outside_max_bound_error": "Uw locatie valt buiten de kaart en is daardoor niet te zien.",
       "close_alert_notification": "Sluit melding",
-      "address_search_label": "Zoek op adres"
+      "address_search_label": "Zoek op adres",
+      "max_number_of_assets_error": "U kunt maximaal {max, plural, one {# object} other {# objecten}} selecteren.",
+      "go_further_without_selected_object": "Ga verder zonder object",
+      "zoom_for_object": "Zoom in om de objecten te zien",
+      "map_zoom-in_button_label": "Zoom in op de kaart",
+      "map_zoom-out_button_label": "Zoom uit op de kaart"
     }
   },
   "describe-contact": {

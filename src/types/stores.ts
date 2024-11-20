@@ -1,3 +1,6 @@
+import { Feature } from 'geojson'
+import { Address } from '@/types/form'
+
 type FormStoreState = {
   description: string
   main_category: string
@@ -5,6 +8,7 @@ type FormStoreState = {
   coordinates: number[]
   email?: string | null
   phone?: string | null
+  selectedFeatures: Feature[]
   sharing_allowed?: boolean
   extra_properties: Array<{
     answer:
@@ -21,6 +25,7 @@ type FormStoreState = {
   attachments: File[]
   isBlocking: boolean
   sig_number: string
+  address: Address | null
 }
 
 type FormStore = {

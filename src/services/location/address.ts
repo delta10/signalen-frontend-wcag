@@ -2,6 +2,11 @@ import { axiosInstance } from '@/services/client/api-client'
 import { AxiosResponse } from 'axios'
 import { AddressCoordinateResponse, AddressSuggestResponse } from '@/types/pdok'
 
+// Fetches suggested addresses from PDOK API based on search query and municipality
+// @param {string} searchQuery - Text to search for addresses
+// @param {string} municipality - Name of the municipality to filter results
+// @returns {Promise<AddressSuggestResponse>} - Promise resolving to suggested addresses
+// @throws {Error} - Throws an error if the request fails
 export const getSuggestedAddresses = async (
   searchQuery: string,
   municipality: string
@@ -19,6 +24,12 @@ export const getSuggestedAddresses = async (
   }
 }
 
+// Finds the nearest address to given coordinates within a specified distance
+// @param {number} lat - Latitude of the reference point
+// @param {number} lng - Longitude of the reference point
+// @param {number} distance - Search radius in meters
+// @returns {Promise<AddressCoordinateResponse['response']['docs'][0] | null>} - Nearest address or null if not found
+// @throws {Error} - Returns null if the request fails
 export const getNearestAddressByCoordinate = async (
   lat: number,
   lng: number,
@@ -28,13 +39,13 @@ export const getNearestAddressByCoordinate = async (
 
   try {
     const response: AxiosResponse<AddressCoordinateResponse> = await axios.get(
-      `/search/v3_1/reverse?lat=${lat}&lon=${lng}&distance=${distance}`
+      `/search/v3_1/reverse?lat=${lat}&lon=${lng}&distance=${distance}&fl=id,weergavenaam,straatnaam,huis_nlt,postcode,woonplaatsnaam,centroide_ll,openbareruimte_id`
     )
 
     return response.data.response.docs.sort(
       (docA, docB) => docA.afstand - docB.afstand
     )[0]
   } catch (error) {
-    throw new Error('Could not fetch address by coordinate. Please try again.')
+    return null
   }
 }

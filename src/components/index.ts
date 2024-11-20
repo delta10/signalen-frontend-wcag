@@ -4,6 +4,8 @@ import { Container } from '@/components/layout'
 
 export { Select, Container }
 
+export { IconButton } from '@/components/ui/IconButton'
+
 export {
   Alert,
   Fieldset,
@@ -33,3 +35,4 @@ export {
 export { RadioGroup } from '@utrecht/radio-group-react'
 export { CheckboxGroup } from '@utrecht/checkbox-group-react'
 // export { SelectCombobox } from '@/components/ui/SelectCombobox'
+export { MapMarker } from './ui/MapMarker'

@@ -100,8 +100,14 @@ export const IncidentQuestionsLocationForm = () => {
         ? id.filter((value: any) => value !== false && value !== 'empty')
         : []
 
-      const answer =
-        checkboxAnswers.length > 0
+      const isFeature = checkboxAnswers.some(
+        (answer: any) => answer.type === 'Feature'
+      )
+
+      // If checkboxAnswers has a length, map over them to return a list of answer objects. If isFeature return list of already made answers
+      const answer = isFeature
+        ? checkboxAnswers
+        : checkboxAnswers.length > 0
           ? checkboxAnswers.map((answerId) => ({
               id: answerId,
               label: question.meta.values[answerId],
@@ -117,7 +123,9 @@ export const IncidentQuestionsLocationForm = () => {
 
       return {
         id: question.key,
-        label: question.meta.label,
+        label: question.meta.shortLabel
+          ? question.meta.shortLabel
+          : question.meta.label,
         category_url: `/signals/v1/public/terms/categories/${formStoreState.sub_category}/sub_categories/${formStoreState.main_category}`,
         answer,
       }

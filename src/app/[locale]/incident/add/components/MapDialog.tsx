@@ -2,7 +2,9 @@ import * as Dialog from '@radix-ui/react-dialog'
 import React, { useEffect, useRef, useState } from 'react'
 import Map, {
   MapLayerMouseEvent,
+  MapRef,
   Marker,
+  MarkerEvent,
   useMap,
   ViewState,
 } from 'react-map-gl/maplibre'
@@ -12,40 +14,54 @@ import { useFormStore } from '@/store/form_store'
 import {
   Heading,
   Icon,
+  IconButton,
   AlertDialog,
   Paragraph,
+  Alert,
   Button,
-  FormField,
-  ListboxOptionProps,
-  // SelectCombobox,
+  MapMarker,
 } from '@/components'
 import { useConfig } from '@/hooks/useConfig'
-import {
-  IconCurrentLocation,
-  IconMapPinFilled,
-  IconMinus,
-  IconPlus,
-} from '@tabler/icons-react'
+import { IconCurrentLocation, IconMinus, IconPlus } from '@tabler/icons-react'
 import { ButtonGroup } from '@/components'
-import { isCoordinateInsideMaxBound } from '@/lib/utils/map'
-import { getSuggestedAddresses } from '@/services/location/address'
-import { getServerConfig } from '@/services/config/config'
+import {
+  formatAddressToSignalenInput,
+  getFeatureDescription,
+  getFeatureId,
+  getFeatureType,
+  isCoordinateInsideMaxBound,
+} from '@/lib/utils/map'
+import { getNearestAddressByCoordinate } from '@/services/location/address'
+import { Feature, FeatureCollection } from 'geojson'
+import { PublicQuestion } from '@/types/form'
+import { FeatureListItem } from '@/app/[locale]/incident/add/components/FeatureListItem'
+import { useFormContext } from 'react-hook-form'
 
 type MapDialogProps = {
   trigger: React.ReactElement
+  onMapReady?: (map: MapRef) => void
+  features?: FeatureCollection | null
+  field?: PublicQuestion
+  isAssetSelect?: boolean
 } & React.HTMLAttributes<HTMLDivElement>
 
-const MapDialog = ({ trigger }: MapDialogProps) => {
+const MapDialog = ({
+  trigger,
+  onMapReady,
+  features,
+  field,
+  isAssetSelect = false,
+}: MapDialogProps) => {
   const t = useTranslations('describe-add.map')
   const [marker, setMarker] = useState<[number, number] | []>([])
-  const [outsideMaxBoundError, setOutsideMaxBoundError] = useState<
-    string | null
-  >(null)
-  const [addressOptions, setAddressOptions] = useState<ListboxOptionProps[]>([])
+  const [error, setError] = useState<string | null>(null)
   const { formState, updateForm } = useFormStore()
   const { dialogMap } = useMap()
   const { loading, config } = useConfig()
   const dialogRef = useRef<HTMLDialogElement>(null)
+  const [isMapSelected, setIsMapSelected] = useState<boolean>(false)
+  const [mapFeatures, setMapFeatures] = useState<FeatureCollection | null>()
+  const { setValue } = useFormContext()
 
   const [viewState, setViewState] = useState<ViewState>({
     latitude: 0,
@@ -96,9 +112,48 @@ const MapDialog = ({ trigger }: MapDialogProps) => {
     setMarker([lat, lng])
   }
 
-  // Handle click on map
+  // Handle click on map, setIsMapSelected to true
+  // TODO: Reset selectedFeatures if click was right on map? (open for discussion)
   const handleMapClick = (event: MapLayerMouseEvent) => {
     updatePosition(event.lngLat.lat, event.lngLat.lng)
+
+    setIsMapSelected(true)
+  }
+
+  // Handle click on feature marker, set selectedFeatures and show error if maxNumberOfAssets is reached
+  const handleFeatureMarkerClick = (event: MarkerEvent, feature: Feature) => {
+    // @ts-ignore
+    const featureId = feature.id as number
+    const maxNumberOfAssets = field?.meta.maxNumberOfAssets || 1
+
+    if (dialogMap && featureId) {
+      const newSelectedFeatureArray = Array.from(
+        formState.selectedFeatures ? formState.selectedFeatures : []
+      )
+
+      const index = newSelectedFeatureArray.findIndex(
+        (feature) => feature.id === featureId
+      )
+
+      if (index !== -1) {
+        newSelectedFeatureArray.splice(index, 1) // Remove the feature at the found index
+      } else {
+        if (newSelectedFeatureArray.length >= maxNumberOfAssets) {
+          setError(t('max_number_of_assets_error', { max: maxNumberOfAssets }))
+          dialogRef.current?.showModal()
+
+          return
+        }
+
+        newSelectedFeatureArray.push(feature)
+      }
+
+      updateForm({
+        ...formState,
+        selectedFeatures: newSelectedFeatureArray,
+      })
+      setTimeout(() => setIsMapSelected(false), 0)
+    }
   }
 
   // set current location of user
@@ -118,18 +173,86 @@ const MapDialog = ({ trigger }: MapDialogProps) => {
 
         if (isInsideMaxBound) {
           updatePosition(position.coords.latitude, position.coords.longitude)
-          setOutsideMaxBoundError(null)
+          setError(null)
           return
         }
 
-        setOutsideMaxBoundError(t('outside_max_bound_error'))
+        setError(t('outside_max_bound_error'))
         dialogRef.current?.showModal()
       },
       (locationError) => {
-        setOutsideMaxBoundError(locationError.message)
+        setError(locationError.message)
         dialogRef.current?.showModal()
       }
     )
+  }
+
+  // Set dialog map in parent component
+  useEffect(() => {
+    if (dialogMap && onMapReady) {
+      onMapReady(dialogMap)
+    }
+  }, [dialogMap, onMapReady])
+
+  // Set new map features with ID
+  useEffect(() => {
+    if (features && field) {
+      const featuresWithId = features.features.map((feature) => {
+        const featureType = getFeatureType(
+          field.meta.featureTypes,
+          feature.properties
+        )
+
+        return {
+          ...feature,
+          // @ts-ignore
+          id: getFeatureId(featureType, feature.properties),
+          description: getFeatureDescription(featureType, feature.properties),
+        }
+      })
+
+      setMapFeatures({ ...features, features: featuresWithId })
+    }
+  }, [features])
+
+  const closeMapDialog = async () => {
+    updateForm({ ...formState, coordinates: marker })
+
+    if (isAssetSelect && field) {
+      const formValues = await Promise.all(
+        formState.selectedFeatures.map(async (feature) => {
+          const address = await getNearestAddressByCoordinate(
+            // @ts-ignore
+            feature.geometry.coordinates[1],
+            // @ts-ignore
+            feature.geometry.coordinates[0],
+            config ? config.base.map.find_address_in_distance : 30
+          )
+
+          return {
+            address: {
+              ...formatAddressToSignalenInput(
+                address ? address.weergavenaam : ''
+              ),
+            },
+            id: feature.id?.toString(),
+            coordinates: {
+              // @ts-ignore
+              lat: feature.geometry.coordinates[1],
+              // @ts-ignore
+              lng: feature.geometry.coordinates[0],
+            },
+            // @ts-ignore
+            description: feature.description,
+            // @ts-ignore
+            label: feature.description,
+            type: 'Feature',
+          }
+        })
+      )
+
+      setValue(field.key, formValues)
+    }
   }
 
   return (
@@ -140,12 +263,16 @@ const MapDialog = ({ trigger }: MapDialogProps) => {
         <Dialog.Content className="fixed inset-0 bg-white z-[1000] grid grid-cols-1 md:grid-cols-3 utrecht-theme">
           <VisuallyHidden.Root>
             {/* TODO: Overleggen welke titel hier het meest vriendelijk is voor de gebruiker, multi-language support integreren */}
-            <Dialog.Title>{t('dialog_title')}</Dialog.Title>
+            <Dialog.Title>
+              {field?.meta.language.title
+                ? field.meta.language.title
+                : t('dialog_title')}
+            </Dialog.Title>
             <Dialog.Description>{t('dialog_description')}</Dialog.Description>
           </VisuallyHidden.Root>
           <AlertDialog type="error" ref={dialogRef} style={{ marginTop: 128 }}>
             <form method="dialog" className="map-alert-dialog__content">
-              <Paragraph>{outsideMaxBoundError}</Paragraph>
+              <Paragraph>{error}</Paragraph>
               <ButtonGroup>
                 <Button
                   appearance="secondary-action-button"
@@ -157,47 +284,66 @@ const MapDialog = ({ trigger }: MapDialogProps) => {
               </ButtonGroup>
             </form>
           </AlertDialog>
-          <div className="col-span-1 p-4 flex flex-col justify-between gap-4">
-            <div>
-              <Heading level={1}>{t('map_heading')}</Heading>
-              {/*<FormField*/}
-              {/*  label={t('address_search_label')}*/}
-              {/*  input={*/}
-              {/*    <SelectCombobox*/}
-              {/*      name="address"*/}
-              {/*      options={addressOptions}*/}
-              {/*      type="search"*/}
-              {/*      onChange={async (evt: any) => {*/}
-              {/*        const municipality = (await getServerConfig())['base'][*/}
-              {/*          'municipality'*/}
-              {/*        ]*/}
-              {/*        const apiCall = await getSuggestedAddresses(*/}
-              {/*          evt.target.value,*/}
-              {/*          municipality*/}
-              {/*        )*/}
+          <div className="col-span-1 p-4 flex flex-col max-h-screen gap-4">
+            <div className="flex flex-col overflow-hidden gap-4">
+              <Heading level={1}>
+                {field?.meta.language.title
+                  ? field.meta.language.title
+                  : t('map_heading')}
+              </Heading>
+              {isAssetSelect &&
+                dialogMap &&
+                config &&
+                dialogMap.getZoom() < config.base.map.minimal_zoom && (
+                  <Alert type="error">{t('zoom_for_object')}</Alert>
+                )}
+              {field && dialogMap && config && (
+                <ul className="flex-1 overflow-y-auto">
+                  {formState.selectedFeatures.map((feature: any) => (
+                    <FeatureListItem
+                      feature={feature}
+                      configUrl={config?.base.assets_url}
+                      key={feature.id}
+                      field={field}
+                      map={dialogMap}
+                      setError={setError}
+                      dialogRef={dialogRef}
+                    />
+                  ))}
 
-              {/*        // TODO: Prevent out-of-order responses showing up*/}
-              {/*        setAddressOptions([])*/}
-              {/*        setAddressOptions(*/}
-              {/*          apiCall.response.docs.map((item) => ({*/}
-              {/*            children: item.weergavenaam,*/}
-              {/*            value: item.weergavenaam,*/}
-              {/*          }))*/}
-              {/*        )*/}
-              {/*      }}*/}
-              {/*    />*/}
-              {/*  }*/}
-              {/*></FormField>*/}
+                  {dialogMap.getZoom() > config.base.map.minimal_zoom &&
+                    mapFeatures?.features.map(
+                      (feature: any) =>
+                        !formState.selectedFeatures.some(
+                          (featureItem) => featureItem.id === feature.id
+                        ) && (
+                          <FeatureListItem
+                            configUrl={config?.base.assets_url}
+                            feature={feature}
+                            key={feature.id}
+                            field={field}
+                            map={dialogMap}
+                            setError={setError}
+                            dialogRef={dialogRef}
+                          />
+                        )
+                    )}
+                </ul>
+              )}
             </div>
             <div>
-              <Dialog.Close
-                asChild
-                onClick={() =>
-                  updateForm({ ...formState, coordinates: marker })
-                }
-              >
+              <Dialog.Close asChild onClick={() => closeMapDialog()}>
                 <Button appearance="primary-action-button">
-                  {t('choose_location')}
+                  {isAssetSelect
+                    ? formState.selectedFeatures.length === 0
+                      ? t('go_further_without_selected_object')
+                      : formState.selectedFeatures.length === 1
+                        ? field?.meta.language.submit ||
+                          t('go_further_without_selected_object')
+                        : field?.meta.language.submitPlural ||
+                          field?.meta.language.submit ||
+                          t('go_further_without_selected_object')
+                    : t('choose_location')}
                 </Button>
               </Dialog.Close>
             </div>
@@ -214,16 +360,48 @@ const MapDialog = ({ trigger }: MapDialogProps) => {
                 attributionControl={false}
                 maxBounds={config.base.map.maxBounds}
               >
-                {marker.length && (
+                {marker.length && isMapSelected && (
                   <Marker latitude={marker[0]} longitude={marker[1]}>
-                    <Icon className="map-marker-icon">
-                      <IconMapPinFilled
-                        className="-translate-y-1/2"
-                        color={config.base.style.primaryColor}
-                      />
-                    </Icon>
+                    <MapMarker />
                   </Marker>
                 )}
+                {onMapReady &&
+                  dialogMap &&
+                  dialogMap.getZoom() > config.base.map.minimal_zoom &&
+                  mapFeatures?.features.map((feature) => {
+                    const id = feature.id as number
+
+                    return (
+                      <Marker
+                        key={id}
+                        // @ts-ignore
+                        longitude={feature.geometry?.coordinates[0]}
+                        // @ts-ignore
+                        latitude={feature.geometry?.coordinates[1]}
+                        // @ts-ignore
+                        onClick={(e) => handleFeatureMarkerClick(e, feature)}
+                      >
+                        {!formState.selectedFeatures.some(
+                          (featureItem) => featureItem.id === feature.id
+                        ) ? (
+                          <Icon>
+                            <img
+                              src={field?.meta.featureTypes[0].icon.iconUrl}
+                            />
+                          </Icon>
+                        ) : (
+                          <Icon>
+                            <img
+                              src={
+                                config.base.assets_url +
+                                '/assets/images/feature-selected-marker.svg'
+                              }
+                            />
+                          </Icon>
+                        )}
+                      </Marker>
+                    )
+                  })}
               </Map>
               <div className="map-location-group">
                 <Button onClick={() => setCurrentLocation()}>
@@ -231,19 +409,28 @@ const MapDialog = ({ trigger }: MapDialogProps) => {
                   {t('current_location')}
                 </Button>
               </div>
+              <div className="map-close-button">
+                <Dialog.Close asChild>
+                  <Button className="map-button">
+                    <IconPlus className="transform rotate-45" />
+                  </Button>
+                </Dialog.Close>
+              </div>
               <ButtonGroup direction="column" className="map-zoom-button-group">
-                <Button
+                <IconButton
                   className="map-zoom-button"
                   onClick={() => dialogMap?.flyTo({ zoom: viewState.zoom + 1 })}
+                  label={t('map_zoom-in_button_label')}
                 >
                   <IconPlus />
-                </Button>
-                <Button
+                </IconButton>
+                <IconButton
                   className="map-zoom-button"
                   onClick={() => dialogMap?.flyTo({ zoom: viewState.zoom - 1 })}
+                  label={t('map_zoom-out_button_label')}
                 >
                   <IconMinus />
-                </Button>
+                </IconButton>
               </ButtonGroup>
             </div>
           )}
