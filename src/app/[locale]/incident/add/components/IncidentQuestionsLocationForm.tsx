@@ -21,8 +21,6 @@ export const IncidentQuestionsLocationForm = () => {
   >([])
   const router = useRouter()
   const methods = useForm({
-    // todo:  gaat al iets beter alleen mag de validatei gelijk uit wanneer er wel een goed adres is opgegeven
-    //        plus, wanneer er bij coordinaten geen adres is wat doen we dan? morgen bespreken?
     resolver: (values) => {
       const errors: Record<string, any> = {}
 
@@ -34,7 +32,7 @@ export const IncidentQuestionsLocationForm = () => {
       ) {
         errors.location = {
           type: 'manual',
-          message: 'Location is required',
+          message: t('location_required'),
         }
       }
 
@@ -68,6 +66,24 @@ export const IncidentQuestionsLocationForm = () => {
 
     appendAdditionalQuestions()
   }, [formStoreState.main_category, formStoreState.sub_category])
+
+  useEffect(() => {
+    // Only trigger if there's already a location error (meaning form was submitted)
+    if (methods.formState.errors.location) {
+      methods.trigger()
+    }
+  }, [formStoreState.coordinates, methods])
+
+  useEffect(() => {
+    if (formStoreState.isBlocking) {
+      methods.setError('submit', {
+        type: 'manual',
+        message: t('is_blocking'),
+      })
+    } else {
+      methods.clearErrors('submit')
+    }
+  }, [formStoreState.isBlocking, methods.setError, methods.clearErrors])
 
   const onSubmit = (data: any) => {
     const questionKeys = Object.keys(data)
@@ -127,11 +143,6 @@ export const IncidentQuestionsLocationForm = () => {
         {methods.formState.errors.submit && (
           <Alert type="error">
             {methods.formState.errors.submit.message?.toString()}
-          </Alert>
-        )}
-        {methods.formState.errors.location && (
-          <Alert type="error">
-            {methods.formState.errors.location.message?.toString()}
           </Alert>
         )}
         {additionalQuestions.length ? (
