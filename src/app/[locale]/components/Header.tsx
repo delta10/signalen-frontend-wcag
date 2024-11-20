@@ -28,21 +28,23 @@ const Header = ({ homepage, logo }: HeaderProps) => {
   return (
     <>
       <PageHeader>
-        {homepage ? (
-          <Link
-            boxContent
-            href={homepage.href}
-            aria-labelledby="logo-link-label"
-          >
-            <span id="logo-link-label" hidden>
-              {homepage.label}
-            </span>
-            {logoElement}
-          </Link>
-        ) : (
-          logoElement
-        )}
-        {config && config.base.multilanguage && <LanguageSwitch />}
+        <div className="flex flex-row items-center justify-between">
+          {homepage ? (
+            <Link
+              boxContent
+              href={homepage.href}
+              aria-labelledby="logo-link-label"
+            >
+              <span id="logo-link-label" hidden>
+                {homepage.label}
+              </span>
+              {logoElement}
+            </Link>
+          ) : (
+            logoElement
+          )}
+          {config && config.base.multilanguage && <LanguageSwitch />}
+        </div>
       </PageHeader>
     </>
   )
