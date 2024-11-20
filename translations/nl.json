@@ -28,10 +28,7 @@
     "heading": "Locatie en vragen",
     "form": {
       "add_map_heading": "Waar is het?",
-      "add_choose_location_button": "Kies locatie",
-      "errors": {
-        "location_required": "Dit is een verplicht veld"
-      }
+      "add_choose_location_button": "Kies locatie"
     },
     "map": {
       "map_heading": "Kies uw locatie",
@@ -86,7 +83,7 @@
       "step_three": {
         "title": "3. Contactgegevens",
         "edit": "Wijzig contactgegevens",
-        "no_contact_details": "U hebt geen contactgevens ingevuld. We kunnen u niet laten weten wat wij hebben gedaan met uw melding.",
+        "no_contact_details": "U hebt geen contactgegevens ingevuld. We kunnen u niet laten weten wat wij hebben gedaan met uw melding.",
         "input_telephone_heading": "Wat is uw telefoonnummer?",
         "input_mail_heading": "Wat is uw e-mailadres?",
         "input_sharing_heading": "Melding delen",

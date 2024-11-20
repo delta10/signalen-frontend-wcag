@@ -20,7 +20,28 @@ export const IncidentQuestionsLocationForm = () => {
     PublicQuestion[]
   >([])
   const router = useRouter()
-  const methods = useForm()
+  const methods = useForm({
+    resolver: (values) => {
+      const errors: Record<string, any> = {}
+
+      // Location validation
+      if (
+        !isCoordinates(formStoreState.coordinates) ||
+        (formStoreState.coordinates[0] === 0 &&
+          formStoreState.coordinates[1] === 0)
+      ) {
+        errors.location = {
+          type: 'manual',
+          message: t('location_required'),
+        }
+      }
+
+      return {
+        values,
+        errors,
+      }
+    },
+  })
   const t = useTranslations('general.errors')
   const pathname = usePathname()
   const step = getCurrentStep(pathname)
@@ -47,16 +68,11 @@ export const IncidentQuestionsLocationForm = () => {
   }, [formStoreState.main_category, formStoreState.sub_category])
 
   useEffect(() => {
-    if (
-      isCoordinates(formStoreState.coordinates) &&
-      formStoreState.coordinates[0] === 0 &&
-      formStoreState.coordinates[1] === 0
-    ) {
-      methods.setError('location', { message: t('location_required') })
-    } else {
-      methods.clearErrors('location')
+    // Only trigger if there's already a location error (meaning form was submitted)
+    if (methods.formState.errors.location) {
+      methods.trigger()
     }
-  }, [formStoreState.coordinates])
+  }, [formStoreState.coordinates, methods])
 
   useEffect(() => {
     if (formStoreState.isBlocking) {
@@ -140,7 +156,6 @@ export const IncidentQuestionsLocationForm = () => {
         {additionalQuestions.length ? (
           Object.keys(additionalQuestions).map((value, index, array) => {
             const question = additionalQuestions[index]
-
             const fieldName = question.key
 
             return (

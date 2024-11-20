@@ -28,10 +28,7 @@
     "heading": "Location and questions",
     "form": {
       "add_map_heading": "Where is it?",
-      "add_choose_location_button": "Choose location",
-      "errors": {
-        "location_required": "This is a required field"
-      }
+      "add_choose_location_button": "Choose location"
     },
     "map": {
       "map_heading": "Choose your location",
