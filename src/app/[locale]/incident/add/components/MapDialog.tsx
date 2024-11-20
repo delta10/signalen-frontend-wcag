@@ -1,5 +1,6 @@
 import * as Dialog from '@radix-ui/react-dialog'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { uniqBy } from 'lodash'
 import Map, {
   MapLayerMouseEvent,
   MapRef,
@@ -129,6 +130,9 @@ const MapDialog = ({
     const featureId = feature.id as number
     const maxNumberOfAssets = field?.meta.maxNumberOfAssets || 1
 
+    // @ts-ignore
+    event.originalEvent?.stopPropagation()
+
     if (dialogMap && featureId) {
       const newSelectedFeatureArray = Array.from(
         formState.selectedFeatures ? formState.selectedFeatures : []
@@ -155,7 +159,14 @@ const MapDialog = ({
         ...formState,
         selectedFeatures: newSelectedFeatureArray,
       })
-      setTimeout(() => setIsMapSelected(false), 0)
+
+      setIsMapSelected(false)
+      setMarker([
+        // @ts-ignore
+        feature.geometry.coordinates[1],
+        // @ts-ignore
+        feature.geometry.coordinates[0],
+      ])
     }
   }
 
@@ -218,6 +229,7 @@ const MapDialog = ({
     }
   }, [features])
 
+  // Close map dialog, if isAssetSelect is not set only update formStore with new coordinates. Otherwise update field with type isAssetSelect with feature answers
   const closeMapDialog = async () => {
     updateForm({ ...formState, coordinates: marker })
 
@@ -257,6 +269,22 @@ const MapDialog = ({
       setValue(field.key, formValues)
     }
   }
+
+  // memoize list of features to show in left sidebar
+  const featureList = useMemo(() => {
+    if (config && dialogMap) {
+      const mapFeaturesToShow = mapFeatures ? mapFeatures.features : []
+
+      const features =
+        dialogMap?.getZoom() > config.base.map.minimal_zoom
+          ? mapFeaturesToShow
+          : []
+
+      return uniqBy([...features, ...formState.selectedFeatures], 'id')
+    }
+
+    return []
+  }, [formState.selectedFeatures, mapFeatures?.features, dialogMap?.getZoom()])
 
   return (
     <Dialog.Root>
@@ -302,10 +330,10 @@ const MapDialog = ({
                 )}
               {field && dialogMap && config && (
                 <ul className="flex-1 overflow-y-auto">
-                  {formState.selectedFeatures.map((feature: any) => (
+                  {featureList.map((feature: any) => (
                     <FeatureListItem
-                      feature={feature}
                       configUrl={config?.base.assets_url}
+                      feature={feature}
                       key={feature.id}
                       field={field}
                       map={dialogMap}
@@ -313,24 +341,6 @@ const MapDialog = ({
                       dialogRef={dialogRef}
                     />
                   ))}
-
-                  {dialogMap.getZoom() > config.base.map.minimal_zoom &&
-                    mapFeatures?.features.map(
-                      (feature: any) =>
-                        !formState.selectedFeatures.some(
-                          (featureItem) => featureItem.id === feature.id
-                        ) && (
-                          <FeatureListItem
-                            configUrl={config?.base.assets_url}
-                            feature={feature}
-                            key={feature.id}
-                            field={field}
-                            map={dialogMap}
-                            setError={setError}
-                            dialogRef={dialogRef}
-                          />
-                        )
-                    )}
                 </ul>
               )}
             </div>
