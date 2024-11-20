@@ -14,6 +14,7 @@ import { useFormStore } from '@/store/form_store'
 import {
   Heading,
   Icon,
+  IconButton,
   AlertDialog,
   Paragraph,
   Alert,
@@ -425,18 +426,20 @@ const MapDialog = ({
                 </Dialog.Close>
               </div>
               <ButtonGroup direction="column" className="map-zoom-button-group">
-                <Button
-                  className="map-button"
+                <IconButton
+                  className="map-zoom-button"
                   onClick={() => dialogMap?.flyTo({ zoom: viewState.zoom + 1 })}
+                  label={t('map_zoom-in_button_label')}
                 >
                   <IconPlus />
-                </Button>
-                <Button
-                  className="map-button"
+                </IconButton>
+                <IconButton
+                  className="map-zoom-button"
                   onClick={() => dialogMap?.flyTo({ zoom: viewState.zoom - 1 })}
+                  label={t('map_zoom-out_button_label')}
                 >
                   <IconMinus />
-                </Button>
+                </IconButton>
               </ButtonGroup>
             </div>
           )}
