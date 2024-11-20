@@ -129,10 +129,10 @@
     },
     "button": {
       "upload_file": "Upload file",
-      "delete_file": "Delete file"
+      "delete_file": "Delete file: {file}"
     },
     "file": {
-      "preview": "Preview image"
+      "preview": "Preview image of file: {file}"
     },
     "loading": "Loading"
   },

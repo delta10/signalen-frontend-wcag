@@ -129,10 +129,10 @@
     },
     "button": {
       "upload_file": "Upload bestand",
-      "delete_file": "Verwijder bestand"
+      "delete_file": "Verwijder bestand: {file}"
     },
     "file": {
-      "preview": "Voorbeeld weergave"
+      "preview": "Voorbeeld weergave van bestand: {file} "
     },
     "loading": "Laden"
   },
