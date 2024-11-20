@@ -39,7 +39,7 @@ export const getNearestAddressByCoordinate = async (
 
   try {
     const response: AxiosResponse<AddressCoordinateResponse> = await axios.get(
-      `/search/v3_1/reverse?lat=${lat}&lon=${lng}&distance=${distance}`
+      `/search/v3_1/reverse?lat=${lat}&lon=${lng}&distance=${distance}&fl=id,weergavenaam,straatnaam,huis_nlt,postcode,woonplaatsnaam,centroide_ll,openbareruimte_id`
     )
 
     return response.data.response.docs.sort(

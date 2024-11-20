@@ -33,4 +33,8 @@ export type AddressCoordinateDoc = {
   score: number
   type: string
   weergavenaam: string
+  postcode: string
+  huis_nlt: string | number
+  woonplaatsnaam: string
+  straatnaam: string
 }

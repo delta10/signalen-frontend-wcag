@@ -42,7 +42,16 @@ export const LocationSelect = ({ field }: LocationSelectProps) => {
 
       if (result) {
         setAddress(result.weergavenaam)
-        updateForm({ ...formStoreState, address: result.weergavenaam })
+        updateForm({
+          ...formStoreState,
+          address: {
+            postcode: result.postcode,
+            huisnummer: result.huis_nlt,
+            woonplaats: result.woonplaatsnaam,
+            openbare_ruimte: result.straatnaam,
+            weergave_naam: result.weergavenaam,
+          },
+        })
       } else {
         setAddress(null)
       }

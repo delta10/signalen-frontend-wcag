@@ -1,4 +1,5 @@
 import { Feature } from 'geojson'
+import { Address } from '@/types/form'
 
 type FormStoreState = {
   description: string
@@ -24,7 +25,7 @@ type FormStoreState = {
   attachments: File[]
   isBlocking: boolean
   sig_number: string
-  address: string | null
+  address: Address | null
 }
 
 type FormStore = {

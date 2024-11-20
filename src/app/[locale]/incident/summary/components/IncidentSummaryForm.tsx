@@ -49,6 +49,7 @@ const IncidentSummaryForm = () => {
             type: _NestedLocationModel.type.POINT,
             coordinates: [formState.coordinates[1], formState.coordinates[0]],
           },
+          address: formState.address,
         },
         // @ts-ignore
         category: {
@@ -130,7 +131,7 @@ const IncidentSummaryForm = () => {
 
         <IncidentSummaryFormItem
           title={t('steps.step_two.input_heading')}
-          value={formState.address}
+          value={formState.address?.weergave_naam}
         >
           <div style={{ minHeight: 200, height: 200 }}>
             <LocationMap />

@@ -35,3 +35,11 @@ export enum FormStep {
   STEP_4_SUMMARY = 4,
   STEP_5_THANK_YOU = 5,
 }
+
+export interface Address {
+  postcode: string
+  huisnummer: string | number
+  woonplaats: string
+  openbare_ruimte: string
+  weergave_naam: string | null
+}
