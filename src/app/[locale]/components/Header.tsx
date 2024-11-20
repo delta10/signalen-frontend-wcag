@@ -1,7 +1,7 @@
 'use client'
 
 import { LanguageSwitch } from '@/app/[locale]/components/LanguageSwitch'
-import { Link, Logo } from '@/components/index'
+import { Link, Logo, PageHeader } from '@/components/index'
 import Image from 'next/image'
 import { useConfig } from '@/hooks/useConfig'
 
@@ -26,19 +26,25 @@ const Header = ({ homepage, logo }: HeaderProps) => {
   )
 
   return (
-    <header className="bg-white flex flex-row justify-between items-center">
-      {homepage ? (
-        <Link boxContent href={homepage.href} aria-labelledby="logo-link-label">
-          <span id="logo-link-label" hidden>
-            {homepage.label}
-          </span>
-          {logoElement}
-        </Link>
-      ) : (
-        logoElement
-      )}
-      {config && config.base.multilanguage && <LanguageSwitch />}
-    </header>
+    <>
+      <PageHeader>
+        {homepage ? (
+          <Link
+            boxContent
+            href={homepage.href}
+            aria-labelledby="logo-link-label"
+          >
+            <span id="logo-link-label" hidden>
+              {homepage.label}
+            </span>
+            {logoElement}
+          </Link>
+        ) : (
+          logoElement
+        )}
+        {config && config.base.multilanguage && <LanguageSwitch />}
+      </PageHeader>
+    </>
   )
 }
 

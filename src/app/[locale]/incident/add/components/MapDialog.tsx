@@ -1,5 +1,6 @@
 import * as Dialog from '@radix-ui/react-dialog'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { uniqBy } from 'lodash'
 import Map, {
   MapLayerMouseEvent,
   MapRef,
@@ -14,18 +15,15 @@ import { useFormStore } from '@/store/form_store'
 import {
   Heading,
   Icon,
+  IconButton,
   AlertDialog,
   Paragraph,
   Alert,
   Button,
+  MapMarker,
 } from '@/components'
 import { useConfig } from '@/hooks/useConfig'
-import {
-  IconCurrentLocation,
-  IconMapPinFilled,
-  IconMinus,
-  IconPlus,
-} from '@tabler/icons-react'
+import { IconCurrentLocation, IconMinus, IconPlus } from '@tabler/icons-react'
 import { ButtonGroup } from '@/components'
 import {
   formatAddressToSignalenInput,
@@ -129,6 +127,9 @@ const MapDialog = ({
     const featureId = feature.id as number
     const maxNumberOfAssets = field?.meta.maxNumberOfAssets || 1
 
+    // @ts-ignore
+    event.originalEvent?.stopPropagation()
+
     if (dialogMap && featureId) {
       const newSelectedFeatureArray = Array.from(
         formState.selectedFeatures ? formState.selectedFeatures : []
@@ -155,7 +156,14 @@ const MapDialog = ({
         ...formState,
         selectedFeatures: newSelectedFeatureArray,
       })
-      setTimeout(() => setIsMapSelected(false), 0)
+
+      setIsMapSelected(false)
+      setMarker([
+        // @ts-ignore
+        feature.geometry.coordinates[1],
+        // @ts-ignore
+        feature.geometry.coordinates[0],
+      ])
     }
   }
 
@@ -218,6 +226,7 @@ const MapDialog = ({
     }
   }, [features])
 
+  // Close map dialog, if isAssetSelect is not set only update formStore with new coordinates. Otherwise update field with type isAssetSelect with feature answers
   const closeMapDialog = async () => {
     updateForm({ ...formState, coordinates: marker })
 
@@ -258,12 +267,28 @@ const MapDialog = ({
     }
   }
 
+  // memoize list of features to show in left sidebar
+  const featureList = useMemo(() => {
+    if (config && dialogMap) {
+      const mapFeaturesToShow = mapFeatures ? mapFeatures.features : []
+
+      const features =
+        dialogMap?.getZoom() > config.base.map.minimal_zoom
+          ? mapFeaturesToShow
+          : []
+
+      return uniqBy([...features, ...formState.selectedFeatures], 'id')
+    }
+
+    return []
+  }, [formState.selectedFeatures, mapFeatures?.features, dialogMap?.getZoom()])
+
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay />
-        <Dialog.Content className="fixed inset-0 bg-white z-[1000] grid grid-cols-1 md:grid-cols-3 utrecht-theme">
+        <Dialog.Content className="fixed inset-0 bg-white z-[1000] grid grid-cols-1 md:grid-cols-3 purmerend-theme">
           <VisuallyHidden.Root>
             {/* TODO: Overleggen welke titel hier het meest vriendelijk is voor de gebruiker, multi-language support integreren */}
             <Dialog.Title>
@@ -302,10 +327,10 @@ const MapDialog = ({
                 )}
               {field && dialogMap && config && (
                 <ul className="flex-1 overflow-y-auto">
-                  {formState.selectedFeatures.map((feature: any) => (
+                  {featureList.map((feature: any) => (
                     <FeatureListItem
-                      feature={feature}
                       configUrl={config?.base.assets_url}
+                      feature={feature}
                       key={feature.id}
                       field={field}
                       map={dialogMap}
@@ -313,24 +338,6 @@ const MapDialog = ({
                       dialogRef={dialogRef}
                     />
                   ))}
-
-                  {dialogMap.getZoom() > config.base.map.minimal_zoom &&
-                    mapFeatures?.features.map(
-                      (feature: any) =>
-                        !formState.selectedFeatures.some(
-                          (featureItem) => featureItem.id === feature.id
-                        ) && (
-                          <FeatureListItem
-                            configUrl={config?.base.assets_url}
-                            feature={feature}
-                            key={feature.id}
-                            field={field}
-                            map={dialogMap}
-                            setError={setError}
-                            dialogRef={dialogRef}
-                          />
-                        )
-                    )}
                 </ul>
               )}
             </div>
@@ -365,12 +372,7 @@ const MapDialog = ({
               >
                 {marker.length && isMapSelected && (
                   <Marker latitude={marker[0]} longitude={marker[1]}>
-                    <Icon className="map-marker-icon">
-                      <IconMapPinFilled
-                        className="-translate-y-1/2"
-                        color={config.base.style.primaryColor}
-                      />
-                    </Icon>
+                    <MapMarker />
                   </Marker>
                 )}
                 {onMapReady &&
@@ -425,18 +427,20 @@ const MapDialog = ({
                 </Dialog.Close>
               </div>
               <ButtonGroup direction="column" className="map-zoom-button-group">
-                <Button
-                  className="map-button"
+                <IconButton
+                  className="map-zoom-button"
                   onClick={() => dialogMap?.flyTo({ zoom: viewState.zoom + 1 })}
+                  label={t('map_zoom-in_button_label')}
                 >
                   <IconPlus />
-                </Button>
-                <Button
-                  className="map-button"
+                </IconButton>
+                <IconButton
+                  className="map-zoom-button"
                   onClick={() => dialogMap?.flyTo({ zoom: viewState.zoom - 1 })}
+                  label={t('map_zoom-out_button_label')}
                 >
                   <IconMinus />
-                </Button>
+                </IconButton>
               </ButtonGroup>
             </div>
           )}

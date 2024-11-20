@@ -16,6 +16,7 @@ const initialFormState: FormStoreState = {
   isBlocking: false,
   selectedFeatures: [],
   sig_number: '',
+  address: null,
 }
 
 const useFormStore = create<FormStore>()(

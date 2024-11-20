@@ -1,8 +1,9 @@
 export type * from '@utrecht/component-library-react/dist/css-module'
-import { Select } from '@/components/ui'
 import { Container } from '@/components/layout'
 
-export { Select, Container }
+export { Container }
+
+export { IconButton } from '@/components/ui/IconButton'
 
 export {
   Alert,
@@ -28,8 +29,19 @@ export {
   RadioButton,
   LinkButton,
   AlertDialog,
+  Article,
+  Select,
 } from '@utrecht/component-library-react/dist/css-module'
 
 export { RadioGroup } from '@utrecht/radio-group-react'
 export { CheckboxGroup } from '@utrecht/checkbox-group-react'
+export { Root } from '@utrecht/root-react/dist/css'
+export { Body } from '@utrecht/body-react/dist/css'
+export { PageLayout } from '@utrecht/page-layout-react/dist/css'
+export { PageHeader } from '@utrecht/page-header-react/dist/css'
+export { PageFooter } from '@utrecht/page-footer-react/dist/css'
+export { PageBody } from '@utrecht/page-body-react/dist/css'
+export { NavBar } from '@utrecht/nav-bar-react/dist/css'
+
 // export { SelectCombobox } from '@/components/ui/SelectCombobox'
+export { MapMarker } from './ui/MapMarker'

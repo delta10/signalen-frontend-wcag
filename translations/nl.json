@@ -28,10 +28,7 @@
     "heading": "Locatie en vragen",
     "form": {
       "add_map_heading": "Waar is het?",
-      "add_choose_location_button": "Kies locatie",
-      "errors": {
-        "location_required": "Dit is een verplicht veld"
-      }
+      "add_choose_location_button": "Kies locatie"
     },
     "map": {
       "map_heading": "Kies uw locatie",
@@ -46,7 +43,9 @@
       "address_search_label": "Zoek op adres",
       "max_number_of_assets_error": "U kunt maximaal {max, plural, one {# object} other {# objecten}} selecteren.",
       "go_further_without_selected_object": "Ga verder zonder object",
-      "zoom_for_object": "Zoom in om de objecten te zien"
+      "zoom_for_object": "Zoom in om de objecten te zien",
+      "map_zoom-in_button_label": "Zoom in op de kaart",
+      "map_zoom-out_button_label": "Zoom uit op de kaart"
     }
   },
   "describe-contact": {
@@ -84,7 +83,7 @@
       "step_three": {
         "title": "3. Contactgegevens",
         "edit": "Wijzig contactgegevens",
-        "no_contact_details": "U hebt geen contactgevens ingevuld. We kunnen u niet laten weten wat wij hebben gedaan met uw melding.",
+        "no_contact_details": "U hebt geen contactgegevens ingevuld. We kunnen u niet laten weten wat wij hebben gedaan met uw melding.",
         "input_telephone_heading": "Wat is uw telefoonnummer?",
         "input_mail_heading": "Wat is uw e-mailadres?",
         "input_sharing_heading": "Melding delen",

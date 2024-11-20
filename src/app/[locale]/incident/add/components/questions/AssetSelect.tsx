@@ -29,7 +29,7 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
     formState: { errors },
   } = useFormContext()
   const errorMessage = errors['location']?.message as string
-  const { formState: formStoreState } = useFormStore()
+  const { formState: formStoreState, updateForm } = useFormStore()
   const [address, setAddress] = useState<string | null>(null)
   const { config } = useConfig()
   const t = useTranslations('describe-add.map')
@@ -46,6 +46,16 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
 
       if (result) {
         setAddress(result.weergavenaam)
+        updateForm({
+          ...formStoreState,
+          address: {
+            postcode: result.postcode,
+            huisnummer: result.huis_nlt,
+            woonplaats: result.woonplaatsnaam,
+            openbare_ruimte: result.straatnaam,
+            weergave_naam: result.weergavenaam,
+          },
+        })
       } else {
         setAddress(null)
       }

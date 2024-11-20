@@ -56,19 +56,6 @@ export const FeatureListItem = ({
       }
 
       newSelectedFeatureArray.push(feature)
-
-      if (map && feature && feature.geometry) {
-        map.flyTo({
-          center: [
-            // @ts-ignore
-            feature.geometry.coordinates[0],
-            // @ts-ignore
-            feature.geometry.coordinates[1],
-          ],
-          speed: 0.5,
-          zoom: 18,
-        })
-      }
     } else {
       const index = newSelectedFeatureArray.findIndex(
         (feature) => feature.id === featureId

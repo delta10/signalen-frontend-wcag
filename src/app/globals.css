@@ -146,5 +146,9 @@
 
 /* map */
 .map-marker-icon {
-    --utrecht-icon-size: 42px;
+  --utrecht-icon-size: var(--utrecht-map-marker-size, 42px);
+  --utrecht-icon-color: var(
+    --utrecht-map-marker-background-color,
+    currentColor
+  );
 }
