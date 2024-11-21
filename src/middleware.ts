@@ -1,9 +1,10 @@
 import createMiddleware from 'next-intl/middleware'
-import { getAllAvailableLocales, getDefaultLocale } from '@/lib/utils/locale'
+import { getAllAvailableLocales } from '@/lib/utils/locale'
 import { locales, pathnames } from '@/routing/navigation'
 
+// Here we use the first element that getAllAvailableLocales return as the default locale
 export default createMiddleware({
-  defaultLocale: getDefaultLocale(),
+  defaultLocale: getAllAvailableLocales()[0],
   locales,
   pathnames,
 })

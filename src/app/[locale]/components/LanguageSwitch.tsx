@@ -1,30 +1,41 @@
-'use client'
-
-import { ChangeEvent, useTransition } from 'react'
-import { usePathname, useRouter } from '@/routing/navigation'
-import { Select } from '@/components'
-import { getAllAvailableLocales } from '@/lib/utils/locale'
+import { ButtonGroup, LinkButton } from '@/components'
 import { useLocale } from 'next-intl'
+import { useTransition } from 'react'
+import { usePathname, useRouter } from '@/routing/navigation'
+import { useConfig } from '@/hooks/useConfig'
 
 const LanguageSwitch = () => {
-  const locales = getAllAvailableLocales()
   const locale = useLocale()
   const router = useRouter()
   const pathname = usePathname()
+  const { config } = useConfig()
   const [isPending, startTransition] = useTransition()
 
-  const onSelectChange = (evt: ChangeEvent<HTMLSelectElement>) => {
+  const onLanguageChange = (locale: string) => {
     startTransition(() => {
-      router.replace(pathname, { locale: evt.target.value })
+      router.replace(pathname, { locale: locale })
     })
   }
 
   return (
-    <Select value={locale} onChange={onSelectChange} disabled={isPending}>
-      {getAllAvailableLocales().map((lang, index) => (
-        <option key={index}>{lang}</option>
-      ))}
-    </Select>
+    <div className="pr-4">
+      <ButtonGroup>
+        {config &&
+          config.base.supportedLanguages.map(({ label, lang }) => (
+            <LinkButton
+              inline
+              pressed={lang === locale}
+              lang={lang}
+              aria-label={label}
+              key={lang}
+              disabled={isPending || lang === locale}
+              onClick={() => onLanguageChange(lang)}
+            >
+              {lang.toUpperCase()}
+            </LinkButton>
+          ))}
+      </ButtonGroup>
+    </div>
   )
 }
 
