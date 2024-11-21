@@ -2,6 +2,16 @@
   "base": {
     "municipality": "purmerend",
     "assets_url": "https://meldingen.demo.meierijstad.delta10.cloud",
+    "supportedLanguages": [
+      {
+        "label": "This page in English",
+        "lang": "en"
+      },
+      {
+        "label": "Deze pagina in het Nederlands",
+        "lang": "nl"
+      }
+    ],
     "map": {
       "find_address_in_distance": 30,
       "minimal_zoom": 17,
