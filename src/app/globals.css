@@ -3,49 +3,19 @@
 @tailwind utilities;
 
 /* fonts */
-
-.address__select {
-  @apply flex transition duration-100 bg-white p-3 justify-between min-w-[150px] ring-1 ring-border hover:ring-2 hover:bg-hover focus:ring-2 focus:ring-focus outline-none focus-visible:outline-dashed focus-visible:outline-focus_visible focus-within:ring-2 focus-within:ring-focus focus-within:outline-dashed focus-within:outline-focus_visible;
-}
-
-.address__select-menu {
-  @apply bg-white mt-[2px] border border-border w-full -ml-[2px];
-  min-width: calc(100% + 4px);
-}
-
-.address__select-option {
-  @apply px-3 py-3 border-y border-x border-transparent;
-}
-
-.address__select-option__selected {
-  @apply bg-hover;
-}
-
-.address__select-option__focused {
-  @apply bg-hover border-y border-focus border-x-transparent;
-}
-
-.address__select-option__focused:is(:first-child) {
-  @apply border-t-transparent;
-}
-
-.address__select-option__focused:is(:last-child) {
-  @apply border-b-transparent;
-}
-
 .empty-box {
     width: 100px;
     height: 100px;
 }
 
 .empty-box.border {
-    border: 1px dashed rgb(118, 118, 118);
+    border: 1px dashed var(--utrecht-form-control-border-color);
 }
 
 .file-upload-box {
     width: 100px;
     height: 100px;
-    border: 1px dashed rgb(118, 118, 118);
+    border: 1px dashed var(--utrecht-form-control-border-color);
 }
 
 .file-upload-box > label {
@@ -68,7 +38,7 @@
     top: 29px;
     left: 29px;
     border-radius: 50%;
-    border: 1px solid rgb(0, 32, 92);
+    border: 1px solid var(--utrecht-form-control-border-color);
 }
 
 .utrecht-button:focus:not(:disabled,[aria-disabled=true],.utrecht-button--disabled) {
@@ -151,4 +121,21 @@
     --utrecht-map-marker-background-color,
     currentColor
   );
+}
+
+/* colors */
+.background-gray-200 {
+    background-color: var(--basis-color-gray-200)
+}
+
+.background-primary {
+    background-color: var(--basis-color-primary-fill-1)
+}
+
+.background-white {
+    background-color: var(--basis-color-white)
+}
+
+.bordercolor-gray-200 {
+    border-color: var(--basis-color-gray-200)
 }

@@ -47,11 +47,13 @@ const FormProgress = () => {
           <Heading level={4}>
             {t('step', { currentStep: step, totalSteps: 4 })}
           </Heading>
-          <div className="overflow-hidden bg-gray-200 w-full">
+          <div className="overflow-hidden w-full background-gray-200">
             {/*todo: check how to set primary color */}
             <div
-              style={{ width: `${percentage}%` }}
-              className="h-1  bg-green-700"
+              style={{
+                width: `${percentage}%`,
+              }}
+              className="h-1 background-primary"
             />
           </div>
         </div>
