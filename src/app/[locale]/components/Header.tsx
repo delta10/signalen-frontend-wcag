@@ -43,7 +43,9 @@ const Header = ({ homepage, logo }: HeaderProps) => {
           ) : (
             logoElement
           )}
-          {config && config.base.multilanguage && <LanguageSwitch />}
+          {config && config.base.supportedLanguages.length > 1 && (
+            <LanguageSwitch />
+          )}
         </div>
       </PageHeader>
     </>

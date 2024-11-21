@@ -1,13 +1,14 @@
 import { ButtonGroup, LinkButton } from '@/components'
 import { useLocale } from 'next-intl'
-import { useMemo } from 'react'
 import { useTransition } from 'react'
 import { usePathname, useRouter } from '@/routing/navigation'
+import { useConfig } from '@/hooks/useConfig'
 
 const LanguageSwitch = () => {
   const locale = useLocale()
   const router = useRouter()
   const pathname = usePathname()
+  const { config } = useConfig()
   const [isPending, startTransition] = useTransition()
 
   const onLanguageChange = (locale: string) => {
@@ -16,43 +17,23 @@ const LanguageSwitch = () => {
     })
   }
 
-  const languageSwitchItems = useMemo(() => {
-    return {
-      items: [
-        {
-          label: 'This page in English',
-          lang: 'en',
-          current: locale === 'en',
-          textContent: 'EN',
-        },
-        {
-          label: 'Deze pagina in het Nederlands',
-          lang: 'nl',
-          current: locale === 'nl',
-          textContent: 'NL',
-        },
-      ],
-    }
-  }, [locale])
-
   return (
     <div className="pr-4">
       <ButtonGroup>
-        {languageSwitchItems.items.map(
-          ({ current, label, lang, textContent }) => (
+        {config &&
+          config.base.supportedLanguages.map(({ label, lang }) => (
             <LinkButton
               inline
-              pressed={current}
+              pressed={lang === locale}
               lang={lang}
               aria-label={label}
               key={lang}
               disabled={isPending}
               onClick={() => onLanguageChange(lang)}
             >
-              {textContent}
+              {lang.toUpperCase()}
             </LinkButton>
-          )
-        )}
+          ))}
       </ButtonGroup>
     </div>
   )
