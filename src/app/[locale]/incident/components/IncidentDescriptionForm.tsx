@@ -138,6 +138,7 @@ export const IncidentDescriptionForm = () => {
         label={`${t('describe_textarea_heading')} (${t('required_short')})`}
         errorMessage={form.formState.errors.description?.message}
         invalid={Boolean(form.formState.errors.description?.message)}
+        required={true}
         {...form.register('description')}
       />
 

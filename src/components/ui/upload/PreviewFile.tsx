@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { FaRegTrashCan } from 'react-icons/fa6'
 import { useTranslations } from 'next-intl'
+import { Icon } from '@/components'
+import { IconTrash } from '@tabler/icons-react'
 
 type Props = {
   file: File
@@ -24,15 +25,17 @@ const PreviewFile = ({ file, allowDelete = false, onDelete }: Props) => {
       <img
         className="empty-box object-cover"
         src={imageUrl}
-        alt={t('file.preview')}
+        alt={t('file.preview', { file: file.name })}
       />
       {allowDelete && (
         <button
           onClick={onDelete}
-          aria-label={t('button.delete_file')}
+          aria-label={t('button.delete_file', { file: file.name })}
           className="absolute bottom-0 right-0 bg-gray-900 bg-opacity-50 w-full flex justify-center items-center py-2 hover:bg-opacity-80 transition-colors duration-200 delay-100"
         >
-          <FaRegTrashCan className="w-5 h-5" />
+          <Icon>
+            <IconTrash className="w-5 h-5" />
+          </Icon>
         </button>
       )}
     </div>
