@@ -28,7 +28,7 @@ const LanguageSwitch = () => {
               lang={lang}
               aria-label={label}
               key={lang}
-              disabled={isPending}
+              disabled={isPending || lang === locale}
               onClick={() => onLanguageChange(lang)}
             >
               {lang.toUpperCase()}
