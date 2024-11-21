@@ -122,3 +122,20 @@
     currentColor
   );
 }
+
+/* colors */
+.background-gray-200 {
+    background-color: var(--basis-color-gray-200)
+}
+
+.background-primary {
+    background-color: var(--basis-color-primary-fill-1)
+}
+
+.background-white {
+    background-color: var(--basis-color-white)
+}
+
+.bordercolor-gray-200 {
+    border-color: var(--basis-color-gray-200)
+}

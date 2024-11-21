@@ -109,10 +109,7 @@ const IncidentContactForm = () => {
             <FormFieldDescription id="todo-id">
               <Paragraph>{t('send_to_other_instance_description')}</Paragraph>
             </FormFieldDescription>
-            <div
-              style={{ backgroundColor: 'var(--basis-color-gray-200)' }}
-              className="w-full p-4"
-            >
+            <div className="w-full p-4 background-gray-200">
               <FormFieldCheckbox
                 label={t('describe_checkbox_input_description')}
                 errorMessage={form.formState.errors.sharing_allowed?.message}

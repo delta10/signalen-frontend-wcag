@@ -72,10 +72,7 @@ export const FeatureListItem = ({
 
   // TODO: iets van een label toevoegen zodat voor een SR duidelijk wordt om welke lantaarnpaal, adres etc het gaat?
   return featureDescription ? (
-    <li
-      className="py-4 border-t"
-      style={{ borderColor: 'var(--basis-color-gray-200)' }}
-    >
+    <li className="py-4 border-t bordercolor-gray-200">
       <FormField className="flex flex-row items-center gap-2">
         {!formState.selectedFeatures.some(
           (featureItem) => featureItem.id === featureId
