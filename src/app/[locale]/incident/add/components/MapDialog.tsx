@@ -283,6 +283,31 @@ const MapDialog = ({
     return []
   }, [formState.selectedFeatures, mapFeatures?.features, dialogMap?.getZoom()])
 
+  const [isDarkMode, setIsDarkMode] = useState(false)
+
+  useEffect(() => {
+    // Check initial color scheme preference
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+    setIsDarkMode(mediaQuery.matches)
+
+    // Add listener for changes in color scheme preference
+    const handleColorSchemeChange = (e: MediaQueryListEvent) => {
+      setIsDarkMode(e.matches)
+    }
+
+    mediaQuery.addEventListener('change', handleColorSchemeChange)
+
+    // Cleanup listener
+    return () => {
+      mediaQuery.removeEventListener('change', handleColorSchemeChange)
+    }
+  }, [])
+
+  // Dynamically select map style based on color scheme
+  const mapStyle = isDarkMode
+    ? `https://api.maptiler.com/maps/streets-v2-dark/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`
+    : `${process.env.NEXT_PUBLIC_MAPTILER_MAP}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`
+
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
@@ -366,7 +391,7 @@ const MapDialog = ({
                 onClick={(e) => handleMapClick(e)}
                 onMove={(evt) => setViewState(evt.viewState)}
                 style={{ blockSize: '100%', inlineSize: '100%' }}
-                mapStyle={`${process.env.NEXT_PUBLIC_MAPTILER_MAP}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`}
+                mapStyle={mapStyle}
                 attributionControl={false}
                 maxBounds={config.base.map.maxBounds}
               >
