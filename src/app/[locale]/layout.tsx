@@ -53,7 +53,9 @@ export default function LocaleLayout({
               }}
             />
             <PageBody>
-              <Article>{children}</Article>
+              <Article className="max-w-3xl mx-auto px-4 lg:px-0">
+                {children}
+              </Article>
             </PageBody>
             <NextIntlClientProvider messages={pick(messages, 'footer')}>
               <Footer />
