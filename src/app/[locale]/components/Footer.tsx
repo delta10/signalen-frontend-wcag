@@ -46,7 +46,7 @@ const Footer = () => {
         <Link
           href={link.href}
           key={link.label}
-          className="flex items-center !no-underline hover:!underline !text-black hover:!text-cyan-800"
+          className="flex items-center !no-underline hover:!underline"
         >
           <IconChevronRight className="w-6 h-6" /> {link.label}
         </Link>
