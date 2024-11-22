@@ -1,14 +1,18 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { Button, Heading } from '@utrecht/component-library-react'
+import { LinkButton, Icon } from '@/components/index'
 import { useTranslations } from 'next-intl'
 import { usePathname, useRouter } from '@/routing/navigation'
-import { FaChevronLeft } from 'react-icons/fa'
 import { FormStep } from '@/types/form'
 import { getCurrentStep, getPreviousStepPath } from '@/lib/utils/stepper'
+import { IconChevronLeft } from '@tabler/icons-react'
 
-const FormProgress = () => {
+interface FormProgressProps {
+  children?: React.ReactElement
+}
+
+const FormProgress = ({ children }: FormProgressProps) => {
   const t = useTranslations('stepper')
   const router = useRouter()
   const pathname = usePathname()
@@ -29,31 +33,26 @@ const FormProgress = () => {
 
   if (step < FormStep.STEP_5_THANK_YOU) {
     return (
-      <div className="relative flex flex-col-reverse sm:flex-col">
-        <div>
-          {step > FormStep.STEP_1_DESCRIPTION && (
-            <Button
-              appearance={'subtle-button'}
-              className="sm:absolute sm:left-0 sm:-top-2 stepper-button-hover pl-0-overwrite"
-              onClick={() => back()}
-            >
-              <FaChevronLeft />
+      <div className="flex flex-col gap-1">
+        {step > FormStep.STEP_1_DESCRIPTION && (
+          <div>
+            <LinkButton className="!pl-0" onClick={() => back()}>
+              <Icon>
+                <IconChevronLeft />
+              </Icon>
               {t('back')}
-            </Button>
-          )}
-        </div>
+            </LinkButton>
+          </div>
+        )}
 
-        <div className="flex flex-col justify-center sm:items-center gap-3 pb-2">
-          <Heading level={4}>
-            {t('step', { currentStep: step, totalSteps: 4 })}
-          </Heading>
+        <div className="flex flex-col gap-3 pb-2">
+          {children}
           <div className="overflow-hidden w-full background-gray-200">
-            {/*todo: check how to set primary color */}
             <div
               style={{
                 width: `${percentage}%`,
               }}
-              className="h-1 background-primary"
+              className="h-2 background-primary"
             />
           </div>
         </div>
