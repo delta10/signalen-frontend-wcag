@@ -19,8 +19,7 @@
         "textarea_required": "Dit is een verplicht veld",
         "file_type_invalid": "Ongeldig bestandstype. Alleen JPEG, PNG, en GIF zijn toegestaan.",
         "file_size_too_large": "Bestandsgrootte is te groot. Elk bestand moet kleiner zijn dan 20MB.",
-        "file_size_too_small": "Bestandsgrootte is te klein. Elk bestand moet minimaal 30KB zijn.",
-        "file_limit_exceeded": "U kunt maximaal 3 bestanden uploaden."
+        "file_size_too_small": "Bestandsgrootte is te klein. Elk bestand moet minimaal 30KB zijn."
       }
     }
   },
@@ -60,7 +59,7 @@
       "describe_checkbox_input_description": "Ja, ik geef de gemeente Amsterdam toestemming om mijn melding door te sturen naar andere organisaties als de melding niet voor de gemeente is bestemd.",
       "errors": {
         "number_not_valid": "Gebruik een geldig telefoonnummer",
-        "email_not_valid": "Gebruik een geldig mailadres"
+        "email_not_valid": "Vul een geldig e-mailadres in, met een @ en een domeinnaam. Bijvoorbeeld: naam@domein.nl"
       },
       "not_required_short": "niet verplicht"
     }
