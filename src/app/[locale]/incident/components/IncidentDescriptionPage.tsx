@@ -1,10 +1,12 @@
 'use client'
 
-import { useTranslations } from 'next-intl'
+import { NextIntlClientProvider, useMessages, useTranslations } from 'next-intl'
 import { useFormStore } from '@/store/form_store'
 import { Heading, Paragraph, HeadingGroup, PreHeading } from '@/components'
 import { Alert, Link } from '@/components'
 import { IncidentDescriptionForm } from '@/app/[locale]/incident/components/IncidentDescriptionForm'
+import pick from 'lodash/pick'
+import FormProgress from '@/app/[locale]/components/FormProgress'
 
 const currentStep = 1
 const maxStep = 4
@@ -17,13 +19,18 @@ export const IncidentDescriptionPage = () => {
   if (loaded) {
     return (
       <>
-        <div className="flex flex-col gap-4">
-          <HeadingGroup>
-            <Heading level={1}>{t('heading')}</Heading>
-            <PreHeading>
-              {tGeneral('pre-heading', { current: currentStep, max: maxStep })}
-            </PreHeading>
-          </HeadingGroup>
+        <div className="flex flex-col gap-12">
+          <FormProgress>
+            <HeadingGroup>
+              <Heading level={1}>{t('heading')}</Heading>
+              <PreHeading>
+                {tGeneral('pre-heading', {
+                  current: currentStep,
+                  max: maxStep,
+                })}
+              </PreHeading>
+            </HeadingGroup>
+          </FormProgress>
           <Alert>
             <Paragraph>
               Lukt het niet om een melding te doen? Bel het telefoonnummer
