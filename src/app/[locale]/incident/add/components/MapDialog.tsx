@@ -286,26 +286,29 @@ const MapDialog = ({
   const [isDarkMode, setIsDarkMode] = useState(false)
 
   useEffect(() => {
-    // Check initial color scheme preference
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
-    setIsDarkMode(mediaQuery.matches)
+    // Note: When dark mode url is not set isDarkMode is always false.
+    if (process.env.NEXT_PUBLIC_MAPTILER_MAP_DARK_MODE) {
+      // Check initial color scheme preference
+      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+      setIsDarkMode(mediaQuery.matches)
 
-    // Add listener for changes in color scheme preference
-    const handleColorSchemeChange = (e: MediaQueryListEvent) => {
-      setIsDarkMode(e.matches)
-    }
+      // Add listener for changes in color scheme preference
+      const handleColorSchemeChange = (e: MediaQueryListEvent) => {
+        setIsDarkMode(e.matches)
+      }
 
-    mediaQuery.addEventListener('change', handleColorSchemeChange)
+      mediaQuery.addEventListener('change', handleColorSchemeChange)
 
-    // Cleanup listener
-    return () => {
-      mediaQuery.removeEventListener('change', handleColorSchemeChange)
+      // Cleanup listener
+      return () => {
+        mediaQuery.removeEventListener('change', handleColorSchemeChange)
+      }
     }
   }, [])
 
   // Dynamically select map style based on color scheme
   const mapStyle = isDarkMode
-    ? `https://api.maptiler.com/maps/streets-v2-dark/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`
+    ? `${process.env.NEXT_PUBLIC_MAPTILER_MAP_DARK_MODE}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`
     : `${process.env.NEXT_PUBLIC_MAPTILER_MAP}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`
 
   return (

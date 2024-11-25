@@ -25,12 +25,14 @@ NEXT_PUBLIC_BASE_URL_API=http://127.0.0.1:8000
 NEXT_PUBLIC_MAPTILER_API_KEY=
 NEXT_PUBLIC_MAPTILER_MAP=https://api.maptiler.com/maps/nl-cartiqo-topo
 NEXT_PUBLIC_PDOK_URL_API=https://api.pdok.nl/bzk/locatieserver/
+NEXT_PUBLIC_MAPTILER_MAP_DARK_MODE=https://api.maptiler.com/maps/streets-v2-dark
 ```
 
 Customize the `.env` configuration file for yourself:
 
 - `NEXT_PUBLIC_MAPTILER_API_KEY`: visit the MapTiler website and create a free account. Login to go to the [API Keys page for MapTiler Cloud](https://cloud.maptiler.com/account/keys/). Create a new key for your development computer. Allow `localhost` as origin. Copy the key and assign it to `NEXT_PUBLIC_MAPTILER_API_KEY` in `.env`.
 - `NEXT_PUBLIC_MAPTILER_MAP`: go the to [Maps page for MapTiler Cloud](https://cloud.maptiler.com/maps/) and either pick an existing map or create a new map. Copy the first part of the "Use vector style" URL, everything before `/style.json?key=`. Assign that first part of the URL to `NEXT_PUBLIC_MAPTILER_MAP`.
+- Users can specify a different map theme for dark mode, which is triggered when the browser's preferred style theme is set to dark. To implement this, set the `NEXT_PUBLIC_MAPTILER_MAP_DARK_MODE` environment variable to the desired dark mode theme.
 
 Then start the Next.js development server:
 
