@@ -30,6 +30,7 @@ const PreviewFile = ({ file, allowDelete = false, onDelete }: Props) => {
       {allowDelete && (
         <button
           onClick={onDelete}
+          type="button"
           aria-label={t('button.delete_file', { file: file.name })}
           className="absolute bottom-0 right-0 w-full flex justify-center items-center py-2"
         >

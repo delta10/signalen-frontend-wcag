@@ -26,6 +26,7 @@ const IncidentContactForm = () => {
   const router = useRouter()
   const pathname = usePathname()
   const step = getCurrentStep(pathname)
+  const MAX_LENGTH_PHONE_NUMBER = 17
 
   useEffect(() => {
     router.prefetch('/incident/summary')
@@ -34,14 +35,22 @@ const IncidentContactForm = () => {
   const incidentContactFormSchema = z.object({
     phone: z
       .string()
-      .refine(
-        (value) => value == '' || validator.isMobilePhone(value),
-        t('errors.number_not_valid')
-      )
+      .trim()
       .nullable()
-      .optional(),
+      .optional()
+      .refine(
+        (value) => !value || value.length < MAX_LENGTH_PHONE_NUMBER,
+        t('errors.number_exceeds_max_characters', {
+          maxLength: MAX_LENGTH_PHONE_NUMBER,
+        })
+      )
+      .refine(
+        (value) => !value || RegExp('^[ ()0-9+-]*$').test(value),
+        t('errors.number_invalid_character')
+      ),
     email: z
       .string()
+      .trim()
       .refine(
         (value) => value == '' || validator.isEmail(value),
         t('errors.email_not_valid')
@@ -63,8 +72,8 @@ const IncidentContactForm = () => {
   const onSubmit = () => {
     updateForm({
       ...formState,
-      email: form.getValues('email'),
-      phone: form.getValues('phone'),
+      email: form.getValues('email')?.trim(),
+      phone: form.getValues('phone')?.trim(),
       sharing_allowed: form.getValues('sharing_allowed'),
     })
 
