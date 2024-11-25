@@ -10,18 +10,35 @@ import {
   LinkButton,
   Fieldset,
   FieldsetLegend,
+  FormField,
+  Textbox,
+  ListboxOptionProps,
+  ButtonGroup,
 } from '@/components/index'
 import { useFormStore } from '@/store/form_store'
-import { getNearestAddressByCoordinate } from '@/services/location/address'
+import {
+  getNearestAddressByCoordinate,
+  getSuggestedAddresses,
+} from '@/services/location/address'
 import { useConfig } from '@/hooks/useConfig'
 import { isCoordinates } from '@/lib/utils/map'
 import { useTranslations } from 'next-intl'
 import { FormFieldErrorMessage } from '@/components'
+import { getServerConfig } from '@/services/config/config'
 
 export interface LocationSelectProps {
   field?: PublicQuestion
 }
 
+const normalizeQuery = (str: string) => str.trim().replace(/\s+/, ' ')
+
+const parsePoint = (str: string): [number, number] | undefined => {
+  const match = /POINT\((\d+(?:\.\d+)?)\s+(\d+(?:\.\d+)?)\)/i.exec(str)
+
+  if (match) {
+    return [parseFloat(match[1]), parseFloat(match[2])]
+  }
+}
 export const LocationSelect = ({ field }: LocationSelectProps) => {
   const {
     formState: { errors },
@@ -31,6 +48,37 @@ export const LocationSelect = ({ field }: LocationSelectProps) => {
   const [address, setAddress] = useState<string | null>(null)
   const { config } = useConfig()
   const t = useTranslations('describe-add.map')
+  const [addressOptions, setAddressOptions] = useState<ListboxOptionProps[]>([])
+  const [addressFilter, setAddressFilter] = useState('')
+
+  const addressLookup = async (query: string) => {
+    const municipality = (await getServerConfig())['base']['municipality']
+    const normalizedQuery = normalizeQuery(query)
+
+    setAddressOptions([])
+
+    if (query.length >= 1) {
+      console.log(normalizedQuery)
+      const apiCall = await getSuggestedAddresses(normalizedQuery, municipality)
+
+      console.log(apiCall.response.docs)
+      // TODO: Prevent out-of-order responses showing up
+      const options = apiCall.response.docs.map((item) => ({
+        children: item.weergavenaam,
+        value: item.weergavenaam,
+        coordinates: parsePoint(item.centroide_ll),
+      }))
+      console.log('setAddressOptions', options)
+      setAddressOptions(options)
+    } else {
+      console.log('no query')
+    }
+  }
+  // TODO: Limit API calls to once every 250ms
+
+  useEffect(() => {
+    addressLookup(addressFilter)
+  }, [addressFilter])
 
   useEffect(() => {
     const getAddress = async () => {
@@ -72,6 +120,34 @@ export const LocationSelect = ({ field }: LocationSelectProps) => {
         <FormFieldErrorMessage>{errorMessage}</FormFieldErrorMessage>
       )}
 
+      <FormField
+        label={t('address_search_label')}
+        input={
+          <Textbox
+            name="address"
+            defaultValue={addressFilter}
+            onChange={(evt: any) => setAddressFilter(evt.target.value)}
+          />
+        }
+      ></FormField>
+      {Array.isArray(addressOptions) && (
+        <ButtonGroup>
+          {addressOptions.map((option: any, index) => {
+            return (
+              <Button
+                appearance="secondary-action"
+                key={index}
+                onClick={() => {
+                  console.log('Go to: ', option.coordinates)
+                  setAddressFilter(option.value)
+                }}
+              >
+                {option.children}
+              </Button>
+            )
+          })}
+        </ButtonGroup>
+      )}
       <div className="relative w-full">
         <div style={{ minHeight: 200, height: 200 }}>
           <LocationMap />
