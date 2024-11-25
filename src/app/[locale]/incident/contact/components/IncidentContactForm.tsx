@@ -26,6 +26,7 @@ const IncidentContactForm = () => {
   const router = useRouter()
   const pathname = usePathname()
   const step = getCurrentStep(pathname)
+  const MAX_LENGTH_PHONE_NUMBER = 17
 
   useEffect(() => {
     router.prefetch('/incident/summary')
@@ -38,8 +39,10 @@ const IncidentContactForm = () => {
       .nullable()
       .optional()
       .refine(
-        (value) => !value || value.length <= 17,
-        t('errors.number_exceeds_max_characters')
+        (value) => !value || value.length < MAX_LENGTH_PHONE_NUMBER,
+        t('errors.number_exceeds_max_characters', {
+          maxLength: MAX_LENGTH_PHONE_NUMBER,
+        })
       )
       .refine(
         (value) => !value || RegExp('^[ ()0-9+-]*$').test(value),
