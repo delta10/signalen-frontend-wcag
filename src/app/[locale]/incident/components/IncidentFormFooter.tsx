@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { Button, ButtonGroup } from '@/components/index'
 import { usePathname, useRouter } from '@/routing/navigation'
@@ -8,6 +8,7 @@ import { ImSpinner8 } from 'react-icons/im'
 import { FieldErrors } from 'react-hook-form'
 import { getCurrentStep, getPreviousStepPath } from '@/lib/utils/stepper'
 import { FormStep } from '@/types/form'
+import { AlertText } from '@/components/ui/LiveText'
 
 type IncidentFormFooterProps = {
   handleSignalSubmit?: () => void
@@ -34,6 +35,7 @@ const IncidentFormFooter = ({
     }
   }
 
+  const [busy, setBusy] = useState(false)
   return (
     <>
       <ButtonGroup>
@@ -65,6 +67,14 @@ const IncidentFormFooter = ({
           </Button>
         )}
       </ButtonGroup>
+      <Button
+        onClick={() => {
+          setBusy(true)
+        }}
+      >
+        Go
+      </Button>
+      {busy && <AlertText>Bezig met laden</AlertText>}
     </>
   )
 }

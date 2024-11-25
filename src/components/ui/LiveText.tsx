@@ -1,6 +1,6 @@
 'use client'
 
-import { HTMLAttributes, PropsWithChildren, useState } from 'react'
+import { HTMLAttributes, PropsWithChildren, useEffect, useState } from 'react'
 
 export interface LiveTextProps extends HTMLAttributes<HTMLSpanElement> {
   delay?: number
@@ -13,9 +13,14 @@ const LiveText = ({
 }: PropsWithChildren<LiveTextProps>) => {
   const [delayComplete, setDelayComplete] = useState(false)
 
-  setTimeout(() => {
-    setDelayComplete(true)
-  }, delay)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDelayComplete(true)
+    }, delay)
+
+    return () => clearTimeout(timer)
+  }, [delay])
+
   return delayComplete ? (
     <span {...restProps}>
       <span role="alert">{children}</span>
