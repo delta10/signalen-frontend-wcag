@@ -58,7 +58,8 @@
       "describe_mail_input_heading": "Wat is uw e-mailadres?",
       "describe_checkbox_input_description": "Ja, ik geef de gemeente Amsterdam toestemming om mijn melding door te sturen naar andere organisaties als de melding niet voor de gemeente is bestemd.",
       "errors": {
-        "number_not_valid": "Gebruik een geldig telefoonnummer",
+        "number_exceeds_max_characters": "U heeft meer dan de maximale 17 tekens ingevoerd.",
+        "number_invalid_character": "Ongeldig telefoonnummer, alleen cijfers, spaties, haakjes, + en - zijn toegestaan.",
         "email_not_valid": "Vul een geldig e-mailadres in, met een @ en een domeinnaam. Bijvoorbeeld: naam@domein.nl"
       },
       "not_required_short": "niet verplicht"

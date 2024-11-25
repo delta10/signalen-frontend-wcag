@@ -34,12 +34,16 @@ const IncidentContactForm = () => {
   const incidentContactFormSchema = z.object({
     phone: z
       .string()
-      .refine(
-        (value) => value == '' || validator.isMobilePhone(value),
-        t('errors.number_not_valid')
-      )
       .nullable()
-      .optional(),
+      .optional()
+      .refine(
+        (value) => !value || value.length <= 17,
+        t('errors.number_exceeds_max_characters')
+      )
+      .refine(
+        (value) => !value || RegExp('^[ ()0-9+-]*$').test(value),
+        t('errors.number_invalid_character')
+      ),
     email: z
       .string()
       .refine(

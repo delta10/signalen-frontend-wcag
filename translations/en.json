@@ -58,7 +58,8 @@
       "describe_mail_input_heading": "What is your e-mail address?",
       "describe_checkbox_input_description": "Yes, I give the Municipality of Amsterdam permission to forward my report to other organizations if the report is not intended for the Municipality.",
       "errors": {
-        "number_not_valid": "Use a valid telephone number",
+        "number_exceeds_max_characters": "You have entered more than the maximum 17 characters.",
+        "number_invalid_character": "Invalid phone number, only digits, spaces, brackets, + and - are allowed.",
         "email_not_valid": "Enter a valid email address, with an @ and a domain name. For example: naam@domein.nl"
       },
       "not_required_short": "not required"
