@@ -37,6 +37,8 @@ import { Feature, FeatureCollection } from 'geojson'
 import { PublicQuestion } from '@/types/form'
 import { FeatureListItem } from '@/app/[locale]/incident/add/components/FeatureListItem'
 import { useFormContext } from 'react-hook-form'
+import { AddressCombobox } from '@/components/ui/AddressCombobox'
+import { AddressComboboxValue } from '@/types/map'
 
 type MapDialogProps = {
   trigger: React.ReactElement
@@ -54,6 +56,8 @@ const MapDialog = ({
   isAssetSelect = false,
 }: MapDialogProps) => {
   const t = useTranslations('describe-add.map')
+  const [selectedAddress, setSelectedAddress] =
+    useState<AddressComboboxValue>(null)
   const [marker, setMarker] = useState<[number, number] | []>([])
   const [error, setError] = useState<string | null>(null)
   const { formState, updateForm } = useFormStore()
@@ -283,6 +287,16 @@ const MapDialog = ({
     return []
   }, [formState.selectedFeatures, mapFeatures?.features, dialogMap?.getZoom()])
 
+  // if selectedAddress changes, fly to current address
+  useEffect(() => {
+    if (dialogMap && selectedAddress) {
+      updatePosition(
+        selectedAddress.coordinates[1],
+        selectedAddress.coordinates[0]
+      )
+    }
+  }, [selectedAddress])
+
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
@@ -319,6 +333,10 @@ const MapDialog = ({
                   ? field.meta.language.title
                   : t('map_heading')}
               </Heading>
+              <AddressCombobox
+                address={selectedAddress}
+                setSelectedAddress={setSelectedAddress}
+              />
               {isAssetSelect &&
                 dialogMap &&
                 config &&
