@@ -134,7 +134,7 @@
     "file": {
       "preview": "Preview image of file: {file}"
     },
-    "loading": "Loading"
+    "loading": "Loading..."
   },
   "routing": {
     "notifications-map": "/notifications-map",
