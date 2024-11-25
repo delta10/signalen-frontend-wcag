@@ -1,16 +1,15 @@
 import React, {
-  ButtonHTMLAttributes,
   PropsWithChildren,
   forwardRef,
   ForwardedRef,
   useId,
+  ReactNode,
 } from 'react'
-import { Button, Icon } from '@/components/index'
+import { Button, ButtonProps, Icon } from '@/components/index'
 import clsx from 'clsx'
 
-export interface IconButtonProps
-  extends ButtonHTMLAttributes<HTMLButtonElement> {
-  label: any
+export interface IconButtonProps extends ButtonProps {
+  label: ReactNode
 }
 
 export const IconButton = forwardRef(
