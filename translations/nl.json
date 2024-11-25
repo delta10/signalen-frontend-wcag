@@ -134,7 +134,7 @@
     "file": {
       "preview": "Voorbeeld weergave van bestand: {file} "
     },
-    "loading": "Laden"
+    "loading": "Laden..."
   },
   "routing": {
     "notifications-map": "/meldingen-kaart",
