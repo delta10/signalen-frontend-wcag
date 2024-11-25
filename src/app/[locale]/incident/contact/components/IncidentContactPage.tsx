@@ -8,6 +8,7 @@ import FormProgress from '@/app/[locale]/components/FormProgress'
 import { getLastPath } from '@/lib/utils/stepper'
 import { useEffect } from 'react'
 import { redirect } from 'next/navigation'
+import { FormStep } from '@/types/form'
 
 const currentStep = 3
 const maxStep = 4
@@ -18,7 +19,7 @@ export const IncidentContactPage = () => {
   const { loaded, formState } = useFormStore()
 
   useEffect(() => {
-    if (loaded && formState.last_completed_step < 2) {
+    if (loaded && formState.last_completed_step < FormStep.STEP_2_ADD) {
       const lastPath = getLastPath(formState.last_completed_step)
 
       if (lastPath) {
