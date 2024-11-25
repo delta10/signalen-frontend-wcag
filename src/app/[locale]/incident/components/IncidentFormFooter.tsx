@@ -67,14 +67,6 @@ const IncidentFormFooter = ({
           </Button>
         )}
       </ButtonGroup>
-      <Button
-        onClick={() => {
-          setBusy(true)
-        }}
-      >
-        Go
-      </Button>
-      {busy && <AlertText>Bezig met laden</AlertText>}
     </>
   )
 }
