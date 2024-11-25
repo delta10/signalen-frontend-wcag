@@ -39,7 +39,7 @@ export const IncidentDescriptionForm = () => {
   }, [router])
 
   const incidentDescriptionFormSchema = z.object({
-    description: z.string().min(1, t('errors.textarea_required')),
+    description: z.string().trim().min(1, t('errors.textarea_required')),
     files: z
       .array(z.instanceof(File))
       .refine(

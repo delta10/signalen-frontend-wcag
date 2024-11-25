@@ -34,6 +34,7 @@ const IncidentContactForm = () => {
   const incidentContactFormSchema = z.object({
     phone: z
       .string()
+      .trim()
       .nullable()
       .optional()
       .refine(
@@ -46,6 +47,7 @@ const IncidentContactForm = () => {
       ),
     email: z
       .string()
+      .trim()
       .refine(
         (value) => value == '' || validator.isEmail(value),
         t('errors.email_not_valid')
@@ -67,8 +69,8 @@ const IncidentContactForm = () => {
   const onSubmit = () => {
     updateForm({
       ...formState,
-      email: form.getValues('email'),
-      phone: form.getValues('phone'),
+      email: form.getValues('email')?.trim(),
+      phone: form.getValues('phone')?.trim(),
       sharing_allowed: form.getValues('sharing_allowed'),
     })
 

@@ -169,31 +169,28 @@ const IncidentSummaryForm = () => {
             {t('steps.step_three.edit')}
           </NextLinkWrapper>
         </div>
-        {formState.phone === '' ||
-        (formState.phone === undefined && formState.email === '') ||
-        (formState.email === undefined &&
-          formState.sharing_allowed === false) ? (
+        {!formState.phone && !formState.email && !formState.sharing_allowed ? (
           <Paragraph>{t('steps.step_three.no_contact_details')}</Paragraph>
         ) : (
           <>
-            {formState.phone !== undefined && formState.phone !== null ? (
+            {formState.phone && (
               <IncidentSummaryFormItem
                 title={t('steps.step_three.input_telephone_heading')}
                 value={formState.phone}
               />
-            ) : null}
-            {formState.email !== undefined && formState.email !== null ? (
+            )}
+            {formState.email && (
               <IncidentSummaryFormItem
                 title={t('steps.step_three.input_mail_heading')}
                 value={formState.email}
               />
-            ) : null}
-            {formState.sharing_allowed ? (
+            )}
+            {formState.sharing_allowed && (
               <IncidentSummaryFormItem
                 title={t('steps.step_three.input_sharing_heading')}
                 value={t('steps.step_three.input_sharing_allowed')}
               />
-            ) : null}
+            )}
           </>
         )}
       </div>
