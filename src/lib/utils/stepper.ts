@@ -12,3 +12,7 @@ export const getNextStepPath = (currentStep: FormStep): Paths | null => {
 export const getPreviousStepPath = (currentStep: FormStep): Paths | null => {
   return stepToPath[currentStep - 1] ? stepToPath[currentStep - 1] : null
 }
+
+export const getLastPath = (lastStep: FormStep): Paths => {
+  return stepToPath[lastStep] ? stepToPath[lastStep] : '/incident'
+}

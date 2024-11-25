@@ -66,6 +66,7 @@ const IncidentContactForm = () => {
       email: form.getValues('email'),
       phone: form.getValues('phone'),
       sharing_allowed: form.getValues('sharing_allowed'),
+      last_completed_step: Math.max(formState.last_completed_step, step),
     })
 
     const nextStep = getNextStepPath(step)

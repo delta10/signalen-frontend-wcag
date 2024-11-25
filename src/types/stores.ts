@@ -3,6 +3,7 @@ import { Address } from '@/types/form'
 
 type FormStoreState = {
   description: string
+  last_completed_step: number
   main_category: string
   sub_category: string
   coordinates: number[]

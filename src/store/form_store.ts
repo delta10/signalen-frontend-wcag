@@ -17,6 +17,7 @@ const initialFormState: FormStoreState = {
   selectedFeatures: [],
   sig_number: '',
   address: null,
+  last_completed_step: 0,
 }
 
 const useFormStore = create<FormStore>()(

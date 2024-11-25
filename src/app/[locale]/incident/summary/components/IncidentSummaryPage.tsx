@@ -5,6 +5,9 @@ import { useFormStore } from '@/store/form_store'
 import { Heading, HeadingGroup, PreHeading } from '@/components'
 import { IncidentSummaryForm } from '@/app/[locale]/incident/summary/components/IncidentSummaryForm'
 import FormProgress from '@/app/[locale]/components/FormProgress'
+import { getLastPath } from '@/lib/utils/stepper'
+import { useEffect } from 'react'
+import { redirect } from 'next/navigation'
 
 const currentStep = 4
 const maxStep = 4
@@ -12,7 +15,17 @@ const maxStep = 4
 export const IncidentSummaryPage = () => {
   const t = useTranslations('describe-summary')
   const tGeneral = useTranslations('general.describe_form')
-  const { loaded } = useFormStore()
+  const { loaded, formState } = useFormStore()
+
+  useEffect(() => {
+    if (loaded && formState.last_completed_step < 3) {
+      const lastPath = getLastPath(formState.last_completed_step)
+
+      if (lastPath) {
+        redirect(lastPath)
+      }
+    }
+  }, [loaded, formState])
 
   if (loaded) {
     return (
