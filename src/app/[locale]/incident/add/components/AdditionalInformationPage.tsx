@@ -5,6 +5,10 @@ import { useFormStore } from '@/store/form_store'
 import { Heading, HeadingGroup, PreHeading } from '@/components'
 import { IncidentQuestionsLocationForm } from '@/app/[locale]/incident/add/components/IncidentQuestionsLocationForm'
 import FormProgress from '@/app/[locale]/components/FormProgress'
+import { getLastPath } from '@/lib/utils/stepper'
+import { useEffect } from 'react'
+import { redirect } from 'next/navigation'
+import { FormStep } from '@/types/form'
 
 const currentStep = 2
 const maxStep = 4
@@ -12,7 +16,17 @@ const maxStep = 4
 export const AdditionalInformationPage = () => {
   const t = useTranslations('describe-add')
   const tGeneral = useTranslations('general.describe_form')
-  const { loaded } = useFormStore()
+  const { loaded, formState } = useFormStore()
+
+  useEffect(() => {
+    if (loaded && formState.last_completed_step < FormStep.STEP_1_DESCRIPTION) {
+      const lastPath = getLastPath(formState.last_completed_step)
+
+      if (lastPath) {
+        redirect(lastPath)
+      }
+    }
+  }, [loaded, formState])
 
   if (loaded) {
     return (

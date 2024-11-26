@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl'
 import { Divider } from '@/components/ui/Divider'
 import React, { useEffect, useState } from 'react'
 import { signalsClient } from '@/services/client/api-client'
-import { stepToPath, useRouter } from '@/routing/navigation'
+import { stepToPath, usePathname, useRouter } from '@/routing/navigation'
 import { postAttachments } from '@/services/attachment/attachments'
 import { useFormStore } from '@/store/form_store'
 import { _NestedLocationModel } from '@/services/client'
@@ -15,6 +15,7 @@ import { SubmitAlert } from '@/app/[locale]/incident/summary/components/SubmitAl
 import { NextLinkWrapper } from '@/components/ui/NextLinkWrapper'
 import { FormStep } from '@/types/form'
 import { LocationMap } from '@/components/ui/LocationMap'
+import { getCurrentStep } from '@/lib/utils/stepper'
 
 const IncidentSummaryForm = () => {
   const t = useTranslations('describe-summary')
@@ -22,6 +23,8 @@ const IncidentSummaryForm = () => {
   const router = useRouter()
   const [error, setError] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
+  const pathname = usePathname()
+  const step = getCurrentStep(pathname)
 
   useEffect(() => {
     router.prefetch('/incident/thankyou')
@@ -69,7 +72,11 @@ const IncidentSummaryForm = () => {
       })
 
       // Set SIG number
-      updateForm({ ...formState, sig_number: res.id_display })
+      updateForm({
+        ...formState,
+        sig_number: res.id_display,
+        last_completed_step: Math.max(formState.last_completed_step, step),
+      })
 
       if (formState.attachments.length > 0) {
         const signalId = res.signal_id

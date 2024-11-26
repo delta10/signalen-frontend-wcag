@@ -134,6 +134,7 @@ export const IncidentQuestionsLocationForm = () => {
     updateForm({
       ...formStoreState,
       extra_properties: answers,
+      last_completed_step: Math.max(formStoreState.last_completed_step, step),
     })
 
     const nextStep = getNextStepPath(step)

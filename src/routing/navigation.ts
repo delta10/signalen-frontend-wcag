@@ -1,5 +1,5 @@
-import { createLocalizedPathnamesNavigation } from 'next-intl/navigation'
-import { Pathnames } from 'next-intl/routing'
+import { createNavigation } from 'next-intl/navigation'
+import { defineRouting, Pathnames } from 'next-intl/routing'
 import { getAllAvailableLocales } from '@/lib/utils/locale'
 import { FormStep } from '@/types/form'
 
@@ -29,6 +29,13 @@ export const pathnames = {
   },
 } satisfies Pathnames<typeof locales>
 
+export const routing = defineRouting({
+  locales: locales,
+  defaultLocale: 'en',
+
+  pathnames: { ...pathnames },
+})
+
 type Paths = keyof typeof pathnames
 
 export const stepToPath: { [key: number]: Paths } = {
@@ -47,7 +54,7 @@ export const pathToStep: { [key: string]: FormStep } = {
   '/incident/thankyou': FormStep.STEP_5_THANK_YOU,
 }
 
-export const { Link, redirect, usePathname, useRouter, getPathname } =
-  createLocalizedPathnamesNavigation({ locales, pathnames })
+export const { Link, redirect, usePathname, useRouter } =
+  createNavigation(routing)
 
 export type { Paths }
