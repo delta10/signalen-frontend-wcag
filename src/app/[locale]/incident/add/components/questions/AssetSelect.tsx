@@ -1,7 +1,7 @@
 import { LocationMap } from '@/components/ui/LocationMap'
 import { MapDialog } from '@/app/[locale]/incident/add/components/MapDialog'
 import { PublicQuestion } from '@/types/form'
-import { MapProvider, MapRef, useMap } from 'react-map-gl/maplibre'
+import { MapProvider, MapRef } from 'react-map-gl/maplibre'
 import { useFormContext } from 'react-hook-form'
 import React, { useEffect, useState } from 'react'
 import {
@@ -12,7 +12,6 @@ import {
   FieldsetLegend,
 } from '@/components/index'
 import { useFormStore } from '@/store/form_store'
-import { getNearestAddressByCoordinate } from '@/services/location/address'
 import { useConfig } from '@/hooks/useConfig'
 import { isCoordinates } from '@/lib/utils/map'
 import { useTranslations } from 'next-intl'
@@ -29,40 +28,11 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
     formState: { errors },
   } = useFormContext()
   const errorMessage = errors['location']?.message as string
-  const { formState: formStoreState, updateForm } = useFormStore()
-  const [address, setAddress] = useState<string | null>(null)
+  const { formState: formStoreState } = useFormStore()
   const { config } = useConfig()
   const t = useTranslations('describe-add.map')
   const [dialogMap, setDialogMap] = useState<MapRef | null>(null)
   const [features, setFeatures] = useState<FeatureCollection | null>(null)
-
-  useEffect(() => {
-    const getAddress = async () => {
-      const result = await getNearestAddressByCoordinate(
-        formStoreState.coordinates[0],
-        formStoreState.coordinates[1],
-        config ? config.base.map.find_address_in_distance : 30
-      )
-
-      if (result) {
-        setAddress(result.weergavenaam)
-        updateForm({
-          ...formStoreState,
-          address: {
-            postcode: result.postcode,
-            huisnummer: result.huis_nlt,
-            woonplaats: result.woonplaatsnaam,
-            openbare_ruimte: result.straatnaam,
-            weergave_naam: result.weergavenaam,
-          },
-        })
-      } else {
-        setAddress(null)
-      }
-    }
-
-    getAddress()
-  }, [formStoreState.coordinates])
 
   const onMapReady = (map: MapRef) => {
     setDialogMap(map)
@@ -123,7 +93,7 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
         <div style={{ minHeight: 200, height: 200 }}>
           <LocationMap />
         </div>
-        <Paragraph>{address}</Paragraph>
+        <Paragraph>{formStoreState.address?.weergave_naam}</Paragraph>
         {formStoreState.selectedFeatures.map((feature: any) => (
           <Paragraph key={feature.id}>{feature.description}</Paragraph>
         ))}

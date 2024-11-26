@@ -132,6 +132,48 @@ const MapDialog = ({
     }
   }, [features])
 
+  // On selectedAddress change set address in formState
+  useEffect(() => {
+    const updateFormWithAddress = async () => {
+      if (!selectedAddress) {
+        updateForm({
+          ...formState,
+          address: null,
+        })
+
+        return
+      }
+
+      try {
+        const [longitude, latitude] = selectedAddress.coordinates
+        const searchRadius = config?.base.map.find_address_in_distance ?? 30
+
+        const result = await getNearestAddressByCoordinate(
+          latitude,
+          longitude,
+          searchRadius
+        )
+
+        updateForm({
+          ...formState,
+          address: result
+            ? {
+                postcode: result.postcode,
+                huisnummer: result.huis_nlt,
+                woonplaats: result.woonplaatsnaam,
+                openbare_ruimte: result.straatnaam,
+                weergave_naam: result.weergavenaam,
+              }
+            : null,
+        })
+      } catch (error) {
+        updateForm({ ...formState, address: null })
+      }
+    }
+
+    updateFormWithAddress()
+  }, [selectedAddress])
+
   // memoize list of features to show in left sidebar
   const featureList = useMemo(() => {
     if (config && dialogMap) {
@@ -230,7 +272,7 @@ const MapDialog = ({
 
     if (address) {
       setSelectedAddress({
-        coordinates: [lat, lng],
+        coordinates: [lng, lat],
         id: address.id,
         weergavenaam: address.weergavenaam,
       })
