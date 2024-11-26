@@ -18,10 +18,10 @@ import { LocationMap } from '@/components/ui/LocationMap'
 import { getCurrentStep } from '@/lib/utils/stepper'
 
 const IncidentSummaryForm = () => {
-  const t = useTranslations('describe-summary')
-  const tStepReport = useTranslations('describe-report')
-  const tStepAdd = useTranslations('describe-add')
-  const tStepContact = useTranslations('describe-contact')
+  const t = useTranslations('describe_summary')
+  const tStepReport = useTranslations('describe_report')
+  const tStepAdd = useTranslations('describe_add')
+  const tStepContact = useTranslations('describe_contact')
   const { updateForm, formState } = useFormStore()
   const router = useRouter()
   const [error, setError] = useState<boolean>(false)

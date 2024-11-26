@@ -21,7 +21,7 @@ import {
 import { getCurrentStep, getNextStepPath } from '@/lib/utils/stepper'
 
 const IncidentContactForm = () => {
-  const t = useTranslations('describe-contact.form')
+  const t = useTranslations('describe_contact.form')
   const tGeneral = useTranslations('general')
   const { updateForm, formState } = useFormStore()
   const router = useRouter()

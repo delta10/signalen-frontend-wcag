@@ -25,7 +25,7 @@ export const FeatureListItem = ({
   dialogRef,
   configUrl,
 }: FeatureListItemProps) => {
-  const t = useTranslations('describe-add.map')
+  const t = useTranslations('describe_add.map')
   const { formState, updateForm } = useFormStore()
 
   const featureId = feature.id

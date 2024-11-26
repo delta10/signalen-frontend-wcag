@@ -32,7 +32,7 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
   const { formState: formStoreState, updateForm } = useFormStore()
   const [address, setAddress] = useState<string | null>(null)
   const { config } = useConfig()
-  const t = useTranslations('describe-add.map')
+  const t = useTranslations('describe_add.map')
   const tGeneral = useTranslations('general')
   const [dialogMap, setDialogMap] = useState<MapRef | null>(null)
   const [features, setFeatures] = useState<FeatureCollection | null>(null)

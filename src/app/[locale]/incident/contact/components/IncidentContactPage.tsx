@@ -14,7 +14,7 @@ const currentStep = 3
 const maxStep = 4
 
 export const IncidentContactPage = () => {
-  const t = useTranslations('describe-contact')
+  const t = useTranslations('describe_contact')
   const tGeneral = useTranslations('general.form')
   const { loaded, formState } = useFormStore()
 
@@ -35,7 +35,7 @@ export const IncidentContactPage = () => {
           <HeadingGroup>
             <Heading level={1}>{t('heading')}</Heading>
             <PreHeading>
-              {tGeneral('pre-heading', { current: currentStep, max: maxStep })}
+              {tGeneral('pre_heading', { current: currentStep, max: maxStep })}
             </PreHeading>
           </HeadingGroup>
         </FormProgress>

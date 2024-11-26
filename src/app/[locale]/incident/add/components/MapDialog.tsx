@@ -54,7 +54,7 @@ const MapDialog = ({
   field,
   isAssetSelect = false,
 }: MapDialogProps) => {
-  const t = useTranslations('describe-add.map')
+  const t = useTranslations('describe_add.map')
   const [marker, setMarker] = useState<[number, number] | []>([])
   const [error, setError] = useState<string | null>(null)
   const { formState, updateForm } = useFormStore()

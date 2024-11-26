@@ -2,7 +2,7 @@
   "homepage": {
     "welcome": "1. Beschrijf uw melding"
   },
-  "describe-report": {
+  "describe_report": {
     "heading": "Beschrijf uw melding",
     "form": {
       "describe_textarea_heading": "Waar gaat het om?",
@@ -16,7 +16,7 @@
       }
     }
   },
-  "describe-add": {
+  "describe_add": {
     "heading": "Locatie en vragen",
     "form": {
       "add_map_heading": "Waar is het?",
@@ -39,7 +39,7 @@
       "map_zoom-out_button_label": "Zoom uit op de kaart"
     }
   },
-  "describe-contact": {
+  "describe_contact": {
     "heading": "Contactgegevens",
     "form": {
       "heading": "Mogen we u bellen voor vragen? En op de hoogte houden via e-mail?",
@@ -58,7 +58,7 @@
       }
     }
   },
-  "describe-summary": {
+  "describe_summary": {
     "heading": "Versturen",
     "description": "Controleer uw gegevens en verstuur uw melding.",
     "edit_step_report": "Wijzig uw melding",
@@ -75,7 +75,7 @@
       }
     }
   },
-  "describe-thankyou": {
+  "describe_thankyou": {
     "heading": "Bedankt!",
     "description_notification_number": "Uw melding is bij ons bekend onder nummer:",
     "description_notification_email": "Hebt u een e-mailadres ingevuld? Dan ontvangt u een e-mail met alle gegevens van uw melding.",
@@ -85,9 +85,9 @@
   },
   "general": {
     "form": {
-      "title-separator": " · ",
-      "title-prefix-error": "Er ging iets fout!",
-      "pre-heading": "Stap {current} van {max}",
+      "title_separator": " · ",
+      "title_prefix_error": "Er ging iets fout!",
+      "pre_heading": "Stap {current} van {max}",
       "back_button": "Vorige",
       "next_button": "Volgende",
       "submit_button": "Verstuur",
@@ -109,14 +109,10 @@
     },
     "loading": "Laden..."
   },
-  "routing": {
-    "notifications-map": "/meldingen-kaart",
-    "incident": "/incident"
-  },
-  "current-organisation": {
+  "current_organisation": {
     "name": "gemeente Utrecht",
-    "homepage-label": "homepage",
-    "logo-label": "Wapen van de gemeente Utrecht"
+    "homepage_label": "homepage",
+    "logo_label": "Wapen van de gemeente Utrecht"
   },
   "footer": {
     "about": "Over deze site",

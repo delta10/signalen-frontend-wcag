@@ -2,7 +2,7 @@
   "homepage": {
     "welcome": "1. Describe your report"
   },
-  "describe-report": {
+  "describe_report": {
     "heading": "Describe your report",
     "form": {
       "describe_textarea_heading": "What is it about?",
@@ -16,7 +16,7 @@
       }
     }
   },
-  "describe-add": {
+  "describe_add": {
     "heading": "Location and questions",
     "form": {
       "add_map_heading": "Where is it?",
@@ -39,7 +39,7 @@
       "map_zoom-out_button_label": "Zoom out on the map"
     }
   },
-  "describe-contact": {
+  "describe_contact": {
     "heading": "Contact details",
     "form": {
       "heading": "May we call you for questions? And keep you informed via e-mail?",
@@ -58,7 +58,7 @@
       }
     }
   },
-  "describe-summary": {
+  "describe_summary": {
     "heading": "Submit",
     "description": "Check your information and submit your report.",
     "edit_step_report": "Edit your report",
@@ -75,7 +75,7 @@
       }
     }
   },
-  "describe-thankyou": {
+  "describe_thankyou": {
     "heading": "Thank you!",
     "description_notification_number": "Your notification is registered with us under number:",
     "description_notification_email": "Did you provide an email address? You will receive an email with all the details of your notification.",
@@ -85,9 +85,9 @@
   },
   "general": {
     "form": {
-      "title-separator": " · ",
-      "title-prefix-error": "Something went wrong!",
-      "pre-heading": "Step {current} of {max}",
+      "title_separator": " · ",
+      "title_prefix_error": "Something went wrong!",
+      "pre_heading": "Step {current} of {max}",
       "back_button": "Back",
       "next_button": "Next",
       "submit_button": "Submit",
@@ -109,14 +109,10 @@
     },
     "loading": "Loading..."
   },
-  "routing": {
-    "notifications-map": "/notifications-map",
-    "incident": "/incident"
-  },
-  "current-organisation": {
+  "current_organisation": {
     "name": "City of Utrecht",
-    "homepage-label": "homepage",
-    "logo-label": "Coat of arms of the city of Utrecht"
+    "homepage_label": "homepage",
+    "logo_label": "Coat of arms of the city of Utrecht"
   },
   "footer": {
     "about": "About",
