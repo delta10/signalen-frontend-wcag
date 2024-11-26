@@ -9,6 +9,10 @@ import { useConfig } from '@/hooks/useConfig'
 import { getSuggestedAddresses } from '@/services/location/address'
 import { AddressComboboxValue } from '@/types/map'
 
+// Import the Select Combobox component for the side-effects of injecting CSS
+// for related components, such as Textbox and Listbox.
+import '@utrecht/select-combobox-react/dist/css'
+
 type AddressComboboxProps = {
   address: AddressComboboxValue
   setSelectedAddress: Dispatch<SetStateAction<AddressComboboxValue>>
@@ -83,20 +87,24 @@ export const AddressCombobox = ({
         aria-label="Adres"
         displayValue={(address: any) => address?.weergavenaam}
         onChange={(event) => setQuery(event.target.value)}
+        className={'utrecht-textbox utrecht-textbox--html'}
+        autoComplete={'off'}
       />
       <ComboboxOptions
         anchor="bottom"
-        className="border empty:invisible z-[1000]"
+        className="utrecht-listbox utrecht-listbox--html-div z-[1000]"
       >
-        {addressOptions.map((address) => (
-          <ComboboxOption
-            key={address.id}
-            value={address}
-            className="group flex gap-2 bg-white data-[focus]:bg-blue-100"
-          >
-            {address.weergavenaam}
-          </ComboboxOption>
-        ))}
+        <div className={'utrecht-listbox__list'}>
+          {addressOptions.map((address) => (
+            <ComboboxOption
+              key={address.id}
+              value={address}
+              className="utrecht-listbox__option data-[focus]:bg-blue-100"
+            >
+              {address.weergavenaam}
+            </ComboboxOption>
+          ))}
+        </div>
       </ComboboxOptions>
     </Combobox>
   )
