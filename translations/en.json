@@ -2,10 +2,6 @@
   "homepage": {
     "welcome": "1. Describe your report"
   },
-  "stepper": {
-    "back": "Back",
-    "step": "Step {currentStep} of {totalSteps}"
-  },
   "describe-report": {
     "heading": "Describe your report",
     "form": {
@@ -14,13 +10,10 @@
       "describe_upload_heading": "Add photos",
       "describe_upload_description": "Add a photo to clarify the situation (maximum of 5 photos).",
       "errors": {
-        "textarea_required": "This is a required field",
         "file_type_invalid": "Invalid file type. Only JPEG, PNG, and GIF are accepted.",
         "file_size_too_large": "File size too large. Each file must be less than 20MB.",
         "file_size_too_small": "File size too small. Each file must be at least 30KB."
-      },
-      "required_short": "required",
-      "not_required_short": "not required"
+      }
     }
   },
   "describe-add": {
@@ -32,7 +25,6 @@
     "map": {
       "map_heading": "Choose your location",
       "map_label": "Where is the location?",
-      "required_short": "required",
       "choose_location": "Use this location",
       "dialog_title": "Choose Location",
       "dialog_description": "Choose a location on the map for the location of your report.",
@@ -61,8 +53,7 @@
         "number_exceeds_max_characters": "You have entered more than the maximum {maxLength} characters.",
         "number_invalid_character": "Invalid phone number, only digits, spaces, brackets, + and - are allowed.",
         "email_not_valid": "Enter a valid email address, with an @ and a domain name. For example: naam@domein.nl"
-      },
-      "not_required_short": "not required"
+      }
     }
   },
   "describe-summary": {
@@ -110,20 +101,19 @@
     "new_notification": "New notification"
   },
   "general": {
-    "describe_form": {
+    "form": {
       "title-separator": " · ",
       "title-prefix-error": "Something went wrong!",
       "pre-heading": "Step {current} of {max}",
       "back_button": "Back",
       "next_button": "Next",
       "submit_button": "Submit",
-      "not-required": "This field is not required."
+      "required_short": "required",
+      "not_required_short": "not required"
     },
     "errors": {
       "required": "This field is required",
       "max_length": "This field has a maximal length of {maxLength} characters",
-      "not_required_short": "not required",
-      "required_short": "required",
       "location_required": "Location is required",
       "is_blocking": "You cannot complete this form any further. Read below the answers where you can, however, submit your report."
     },

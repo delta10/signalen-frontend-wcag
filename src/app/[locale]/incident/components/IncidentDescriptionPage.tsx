@@ -14,7 +14,7 @@ const maxStep = 4
 export const IncidentDescriptionPage = () => {
   const t = useTranslations('describe-report')
   const { loaded } = useFormStore()
-  const tGeneral = useTranslations('general.describe_form')
+  const tGeneral = useTranslations('general.form')
 
   if (loaded) {
     return (

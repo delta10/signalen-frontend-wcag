@@ -32,6 +32,7 @@ export default function LocaleLayout({
   const messages = useMessages()
 
   if (!getAllAvailableLocales().includes(locale as any)) notFound()
+  // todo: hoe gaan we dit dynamisch maken?
   const t = useTranslations('current-organisation')
 
   return (

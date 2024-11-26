@@ -33,6 +33,7 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
   const [address, setAddress] = useState<string | null>(null)
   const { config } = useConfig()
   const t = useTranslations('describe-add.map')
+  const tGeneral = useTranslations('general')
   const [dialogMap, setDialogMap] = useState<MapRef | null>(null)
   const [features, setFeatures] = useState<FeatureCollection | null>(null)
 
@@ -111,8 +112,8 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
     <Fieldset invalid={Boolean(errorMessage)} className="w-full">
       <FieldsetLegend>
         {field
-          ? `${field.meta.label} (${t('required_short')})`
-          : `${t('map_label')} (${t('required_short')})`}
+          ? `${field.meta.label} (${tGeneral('form.required_short')})`
+          : `${t('map_label')} (${tGeneral('form.required_short')})`}
       </FieldsetLegend>
 
       {Boolean(errorMessage) && errorMessage && (

@@ -29,6 +29,7 @@ import { getCurrentStep, getNextStepPath } from '@/lib/utils/stepper'
 
 export const IncidentDescriptionForm = () => {
   const t = useTranslations('describe-report.form')
+  const tGeneral = useTranslations('general')
   const { updateForm, formState } = useFormStore()
   const router = useRouter()
   const pathname = usePathname()
@@ -39,7 +40,7 @@ export const IncidentDescriptionForm = () => {
   }, [router])
 
   const incidentDescriptionFormSchema = z.object({
-    description: z.string().trim().min(1, t('errors.textarea_required')),
+    description: z.string().trim().min(1, tGeneral('errors.required')),
     files: z
       .array(z.instanceof(File))
       .refine(
@@ -136,7 +137,7 @@ export const IncidentDescriptionForm = () => {
       <FormFieldTextarea
         rows={5}
         description={t('describe_textarea_description')}
-        label={`${t('describe_textarea_heading')} (${t('required_short')})`}
+        label={`${t('describe_textarea_heading')} (${tGeneral('form.required_short')})`}
         errorMessage={form.formState.errors.description?.message}
         invalid={Boolean(form.formState.errors.description?.message)}
         required={true}
@@ -144,7 +145,7 @@ export const IncidentDescriptionForm = () => {
       />
 
       <Fieldset invalid={Boolean(form.formState.errors.files?.message)}>
-        <FieldsetLegend>{`${t('describe_textarea_heading')} (${t('not_required_short')})`}</FieldsetLegend>
+        <FieldsetLegend>{`${t('describe_textarea_heading')} (${tGeneral('form.not_required_short')})`}</FieldsetLegend>
 
         <FormFieldDescription>
           {t('describe_upload_description')}

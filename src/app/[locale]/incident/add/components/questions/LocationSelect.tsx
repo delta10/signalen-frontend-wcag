@@ -31,6 +31,7 @@ export const LocationSelect = ({ field }: LocationSelectProps) => {
   const [address, setAddress] = useState<string | null>(null)
   const { config } = useConfig()
   const t = useTranslations('describe-add.map')
+  const tGeneral = useTranslations('general')
 
   useEffect(() => {
     const getAddress = async () => {
@@ -64,8 +65,8 @@ export const LocationSelect = ({ field }: LocationSelectProps) => {
     <Fieldset invalid={Boolean(errorMessage)} className="w-full">
       <FieldsetLegend>
         {field
-          ? `${field.meta.label} (${t('required_short')})`
-          : `${t('map_label')} (${t('required_short')})`}
+          ? `${field.meta.label} (${tGeneral('form.required_short')})`
+          : `${t('map_label')} (${tGeneral('form.required_short')})`}
       </FieldsetLegend>
 
       {Boolean(errorMessage) && errorMessage && (

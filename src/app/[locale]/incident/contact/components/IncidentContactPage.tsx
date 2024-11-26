@@ -15,7 +15,7 @@ const maxStep = 4
 
 export const IncidentContactPage = () => {
   const t = useTranslations('describe-contact')
-  const tGeneral = useTranslations('general.describe_form')
+  const tGeneral = useTranslations('general.form')
   const { loaded, formState } = useFormStore()
 
   useEffect(() => {

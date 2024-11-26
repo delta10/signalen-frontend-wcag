@@ -15,7 +15,7 @@ const maxStep = 4
 
 export const AdditionalInformationPage = () => {
   const t = useTranslations('describe-add')
-  const tGeneral = useTranslations('general.describe_form')
+  const tGeneral = useTranslations('general.form')
   const { loaded, formState } = useFormStore()
 
   useEffect(() => {

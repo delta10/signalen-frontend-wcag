@@ -15,7 +15,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const errorMessage = ''
 
   const t = await getTranslations('describe-report')
-  const tGeneral = await getTranslations('general.describe_form')
+  const tGeneral = await getTranslations('general.form')
 
   return {
     title: createTitle(

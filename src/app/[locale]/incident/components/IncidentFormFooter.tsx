@@ -23,7 +23,7 @@ const IncidentFormFooter = ({
   ariaDescribedById,
   errors,
 }: IncidentFormFooterProps) => {
-  const t = useTranslations('general.describe_form')
+  const t = useTranslations('general.form')
   const pathname = usePathname()
   const router = useRouter()
   const step = getCurrentStep(pathname)

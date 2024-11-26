@@ -12,20 +12,21 @@ export const CheckboxInput = ({ field }: CheckboxInputProps) => {
     formState: { errors },
     register,
   } = useFormContext()
-  const t = useTranslations('general.errors')
+  const tError = useTranslations('general.errors')
+  const tForm = useTranslations('general.form')
 
   const errorMessage = errors[field.key]?.message as string
 
   return (
     <CheckboxGroup
-      label={`${field.meta.label} ${field.required ? `(${t('required_short')})` : `(${t('not_required_short')})`}`}
+      label={`${field.meta.label} ${field.required ? `(${tForm('required_short')})` : `(${tForm('not_required_short')})`}`}
       required={field.required}
       id={`${field.key}`}
       // @ts-ignore
       options={Object.keys(field.meta.values).map((key: string) => {
         return {
           ...register(field.key, {
-            ...getValidators(field, t),
+            ...getValidators(field, tError),
           }),
           label: field.meta.values[key],
           value: key,
