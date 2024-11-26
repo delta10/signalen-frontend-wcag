@@ -24,6 +24,7 @@ export {
   Link,
   Image,
   Logo,
+  LogoImage,
   Paragraph,
   PreHeading,
   Icon,

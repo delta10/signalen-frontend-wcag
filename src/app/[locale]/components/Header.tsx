@@ -1,8 +1,8 @@
 'use client'
 
 import { LanguageSwitch } from '@/app/[locale]/components/LanguageSwitch'
-import { Link, Logo, PageHeader } from '@/components/index'
-import Image from 'next/image'
+import { Link, Logo, LogoImage, PageHeader } from '@/components/index'
+// import Image from 'next/image'
 import { useConfig } from '@/hooks/useConfig'
 
 export interface HeaderProps {
@@ -21,7 +21,7 @@ const Header = ({ homepage, logo }: HeaderProps) => {
 
   const logoElement = (
     <Logo>
-      <Image src={logo.src} alt={logo.label} width={275} height={150} />
+      <LogoImage src={logo.src} alt={logo.label} width={275} height={150} />
     </Logo>
   )
 
