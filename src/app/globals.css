@@ -148,3 +148,8 @@
 .signalen-loading-icon {
   --utrecht-icon-size: var(--basis-size-icon-4xl, 4em);
 }
+
+/* summary */
+.signalen-summary-link {
+  font-family: var(--utrecht-paragraph-font-family);
+}

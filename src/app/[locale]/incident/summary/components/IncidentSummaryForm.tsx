@@ -112,7 +112,10 @@ const IncidentSummaryForm = () => {
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-1 md:flex-row justify-between">
           <Heading level={2}>{t('steps.step_one.title')}</Heading>
-          <NextLinkWrapper href={stepToPath[FormStep.STEP_1_DESCRIPTION]}>
+          <NextLinkWrapper
+            className="signalen-summary-link"
+            href={stepToPath[FormStep.STEP_1_DESCRIPTION]}
+          >
             {t('steps.step_one.edit')}
           </NextLinkWrapper>
         </div>
@@ -131,7 +134,10 @@ const IncidentSummaryForm = () => {
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-1 md:flex-row justify-between">
           <Heading level={2}>{t('steps.step_two.title')}</Heading>
-          <NextLinkWrapper href={stepToPath[FormStep.STEP_2_ADD]}>
+          <NextLinkWrapper
+            className="signalen-summary-link"
+            href={stepToPath[FormStep.STEP_2_ADD]}
+          >
             {t('steps.step_two.edit')}
           </NextLinkWrapper>
         </div>
@@ -172,7 +178,10 @@ const IncidentSummaryForm = () => {
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-1 md:flex-row justify-between">
           <Heading level={2}>{t('steps.step_three.title')}</Heading>
-          <NextLinkWrapper href={stepToPath[FormStep.STEP_3_CONTACT]}>
+          <NextLinkWrapper
+            className="signalen-summary-link"
+            href={stepToPath[FormStep.STEP_3_CONTACT]}
+          >
             {t('steps.step_three.edit')}
           </NextLinkWrapper>
         </div>
