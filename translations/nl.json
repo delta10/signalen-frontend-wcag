@@ -45,7 +45,10 @@
       "go_further_without_selected_object": "Ga verder zonder object",
       "zoom_for_object": "Zoom in om de objecten te zien",
       "map_zoom-in_button_label": "Zoom in op de kaart",
-      "map_zoom-out_button_label": "Zoom uit op de kaart"
+      "map_zoom-out_button_label": "Zoom uit op de kaart",
+      "choose_address_description": "Zoek op adres",
+      "separator": "Of",
+      "use_map_description": "Selecteer een punt op de kaart"
     }
   },
   "describe-contact": {

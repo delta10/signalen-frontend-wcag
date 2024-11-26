@@ -15,6 +15,7 @@ export type AddressSuggestDoc = {
   id: string
   centroide_ll: string
   straatnaam: string
+  postcode: string
 }
 
 export type AddressCoordinateResponse = {

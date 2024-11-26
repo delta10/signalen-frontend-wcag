@@ -38,7 +38,6 @@ import { PublicQuestion } from '@/types/form'
 import { FeatureListItem } from '@/app/[locale]/incident/add/components/FeatureListItem'
 import { useFormContext } from 'react-hook-form'
 import { AddressCombobox } from '@/components/ui/AddressCombobox'
-import { AddressComboboxValue } from '@/types/map'
 
 type MapDialogProps = {
   trigger: React.ReactElement
@@ -56,8 +55,6 @@ const MapDialog = ({
   isAssetSelect = false,
 }: MapDialogProps) => {
   const t = useTranslations('describe-add.map')
-  const [selectedAddress, setSelectedAddress] =
-    useState<AddressComboboxValue>(null)
   const [marker, setMarker] = useState<[number, number] | []>([])
   const [error, setError] = useState<string | null>(null)
   const { formState, updateForm } = useFormStore()
@@ -131,48 +128,6 @@ const MapDialog = ({
       setMapFeatures({ ...features, features: featuresWithId })
     }
   }, [features])
-
-  // On selectedAddress change set address in formState
-  useEffect(() => {
-    const updateFormWithAddress = async () => {
-      if (!selectedAddress) {
-        updateForm({
-          ...formState,
-          address: null,
-        })
-
-        return
-      }
-
-      try {
-        const [longitude, latitude] = selectedAddress.coordinates
-        const searchRadius = config?.base.map.find_address_in_distance ?? 30
-
-        const result = await getNearestAddressByCoordinate(
-          latitude,
-          longitude,
-          searchRadius
-        )
-
-        updateForm({
-          ...formState,
-          address: result
-            ? {
-                postcode: result.postcode,
-                huisnummer: result.huis_nlt,
-                woonplaats: result.woonplaatsnaam,
-                openbare_ruimte: result.straatnaam,
-                weergave_naam: result.weergavenaam,
-              }
-            : null,
-        })
-      } catch (error) {
-        updateForm({ ...formState, address: null })
-      }
-    }
-
-    updateFormWithAddress()
-  }, [selectedAddress])
 
   // memoize list of features to show in left sidebar
   const featureList = useMemo(() => {
@@ -270,15 +225,21 @@ const MapDialog = ({
       config ? config.base.map.find_address_in_distance : 30
     )
 
-    if (address) {
-      setSelectedAddress({
-        coordinates: [lng, lat],
-        id: address.id,
-        weergavenaam: address.weergavenaam,
-      })
-    } else {
-      setSelectedAddress(null)
-    }
+    updateForm({
+      ...formState,
+      address: address
+        ? {
+            coordinates: [lng, lat],
+            id: address.id,
+            postcode: address.postcode,
+            huisnummer: address.huis_nlt,
+            woonplaats: address.woonplaatsnaam,
+            openbare_ruimte: address.straatnaam,
+            weergave_naam: address.weergavenaam,
+          }
+        : null,
+      coordinates: [lat, lng],
+    })
   }
 
   // set current location of user
@@ -389,11 +350,7 @@ const MapDialog = ({
                   ? field.meta.language.title
                   : t('map_heading')}
               </Heading>
-              <AddressCombobox
-                address={selectedAddress}
-                setSelectedAddress={setSelectedAddress}
-                updatePosition={updatePosition}
-              />
+              <AddressCombobox updatePosition={updatePosition} />
               {isAssetSelect &&
                 dialogMap &&
                 config &&

@@ -10,11 +10,13 @@ import {
   LinkButton,
   Fieldset,
   FieldsetLegend,
+  FormFieldDescription,
 } from '@/components/index'
 import { useFormStore } from '@/store/form_store'
 import { isCoordinates } from '@/lib/utils/map'
 import { useTranslations } from 'next-intl'
 import { FormFieldErrorMessage } from '@/components'
+import { AddressCombobox } from '@/components/ui/AddressCombobox'
 
 export interface LocationSelectProps {
   field?: PublicQuestion
@@ -40,7 +42,21 @@ export const LocationSelect = ({ field }: LocationSelectProps) => {
         <FormFieldErrorMessage>{errorMessage}</FormFieldErrorMessage>
       )}
 
+      <FormFieldDescription>
+        {t('choose_address_description')}
+      </FormFieldDescription>
+
+      <AddressCombobox />
+
       <div className="relative w-full">
+        <div className="flex w-full flex-row items-center gap-4 my-8">
+          <div className="flex-1 h-0.5 background-gray-200"></div>
+          <Paragraph>{t('separator')}</Paragraph>
+          <div className="flex-1 h-0.5 background-gray-200"></div>
+        </div>
+
+        <FormFieldDescription>{t('use_map_description')}</FormFieldDescription>
+
         <div style={{ minHeight: 200, height: 200 }}>
           <LocationMap />
         </div>

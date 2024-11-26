@@ -4,29 +4,25 @@ import {
   ComboboxOption,
   ComboboxOptions,
 } from '@headlessui/react'
-import { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useConfig } from '@/hooks/useConfig'
 import { getSuggestedAddresses } from '@/services/location/address'
-import { AddressComboboxValue } from '@/types/map'
 
 // Import the Select Combobox component for the side-effects of injecting CSS
 // for related components, such as Textbox and Listbox.
 import '@utrecht/select-combobox-react/dist/css'
+import { useFormStore } from '@/store/form_store'
+import { Address } from '@/types/form'
 
 type AddressComboboxProps = {
-  address: AddressComboboxValue
-  setSelectedAddress: Dispatch<SetStateAction<AddressComboboxValue>>
-  updatePosition: (lat: number, lng: number, flyTo?: boolean) => void
+  updatePosition?: (lat: number, lng: number, flyTo?: boolean) => void
 }
 
-export const AddressCombobox = ({
-  address,
-  setSelectedAddress,
-  updatePosition,
-}: AddressComboboxProps) => {
+export const AddressCombobox = ({ updatePosition }: AddressComboboxProps) => {
   const [query, setQuery] = useState('')
   const { config } = useConfig()
   const [addressOptions, setAddressOptions] = useState<any[]>([])
+  const { formState, updateForm } = useFormStore()
 
   const parsePoint = (str: string): [number, number] | undefined => {
     const match = /POINT\((\d+(?:\.\d+)?)\s+(\d+(?:\.\d+)?)\)/i.exec(str)
@@ -50,9 +46,13 @@ export const AddressCombobox = ({
         )
 
         const options = apiCall.response.docs.map((item) => ({
-          weergavenaam: item.weergavenaam,
           coordinates: parsePoint(item.centroide_ll),
           id: item.id,
+          postcode: item.postcode,
+          huisnummer: item.huis_nlt,
+          woonplaats: item.woonplaatsnaam,
+          openbare_ruimte: item.straatnaam,
+          weergave_naam: item.weergavenaam,
         }))
 
         setAddressOptions(options)
@@ -66,26 +66,29 @@ export const AddressCombobox = ({
     getAddressOptions()
   }, [query])
 
-  const onChangeAddress = (selectedAddress: AddressComboboxValue) => {
-    if (selectedAddress) {
+  const onChangeAddress = (selectedAddress: Address) => {
+    if (selectedAddress && updatePosition) {
       updatePosition(
         selectedAddress.coordinates[1],
         selectedAddress.coordinates[0]
       )
     }
 
-    setSelectedAddress(selectedAddress)
+    updateForm({
+      ...formState,
+      address: selectedAddress,
+    })
   }
 
   return (
     <Combobox
-      value={address}
+      value={formState.address}
       onChange={onChangeAddress}
       onClose={() => setQuery('')}
     >
       <ComboboxInput
         aria-label="Adres"
-        displayValue={(address: any) => address?.weergavenaam}
+        displayValue={(address: any) => address?.weergave_naam}
         onChange={(event) => setQuery(event.target.value)}
         className={'utrecht-textbox utrecht-textbox--html'}
         autoComplete={'off'}
@@ -101,7 +104,7 @@ export const AddressCombobox = ({
               value={address}
               className="utrecht-listbox__option data-[focus]:bg-blue-100"
             >
-              {address.weergavenaam}
+              {address.weergave_naam}
             </ComboboxOption>
           ))}
         </div>
