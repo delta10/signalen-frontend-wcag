@@ -37,6 +37,7 @@ import { Feature, FeatureCollection } from 'geojson'
 import { PublicQuestion } from '@/types/form'
 import { FeatureListItem } from '@/app/[locale]/incident/add/components/FeatureListItem'
 import { useFormContext } from 'react-hook-form'
+import { useDarkMode } from '@/hooks/useDarkMode'
 
 type MapDialogProps = {
   trigger: React.ReactElement
@@ -63,6 +64,7 @@ const MapDialog = ({
   const [isMapSelected, setIsMapSelected] = useState<boolean>(false)
   const [mapFeatures, setMapFeatures] = useState<FeatureCollection | null>()
   const { setValue } = useFormContext()
+  const { isDarkMode } = useDarkMode()
 
   const [viewState, setViewState] = useState<ViewState>({
     latitude: 0,
@@ -283,30 +285,6 @@ const MapDialog = ({
     return []
   }, [formState.selectedFeatures, mapFeatures?.features, dialogMap?.getZoom()])
 
-  const [isDarkMode, setIsDarkMode] = useState(false)
-
-  useEffect(() => {
-    // Note: When dark mode url is not set isDarkMode is always false.
-    if (process.env.NEXT_PUBLIC_MAPTILER_MAP_DARK_MODE) {
-      // Check initial color scheme preference
-      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
-      setIsDarkMode(mediaQuery.matches)
-
-      // Add listener for changes in color scheme preference
-      const handleColorSchemeChange = (e: MediaQueryListEvent) => {
-        setIsDarkMode(e.matches)
-      }
-
-      mediaQuery.addEventListener('change', handleColorSchemeChange)
-
-      // Cleanup listener
-      return () => {
-        mediaQuery.removeEventListener('change', handleColorSchemeChange)
-      }
-    }
-  }, [])
-
-  // Dynamically select map style based on color scheme
   const mapStyle = isDarkMode
     ? `${process.env.NEXT_PUBLIC_MAPTILER_MAP_DARK_MODE}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`
     : `${process.env.NEXT_PUBLIC_MAPTILER_MAP}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`

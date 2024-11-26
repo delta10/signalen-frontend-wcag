@@ -4,10 +4,12 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { useFormStore } from '@/store/form_store'
 import { useConfig } from '@/hooks/useConfig'
 import { MapMarker } from './MapMarker'
+import { useDarkMode } from '@/hooks/useDarkMode'
 
 const LocationMap = () => {
   const { formState } = useFormStore()
   const { config, loading } = useConfig()
+  const { isDarkMode } = useDarkMode()
   const [viewState, setViewState] = useState<ViewState>({
     latitude: 0,
     longitude: 0,
@@ -53,30 +55,6 @@ const LocationMap = () => {
     })
   }, [marker])
 
-  const [isDarkMode, setIsDarkMode] = useState(false)
-
-  useEffect(() => {
-    // Note: When dark mode url is not set isDarkMode is always false.
-    if (process.env.NEXT_PUBLIC_MAPTILER_MAP_DARK_MODE) {
-      // Check initial color scheme preference
-      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
-      setIsDarkMode(mediaQuery.matches)
-
-      // Add listener for changes in color scheme preference
-      const handleColorSchemeChange = (e: MediaQueryListEvent) => {
-        setIsDarkMode(e.matches)
-      }
-
-      mediaQuery.addEventListener('change', handleColorSchemeChange)
-
-      // Cleanup listener
-      return () => {
-        mediaQuery.removeEventListener('change', handleColorSchemeChange)
-      }
-    }
-  }, [])
-
-  // Dynamically select map style based on color scheme
   const mapStyle = isDarkMode
     ? `${process.env.NEXT_PUBLIC_MAPTILER_MAP_DARK_MODE}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`
     : `${process.env.NEXT_PUBLIC_MAPTILER_MAP}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`
