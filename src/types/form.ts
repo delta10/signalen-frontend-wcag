@@ -42,4 +42,5 @@ export interface Address {
   woonplaats: string
   openbare_ruimte: string
   weergave_naam: string | null
+  coordinates: number[]
 }

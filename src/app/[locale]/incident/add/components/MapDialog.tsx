@@ -104,9 +104,53 @@ const MapDialog = ({
     setMarker([formState.coordinates[0], formState.coordinates[1]])
   }, [formState.coordinates])
 
+  // Set dialog map in parent component
+  useEffect(() => {
+    if (dialogMap && onMapReady) {
+      onMapReady(dialogMap)
+    }
+  }, [dialogMap, onMapReady])
+
+  // Set new map features with ID
+  useEffect(() => {
+    if (features && field) {
+      const featuresWithId = features.features.map((feature) => {
+        const featureType = getFeatureType(
+          field.meta.featureTypes,
+          feature.properties
+        )
+
+        return {
+          ...feature,
+          // @ts-ignore
+          id: getFeatureId(featureType, feature.properties),
+          description: getFeatureDescription(featureType, feature.properties),
+        }
+      })
+
+      setMapFeatures({ ...features, features: featuresWithId })
+    }
+  }, [features])
+
+  // memoize list of features to show in left sidebar
+  const featureList = useMemo(() => {
+    if (config && dialogMap) {
+      const mapFeaturesToShow = mapFeatures ? mapFeatures.features : []
+
+      const features =
+        dialogMap?.getZoom() > config.base.map.minimal_zoom
+          ? mapFeaturesToShow
+          : []
+
+      return uniqBy([...features, ...formState.selectedFeatures], 'id')
+    }
+
+    return []
+  }, [formState.selectedFeatures, mapFeatures?.features, dialogMap?.getZoom()])
+
   // Update position, flyTo position, after this set the marker position
-  const updatePosition = (lat: number, lng: number) => {
-    if (dialogMap) {
+  const updatePosition = (lat: number, lng: number, flyTo: boolean = true) => {
+    if (dialogMap && flyTo) {
       dialogMap.flyTo({
         center: [lng, lat],
         speed: 0.5,
@@ -121,8 +165,8 @@ const MapDialog = ({
   // TODO: Reset selectedFeatures if click was right on map? (open for discussion)
   const handleMapClick = (event: MapLayerMouseEvent) => {
     updatePosition(event.lngLat.lat, event.lngLat.lng)
-
     setIsMapSelected(true)
+    setNewSelectedAddress(event.lngLat.lat, event.lngLat.lng)
   }
 
   // Handle click on feature marker, set selectedFeatures and show error if maxNumberOfAssets is reached
@@ -168,6 +212,30 @@ const MapDialog = ({
         // @ts-ignore
         feature.geometry.coordinates[0],
       ])
+      setNewSelectedAddress(
+        // @ts-ignore
+        feature.geometry.coordinates[1],
+        // @ts-ignore
+        feature.geometry.coordinates[0]
+      )
+    }
+  }
+
+  const setNewSelectedAddress = async (lat: number, lng: number) => {
+    const address = await getNearestAddressByCoordinate(
+      lat,
+      lng,
+      config ? config.base.map.find_address_in_distance : 30
+    )
+
+    if (address) {
+      setSelectedAddress({
+        coordinates: [lat, lng],
+        id: address.id,
+        weergavenaam: address.weergavenaam,
+      })
+    } else {
+      setSelectedAddress(null)
     }
   }
 
@@ -201,34 +269,6 @@ const MapDialog = ({
       }
     )
   }
-
-  // Set dialog map in parent component
-  useEffect(() => {
-    if (dialogMap && onMapReady) {
-      onMapReady(dialogMap)
-    }
-  }, [dialogMap, onMapReady])
-
-  // Set new map features with ID
-  useEffect(() => {
-    if (features && field) {
-      const featuresWithId = features.features.map((feature) => {
-        const featureType = getFeatureType(
-          field.meta.featureTypes,
-          feature.properties
-        )
-
-        return {
-          ...feature,
-          // @ts-ignore
-          id: getFeatureId(featureType, feature.properties),
-          description: getFeatureDescription(featureType, feature.properties),
-        }
-      })
-
-      setMapFeatures({ ...features, features: featuresWithId })
-    }
-  }, [features])
 
   // Close map dialog, if isAssetSelect is not set only update formStore with new coordinates. Otherwise update field with type isAssetSelect with feature answers
   const closeMapDialog = async () => {
@@ -271,32 +311,6 @@ const MapDialog = ({
     }
   }
 
-  // memoize list of features to show in left sidebar
-  const featureList = useMemo(() => {
-    if (config && dialogMap) {
-      const mapFeaturesToShow = mapFeatures ? mapFeatures.features : []
-
-      const features =
-        dialogMap?.getZoom() > config.base.map.minimal_zoom
-          ? mapFeaturesToShow
-          : []
-
-      return uniqBy([...features, ...formState.selectedFeatures], 'id')
-    }
-
-    return []
-  }, [formState.selectedFeatures, mapFeatures?.features, dialogMap?.getZoom()])
-
-  // if selectedAddress changes, fly to current address
-  useEffect(() => {
-    if (dialogMap && selectedAddress) {
-      updatePosition(
-        selectedAddress.coordinates[1],
-        selectedAddress.coordinates[0]
-      )
-    }
-  }, [selectedAddress])
-
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
@@ -336,6 +350,7 @@ const MapDialog = ({
               <AddressCombobox
                 address={selectedAddress}
                 setSelectedAddress={setSelectedAddress}
+                updatePosition={updatePosition}
               />
               {isAssetSelect &&
                 dialogMap &&

@@ -37,4 +37,5 @@ export type AddressCoordinateDoc = {
   huis_nlt: string | number
   woonplaatsnaam: string
   straatnaam: string
+  centroide_ll: string
 }

@@ -12,11 +12,13 @@ import { AddressComboboxValue } from '@/types/map'
 type AddressComboboxProps = {
   address: AddressComboboxValue
   setSelectedAddress: Dispatch<SetStateAction<AddressComboboxValue>>
+  updatePosition: (lat: number, lng: number, flyTo?: boolean) => void
 }
 
 export const AddressCombobox = ({
   address,
   setSelectedAddress,
+  updatePosition,
 }: AddressComboboxProps) => {
   const [query, setQuery] = useState('')
   const { config } = useConfig()
@@ -44,7 +46,7 @@ export const AddressCombobox = ({
         )
 
         const options = apiCall.response.docs.map((item) => ({
-          name: item.weergavenaam,
+          weergavenaam: item.weergavenaam,
           coordinates: parsePoint(item.centroide_ll),
           id: item.id,
         }))
@@ -60,15 +62,26 @@ export const AddressCombobox = ({
     getAddressOptions()
   }, [query])
 
+  const onChangeAddress = (selectedAddress: AddressComboboxValue) => {
+    if (selectedAddress) {
+      updatePosition(
+        selectedAddress.coordinates[1],
+        selectedAddress.coordinates[0]
+      )
+    }
+
+    setSelectedAddress(selectedAddress)
+  }
+
   return (
     <Combobox
       value={address}
-      onChange={setSelectedAddress}
+      onChange={onChangeAddress}
       onClose={() => setQuery('')}
     >
       <ComboboxInput
         aria-label="Adres"
-        displayValue={(address: any) => address?.name}
+        displayValue={(address: any) => address?.weergavenaam}
         onChange={(event) => setQuery(event.target.value)}
       />
       <ComboboxOptions
@@ -81,7 +94,7 @@ export const AddressCombobox = ({
             value={address}
             className="group flex gap-2 bg-white data-[focus]:bg-blue-100"
           >
-            {address.name}
+            {address.weergavenaam}
           </ComboboxOption>
         ))}
       </ComboboxOptions>
