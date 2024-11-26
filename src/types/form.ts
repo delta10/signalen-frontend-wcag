@@ -29,6 +29,7 @@ export type FeatureType = {
 }
 
 export enum FormStep {
+  STEP_0 = 0,
   STEP_1_DESCRIPTION = 1,
   STEP_2_ADD = 2,
   STEP_3_CONTACT = 3,
