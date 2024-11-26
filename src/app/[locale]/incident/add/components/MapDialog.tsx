@@ -37,6 +37,7 @@ import { Feature, FeatureCollection } from 'geojson'
 import { PublicQuestion } from '@/types/form'
 import { FeatureListItem } from '@/app/[locale]/incident/add/components/FeatureListItem'
 import { useFormContext } from 'react-hook-form'
+import { useDarkMode } from '@/hooks/useDarkMode'
 
 type MapDialogProps = {
   trigger: React.ReactElement
@@ -63,6 +64,7 @@ const MapDialog = ({
   const [isMapSelected, setIsMapSelected] = useState<boolean>(false)
   const [mapFeatures, setMapFeatures] = useState<FeatureCollection | null>()
   const { setValue } = useFormContext()
+  const { isDarkMode } = useDarkMode()
 
   const [viewState, setViewState] = useState<ViewState>({
     latitude: 0,
@@ -283,6 +285,10 @@ const MapDialog = ({
     return []
   }, [formState.selectedFeatures, mapFeatures?.features, dialogMap?.getZoom()])
 
+  const mapStyle = isDarkMode
+    ? `${process.env.NEXT_PUBLIC_MAPTILER_MAP_DARK_MODE}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`
+    : `${process.env.NEXT_PUBLIC_MAPTILER_MAP}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`
+
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
@@ -366,7 +372,7 @@ const MapDialog = ({
                 onClick={(e) => handleMapClick(e)}
                 onMove={(evt) => setViewState(evt.viewState)}
                 style={{ blockSize: '100%', inlineSize: '100%' }}
-                mapStyle={`${process.env.NEXT_PUBLIC_MAPTILER_MAP}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`}
+                mapStyle={mapStyle}
                 attributionControl={false}
                 maxBounds={config.base.map.maxBounds}
               >

@@ -4,10 +4,12 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { useFormStore } from '@/store/form_store'
 import { useConfig } from '@/hooks/useConfig'
 import { MapMarker } from './MapMarker'
+import { useDarkMode } from '@/hooks/useDarkMode'
 
 const LocationMap = () => {
   const { formState } = useFormStore()
   const { config, loading } = useConfig()
+  const { isDarkMode } = useDarkMode()
   const [viewState, setViewState] = useState<ViewState>({
     latitude: 0,
     longitude: 0,
@@ -53,6 +55,10 @@ const LocationMap = () => {
     })
   }, [marker])
 
+  const mapStyle = isDarkMode
+    ? `${process.env.NEXT_PUBLIC_MAPTILER_MAP_DARK_MODE}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`
+    : `${process.env.NEXT_PUBLIC_MAPTILER_MAP}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`
+
   if (!loading && config) {
     return (
       <Map
@@ -64,7 +70,7 @@ const LocationMap = () => {
         keyboard={false}
         onMove={(evt) => setViewState(evt.viewState)}
         style={{ width: '100%', height: 200 }}
-        mapStyle={`${process.env.NEXT_PUBLIC_MAPTILER_MAP}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`}
+        mapStyle={mapStyle}
         attributionControl={false}
       >
         <Marker latitude={marker[0]} longitude={marker[1]}>
