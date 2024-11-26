@@ -19,6 +19,9 @@ import { getCurrentStep } from '@/lib/utils/stepper'
 
 const IncidentSummaryForm = () => {
   const t = useTranslations('describe-summary')
+  const tStepReport = useTranslations('describe-report')
+  const tStepAdd = useTranslations('describe-add')
+  const tStepContact = useTranslations('describe-contact')
   const { updateForm, formState } = useFormStore()
   const router = useRouter()
   const [error, setError] = useState<boolean>(false)
@@ -111,18 +114,18 @@ const IncidentSummaryForm = () => {
       <Divider />
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-1 md:flex-row justify-between">
-          <Heading level={2}>{t('steps.step_one.title')}</Heading>
+          <Heading level={2}>1. {tStepReport('heading')}</Heading>
           <NextLinkWrapper href={stepToPath[FormStep.STEP_1_DESCRIPTION]}>
-            {t('steps.step_one.edit')}
+            {t('edit_step_report')}
           </NextLinkWrapper>
         </div>
         <IncidentSummaryFormItem
-          title={t('steps.step_one.input_heading')}
+          title={tStepReport('form.describe_textarea_heading')}
           value={formState.description}
         />
         {formState.attachments?.length > 0 && (
           <IncidentSummaryFormAttachments
-            title={t('steps.step_one.upload_images')}
+            title={tStepReport('form.describe_upload_heading')}
             attachments={formState.attachments}
           />
         )}
@@ -130,14 +133,14 @@ const IncidentSummaryForm = () => {
       <Divider />
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-1 md:flex-row justify-between">
-          <Heading level={2}>{t('steps.step_two.title')}</Heading>
+          <Heading level={2}>2. {tStepAdd('heading')}</Heading>
           <NextLinkWrapper href={stepToPath[FormStep.STEP_2_ADD]}>
-            {t('steps.step_two.edit')}
+            {t('edit_step_add')}
           </NextLinkWrapper>
         </div>
 
         <IncidentSummaryFormItem
-          title={t('steps.step_two.input_heading')}
+          title={tStepAdd('form.add_map_heading')}
           value={formState.address?.weergave_naam}
         >
           <div style={{ minHeight: 200, height: 200 }}>
@@ -171,31 +174,31 @@ const IncidentSummaryForm = () => {
       <Divider />
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-1 md:flex-row justify-between">
-          <Heading level={2}>{t('steps.step_three.title')}</Heading>
+          <Heading level={2}>{tStepContact('heading')}</Heading>
           <NextLinkWrapper href={stepToPath[FormStep.STEP_3_CONTACT]}>
-            {t('steps.step_three.edit')}
+            {t('edit_step_contact')}
           </NextLinkWrapper>
         </div>
         {!formState.phone && !formState.email && !formState.sharing_allowed ? (
-          <Paragraph>{t('steps.step_three.no_contact_details')}</Paragraph>
+          <Paragraph>{tStepContact('no_contact_details')}</Paragraph>
         ) : (
           <>
             {formState.phone && (
               <IncidentSummaryFormItem
-                title={t('steps.step_three.input_telephone_heading')}
+                title={tStepContact('form.describe_phone_input_heading')}
                 value={formState.phone}
               />
             )}
             {formState.email && (
               <IncidentSummaryFormItem
-                title={t('steps.step_three.input_mail_heading')}
+                title={tStepContact('form.describe_mail_input_heading')}
                 value={formState.email}
               />
             )}
             {formState.sharing_allowed && (
               <IncidentSummaryFormItem
-                title={t('steps.step_three.input_sharing_heading')}
-                value={t('steps.step_three.input_sharing_allowed')}
+                title={tStepContact('form.sharing_heading_short')}
+                value={tStepContact('form.describe_checkbox_input_description')}
               />
             )}
           </>
@@ -240,7 +243,7 @@ const IncidentSummaryFormAttachments = ({
 }) => {
   return (
     <div className="flex flex-col gap-2">
-      <p className="font-semibold">{title}</p>
+      {title !== '' && <Heading level={3}>{title}</Heading>}
       <div className="flex gap-4 flex-wrap">
         {attachments.map((image, index) => (
           <PreviewFile file={image} key={index} />

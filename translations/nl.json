@@ -49,6 +49,8 @@
       "describe_phone_input_heading": "Wat is uw telefoonnummer?",
       "describe_mail_input_heading": "Wat is uw e-mailadres?",
       "describe_checkbox_input_description": "Ja, ik geef de gemeente Voorbeeld toestemming om mijn melding door te sturen naar andere organisaties als de melding niet voor de gemeente is bestemd.",
+      "sharing_heading_short": "Melding delen",
+      "no_contact_details": "U hebt geen contactgegevens ingevuld. We kunnen u niet laten weten wat wij hebben gedaan met uw melding.",
       "errors": {
         "number_exceeds_max_characters": "U heeft meer dan de maximale {maxLength} tekens ingevoerd.",
         "number_invalid_character": "Ongeldig telefoonnummer, alleen cijfers, spaties, haakjes, + en - zijn toegestaan.",
@@ -59,28 +61,9 @@
   "describe-summary": {
     "heading": "Versturen",
     "description": "Controleer uw gegevens en verstuur uw melding.",
-    "steps": {
-      "step_one": {
-        "title": "1. Beschrijf uw melding",
-        "edit": "Wijzig uw melding",
-        "input_heading": "Waar gaat het over?",
-        "upload_images": "Foto's toevoegen"
-      },
-      "step_two": {
-        "title": "2. Locatie en vragen",
-        "edit": "Wijzig locatie en vragen",
-        "input_heading": "Waar is het?"
-      },
-      "step_three": {
-        "title": "3. Contactgegevens",
-        "edit": "Wijzig contactgegevens",
-        "no_contact_details": "U hebt geen contactgegevens ingevuld. We kunnen u niet laten weten wat wij hebben gedaan met uw melding.",
-        "input_telephone_heading": "Wat is uw telefoonnummer?",
-        "input_mail_heading": "Wat is uw e-mailadres?",
-        "input_sharing_heading": "Melding delen",
-        "input_sharing_allowed": "Ja, ik geef de gemeente Voorbeeld toestemming om mijn melding door te sturen naar andere organisaties als de melding niet voor de gemeente is bestemd."
-      }
-    },
+    "edit_step_report": "Wijzig uw melding",
+    "edit_step_add": "Wijzig locatie en vragen",
+    "edit_step_contact": "Wijzig contactgegevens",
     "submit_alert": {
       "error": {
         "heading": "Versturen mislukt",
