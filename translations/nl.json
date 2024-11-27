@@ -47,8 +47,7 @@
       "map_zoom-in_button_label": "Zoom in op de kaart",
       "map_zoom-out_button_label": "Zoom uit op de kaart",
       "choose_address_description": "Zoek op adres",
-      "separator": "Of",
-      "use_map_description": "Selecteer een punt op de kaart"
+      "use_map_description": "Of selecteer een punt op de kaart"
     }
   },
   "describe-contact": {

@@ -10,6 +10,7 @@ import {
   LinkButton,
   Fieldset,
   FieldsetLegend,
+  FormFieldDescription,
 } from '@/components/index'
 import { useFormStore } from '@/store/form_store'
 import { useConfig } from '@/hooks/useConfig'
@@ -18,6 +19,7 @@ import { useTranslations } from 'next-intl'
 import { FormFieldErrorMessage } from '@/components'
 import { getGeoJsonFeatures } from '@/services/location/features'
 import { FeatureCollection } from 'geojson'
+import { AddressCombobox } from '@/components/ui/AddressCombobox'
 
 export interface AssetSelectProps {
   field?: PublicQuestion
@@ -89,6 +91,15 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
         <FormFieldErrorMessage>{errorMessage}</FormFieldErrorMessage>
       )}
 
+      <FormFieldDescription>
+        {t('choose_address_description')}
+      </FormFieldDescription>
+
+      <div className="mb-4">
+        <AddressCombobox />
+      </div>
+
+      <FormFieldDescription>{t('use_map_description')}</FormFieldDescription>
       <div className="relative w-full">
         <div style={{ minHeight: 200, height: 200 }}>
           <LocationMap />
