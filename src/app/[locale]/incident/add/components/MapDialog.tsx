@@ -94,7 +94,7 @@ const MapDialog = ({
             : formState.coordinates[1],
       })
     }
-  }, [loading, config, formState.coordinates])
+  }, [loading, config])
 
   // Change marker position on formState.coordinates change
   useEffect(() => {
@@ -203,12 +203,6 @@ const MapDialog = ({
       })
 
       setIsMapSelected(false)
-      setMarker([
-        // @ts-ignore
-        feature.geometry.coordinates[1],
-        // @ts-ignore
-        feature.geometry.coordinates[0],
-      ])
       setNewSelectedAddress(
         // @ts-ignore
         feature.geometry.coordinates[1],
