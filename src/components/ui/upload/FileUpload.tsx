@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { IoAddCircleOutline } from 'react-icons/io5'
+import { IconCirclePlus } from '@tabler/icons-react'
 import PreviewFile from '@/components/ui/upload/PreviewFile'
 import { useTranslations } from 'next-intl'
 
