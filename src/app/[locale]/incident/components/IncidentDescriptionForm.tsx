@@ -26,6 +26,7 @@ import {
   FormFieldErrorMessage,
 } from '@/components/index'
 import { getCurrentStep, getNextStepPath } from '@/lib/utils/stepper'
+import { getAttachments } from '@/lib/utils/attachments'
 
 export const IncidentDescriptionForm = () => {
   const t = useTranslations('describe-report.form')
@@ -57,21 +58,11 @@ export const IncidentDescriptionForm = () => {
       }),
   })
 
-  const getAttachments = () => {
-    // When the browser is refreshed the files are not properly stored in the localstorage.
-    // Therefor, we check if the file object is still of type File.
-    const filesArray = formState.attachments.filter(
-      (file) => file instanceof File
-    )
-
-    return filesArray.length > 0 ? filesArray : []
-  }
-
   const form = useForm<z.infer<typeof incidentDescriptionFormSchema>>({
     resolver: zodResolver(incidentDescriptionFormSchema),
     defaultValues: {
       description: formState.description,
-      files: getAttachments(),
+      files: getAttachments(formState),
     },
   })
   const { register, setFocus } = form
