@@ -12,22 +12,29 @@
         "lang": "nl"
       }
     ],
+    "className": "purmerend-theme purmerend-theme--media-query",
+    "naam": "gemeente Purmerend",
+    "header": {
+      "logo": {
+        "alt": "Logo Gemeente Purmerend",
+        "url": "/assets/purmerend-logo.svg"
+      },
+      "title": "Gemeente Purmerend"
+    },
+    "homepage": {
+      "url": "https://purmerend.nl",
+      "title": "gemeente Purmerend"
+    },
+    "contact": {
+      "tel": "0299 452 452"
+    },
     "map": {
       "find_address_in_distance": 30,
       "minimal_zoom": 17,
-      "center": [
-        51.6045656,
-        5.5342026
-      ],
+      "center": [51.6045656, 5.5342026],
       "maxBounds": [
-        [
-          3.31497114423,
-          50.803721015
-        ],
-        [
-          7.09205325687,
-          53.5104033474
-        ]
+        [3.31497114423, 50.803721015],
+        [7.09205325687, 53.5104033474]
       ]
     },
     "links": {
@@ -36,6 +43,24 @@
       "help": "https://signalen.org/",
       "home": "https://signalen.org/",
       "privacy": "https://vng.nl/privacyverklaring-vereniging-van-nederlandse-gemeenten"
+    },
+    "i18n": {
+      "nl": {
+        "describe-report": {
+          "alert": {
+            "help_text": "Lukt het niet om een melding te doen? Bel",
+            "opening_hours": "Wij zijn bereikbaar van maandag tot en met vrijdag van 08:00 tot 18:00 uur."
+          }
+        }
+      },
+      "en": {
+        "describe-report": {
+          "alert": {
+            "help_text": "Having trouble submitting a report? Call",
+            "opening_hours": "We are available Monday through Friday from 8:00 AM to 6:00 PM."
+          }
+        }
+      }
     }
   }
 }

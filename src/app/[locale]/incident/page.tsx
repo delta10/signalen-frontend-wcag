@@ -2,6 +2,7 @@ import { IncidentDescriptionPage } from '@/app/[locale]/incident/components/Inci
 import { getTranslations } from 'next-intl/server'
 import { createTitle } from '@/lib/utils/create-title'
 import { Metadata } from 'next/types'
+import { getServerConfig } from '@/services/config/config'
 
 // TODO: Consider if these should be static params
 const currentStep = 1
@@ -13,6 +14,7 @@ export async function generateMetadata(): Promise<Metadata> {
   // "Update het <title> element in de <head>"
   // https://nldesignsystem.nl/richtlijnen/formulieren/foutmeldingen/screenreaderfeedback
   const errorMessage = ''
+  const config = await getServerConfig()
 
   const t = await getTranslations('describe-report')
   const tGeneral = await getTranslations('general.describe_form')
@@ -23,7 +25,7 @@ export async function generateMetadata(): Promise<Metadata> {
         errorMessage ? tGeneral('title-prefix-error') : '',
         tGeneral('pre-heading', { current: currentStep, max: maxStep }),
         t('heading'),
-        'gemeente Voorbeeld',
+        config.base.naam,
       ],
       tGeneral('title-separator')
     ),

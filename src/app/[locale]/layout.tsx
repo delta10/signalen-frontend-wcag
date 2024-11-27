@@ -16,6 +16,13 @@ import { NextIntlClientProvider, useMessages, useTranslations } from 'next-intl'
 import { Footer } from '@/app/[locale]/components/Footer'
 import pick from 'lodash/pick'
 import type { PropsWithChildren } from 'react'
+import { AppConfig } from '@/types/config'
+
+// TODO: Find a way to load the config asynchronously
+import configJson from '../../../config.json'
+
+// Validate the JSON
+const config: AppConfig = configJson
 
 const font = localFont({
   src: '../../../public/fonts/open-sans.woff2',
@@ -27,7 +34,7 @@ export default function LocaleLayout({
   children,
   params: { locale },
 }: PropsWithChildren<{
-  params: { locale: any }
+  params: { locale: string }
 }>) {
   const messages = useMessages()
 
@@ -42,16 +49,18 @@ export default function LocaleLayout({
       <Body>
         <AppProvider>
           <PageLayout>
-            <Header
-              homepage={{
-                href: '/',
-                label: t('homepage-label'),
-              }}
-              logo={{
-                src: '/assets/purmerend-logo.svg',
-                label: t('logo-label'),
-              }}
-            />
+            {config?.base.header.logo.url ? (
+              <Header
+                homepage={{
+                  href: config.base.homepage.url,
+                  label: t('homepage-label'),
+                }}
+                logo={{
+                  src: config.base.header.logo.url,
+                  label: config.base.header.logo.alt,
+                }}
+              />
+            ) : null}
             <PageBody>
               <Article className="max-w-3xl mx-auto px-4 lg:px-0">
                 {children}
