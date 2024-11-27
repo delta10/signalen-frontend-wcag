@@ -160,20 +160,36 @@ const MapDialog = ({
 
   // Handle click on map, setIsMapSelected to true
   // TODO: Reset selectedFeatures if click was right on map? (open for discussion)
-  const handleMapClick = (event: MapLayerMouseEvent) => {
+  const handleMapClick = async (event: MapLayerMouseEvent) => {
     updatePosition(event.lngLat.lat, event.lngLat.lng)
     setIsMapSelected(true)
-    setNewSelectedAddress(event.lngLat.lat, event.lngLat.lng)
+    const address = await getNewSelectedAddress(
+      event.lngLat.lat,
+      event.lngLat.lng
+    )
+
+    updateForm({
+      ...formState,
+      address: address,
+    })
   }
 
   // Handle click on feature marker, set selectedFeatures and show error if maxNumberOfAssets is reached
-  const handleFeatureMarkerClick = (event: MarkerEvent, feature: Feature) => {
+  const handleFeatureMarkerClick = async (
+    event: MarkerEvent,
+    feature: Feature
+  ) => {
+    // @ts-ignore
+    event.originalEvent?.stopPropagation()
     // @ts-ignore
     const featureId = feature.id as number
     const maxNumberOfAssets = field?.meta.maxNumberOfAssets || 1
-
-    // @ts-ignore
-    event.originalEvent?.stopPropagation()
+    const address = await getNewSelectedAddress(
+      // @ts-ignore
+      feature.geometry.coordinates[1],
+      // @ts-ignore
+      feature.geometry.coordinates[0]
+    )
 
     if (dialogMap && featureId) {
       const newSelectedFeatureArray = Array.from(
@@ -200,40 +216,37 @@ const MapDialog = ({
       updateForm({
         ...formState,
         selectedFeatures: newSelectedFeatureArray,
+        address: address,
       })
 
       setIsMapSelected(false)
-      setNewSelectedAddress(
+      setMarker([
         // @ts-ignore
         feature.geometry.coordinates[1],
         // @ts-ignore
-        feature.geometry.coordinates[0]
-      )
+        feature.geometry.coordinates[0],
+      ])
     }
   }
 
-  const setNewSelectedAddress = async (lat: number, lng: number) => {
+  const getNewSelectedAddress = async (lat: number, lng: number) => {
     const address = await getNearestAddressByCoordinate(
       lat,
       lng,
       config ? config.base.map.find_address_in_distance : 30
     )
 
-    updateForm({
-      ...formState,
-      address: address
-        ? {
-            coordinates: [lng, lat],
-            id: address.id,
-            postcode: address.postcode,
-            huisnummer: address.huis_nlt,
-            woonplaats: address.woonplaatsnaam,
-            openbare_ruimte: address.straatnaam,
-            weergave_naam: address.weergavenaam,
-          }
-        : null,
-      coordinates: [lat, lng],
-    })
+    return address
+      ? {
+          coordinates: [lng, lat],
+          id: address.id,
+          postcode: address.postcode,
+          huisnummer: address.huis_nlt,
+          woonplaats: address.woonplaatsnaam,
+          openbare_ruimte: address.straatnaam,
+          weergave_naam: address.weergavenaam,
+        }
+      : null
   }
 
   // set current location of user
