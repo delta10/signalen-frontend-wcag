@@ -130,19 +130,6 @@
   gap: 8px;
 }
 
-/* .utrecht-alert-closable__icon {
-  rotate: 45deg;
-  --utrecht-icon-size: 24px;
-  color: var(--_utrecht-alert-color) !important;
-} */
-
-/* .map-button {
-  padding-block-end: 0 !important;
-  padding-block-start: 0 !important;
-  padding-inline-end: 0 !important;
-  padding-inline-start: 0 !important;
-} */
-
 .map-marker-icon {
   --utrecht-icon-size: var(--utrecht-map-marker-size, 42px);
   --utrecht-icon-color: var(
