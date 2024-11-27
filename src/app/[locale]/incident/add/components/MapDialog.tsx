@@ -344,7 +344,10 @@ const MapDialog = ({
                   ? field.meta.language.title
                   : t('map_heading')}
               </Heading>
-              <AddressCombobox updatePosition={updatePosition} />
+              <AddressCombobox
+                updatePosition={updatePosition}
+                setIsMapSelected={setIsMapSelected}
+              />
               {isAssetSelect &&
                 dialogMap &&
                 config &&

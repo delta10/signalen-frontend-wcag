@@ -4,7 +4,7 @@ import {
   ComboboxOption,
   ComboboxOptions,
 } from '@headlessui/react'
-import { useEffect, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useConfig } from '@/hooks/useConfig'
 import { getSuggestedAddresses } from '@/services/location/address'
 
@@ -16,9 +16,13 @@ import { Address } from '@/types/form'
 
 type AddressComboboxProps = {
   updatePosition?: (lat: number, lng: number, flyTo?: boolean) => void
+  setIsMapSelected?: Dispatch<SetStateAction<boolean>>
 }
 
-export const AddressCombobox = ({ updatePosition }: AddressComboboxProps) => {
+export const AddressCombobox = ({
+  updatePosition,
+  setIsMapSelected,
+}: AddressComboboxProps) => {
   const [query, setQuery] = useState('')
   const { config } = useConfig()
   const [addressOptions, setAddressOptions] = useState<any[]>([])
@@ -77,7 +81,15 @@ export const AddressCombobox = ({ updatePosition }: AddressComboboxProps) => {
     updateForm({
       ...formState,
       address: selectedAddress,
+      coordinates: [
+        selectedAddress.coordinates[1],
+        selectedAddress.coordinates[0],
+      ],
     })
+
+    if (setIsMapSelected) {
+      setIsMapSelected(true)
+    }
   }
 
   return (
