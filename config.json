@@ -16,14 +16,14 @@
     "naam": "gemeente Purmerend",
     "header": {
       "logo": {
-        "alt": "Logo Gemeente Purmerend",
-        "url": "/assets/purmerend-logo.svg"
-      },
-      "title": "Gemeente Purmerend"
+        "alt": "Logo: kop van een koe met onder elkaar de 3 delen van het woord Purmerend: 'pur', 'mer' en 'end'.",
+        "url": "/assets/purmerend-logo.svg",
+        "caption": "Purmerend"
+      }
     },
     "homepage": {
       "url": "https://purmerend.nl",
-      "title": "gemeente Purmerend"
+      "title": "homepage gemeente Purmerend"
     },
     "contact": {
       "tel": "0299 452 452"

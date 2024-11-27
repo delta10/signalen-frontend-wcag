@@ -56,6 +56,7 @@ export default function LocaleLayout({
                   label: t('homepage-label'),
                 }}
                 logo={{
+                  caption: config.base.header.logo.caption,
                   src: config.base.header.logo.url,
                   label: config.base.header.logo.alt,
                 }}

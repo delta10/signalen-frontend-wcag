@@ -26,6 +26,11 @@ export type AppConfig = {
          * Link to the homepage of the website.
          */
         url: string
+
+        /**
+         * Caption of the logo. Typically the contents of the wordmark.
+         */
+        caption: string
       }
       title: string
     }
