@@ -8,6 +8,7 @@
   height: 100px;
 }
 
+/* file upload */
 .empty-box.border {
   border: 1px dashed var(--utrecht-form-control-border-color);
 }
@@ -41,6 +42,29 @@
   border: 1px solid var(--utrecht-form-control-border-color);
 }
 
+/* TODO: zonder important doen deze rules niks */
+.iconbutton-preview-delete {
+  /* bg-gray-900 bg-opacity-50 */
+  /* TODO: bg color token toevoegen aan purmerend theme voor icon button trash? of? */
+  background: rgba(0, 0, 0, 0.7) !important;
+  border: none !important;
+  border-radius: 0% !important;
+  min-inline-size: 100px !important;
+  position: absolute !important;
+  bottom: 0 !important;
+  color: white !important;
+  display: flex !important;
+  justify-content: center !important;
+  justify-items: center !important;
+}
+
+.iconbutton-preview-delete:hover {
+  /* TODO: bg color grey-29 opacity on hover = 80% opacity in purmerend tokens */
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  transition-duration: 200 !important;
+  transition-delay: 100 !important;
+}
+
 .utrecht-button:focus:not(
     :disabled,
     [aria-disabled='true'],
@@ -58,6 +82,7 @@
   padding-right: 0 !important;
 }
 
+/* stepper */
 .stepper-button-hover:hover:not(:disabled, [aria-disabled='true']) {
   border: none;
   outline: none;
@@ -105,20 +130,6 @@
   gap: 8px;
 }
 
-.utrecht-alert-closable__icon {
-  rotate: 45deg;
-  --utrecht-icon-size: 24px;
-  color: var(--_utrecht-alert-color) !important;
-}
-
-.map-button {
-  padding-block-end: 0 !important;
-  padding-block-start: 0 !important;
-  padding-inline-end: 0 !important;
-  padding-inline-start: 0 !important;
-}
-
-/* map */
 .map-marker-icon {
   --utrecht-icon-size: var(--utrecht-map-marker-size, 42px);
   --utrecht-icon-color: var(
