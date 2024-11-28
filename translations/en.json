@@ -112,8 +112,8 @@
   },
   "current_organisation": {
     "name": "City of Utrecht",
-    "homepage_label": "homepage",
-    "logo_label": "Coat of arms of the city of Utrecht"
+    "default_homepage_label": "Return to homepage of municipality {organization}",
+    "default_logo_label": "Logo of municipality {organization}, click for homepage"
   },
   "footer": {
     "about": "About",

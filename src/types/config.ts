@@ -1,6 +1,9 @@
 export type AppConfig = {
   base: {
     municipality: string
+    logo: string
+    logo_dark_mode: string
+    logo_alt_text: string
     municipality_display_name: string
     assets_url: string
     supportedLanguages: Array<{

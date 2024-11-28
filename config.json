@@ -1,6 +1,7 @@
 {
   "base": {
     "municipality": "purmerend",
+    "logo": "purmerend-logo.svg",
     "municipality_display_name": "Purmerend",
     "assets_url": "https://meldingen.demo.meierijstad.delta10.cloud",
     "supportedLanguages": [
@@ -35,7 +36,7 @@
       "about": "https://signalen.org",
       "accessibility": "https://signalen.org",
       "help": "https://signalen.org/",
-      "home": "https://signalen.org/",
+      "home": "https://purmerend.nl/",
       "privacy": "https://vng.nl/privacyverklaring-vereniging-van-nederlandse-gemeenten"
     }
   }

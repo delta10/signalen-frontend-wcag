@@ -111,9 +111,8 @@
     "loading": "Laden..."
   },
   "current_organisation": {
-    "name": "gemeente Utrecht",
-    "homepage_label": "homepage",
-    "logo_label": "Wapen van de gemeente Utrecht"
+    "default_homepage_label": "Keer terug naar de homepage van gemeente {organization}",
+    "default_logo_label": "Logo van gemeente {organization}, klik voor homepage"
   },
   "footer": {
     "about": "Over deze site",
