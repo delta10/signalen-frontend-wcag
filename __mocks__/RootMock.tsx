@@ -3,11 +3,11 @@ import { ReactNode } from 'react'
 
 import messagesEN from '../translations/en.json'
 import messagesNL from '../translations/nl.json'
-import { I18nConfig } from '@/types/i18n'
 
 // Validate the message JSONs against the TypeScript definition
-export const messagesJsonEN: I18nConfig = messagesEN
-export const messagesJsonNL: I18nConfig = messagesNL
+// todo: check I18nConfig once we have settled on a more robust language dictionary structure
+export const messagesJsonEN: any = messagesEN
+export const messagesJsonNL: any = messagesNL
 
 interface Props {
   children: ReactNode

@@ -1,3 +1,4 @@
+// todo: check I18nConfig once we have settled on a more robust language dictionary structure
 export interface I18nConfig {
   homepage: {
     welcome: string
