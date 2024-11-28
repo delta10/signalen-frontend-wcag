@@ -7,13 +7,11 @@ import { FormStoreState } from '@/types/stores'
  * resulting in invalid or corrupted data. This function ensures that only valid `File` objects
  * are returned, filtering out any other data types.
  *
- * @param {FormStoreState} formState - The current state of the form, which includes an `attachments` array.
  * @returns {File[]} - An array of valid `File` objects. Returns an empty array if no valid files are found.
+ * @param attachments
  */
-export const getAttachments = (formState: FormStoreState): File[] => {
-  const filesArray = formState.attachments.filter(
-    (file: File) => file instanceof File
-  )
+export const getAttachments = (attachments: File[]): File[] => {
+  const filesArray = attachments.filter((file: File) => file instanceof File)
 
   return filesArray.length > 0 ? filesArray : []
 }

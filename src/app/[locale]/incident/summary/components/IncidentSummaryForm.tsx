@@ -33,7 +33,7 @@ const IncidentSummaryForm = () => {
   }, [router])
 
   useEffect(() => {
-    setFiles(getAttachments(formState))
+    setFiles(getAttachments(formState.attachments))
   }, [])
 
   /**

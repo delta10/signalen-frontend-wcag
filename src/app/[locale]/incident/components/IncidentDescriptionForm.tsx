@@ -62,7 +62,7 @@ export const IncidentDescriptionForm = () => {
     resolver: zodResolver(incidentDescriptionFormSchema),
     defaultValues: {
       description: formState.description,
-      files: getAttachments(formState),
+      files: getAttachments(formState.attachments),
     },
   })
   const { register, setFocus } = form
