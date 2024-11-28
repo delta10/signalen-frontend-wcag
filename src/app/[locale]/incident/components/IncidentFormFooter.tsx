@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { Button, ButtonGroup } from '@/components/index'
 import { usePathname, useRouter } from '@/routing/navigation'
-import { ImSpinner8 } from 'react-icons/im'
+import { IconLoader2 } from '@tabler/icons-react'
 import { FieldErrors } from 'react-hook-form'
 import { getCurrentStep, getPreviousStepPath } from '@/lib/utils/stepper'
 import { FormStep } from '@/types/form'
@@ -62,7 +62,7 @@ const IncidentFormFooter = ({
             aria-describedby={ariaDescribedById}
             onClick={() => (handleSignalSubmit ? handleSignalSubmit() : null)}
           >
-            {loading && <ImSpinner8 className="animate-spin" />}
+            {loading && <IconLoader2 className="animate-spin" />}
             {t('submit_button')}
           </Button>
         )}

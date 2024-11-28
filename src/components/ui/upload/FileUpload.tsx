@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { IoAddCircleOutline } from 'react-icons/io5'
+import { IconCirclePlus } from '@tabler/icons-react'
 import PreviewFile from '@/components/ui/upload/PreviewFile'
 import { useTranslations } from 'next-intl'
 
@@ -62,7 +62,7 @@ export const FileUpload = React.forwardRef<HTMLLabelElement, FileUploadProps>(
               onKeyDown={(e) => handleKeyDown(e)}
             >
               <span className="flex justify-center items-center h-full relative">
-                <IoAddCircleOutline
+                <IconCirclePlus
                   className={`transition-all duration-300 ${
                     labelHovered ? 'w-16 h-16' : 'w-14 h-14'
                   }`}
