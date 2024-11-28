@@ -27,12 +27,13 @@ const PreviewFile = ({ file, allowDelete = false, onDelete }: Props) => {
         src={imageUrl}
         alt={t('file.preview', { file: file.name })}
       />
+      {/*          className="absolute bottom-0 right-0 w-full flex justify-center items-center py-2 file-preview-button-background"*/}
       {allowDelete && (
         <IconButton
           className="iconbutton-preview-delete"
           onClick={onDelete}
           type="button"
-          label={t('button.delete_file')}
+          label={t('button.delete_file', { file: file.name })}
         >
           <IconTrash />
         </IconButton>
