@@ -22,7 +22,13 @@ const Header = ({ homepage, logo }: HeaderProps) => {
 
   const logoElement = (
     <Logo caption={logo.caption}>
-      <Image src={logo.src} alt={logo.label} width={275} height={150} />
+      <Image
+        src={logo.src}
+        alt={logo.label}
+        width={275}
+        height={150}
+        priority={true}
+      />
     </Logo>
   )
 

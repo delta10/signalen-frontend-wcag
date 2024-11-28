@@ -19,14 +19,17 @@ import {
   Paragraph,
 } from '@/components/index'
 import { getCurrentStep, getNextStepPath } from '@/lib/utils/stepper'
+import { useConfig } from '@/hooks/useConfig'
 
 const IncidentContactForm = () => {
-  const t = useTranslations('describe-contact.form')
+  const t = useTranslations('describe_contact.form')
+  const tGeneral = useTranslations('general')
   const { updateForm, formState } = useFormStore()
   const router = useRouter()
   const pathname = usePathname()
   const step = getCurrentStep(pathname)
   const MAX_LENGTH_PHONE_NUMBER = 17
+  const { config } = useConfig()
 
   useEffect(() => {
     router.prefetch('/incident/summary')
@@ -95,7 +98,7 @@ const IncidentContactForm = () => {
         className="flex flex-col gap-8 items-start"
       >
         <FormFieldTextbox
-          label={`${t('describe_phone_input_heading')} (${t('not_required_short')})`}
+          label={`${t('describe_phone_input_heading')} (${tGeneral('form.not_required_short')})`}
           autoComplete="phone"
           errorMessage={form.formState.errors.phone?.message}
           invalid={Boolean(form.formState.errors.phone?.message)}
@@ -103,7 +106,7 @@ const IncidentContactForm = () => {
           {...form.register('phone')}
         />
         <FormFieldTextbox
-          label={`${t('describe_mail_input_heading')} (${t('not_required_short')})`}
+          label={`${t('describe_mail_input_heading')} (${tGeneral('form.not_required_short')})`}
           type="email"
           autoComplete="email"
           errorMessage={form.formState.errors.email?.message}
@@ -121,7 +124,9 @@ const IncidentContactForm = () => {
             </FormFieldDescription>
             <div className="w-full p-4 background-gray-200">
               <FormFieldCheckbox
-                label={t('describe_checkbox_input_description')}
+                label={t('describe_checkbox_input_description', {
+                  organization: config?.base.municipality_display_name,
+                })}
                 errorMessage={form.formState.errors.sharing_allowed?.message}
                 invalid={Boolean(
                   form.formState.errors.sharing_allowed?.message

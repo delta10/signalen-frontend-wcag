@@ -2,21 +2,14 @@
   "homepage": {
     "welcome": "1. Beschrijf uw melding"
   },
-  "stepper": {
-    "back": "Vorige",
-    "step": "Stap {currentStep} van {totalSteps}"
-  },
-  "describe-report": {
+  "describe_report": {
     "heading": "Beschrijf uw melding",
     "form": {
       "describe_textarea_heading": "Waar gaat het om?",
-      "required_short": "verplicht",
-      "not_required_short": "niet verplicht",
       "describe_textarea_description": "Typ geen persoonsgegevens in deze omschrijving. We vragen dit later in dit formulier aan u.",
       "describe_upload_heading": "Foto's toevoegen",
       "describe_upload_description": "Voeg een foto toe om de situatie te verduidelijken (maximaal 5 foto's).",
       "errors": {
-        "textarea_required": "Dit is een verplicht veld",
         "file_type_invalid": "Ongeldig bestandstype. Alleen JPEG, PNG, en GIF zijn toegestaan.",
         "file_size_too_large": "Bestandsgrootte is te groot. Elk bestand moet kleiner zijn dan 20MB.",
         "file_size_too_small": "Bestandsgrootte is te klein. Elk bestand moet minimaal 30KB zijn."
@@ -27,7 +20,7 @@
       "opening_hours": "Wij zijn bereikbaar van maandag tot en met vrijdag van 08:00 tot 18:00 uur."
     }
   },
-  "describe-add": {
+  "describe_add": {
     "heading": "Locatie en vragen",
     "form": {
       "add_map_heading": "Waar is het?",
@@ -36,7 +29,6 @@
     "map": {
       "map_heading": "Kies uw locatie",
       "map_label": "Waar is het?",
-      "required_short": "verplicht",
       "choose_location": "Gebruik deze locatie",
       "dialog_title": "Locatie kiezen",
       "dialog_description": "Kies een locatie op de kaart voor de locatie van uw melding.",
@@ -48,10 +40,11 @@
       "go_further_without_selected_object": "Ga verder zonder object",
       "zoom_for_object": "Zoom in om de objecten te zien",
       "map_zoom-in_button_label": "Zoom in op de kaart",
-      "map_zoom-out_button_label": "Zoom uit op de kaart"
+      "map_zoom-out_button_label": "Zoom uit op de kaart",
+      "map_close_button_label": "Sluit de kaart"
     }
   },
-  "describe-contact": {
+  "describe_contact": {
     "heading": "Contactgegevens",
     "form": {
       "heading": "Mogen we u bellen voor vragen? En op de hoogte houden via e-mail?",
@@ -60,40 +53,22 @@
       "send_to_other_instance_description": "Soms kan de gemeente niets doen. Een andere organisatie moet dan aan het werk. Als dat zo is kunnen wij uw melding soms doorsturen. Wij sturen uw telefoonnummer of e-mailadres mee. Maar dat doen we alleen als u dat goed vindt.",
       "describe_phone_input_heading": "Wat is uw telefoonnummer?",
       "describe_mail_input_heading": "Wat is uw e-mailadres?",
-      "describe_checkbox_input_description": "Ja, ik geef de gemeente Voorbeeld toestemming om mijn melding door te sturen naar andere organisaties als de melding niet voor de gemeente is bestemd.",
+      "describe_checkbox_input_description": "Ja, ik geef de gemeente {organization} toestemming om mijn melding door te sturen naar andere organisaties als de melding niet voor de gemeente is bestemd.",
+      "sharing_heading_short": "Melding delen",
+      "no_contact_details": "U hebt geen contactgegevens ingevuld. We kunnen u niet laten weten wat wij hebben gedaan met uw melding.",
       "errors": {
         "number_exceeds_max_characters": "U heeft meer dan de maximale {maxLength} tekens ingevoerd.",
         "number_invalid_character": "Ongeldig telefoonnummer, alleen cijfers, spaties, haakjes, + en - zijn toegestaan.",
         "email_not_valid": "Vul een geldig e-mailadres in, met een @ en een domeinnaam. Bijvoorbeeld: naam@domein.nl"
-      },
-      "not_required_short": "niet verplicht"
+      }
     }
   },
-  "describe-summary": {
+  "describe_summary": {
     "heading": "Versturen",
     "description": "Controleer uw gegevens en verstuur uw melding.",
-    "steps": {
-      "step_one": {
-        "title": "1. Beschrijf uw melding",
-        "edit": "Wijzig uw melding",
-        "input_heading": "Waar gaat het over?",
-        "upload_images": "Foto's toevoegen"
-      },
-      "step_two": {
-        "title": "2. Locatie en vragen",
-        "edit": "Wijzig locatie en vragen",
-        "input_heading": "Waar is het?"
-      },
-      "step_three": {
-        "title": "3. Contactgegevens",
-        "edit": "Wijzig contactgegevens",
-        "no_contact_details": "U hebt geen contactgegevens ingevuld. We kunnen u niet laten weten wat wij hebben gedaan met uw melding.",
-        "input_telephone_heading": "Wat is uw telefoonnummer?",
-        "input_mail_heading": "Wat is uw e-mailadres?",
-        "input_sharing_heading": "Melding delen",
-        "input_sharing_allowed": "Ja, ik geef de gemeente Voorbeeld toestemming om mijn melding door te sturen naar andere organisaties als de melding niet voor de gemeente is bestemd."
-      }
-    },
+    "edit_step_report": "Wijzig uw melding",
+    "edit_step_add": "Wijzig locatie en vragen",
+    "edit_step_contact": "Wijzig contactgegevens",
     "submit_alert": {
       "error": {
         "heading": "Versturen mislukt",
@@ -105,7 +80,7 @@
       }
     }
   },
-  "describe-thankyou": {
+  "describe_thankyou": {
     "heading": "Bedankt!",
     "description_notification_number": "Uw melding is bij ons bekend onder nummer:",
     "description_notification_email": "Hebt u een e-mailadres ingevuld? Dan ontvangt u een e-mail met alle gegevens van uw melding.",
@@ -114,21 +89,20 @@
     "new_notification": "Nieuwe melding"
   },
   "general": {
-    "describe_form": {
-      "title-separator": " · ",
-      "title-prefix-error": "Er ging iets fout!",
-      "pre-heading": "Stap {current} van {max}",
+    "form": {
+      "title_separator": " · ",
+      "title_prefix_error": "Er ging iets fout!",
+      "pre_heading": "Stap {current} van {max}",
       "back_button": "Vorige",
       "next_button": "Volgende",
       "submit_button": "Verstuur",
-      "not-required": "Dit veld is niet verplicht."
+      "required_short": "verplicht",
+      "not_required_short": "niet verplicht"
     },
     "errors": {
       "required": "Dit veld is verplicht",
       "max_length": "Dit veld heeft een maximale lengte van {maxLength} karakters",
-      "not_required_short": "niet verplicht",
       "location_required": "Locatie is verplicht",
-      "required_short": "verplicht",
       "is_blocking": "U kunt dit formulier niet verder invullen. Lees onder de antwoorden waar u uw melding wel kunt doen."
     },
     "button": {
@@ -140,14 +114,10 @@
     },
     "loading": "Laden..."
   },
-  "routing": {
-    "notifications-map": "/meldingen-kaart",
-    "incident": "/incident"
-  },
-  "current-organisation": {
+  "current_organisation": {
     "name": "gemeente Utrecht",
-    "homepage-label": "homepage",
-    "logo-label": "Wapen van de gemeente Utrecht"
+    "homepage_label": "homepage",
+    "logo_label": "Wapen van de gemeente Utrecht"
   },
   "footer": {
     "about": "Over deze site",

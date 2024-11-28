@@ -12,19 +12,20 @@ export const TextAreaInput = ({ field }: TextAreaInputProps) => {
     formState: { errors },
     register,
   } = useFormContext()
-  const t = useTranslations('general.errors')
+  const tError = useTranslations('general.errors')
+  const tForm = useTranslations('general.form')
   const errorMessage = errors[field.key]?.message as string
 
   return (
     <div className="flex flex-col gap-2">
       {/* TODO: implement (not required) for label*/}
       <FormFieldTextarea
-        {...register(field.key, getValidators(field, t))}
+        {...register(field.key, getValidators(field, tError))}
         rows={5}
         description={field.meta.subtitle}
         required={field.required}
         id={`${field.key}`}
-        label={`${field.meta.label} ${field.required ? `(${t('required_short')})` : `(${t('not_required_short')})`}`}
+        label={`${field.meta.label} ${field.required ? `(${tForm('required_short')})` : `(${tForm('not_required_short')})`}`}
         aria-describedby={
           field.meta.subtitle ? `${field.key}-${field.key}` : ''
         }

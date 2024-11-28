@@ -14,8 +14,8 @@ const currentStep = 2
 const maxStep = 4
 
 export const AdditionalInformationPage = () => {
-  const t = useTranslations('describe-add')
-  const tGeneral = useTranslations('general.describe_form')
+  const t = useTranslations('describe_add')
+  const tGeneral = useTranslations('general.form')
   const { loaded, formState } = useFormStore()
 
   useEffect(() => {
@@ -35,7 +35,7 @@ export const AdditionalInformationPage = () => {
           <HeadingGroup>
             <Heading level={1}>{t('heading')}</Heading>
             <PreHeading>
-              {tGeneral('pre-heading', { current: currentStep, max: maxStep })}
+              {tGeneral('pre_heading', { current: currentStep, max: maxStep })}
             </PreHeading>
           </HeadingGroup>
         </FormProgress>

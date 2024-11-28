@@ -23,7 +23,12 @@ import {
   MapMarker,
 } from '@/components'
 import { useConfig } from '@/hooks/useConfig'
-import { IconCurrentLocation, IconMinus, IconPlus } from '@tabler/icons-react'
+import {
+  IconCurrentLocation,
+  IconMinus,
+  IconPlus,
+  IconX,
+} from '@tabler/icons-react'
 import { ButtonGroup } from '@/components'
 import {
   formatAddressToSignalenInput,
@@ -56,7 +61,7 @@ const MapDialog = ({
   field,
   isAssetSelect = false,
 }: MapDialogProps) => {
-  const t = useTranslations('describe-add.map')
+  const t = useTranslations('describe_add.map')
   const [marker, setMarker] = useState<[number, number] | []>([])
   const [error, setError] = useState<string | null>(null)
   const { formState, updateForm } = useFormStore()
@@ -427,13 +432,16 @@ const MapDialog = ({
                   {t('current_location')}
                 </Button>
               </div>
-              <div className="map-close-button">
-                <Dialog.Close asChild>
-                  <Button className="map-button">
-                    <IconPlus className="transform rotate-45" />
-                  </Button>
-                </Dialog.Close>
-              </div>
+
+              <Dialog.Close asChild>
+                <IconButton
+                  className="map-close-button"
+                  label={t('map_close_button_label')}
+                >
+                  <IconX />
+                </IconButton>
+              </Dialog.Close>
+
               <ButtonGroup direction="column" className="map-zoom-button-group">
                 <IconButton
                   className="map-zoom-button"
