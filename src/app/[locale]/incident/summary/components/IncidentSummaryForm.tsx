@@ -16,6 +16,7 @@ import { NextLinkWrapper } from '@/components/ui/NextLinkWrapper'
 import { FormStep } from '@/types/form'
 import { LocationMap } from '@/components/ui/LocationMap'
 import { getCurrentStep } from '@/lib/utils/stepper'
+import { useConfig } from '@/hooks/useConfig'
 
 const IncidentSummaryForm = () => {
   const t = useTranslations('describe_summary')
@@ -28,6 +29,7 @@ const IncidentSummaryForm = () => {
   const [loading, setLoading] = useState<boolean>(false)
   const pathname = usePathname()
   const step = getCurrentStep(pathname)
+  const { config } = useConfig()
 
   useEffect(() => {
     router.prefetch('/incident/thankyou')
@@ -180,7 +182,7 @@ const IncidentSummaryForm = () => {
           </NextLinkWrapper>
         </div>
         {!formState.phone && !formState.email && !formState.sharing_allowed ? (
-          <Paragraph>{tStepContact('no_contact_details')}</Paragraph>
+          <Paragraph>{tStepContact('form.no_contact_details')}</Paragraph>
         ) : (
           <>
             {formState.phone && (
@@ -198,7 +200,10 @@ const IncidentSummaryForm = () => {
             {formState.sharing_allowed && (
               <IncidentSummaryFormItem
                 title={tStepContact('form.sharing_heading_short')}
-                value={tStepContact('form.describe_checkbox_input_description')}
+                value={tStepContact(
+                  'form.describe_checkbox_input_description',
+                  { organization: config?.base.municipality_display_name }
+                )}
               />
             )}
           </>

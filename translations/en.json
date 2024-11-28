@@ -48,7 +48,7 @@
       "send_to_other_instance_description": "Sometimes the municipality cannot do anything. Another organization must then get to work. If so, we can sometimes forward your report. We send your phone number or e-mail address along with it. But we only do that if you agree.",
       "describe_phone_input_heading": "What is your telephone number?",
       "describe_mail_input_heading": "What is your e-mail address?",
-      "describe_checkbox_input_description": "Yes, I give the example Municipality permission to forward my report to other organizations if the report is not intended for the Municipality.",
+      "describe_checkbox_input_description": "Yes, I give the municipality {organization} permission to forward my report to other organizations if the report is not intended for the Municipality.",
       "sharing_heading_short": "Report sharing",
       "no_contact_details": "You have not entered contact information. We cannot let you know what we have done with your report.",
       "errors": {

@@ -48,7 +48,7 @@
       "send_to_other_instance_description": "Soms kan de gemeente niets doen. Een andere organisatie moet dan aan het werk. Als dat zo is kunnen wij uw melding soms doorsturen. Wij sturen uw telefoonnummer of e-mailadres mee. Maar dat doen we alleen als u dat goed vindt.",
       "describe_phone_input_heading": "Wat is uw telefoonnummer?",
       "describe_mail_input_heading": "Wat is uw e-mailadres?",
-      "describe_checkbox_input_description": "Ja, ik geef de gemeente Voorbeeld toestemming om mijn melding door te sturen naar andere organisaties als de melding niet voor de gemeente is bestemd.",
+      "describe_checkbox_input_description": "Ja, ik geef de gemeente {organization} toestemming om mijn melding door te sturen naar andere organisaties als de melding niet voor de gemeente is bestemd.",
       "sharing_heading_short": "Melding delen",
       "no_contact_details": "U hebt geen contactgegevens ingevuld. We kunnen u niet laten weten wat wij hebben gedaan met uw melding.",
       "errors": {

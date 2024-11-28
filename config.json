@@ -1,6 +1,7 @@
 {
   "base": {
     "municipality": "purmerend",
+    "municipality_display_name": "Purmerend",
     "assets_url": "https://meldingen.demo.meierijstad.delta10.cloud",
     "supportedLanguages": [
       {

@@ -19,6 +19,7 @@ import {
   Paragraph,
 } from '@/components/index'
 import { getCurrentStep, getNextStepPath } from '@/lib/utils/stepper'
+import { useConfig } from '@/hooks/useConfig'
 
 const IncidentContactForm = () => {
   const t = useTranslations('describe_contact.form')
@@ -28,6 +29,7 @@ const IncidentContactForm = () => {
   const pathname = usePathname()
   const step = getCurrentStep(pathname)
   const MAX_LENGTH_PHONE_NUMBER = 17
+  const { config } = useConfig()
 
   useEffect(() => {
     router.prefetch('/incident/summary')
@@ -122,7 +124,9 @@ const IncidentContactForm = () => {
             </FormFieldDescription>
             <div className="w-full p-4 background-gray-200">
               <FormFieldCheckbox
-                label={t('describe_checkbox_input_description')}
+                label={t('describe_checkbox_input_description', {
+                  organization: config?.base.municipality_display_name,
+                })}
                 errorMessage={form.formState.errors.sharing_allowed?.message}
                 invalid={Boolean(
                   form.formState.errors.sharing_allowed?.message

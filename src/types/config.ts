@@ -1,6 +1,7 @@
 export type AppConfig = {
   base: {
     municipality: string
+    municipality_display_name: string
     assets_url: string
     supportedLanguages: Array<{
       label: string
