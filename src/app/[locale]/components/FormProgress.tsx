@@ -13,7 +13,7 @@ interface FormProgressProps {
 }
 
 const FormProgress = ({ children }: FormProgressProps) => {
-  const t = useTranslations('stepper')
+  const t = useTranslations('general.form')
   const router = useRouter()
   const pathname = usePathname()
   const step = getCurrentStep(pathname)
@@ -40,7 +40,7 @@ const FormProgress = ({ children }: FormProgressProps) => {
               <Icon>
                 <IconChevronLeft />
               </Icon>
-              {t('back')}
+              {t('back_button')}
             </LinkButton>
           </div>
         )}

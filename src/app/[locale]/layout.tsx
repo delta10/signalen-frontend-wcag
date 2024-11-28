@@ -32,7 +32,8 @@ export default function LocaleLayout({
   const messages = useMessages()
 
   if (!getAllAvailableLocales().includes(locale as any)) notFound()
-  const t = useTranslations('current-organisation')
+  // todo: hoe gaan we dit dynamisch maken?
+  const t = useTranslations('current_organisation')
 
   return (
     <Root
@@ -45,11 +46,11 @@ export default function LocaleLayout({
             <Header
               homepage={{
                 href: '/',
-                label: t('homepage-label'),
+                label: t('homepage_label'),
               }}
               logo={{
                 src: '/assets/purmerend-logo.svg',
-                label: t('logo-label'),
+                label: t('logo_label'),
               }}
             />
             <PageBody>

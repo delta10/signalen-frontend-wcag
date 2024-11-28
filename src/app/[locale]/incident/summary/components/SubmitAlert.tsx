@@ -13,7 +13,7 @@ export const SubmitAlert = ({
   error: boolean
   loading: boolean
 }) => {
-  const t = useTranslations('describe-summary')
+  const t = useTranslations('describe_summary')
   const alertRef = useRef<HTMLDivElement | null>(null)
   const multilineRef = useRef<HTMLPreElement>(null)
 

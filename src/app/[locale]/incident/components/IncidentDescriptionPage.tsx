@@ -12,9 +12,9 @@ const currentStep = 1
 const maxStep = 4
 
 export const IncidentDescriptionPage = () => {
-  const t = useTranslations('describe-report')
+  const t = useTranslations('describe_report')
   const { loaded } = useFormStore()
-  const tGeneral = useTranslations('general.describe_form')
+  const tGeneral = useTranslations('general.form')
 
   if (loaded) {
     return (
@@ -24,7 +24,7 @@ export const IncidentDescriptionPage = () => {
             <HeadingGroup>
               <Heading level={1}>{t('heading')}</Heading>
               <PreHeading>
-                {tGeneral('pre-heading', {
+                {tGeneral('pre_heading', {
                   current: currentStep,
                   max: maxStep,
                 })}

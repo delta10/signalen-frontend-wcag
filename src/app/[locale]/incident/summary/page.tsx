@@ -8,18 +8,18 @@ const maxStep = 4
 
 export async function generateMetadata(): Promise<Metadata> {
   const errorMessage = ''
-  const t = await getTranslations('describe-summary')
-  const tGeneral = await getTranslations('general.describe_form')
+  const t = await getTranslations('describe_summary')
+  const tGeneral = await getTranslations('general.form')
 
   return {
     title: createTitle(
       [
-        errorMessage ? tGeneral('title-prefix-error') : '',
-        tGeneral('pre-heading', { current: currentStep, max: maxStep }),
+        errorMessage ? tGeneral('title_prefix_error') : '',
+        tGeneral('pre_heading', { current: currentStep, max: maxStep }),
         t('heading'),
         'gemeente Voorbeeld',
       ],
-      tGeneral('title-separator')
+      tGeneral('title_separator')
     ),
   }
 }
