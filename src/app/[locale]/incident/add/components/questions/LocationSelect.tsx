@@ -28,7 +28,7 @@ export const LocationSelect = ({ field }: LocationSelectProps) => {
   } = useFormContext()
   const errorMessage = errors['location']?.message as string
   const { formState: formStoreState } = useFormStore()
-  const t = useTranslations('describe-add.map')
+  const t = useTranslations('describe_add.map')
   const tGeneral = useTranslations('general')
 
   return (

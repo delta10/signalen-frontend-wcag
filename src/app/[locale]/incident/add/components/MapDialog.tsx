@@ -31,18 +31,14 @@ import {
 } from '@tabler/icons-react'
 import { ButtonGroup } from '@/components'
 import {
+  formatAddressToSignalenInput,
   getFeatureDescription,
   getFeatureId,
   getFeatureType,
   isCoordinateInsideMaxBound,
 } from '@/lib/utils/map'
 import { getNearestAddressByCoordinate } from '@/services/location/address'
-import {
-  Feature,
-  FeatureCollection,
-  GeoJsonProperties,
-  Geometry,
-} from 'geojson'
+import { Feature, FeatureCollection } from 'geojson'
 import { PublicQuestion } from '@/types/form'
 import { FeatureListItem } from '@/app/[locale]/incident/add/components/FeatureListItem'
 import { useDarkMode } from '@/hooks/useDarkMode'
@@ -77,6 +73,7 @@ const MapDialog = ({
   const dialogRef = useRef<HTMLDialogElement>(null)
   const [isMapSelected, setIsMapSelected] = useState<boolean | null>(null)
   const [mapFeatures, setMapFeatures] = useState<FeatureCollection | null>()
+  const { setValue } = useFormContext()
   const { isDarkMode } = useDarkMode()
 
   const [viewState, setViewState] = useState<ViewState>({
@@ -281,7 +278,6 @@ const MapDialog = ({
   // Close map dialog, if isAssetSelect is not set only update formStore with new coordinates. Otherwise update field with type isAssetSelect with feature answers
   const closeMapDialog = async () => {
     updateForm({ ...formState, coordinates: marker })
-
     if (isAssetSelect && field) {
       const formValues = await Promise.all(
         formState.selectedFeatures.map(async (feature) => {
@@ -292,7 +288,6 @@ const MapDialog = ({
             feature.geometry.coordinates[0],
             config ? config.base.map.find_address_in_distance : 30
           )
-
           return {
             address: {
               ...formatAddressToSignalenInput(
@@ -314,10 +309,13 @@ const MapDialog = ({
           }
         })
       )
-
       setValue(field.key, formValues)
     }
   }
+
+  const mapStyle = isDarkMode
+    ? `${process.env.NEXT_PUBLIC_MAPTILER_MAP_DARK_MODE}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`
+    : `${process.env.NEXT_PUBLIC_MAPTILER_MAP}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`
 
   return (
     <Dialog.Root>

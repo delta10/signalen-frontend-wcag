@@ -20,6 +20,7 @@ import { FormFieldErrorMessage } from '@/components'
 import { getGeoJsonFeatures } from '@/services/location/features'
 import { FeatureCollection } from 'geojson'
 import { AddressCombobox } from '@/components/ui/AddressCombobox'
+import { getNearestAddressByCoordinate } from '@/services/location/address'
 
 export interface AssetSelectProps {
   field?: PublicQuestion

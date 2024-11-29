@@ -28,7 +28,7 @@ export const AddressCombobox = ({
   const { config } = useConfig()
   const [addressOptions, setAddressOptions] = useState<any[]>([])
   const { formState, updateForm } = useFormStore()
-  const t = useTranslations('describe-add.address')
+  const t = useTranslations('describe_add.address')
 
   const parsePoint = (str: string): [number, number] | undefined => {
     const match = /POINT\((\d+(?:\.\d+)?)\s+(\d+(?:\.\d+)?)\)/i.exec(str)
