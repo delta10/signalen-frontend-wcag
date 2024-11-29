@@ -73,7 +73,6 @@ export const AddressCombobox = ({
   }, [query])
 
   const onChangeAddress = (selectedAddress: Address) => {
-    console.log('onChangeAddress', selectedAddress)
     if (!selectedAddress) {
       return
     }

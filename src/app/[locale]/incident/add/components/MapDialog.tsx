@@ -33,11 +33,20 @@ import {
   isCoordinateInsideMaxBound,
 } from '@/lib/utils/map'
 import { getNearestAddressByCoordinate } from '@/services/location/address'
-import { Feature, FeatureCollection } from 'geojson'
+import {
+  Feature,
+  FeatureCollection,
+  GeoJsonProperties,
+  Geometry,
+} from 'geojson'
 import { PublicQuestion } from '@/types/form'
 import { FeatureListItem } from '@/app/[locale]/incident/add/components/FeatureListItem'
 import { useFormContext } from 'react-hook-form'
 import { AddressCombobox } from '@/components/ui/AddressCombobox'
+import {
+  getFirstFeatureOrCurrentAddress,
+  getNewSelectedAddress,
+} from '@/lib/utils/address'
 
 type MapDialogProps = {
   trigger: React.ReactElement
@@ -146,7 +155,6 @@ const MapDialog = ({
   }, [formState.selectedFeatures, mapFeatures?.features, dialogMap?.getZoom()])
 
   // Update position, flyTo position, after this set the marker position
-  // todo: volgens mij is flyTo boolean overbodig --> altijd false
   const updatePosition = (lat: number, lng: number, flyTo: boolean = true) => {
     if (dialogMap && flyTo) {
       dialogMap.flyTo({
@@ -166,7 +174,8 @@ const MapDialog = ({
     setIsMapSelected(true)
     const address = await getNewSelectedAddress(
       event.lngLat.lat,
-      event.lngLat.lng
+      event.lngLat.lng,
+      config
     )
 
     updateForm({
@@ -185,12 +194,6 @@ const MapDialog = ({
     // @ts-ignore
     const featureId = feature.id as number
     const maxNumberOfAssets = field?.meta.maxNumberOfAssets || 1
-    const address = await getNewSelectedAddress(
-      // @ts-ignore
-      feature.geometry.coordinates[1],
-      // @ts-ignore
-      feature.geometry.coordinates[0]
-    )
 
     if (dialogMap && featureId) {
       const newSelectedFeatureArray = Array.from(
@@ -214,6 +217,16 @@ const MapDialog = ({
         newSelectedFeatureArray.push(feature)
       }
 
+      const address = await getFirstFeatureOrCurrentAddress(
+        // @ts-ignore
+        feature.geometry.coordinates[1],
+        // @ts-ignore
+        feature.geometry.coordinates[0],
+        newSelectedFeatureArray,
+        config,
+        formState
+      )
+
       updateForm({
         ...formState,
         selectedFeatures: newSelectedFeatureArray,
@@ -228,26 +241,6 @@ const MapDialog = ({
         feature.geometry.coordinates[0],
       ])
     }
-  }
-
-  const getNewSelectedAddress = async (lat: number, lng: number) => {
-    const address = await getNearestAddressByCoordinate(
-      lat,
-      lng,
-      config ? config.base.map.find_address_in_distance : 30
-    )
-
-    return address
-      ? {
-          coordinates: [lng, lat],
-          id: address.id,
-          postcode: address.postcode,
-          huisnummer: address.huis_nlt,
-          woonplaats: address.woonplaatsnaam,
-          openbare_ruimte: address.straatnaam,
-          weergave_naam: address.weergavenaam,
-        }
-      : null
   }
 
   // set current location of user
@@ -376,7 +369,6 @@ const MapDialog = ({
                       feature={feature}
                       key={feature.id}
                       field={field}
-                      map={dialogMap}
                       setError={setError}
                       dialogRef={dialogRef}
                     />
