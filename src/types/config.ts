@@ -26,7 +26,7 @@ export type AppConfig = {
       find_address_in_distance: number
       minimal_zoom: number
       center: number[]
-      maxBounds: [[number, number], [number, number]]
+      maxBounds: number[][]
     }
     links: {
       about: string
