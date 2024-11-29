@@ -99,7 +99,8 @@ export const AddressCombobox = ({
   }
 
   const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
+    // Make sure to prevent the user for submitting the for by selecting an adres or pressing enter while ComboboxInput is focussed.
+    if (e.key === 'Enter' && addressOptions.length <= 0) {
       e.preventDefault()
     }
   }
@@ -120,7 +121,7 @@ export const AddressCombobox = ({
       />
       <ComboboxOptions
         anchor="bottom"
-        className="utrecht-listbox utrecht-listbox--html-div z-[1000]"
+        className="utrecht-listbox utrecht-listbox--html-div fixed z-[9999] pointer-events-auto"
       >
         <div className={'utrecht-listbox__list'}>
           {addressOptions.length > 0 ? (
