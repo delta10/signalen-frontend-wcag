@@ -1,0 +1,47 @@
+{
+  "base": {
+    "municipality": "voorbeeld",
+    "className": "voorbeeld-theme",
+    "naam": "gemeente Voorbeeld",
+    "header": {
+      "logo": {
+        "alt": "Logo Gemeente Voorbeeld",
+        "url": "/assets/gemeente-voorbeeld.svg"
+      },
+      "title": "Gemeente Voorbeeld"
+    },
+    "homepage": {
+      "url": "https://gemeentevoorbeeld.nl",
+      "title": "gemeente Voorbeeld"
+    },
+    "contact": {
+      "tel": "555 1234"
+    },
+    "map": {
+      "find_address_in_distance": 30,
+      "center": [52.3731081, 4.8932945],
+      "maxBounds": [
+        [4.64034, 52.25168],
+        [5.10737, 52.50536]
+      ]
+    },
+    "i18n": {
+      "nl": {
+        "describe-report": {
+          "alert": {
+            "help_text": "Lukt het niet om een melding te doen? Bel: ",
+            "opening_hours": "Wij zijn bereikbaar van maandag tot en met vrijdag van 08:00 tot 18:00 uur."
+          }
+        }
+      },
+      "en": {
+        "describe-report": {
+          "alert": {
+            "help_text": "Having trouble submitting a report? Call: ",
+            "opening_hours": "We are available Monday through Friday from 8:00 AM to 6:00 PM."
+          }
+        }
+      }
+    }
+  }
+}
