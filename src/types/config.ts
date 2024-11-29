@@ -10,12 +10,7 @@ export type AppConfig = {
     /**
      * One or more class names for the NL Design System theme.
      */
-    className?: string
     naam: string
-    homepage: {
-      url: string
-      title: string
-    }
     header: {
       logo: {
         alt: string
