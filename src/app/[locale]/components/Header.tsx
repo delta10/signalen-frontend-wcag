@@ -14,18 +14,18 @@ const Header = () => {
 
   const homepageHref = config?.base.links.home
   const logo =
-    isDarkMode && config?.base.logo_dark_mode
-      ? config?.base.logo_dark_mode
-      : config?.base.logo
+    isDarkMode && config?.base.header.logo.dark_mode_url
+      ? config?.base.header.logo.dark_mode_url
+      : config?.base.header.logo.url
 
-  const logoAltText = config?.base.logo_alt_text
-    ? config.base.logo_alt_text
+  const logoAltText = config?.base.header.logo.alt
+    ? config.base.header.logo.alt
     : t('default_logo_label', {
         organization: config?.base.municipality_display_name,
       })
 
   const logoElement = (
-    <Logo caption={config ? config.base.municipality : ''}>
+    <Logo caption={config ? config.base.header.logo.caption : ''}>
       <Image
         src={`/assets/${logo}`}
         alt={logoAltText}

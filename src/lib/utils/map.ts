@@ -21,7 +21,7 @@ export const isCoordinates = (arg: unknown): arg is [number, number] => {
 export const isCoordinateInsideMaxBound = (
   lat: number,
   lng: number,
-  maxBounds: [[number, number], [number, number]]
+  maxBounds: number[][]
 ): boolean => {
   const [minLng, minLat] = maxBounds[0]
   const [maxLng, maxLat] = maxBounds[1]

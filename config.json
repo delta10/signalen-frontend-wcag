@@ -1,7 +1,6 @@
 {
   "base": {
     "municipality": "purmerend",
-    "logo": "purmerend-logo.svg",
     "municipality_display_name": "Purmerend",
     "assets_url": "https://meldingen.demo.meierijstad.delta10.cloud",
     "supportedLanguages": [
@@ -14,6 +13,17 @@
         "lang": "nl"
       }
     ],
+    "naam": "gemeente Purmerend",
+    "header": {
+      "logo": {
+        "alt": "Logo: kop van een koe met onder elkaar de 3 delen van het woord Purmerend: 'pur', 'mer' en 'end'.",
+        "url": "purmerend-logo.svg",
+        "caption": "Purmerend"
+      }
+    },
+    "contact": {
+      "tel": "0299 452 452"
+    },
     "map": {
       "find_address_in_distance": 30,
       "minimal_zoom": 17,
@@ -38,6 +48,24 @@
       "help": "https://signalen.org/",
       "home": "https://purmerend.nl/",
       "privacy": "https://vng.nl/privacyverklaring-vereniging-van-nederlandse-gemeenten"
+    },
+    "i18n": {
+      "nl": {
+        "describe_report": {
+          "alert": {
+            "help_text": "Lukt het niet om een melding te doen? Bel",
+            "opening_hours": "Wij zijn bereikbaar van maandag tot en met vrijdag van 08:00 tot 18:00 uur."
+          }
+        }
+      },
+      "en": {
+        "describe_report": {
+          "alert": {
+            "help_text": "Having trouble submitting a report? Call",
+            "opening_hours": "We are available Monday through Friday from 8:00 AM to 6:00 PM."
+          }
+        }
+      }
     }
   }
 }
