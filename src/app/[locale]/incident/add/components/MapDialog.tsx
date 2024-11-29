@@ -61,7 +61,7 @@ const MapDialog = ({
   const { dialogMap } = useMap()
   const { loading, config } = useConfig()
   const dialogRef = useRef<HTMLDialogElement>(null)
-  const [isMapSelected, setIsMapSelected] = useState<boolean>(false)
+  const [isMapSelected, setIsMapSelected] = useState<boolean | null>(null)
   const [mapFeatures, setMapFeatures] = useState<FeatureCollection | null>()
   const { setValue } = useFormContext()
 
@@ -146,6 +146,7 @@ const MapDialog = ({
   }, [formState.selectedFeatures, mapFeatures?.features, dialogMap?.getZoom()])
 
   // Update position, flyTo position, after this set the marker position
+  // todo: volgens mij is flyTo boolean overbodig --> altijd false
   const updatePosition = (lat: number, lng: number, flyTo: boolean = true) => {
     if (dialogMap && flyTo) {
       dialogMap.flyTo({
@@ -412,7 +413,7 @@ const MapDialog = ({
                 attributionControl={false}
                 maxBounds={config.base.map.maxBounds}
               >
-                {marker.length && isMapSelected && (
+                {marker.length && (isMapSelected === null || isMapSelected) && (
                   <Marker latitude={marker[0]} longitude={marker[1]}>
                     <MapMarker />
                   </Marker>

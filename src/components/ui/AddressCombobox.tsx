@@ -17,7 +17,7 @@ import { useTranslations } from 'next-intl'
 
 type AddressComboboxProps = {
   updatePosition?: (lat: number, lng: number, flyTo?: boolean) => void
-  setIsMapSelected?: Dispatch<SetStateAction<boolean>>
+  setIsMapSelected?: Dispatch<SetStateAction<boolean | null>>
 }
 
 export const AddressCombobox = ({
@@ -73,6 +73,7 @@ export const AddressCombobox = ({
   }, [query])
 
   const onChangeAddress = (selectedAddress: Address) => {
+    console.log('onChangeAddress', selectedAddress)
     if (!selectedAddress) {
       return
     }
