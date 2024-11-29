@@ -25,7 +25,7 @@ const Header = () => {
       })
 
   const logoElement = (
-    <Logo>
+    <Logo caption={config ? config.base.municipality : ''}>
       <Image
         src={`/assets/${logo}`}
         alt={logoAltText}

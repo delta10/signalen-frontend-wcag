@@ -14,10 +14,6 @@
         "file_size_too_large": "File size too large. Each file must be less than 20MB.",
         "file_size_too_small": "File size too small. Each file must be at least 30KB."
       }
-    },
-    "alert": {
-      "help_text": "Having trouble submitting a report? Call: ",
-      "opening_hours": "We are available Monday through Friday from 8:00 AM to 6:00 PM."
     }
   },
   "describe_add": {

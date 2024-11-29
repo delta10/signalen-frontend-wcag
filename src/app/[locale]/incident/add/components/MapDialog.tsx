@@ -41,8 +41,6 @@ import { PublicQuestion } from '@/types/form'
 import { FeatureListItem } from '@/app/[locale]/incident/add/components/FeatureListItem'
 import { useDarkMode } from '@/hooks/useDarkMode'
 
-type Coordinates = [[number, number], [number, number]]
-
 type MapDialogProps = {
   trigger: React.ReactElement
   onMapReady?: (map: MapRef) => void
@@ -179,7 +177,7 @@ const MapDialog = ({
           position.coords.latitude,
           position.coords.longitude,
           config
-            ? (config.base.map.maxBounds as Coordinates)
+            ? config.base.map.maxBounds
             : [
                 [0, 0],
                 [0, 0],

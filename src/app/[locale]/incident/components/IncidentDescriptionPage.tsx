@@ -1,12 +1,12 @@
 'use client'
 
-import { useTranslations } from 'next-intl'
+import { NextIntlClientProvider, useMessages, useTranslations } from 'next-intl'
 import { useFormStore } from '@/store/form_store'
 import { Heading, Paragraph, HeadingGroup, PreHeading } from '@/components'
-import { Alert, Link } from '@utrecht/component-library-react/dist/css-module'
+import { Alert, Link } from '@/components'
 import { IncidentDescriptionForm } from '@/app/[locale]/incident/components/IncidentDescriptionForm'
-import FormProgress from '../../components/FormProgress'
-import { useConfig } from '@/hooks/useConfig'
+import pick from 'lodash/pick'
+import FormProgress from '@/app/[locale]/components/FormProgress'
 
 const currentStep = 1
 const maxStep = 4
@@ -14,7 +14,6 @@ const maxStep = 4
 export const IncidentDescriptionPage = () => {
   const t = useTranslations('describe_report')
   const { loaded } = useFormStore()
-  const { config } = useConfig()
   const tGeneral = useTranslations('general.form')
 
   if (loaded) {
@@ -32,17 +31,16 @@ export const IncidentDescriptionPage = () => {
               </PreHeading>
             </HeadingGroup>
           </FormProgress>
-          {config ? (
-            <Alert>
-              <Paragraph>
-                {`${t('alert.help_text')} `}
-                <Link href={`tel:${config.base.contact.tel}`}>
-                  {config.base.contact.tel}
-                </Link>
-              </Paragraph>
-              <Paragraph>{t('alert.opening_hours')}</Paragraph>
-            </Alert>
-          ) : null}
+          <Alert>
+            <Paragraph>
+              Lukt het niet om een melding te doen? Bel het telefoonnummer
+              <Link href="tel:14 020"> 14 020.</Link>
+            </Paragraph>
+            <Paragraph>
+              Wij zijn bereikbaar van maandag tot en met vrijdag van 08:00 tot
+              18:00 uur.
+            </Paragraph>
+          </Alert>
           <IncidentDescriptionForm />
         </div>
       </>
