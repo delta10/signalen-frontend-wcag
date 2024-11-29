@@ -338,7 +338,12 @@ const MapDialog = ({
                 style={{ blockSize: '100%', inlineSize: '100%' }}
                 mapStyle={mapStyle}
                 attributionControl={false}
-                maxBounds={config.base.map.maxBounds}
+                maxBounds={
+                  config.base.map.maxBounds as [
+                    [number, number],
+                    [number, number],
+                  ]
+                }
               >
                 {marker.length && isMapSelected && (
                   <Marker latitude={marker[0]} longitude={marker[1]}>
