@@ -15,7 +15,7 @@ export type AppConfig = {
       logo: {
         alt: string
         url: string
-        dark_mode_url: string
+        dark_mode_url?: string
         caption: string
       }
     }
