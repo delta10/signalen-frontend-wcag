@@ -18,7 +18,6 @@ export type AppConfig = {
         dark_mode_url: string
         caption: string
       }
-      title: string
     }
     contact: {
       tel: string
