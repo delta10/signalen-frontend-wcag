@@ -29,13 +29,14 @@ export const LocationSelect = ({ field }: LocationSelectProps) => {
   const errorMessage = errors['location']?.message as string
   const { formState: formStoreState } = useFormStore()
   const t = useTranslations('describe-add.map')
+  const tGeneral = useTranslations('general')
 
   return (
     <Fieldset invalid={Boolean(errorMessage)} className="w-full">
       <FieldsetLegend>
         {field
-          ? `${field.meta.label} (${t('required_short')})`
-          : `${t('map_label')} (${t('required_short')})`}
+          ? `${field.meta.label} (${tGeneral('form.required_short')})`
+          : `${t('map_label')} (${tGeneral('form.required_short')})`}
       </FieldsetLegend>
 
       {Boolean(errorMessage) && errorMessage && (

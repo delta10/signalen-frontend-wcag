@@ -23,10 +23,14 @@ import {
   MapMarker,
 } from '@/components'
 import { useConfig } from '@/hooks/useConfig'
-import { IconCurrentLocation, IconMinus, IconPlus } from '@tabler/icons-react'
+import {
+  IconCurrentLocation,
+  IconMinus,
+  IconPlus,
+  IconX,
+} from '@tabler/icons-react'
 import { ButtonGroup } from '@/components'
 import {
-  formatAddressToSignalenInput,
   getFeatureDescription,
   getFeatureId,
   getFeatureType,
@@ -41,6 +45,7 @@ import {
 } from 'geojson'
 import { PublicQuestion } from '@/types/form'
 import { FeatureListItem } from '@/app/[locale]/incident/add/components/FeatureListItem'
+import { useDarkMode } from '@/hooks/useDarkMode'
 import { useFormContext } from 'react-hook-form'
 import { AddressCombobox } from '@/components/ui/AddressCombobox'
 import {
@@ -63,7 +68,7 @@ const MapDialog = ({
   field,
   isAssetSelect = false,
 }: MapDialogProps) => {
-  const t = useTranslations('describe-add.map')
+  const t = useTranslations('describe_add.map')
   const [marker, setMarker] = useState<[number, number] | []>([])
   const [error, setError] = useState<string | null>(null)
   const { formState, updateForm } = useFormStore()
@@ -72,7 +77,7 @@ const MapDialog = ({
   const dialogRef = useRef<HTMLDialogElement>(null)
   const [isMapSelected, setIsMapSelected] = useState<boolean | null>(null)
   const [mapFeatures, setMapFeatures] = useState<FeatureCollection | null>()
-  const { setValue } = useFormContext()
+  const { isDarkMode } = useDarkMode()
 
   const [viewState, setViewState] = useState<ViewState>({
     latitude: 0,
@@ -155,11 +160,10 @@ const MapDialog = ({
   }, [formState.selectedFeatures, mapFeatures?.features, dialogMap?.getZoom()])
 
   // Update position, flyTo position, after this set the marker position
-  const updatePosition = (lat: number, lng: number, flyTo: boolean = true) => {
-    if (dialogMap && flyTo) {
+  const updatePosition = (lat: number, lng: number) => {
+    if (dialogMap) {
       dialogMap.flyTo({
         center: [lng, lat],
-        speed: 0.5,
         zoom: 18,
       })
     }
@@ -401,9 +405,14 @@ const MapDialog = ({
                 onClick={(e) => handleMapClick(e)}
                 onMove={(evt) => setViewState(evt.viewState)}
                 style={{ blockSize: '100%', inlineSize: '100%' }}
-                mapStyle={`${process.env.NEXT_PUBLIC_MAPTILER_MAP}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`}
+                mapStyle={mapStyle}
                 attributionControl={false}
-                maxBounds={config.base.map.maxBounds}
+                maxBounds={
+                  config.base.map.maxBounds as [
+                    [number, number],
+                    [number, number],
+                  ]
+                }
               >
                 {marker.length && (isMapSelected === null || isMapSelected) && (
                   <Marker latitude={marker[0]} longitude={marker[1]}>
@@ -454,13 +463,16 @@ const MapDialog = ({
                   {t('current_location')}
                 </Button>
               </div>
-              <div className="map-close-button">
-                <Dialog.Close asChild>
-                  <Button className="map-button">
-                    <IconPlus className="transform rotate-45" />
-                  </Button>
-                </Dialog.Close>
-              </div>
+
+              <Dialog.Close asChild>
+                <IconButton
+                  className="map-close-button"
+                  label={t('map_close_button_label')}
+                >
+                  <IconX />
+                </IconButton>
+              </Dialog.Close>
+
               <ButtonGroup direction="column" className="map-zoom-button-group">
                 <IconButton
                   className="map-zoom-button"

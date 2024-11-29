@@ -9,7 +9,7 @@ import { FormStep } from '@/types/form'
 import { useFormStore } from '@/store/form_store'
 
 export default function Thankyou() {
-  const t = useTranslations('describe-thankyou')
+  const t = useTranslations('describe_thankyou')
   const { resetForm, formState } = useFormStore()
   const router = useRouter()
 

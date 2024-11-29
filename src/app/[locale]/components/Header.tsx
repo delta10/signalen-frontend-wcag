@@ -4,24 +4,35 @@ import { LanguageSwitch } from '@/app/[locale]/components/LanguageSwitch'
 import { Link, Logo, PageHeader } from '@/components/index'
 import Image from 'next/image'
 import { useConfig } from '@/hooks/useConfig'
+import { useDarkMode } from '@/hooks/useDarkMode'
+import { useTranslations } from 'next-intl'
 
-export interface HeaderProps {
-  homepage?: {
-    href: string
-    label: string
-  }
-  logo: {
-    src: string
-    label: string
-  }
-}
-
-const Header = ({ homepage, logo }: HeaderProps) => {
+const Header = () => {
   const { config } = useConfig()
+  const { isDarkMode } = useDarkMode()
+  const t = useTranslations('current_organisation')
+
+  const homepageHref = config?.base.links.home
+  const logo =
+    isDarkMode && config?.base.header.logo.dark_mode_url
+      ? config?.base.header.logo.dark_mode_url
+      : config?.base.header.logo.url
+
+  const logoAltText = config?.base.header.logo.alt
+    ? config.base.header.logo.alt
+    : t('default_logo_label', {
+        organization: config?.base.municipality_display_name,
+      })
 
   const logoElement = (
-    <Logo>
-      <Image src={logo.src} alt={logo.label} width={275} height={150} />
+    <Logo caption={config ? config.base.header.logo.caption : ''}>
+      <Image
+        src={`/assets/${logo}`}
+        alt={logoAltText}
+        width={275}
+        height={150}
+        priority={true}
+      />
     </Logo>
   )
 
@@ -29,14 +40,16 @@ const Header = ({ homepage, logo }: HeaderProps) => {
     <>
       <PageHeader>
         <div className="flex flex-row items-center justify-between">
-          {homepage ? (
+          {homepageHref ? (
             <Link
               boxContent
-              href={homepage.href}
+              href={homepageHref}
               aria-labelledby="logo-link-label"
             >
               <span id="logo-link-label" hidden>
-                {homepage.label}
+                {t('default_homepage_label', {
+                  organization: config?.base.municipality_display_name,
+                })}
               </span>
               {logoElement}
             </Link>

@@ -2,11 +2,7 @@
   "homepage": {
     "welcome": "1. Describe your report"
   },
-  "stepper": {
-    "back": "Back",
-    "step": "Step {currentStep} of {totalSteps}"
-  },
-  "describe-report": {
+  "describe_report": {
     "heading": "Describe your report",
     "form": {
       "describe_textarea_heading": "What is it about?",
@@ -14,17 +10,17 @@
       "describe_upload_heading": "Add photos",
       "describe_upload_description": "Add a photo to clarify the situation (maximum of 5 photos).",
       "errors": {
-        "textarea_required": "This is a required field",
         "file_type_invalid": "Invalid file type. Only JPEG, PNG, and GIF are accepted.",
         "file_size_too_large": "File size too large. Each file must be less than 20MB.",
-        "file_size_too_small": "File size too small. Each file must be at least 30KB.",
-        "file_limit_exceeded": "Maximum number of files is 3."
-      },
-      "required_short": "required",
-      "not_required_short": "not required"
+        "file_size_too_small": "File size too small. Each file must be at least 30KB."
+      }
+    },
+    "alert": {
+      "help_text": "Having trouble submitting a report? Call: ",
+      "opening_hours": "We are available Monday through Friday from 8:00 AM to 6:00 PM."
     }
   },
-  "describe-add": {
+  "describe_add": {
     "heading": "Location and questions",
     "form": {
       "add_map_heading": "Where is it?",
@@ -33,7 +29,6 @@
     "map": {
       "map_heading": "Choose your location",
       "map_label": "Where is the location?",
-      "required_short": "required",
       "choose_location": "Use this location",
       "dialog_title": "Choose Location",
       "dialog_description": "Choose a location on the map for the location of your report.",
@@ -46,6 +41,7 @@
       "zoom_for_object": "Zoom in to see the objects",
       "map_zoom-in_button_label": "Zoom in on the map",
       "map_zoom-out_button_label": "Zoom out on the map",
+      "map_close_button_label": "Close the map",
       "choose_address_description": "Search by address",
       "use_map_description": "Or select a point on the map"
     },
@@ -53,7 +49,7 @@
       "no_results": "No addresses found, please check your spelling or try a less specific search."
     }
   },
-  "describe-contact": {
+  "describe_contact": {
     "heading": "Contact details",
     "form": {
       "heading": "May we call you for questions? And keep you informed via e-mail?",
@@ -62,39 +58,22 @@
       "send_to_other_instance_description": "Sometimes the municipality cannot do anything. Another organization must then get to work. If so, we can sometimes forward your report. We send your phone number or e-mail address along with it. But we only do that if you agree.",
       "describe_phone_input_heading": "What is your telephone number?",
       "describe_mail_input_heading": "What is your e-mail address?",
-      "describe_checkbox_input_description": "Yes, I give the Municipality of Amsterdam permission to forward my report to other organizations if the report is not intended for the Municipality.",
+      "describe_checkbox_input_description": "Yes, I give the municipality {organization} permission to forward my report to other organizations if the report is not intended for the Municipality.",
+      "sharing_heading_short": "Report sharing",
+      "no_contact_details": "You have not entered contact information. We cannot let you know what we have done with your report.",
       "errors": {
-        "number_not_valid": "Use a valid telephone number",
-        "email_not_valid": "Use a valid mail address"
-      },
-      "not_required_short": "not required"
+        "number_exceeds_max_characters": "You have entered more than the maximum {maxLength} characters.",
+        "number_invalid_character": "Invalid phone number, only digits, spaces, brackets, + and - are allowed.",
+        "email_not_valid": "Enter a valid email address, with an @ and a domain name. For example: naam@domein.nl"
+      }
     }
   },
-  "describe-summary": {
+  "describe_summary": {
     "heading": "Submit",
     "description": "Check your information and submit your report.",
-    "steps": {
-      "step_one": {
-        "title": "1. Describe your report",
-        "edit": "Edit your report",
-        "input_heading": "What is it about?",
-        "upload_images": "Upload images"
-      },
-      "step_two": {
-        "title": "2. Location and questions",
-        "edit": "Edit location and questions",
-        "input_heading": "Where is it?"
-      },
-      "step_three": {
-        "title": "3. Contact information",
-        "edit": "Edit contact information",
-        "no_contact_details": "You have not entered contact information. We cannot let you know what we have done with your report.",
-        "input_telephone_heading": "What is your phone number?",
-        "input_mail_heading": "What is your email address?",
-        "input_sharing_heading": "Report sharing",
-        "input_sharing_allowed": "Yes, I authorize the Municipality of Amsterdam to forward my report to other organizations if it is not intended for the municipality."
-      }
-    },
+    "edit_step_report": "Edit your report",
+    "edit_step_add": "Edit location and questions",
+    "edit_step_contact": "Edit contact information",
     "submit_alert": {
       "error": {
         "heading": "Submit failed",
@@ -106,7 +85,7 @@
       }
     }
   },
-  "describe-thankyou": {
+  "describe_thankyou": {
     "heading": "Thank you!",
     "description_notification_number": "Your notification is registered with us under number:",
     "description_notification_email": "Did you provide an email address? You will receive an email with all the details of your notification.",
@@ -115,20 +94,19 @@
     "new_notification": "New notification"
   },
   "general": {
-    "describe_form": {
-      "title-separator": " · ",
-      "title-prefix-error": "Something went wrong!",
-      "pre-heading": "Step {current} of {max}",
+    "form": {
+      "title_separator": " · ",
+      "title_prefix_error": "Something went wrong!",
+      "pre_heading": "Step {current} of {max}",
       "back_button": "Back",
       "next_button": "Next",
       "submit_button": "Submit",
-      "not-required": "This field is not required."
+      "required_short": "required",
+      "not_required_short": "not required"
     },
     "errors": {
       "required": "This field is required",
       "max_length": "This field has a maximal length of {maxLength} characters",
-      "not_required_short": "not required",
-      "required_short": "required",
       "location_required": "Location is required",
       "is_blocking": "You cannot complete this form any further. Read below the answers where you can, however, submit your report."
     },
@@ -139,16 +117,12 @@
     "file": {
       "preview": "Preview image of file: {file}"
     },
-    "loading": "Loading"
+    "loading": "Loading..."
   },
-  "routing": {
-    "notifications-map": "/notifications-map",
-    "incident": "/incident"
-  },
-  "current-organisation": {
+  "current_organisation": {
     "name": "City of Utrecht",
-    "homepage-label": "homepage",
-    "logo-label": "Coat of arms of the city of Utrecht"
+    "default_homepage_label": "Return to homepage of municipality {organization}",
+    "default_logo_label": "Logo of municipality {organization}, click for homepage"
   },
   "footer": {
     "about": "About",

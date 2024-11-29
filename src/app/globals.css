@@ -4,117 +4,132 @@
 
 /* fonts */
 .empty-box {
-    width: 100px;
-    height: 100px;
+  width: 100px;
+  height: 100px;
 }
 
+/* file upload */
 .empty-box.border {
-    border: 1px dashed var(--utrecht-form-control-border-color);
+  border: 1px dashed var(--utrecht-form-control-border-color);
 }
 
 .file-upload-box {
-    width: 100px;
-    height: 100px;
-    border: 1px dashed var(--utrecht-form-control-border-color);
+  width: 100px;
+  height: 100px;
+  border: 1px dashed var(--utrecht-form-control-border-color);
 }
 
 .file-upload-box > label {
-    position: relative;
-    display: inline-block;
-    cursor: pointer;
-    height: 100%;
-    width: 100%;
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  height: 100%;
+  width: 100%;
 }
 
 .file-upload-box > span {
-    position: absolute;
-    display: flex;
-    -webkit-box-pack: center;
-    justify-content: center;
-    -webkit-box-align: center;
-    align-items: center;
-    width: 40px;
-    height: 40px;
-    top: 29px;
-    left: 29px;
-    border-radius: 50%;
-    border: 1px solid var(--utrecht-form-control-border-color);
+  position: absolute;
+  display: flex;
+  -webkit-box-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  top: 29px;
+  left: 29px;
+  border-radius: 50%;
+  border: 1px solid var(--utrecht-form-control-border-color);
 }
 
-.utrecht-button:focus:not(:disabled,[aria-disabled=true],.utrecht-button--disabled) {
-    border: none;
+/* TODO: zonder important doen deze rules niks */
+.iconbutton-preview-delete {
+  /* bg-gray-900 bg-opacity-50 */
+  /* TODO: bg color token toevoegen aan purmerend theme voor icon button trash? of? */
+  background: rgba(0, 0, 0, 0.7) !important;
+  border: none !important;
+  border-radius: 0% !important;
+  min-inline-size: 100px !important;
+  position: absolute !important;
+  bottom: 0 !important;
+  color: white !important;
+  display: flex !important;
+  justify-content: center !important;
+  justify-items: center !important;
+}
+
+.iconbutton-preview-delete:hover {
+  /* TODO: bg color grey-29 opacity on hover = 80% opacity in purmerend tokens */
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  transition-duration: 200 !important;
+  transition-delay: 100 !important;
+}
+
+.utrecht-button:focus:not(
+    :disabled,
+    [aria-disabled='true'],
+    .utrecht-button--disabled
+  ) {
+  border: none;
 }
 
 /*todo: niet best practice met !important maar weet even niet hoe ik anders makkelijk de default styling moet overschrijven*/
 .pl-0-overwrite {
-    padding-left: 0 !important;
+  padding-left: 0 !important;
 }
 
 .pr-0-overwrite {
-    padding-right: 0 !important;
+  padding-right: 0 !important;
 }
 
-.stepper-button-hover:hover:not(:disabled,[aria-disabled=true]) {
-    border: none;
-    outline: none;
-    text-decoration: underline;
+/* stepper */
+.stepper-button-hover:hover:not(:disabled, [aria-disabled='true']) {
+  border: none;
+  outline: none;
+  text-decoration: underline;
 }
 
 /* map */
 .map-location-group {
-    position: absolute;
-    left: 1em;
-    top: 1em;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+  position: absolute;
+  left: 1em;
+  top: 1em;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .map-location-alert {
-    padding: 12px 16px !important;
+  padding: 12px 16px !important;
 }
 
 .map-close-button {
-    position: absolute;
-    right: 1em;
-    top: 1em;
-    gap: 0 !important;
+  position: absolute;
+  right: 1em;
+  top: 1em;
+  gap: 0 !important;
 }
 
 .map-zoom-button-group {
-    position: absolute;
-    right: 1em;
-    bottom: 1em;
-    gap: 0 !important;
+  position: absolute;
+  right: 1em;
+  bottom: 1em;
+  gap: 0 !important;
 }
 
 .map-alert-dialog__content {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .utrecht-alert__content-closable {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 8px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
 }
 
-.utrecht-alert-closable__icon {
-    rotate: 45deg;
-    --utrecht-icon-size: 24px;
-    color: var(--_utrecht-alert-color) !important;
-}
-
-.map-button {
-    padding-block-end: 0 !important;
-    padding-block-start: 0 !important;
-    padding-inline-end: 0 !important;
-    padding-inline-start: 0 !important;
-}
-
-/* map */
 .map-marker-icon {
   --utrecht-icon-size: var(--utrecht-map-marker-size, 42px);
   --utrecht-icon-color: var(
@@ -125,19 +140,29 @@
 
 /* colors */
 .background-gray-200 {
-    background-color: var(--basis-color-gray-200)
+  background-color: var(--basis-color-gray-200);
 }
 
 .background-primary {
-    background-color: var(--basis-color-primary-fill-1)
+  background-color: var(--basis-color-primary-fill-1);
 }
 
 .background-white {
-    background-color: var(--basis-color-white)
+  background-color: var(--basis-color-white);
 }
 
 .bordercolor-gray-200 {
-    border-color: var(--basis-color-gray-200)
+  border-color: var(--basis-color-gray-200);
+}
+
+/* spinner */
+.signalen-loading-icon {
+  --utrecht-icon-size: var(--basis-size-icon-4xl, 4em);
+}
+
+/* page header */
+.utrecht-logo__caption {
+  display: none;
 }
 
 .purmerend-theme {

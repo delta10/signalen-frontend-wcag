@@ -14,7 +14,7 @@ import {
 } from '@/components/index'
 import { useFormStore } from '@/store/form_store'
 import { useConfig } from '@/hooks/useConfig'
-import { isCoordinates } from '@/lib/utils/map'
+import { formatAddressToSignalenInput, isCoordinates } from '@/lib/utils/map'
 import { useTranslations } from 'next-intl'
 import { FormFieldErrorMessage } from '@/components'
 import { getGeoJsonFeatures } from '@/services/location/features'
@@ -27,12 +27,14 @@ export interface AssetSelectProps {
 
 export const AssetSelect = ({ field }: AssetSelectProps) => {
   const {
+    setValue,
     formState: { errors },
   } = useFormContext()
   const errorMessage = errors['location']?.message as string
   const { formState: formStoreState } = useFormStore()
   const { config } = useConfig()
-  const t = useTranslations('describe-add.map')
+  const t = useTranslations('describe_add.map')
+  const tGeneral = useTranslations('general')
   const [dialogMap, setDialogMap] = useState<MapRef | null>(null)
   const [features, setFeatures] = useState<FeatureCollection | null>(null)
 
@@ -79,12 +81,55 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
     }
   }, [dialogMap])
 
+  // If formStoreState.selectedFeatures changes, populate form with selected assets
+  useEffect(() => {
+    const populateFormValueWithAssets = async () => {
+      if (field) {
+        const formValues = await Promise.all(
+          formStoreState.selectedFeatures.map(async (feature) => {
+            const address = await getNearestAddressByCoordinate(
+              // @ts-ignore
+              feature.geometry.coordinates[1],
+              // @ts-ignore
+              feature.geometry.coordinates[0],
+              config ? config.base.map.find_address_in_distance : 30
+            )
+
+            return {
+              address: {
+                ...formatAddressToSignalenInput(
+                  address ? address.weergavenaam : ''
+                ),
+              },
+              id: feature.id?.toString(),
+              coordinates: {
+                // @ts-ignore
+                lat: feature.geometry.coordinates[1],
+                // @ts-ignore
+                lng: feature.geometry.coordinates[0],
+              },
+              // @ts-ignore
+              description: feature.description,
+              // @ts-ignore
+              label: feature.description,
+              type: 'Feature',
+            }
+          })
+        )
+
+        setValue(field.key, formValues)
+      }
+    }
+
+    populateFormValueWithAssets()
+  }, [formStoreState.selectedFeatures])
+
   return (
     <Fieldset invalid={Boolean(errorMessage)} className="w-full">
       <FieldsetLegend>
         {field
-          ? `${field.meta.label} (${t('required_short')})`
-          : `${t('map_label')} (${t('required_short')})`}
+          ? `${field.meta.label} (${tGeneral('form.required_short')})`
+          : `${t('map_label')} (${tGeneral('form.required_short')})`}
       </FieldsetLegend>
 
       {Boolean(errorMessage) && errorMessage && (

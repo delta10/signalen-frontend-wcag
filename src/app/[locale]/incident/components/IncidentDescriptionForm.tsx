@@ -26,9 +26,11 @@ import {
   FormFieldErrorMessage,
 } from '@/components/index'
 import { getCurrentStep, getNextStepPath } from '@/lib/utils/stepper'
+import { getAttachments } from '@/lib/utils/attachments'
 
 export const IncidentDescriptionForm = () => {
-  const t = useTranslations('describe-report.form')
+  const t = useTranslations('describe_report.form')
+  const tGeneral = useTranslations('general')
   const { updateForm, formState } = useFormStore()
   const router = useRouter()
   const pathname = usePathname()
@@ -39,7 +41,7 @@ export const IncidentDescriptionForm = () => {
   }, [router])
 
   const incidentDescriptionFormSchema = z.object({
-    description: z.string().min(1, t('errors.textarea_required')),
+    description: z.string().trim().min(1, tGeneral('errors.required')),
     files: z
       .array(z.instanceof(File))
       .refine(
@@ -57,21 +59,11 @@ export const IncidentDescriptionForm = () => {
       }),
   })
 
-  const getAttachments = () => {
-    // When the browser is refreshed the files are not properly stored in the localstorage.
-    // Therefor, we check if the file object is still of type File.
-    const filesArray = formState.attachments.filter(
-      (file) => file instanceof File
-    )
-
-    return filesArray.length > 0 ? filesArray : []
-  }
-
   const form = useForm<z.infer<typeof incidentDescriptionFormSchema>>({
     resolver: zodResolver(incidentDescriptionFormSchema),
     defaultValues: {
       description: formState.description,
-      files: getAttachments(),
+      files: getAttachments(formState.attachments),
     },
   })
   const { register, setFocus } = form
@@ -103,6 +95,11 @@ export const IncidentDescriptionForm = () => {
       ...formState,
       description: values.description,
       attachments: values.files,
+      selectedFeatures:
+        values.description !== formState.description
+          ? []
+          : formState.selectedFeatures,
+      last_completed_step: Math.max(formState.last_completed_step, step),
     })
 
     const nextStep = getNextStepPath(step)
@@ -135,7 +132,7 @@ export const IncidentDescriptionForm = () => {
       <FormFieldTextarea
         rows={5}
         description={t('describe_textarea_description')}
-        label={`${t('describe_textarea_heading')} (${t('required_short')})`}
+        label={`${t('describe_textarea_heading')} (${tGeneral('form.required_short')})`}
         errorMessage={form.formState.errors.description?.message}
         invalid={Boolean(form.formState.errors.description?.message)}
         required={true}
@@ -143,7 +140,7 @@ export const IncidentDescriptionForm = () => {
       />
 
       <Fieldset invalid={Boolean(form.formState.errors.files?.message)}>
-        <FieldsetLegend>{`${t('describe_textarea_heading')} (${t('not_required_short')})`}</FieldsetLegend>
+        <FieldsetLegend>{`${t('describe_textarea_heading')} (${tGeneral('form.not_required_short')})`}</FieldsetLegend>
 
         <FormFieldDescription>
           {t('describe_upload_description')}

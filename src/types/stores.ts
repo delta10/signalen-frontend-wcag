@@ -1,8 +1,9 @@
 import { Feature } from 'geojson'
-import { Address } from '@/types/form'
+import { Address, FormStep } from '@/types/form'
 
 type FormStoreState = {
   description: string
+  last_completed_step: FormStep
   main_category: string
   sub_category: string
   coordinates: number[]

@@ -1,14 +1,7 @@
 import { notFound } from 'next/navigation'
 import React from 'react'
 import { getAllAvailableLocales } from '@/lib/utils/locale'
-import {
-  Root,
-  PageLayout,
-  Body,
-  PageBody,
-  PageFooter,
-  Article,
-} from '@/components'
+import { Root, PageLayout, Body, PageBody, Article } from '@/components'
 import { Header } from '@/app/[locale]/components/Header'
 import localFont from 'next/font/local'
 import AppProvider from '@/components/providers/AppProvider'
@@ -32,7 +25,6 @@ export default function LocaleLayout({
   const messages = useMessages()
 
   if (!getAllAvailableLocales().includes(locale as any)) notFound()
-  const t = useTranslations('current-organisation')
 
   return (
     <Root
@@ -42,16 +34,12 @@ export default function LocaleLayout({
       <Body>
         <AppProvider>
           <PageLayout>
-            <Header
-              homepage={{
-                href: '/',
-                label: t('homepage-label'),
-              }}
-              logo={{
-                src: '/assets/purmerend-logo.svg',
-                label: t('logo-label'),
-              }}
-            />
+            <NextIntlClientProvider
+              messages={pick(messages, 'current_organisation')}
+            >
+              <Header />
+            </NextIntlClientProvider>
+
             <PageBody>
               <Article className="max-w-3xl mx-auto px-4 lg:px-0">
                 {children}

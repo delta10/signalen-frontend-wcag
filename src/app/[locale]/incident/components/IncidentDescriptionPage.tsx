@@ -1,20 +1,21 @@
 'use client'
 
-import { NextIntlClientProvider, useMessages, useTranslations } from 'next-intl'
+import { useTranslations } from 'next-intl'
 import { useFormStore } from '@/store/form_store'
 import { Heading, Paragraph, HeadingGroup, PreHeading } from '@/components'
 import { Alert, Link } from '@/components'
 import { IncidentDescriptionForm } from '@/app/[locale]/incident/components/IncidentDescriptionForm'
-import pick from 'lodash/pick'
 import FormProgress from '@/app/[locale]/components/FormProgress'
+import { useConfig } from '@/hooks/useConfig'
 
 const currentStep = 1
 const maxStep = 4
 
 export const IncidentDescriptionPage = () => {
-  const t = useTranslations('describe-report')
+  const t = useTranslations('describe_report')
   const { loaded } = useFormStore()
-  const tGeneral = useTranslations('general.describe_form')
+  const { config } = useConfig()
+  const tGeneral = useTranslations('general.form')
 
   if (loaded) {
     return (
@@ -24,23 +25,24 @@ export const IncidentDescriptionPage = () => {
             <HeadingGroup>
               <Heading level={1}>{t('heading')}</Heading>
               <PreHeading>
-                {tGeneral('pre-heading', {
+                {tGeneral('pre_heading', {
                   current: currentStep,
                   max: maxStep,
                 })}
               </PreHeading>
             </HeadingGroup>
           </FormProgress>
-          <Alert>
-            <Paragraph>
-              Lukt het niet om een melding te doen? Bel het telefoonnummer
-              <Link href="tel:14 020"> 14 020.</Link>
-            </Paragraph>
-            <Paragraph>
-              Wij zijn bereikbaar van maandag tot en met vrijdag van 08:00 tot
-              18:00 uur.
-            </Paragraph>
-          </Alert>
+          {config ? (
+            <Alert>
+              <Paragraph>
+                {`${t('alert.help_text')} `}
+                <Link href={`tel:${config.base.contact.tel}`}>
+                  {config.base.contact.tel}
+                </Link>
+              </Paragraph>
+              <Paragraph>{t('alert.opening_hours')}</Paragraph>
+            </Alert>
+          ) : null}
           <IncidentDescriptionForm />
         </div>
       </>
