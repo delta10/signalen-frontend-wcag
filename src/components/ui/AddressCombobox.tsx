@@ -4,7 +4,7 @@ import {
   ComboboxOption,
   ComboboxOptions,
 } from '@headlessui/react'
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useConfig } from '@/hooks/useConfig'
 import { getSuggestedAddresses } from '@/services/location/address'
 
@@ -13,6 +13,7 @@ import { getSuggestedAddresses } from '@/services/location/address'
 import '@utrecht/select-combobox-react/dist/css'
 import { useFormStore } from '@/store/form_store'
 import { Address } from '@/types/form'
+import { useTranslations } from 'next-intl'
 
 type AddressComboboxProps = {
   updatePosition?: (lat: number, lng: number, flyTo?: boolean) => void
@@ -27,6 +28,7 @@ export const AddressCombobox = ({
   const { config } = useConfig()
   const [addressOptions, setAddressOptions] = useState<any[]>([])
   const { formState, updateForm } = useFormStore()
+  const t = useTranslations('describe-add.address')
 
   const parsePoint = (str: string): [number, number] | undefined => {
     const match = /POINT\((\d+(?:\.\d+)?)\s+(\d+(?:\.\d+)?)\)/i.exec(str)
@@ -71,6 +73,10 @@ export const AddressCombobox = ({
   }, [query])
 
   const onChangeAddress = (selectedAddress: Address) => {
+    if (!selectedAddress) {
+      return
+    }
+
     if (selectedAddress && updatePosition) {
       updatePosition(
         selectedAddress.coordinates[1],
@@ -92,6 +98,12 @@ export const AddressCombobox = ({
     }
   }
 
+  const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+    }
+  }
+
   return (
     <Combobox
       value={formState.address}
@@ -103,6 +115,7 @@ export const AddressCombobox = ({
         displayValue={(address: any) => address?.weergave_naam}
         onChange={(event) => setQuery(event.target.value)}
         className={'utrecht-textbox utrecht-textbox--html'}
+        onKeyDown={(e) => handleEnter(e)}
         autoComplete={'off'}
       />
       <ComboboxOptions
@@ -110,15 +123,21 @@ export const AddressCombobox = ({
         className="utrecht-listbox utrecht-listbox--html-div z-[1000]"
       >
         <div className={'utrecht-listbox__list'}>
-          {addressOptions.map((address) => (
-            <ComboboxOption
-              key={address.id}
-              value={address}
-              className="utrecht-listbox__option data-[focus]:bg-blue-100"
-            >
-              {address.weergave_naam}
-            </ComboboxOption>
-          ))}
+          {addressOptions.length > 0 ? (
+            addressOptions.map((address) => (
+              <ComboboxOption
+                key={address.id}
+                value={address}
+                className="utrecht-listbox__option data-[focus]:bg-blue-100"
+              >
+                {address.weergave_naam}
+              </ComboboxOption>
+            ))
+          ) : (
+            <span className="utrecht-listbox__option data-[focus]:bg-blue-100">
+              {t('no_results')}
+            </span>
+          )}
         </div>
       </ComboboxOptions>
     </Combobox>

@@ -48,6 +48,9 @@
       "map_zoom-out_button_label": "Zoom out on the map",
       "choose_address_description": "Search by address",
       "use_map_description": "Or select a point on the map"
+    },
+    "address": {
+      "no_results": "No addresses found, please check your spelling or try a less specific search."
     }
   },
   "describe-contact": {
