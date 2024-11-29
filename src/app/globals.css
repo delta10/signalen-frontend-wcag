@@ -164,3 +164,8 @@
 .utrecht-logo__caption {
   display: none;
 }
+
+.purmerend-theme {
+    --utrecht-listbox-background-color: white;
+    --utrecht-listbox-color: black;
+}

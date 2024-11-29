@@ -41,7 +41,12 @@
       "zoom_for_object": "Zoom in to see the objects",
       "map_zoom-in_button_label": "Zoom in on the map",
       "map_zoom-out_button_label": "Zoom out on the map",
-      "map_close_button_label": "Close the map"
+      "map_close_button_label": "Close the map",
+      "choose_address_description": "Search by address",
+      "use_map_description": "Or select a point on the map"
+    },
+    "address": {
+      "no_results": "No addresses found, please check your spelling or try a less specific search."
     }
   },
   "describe_contact": {

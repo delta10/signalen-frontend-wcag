@@ -31,15 +31,23 @@ import {
 } from '@tabler/icons-react'
 import { ButtonGroup } from '@/components'
 import {
+  formatAddressToSignalenInput,
   getFeatureDescription,
   getFeatureId,
   getFeatureType,
   isCoordinateInsideMaxBound,
 } from '@/lib/utils/map'
+import { getNearestAddressByCoordinate } from '@/services/location/address'
 import { Feature, FeatureCollection } from 'geojson'
 import { PublicQuestion } from '@/types/form'
 import { FeatureListItem } from '@/app/[locale]/incident/add/components/FeatureListItem'
 import { useDarkMode } from '@/hooks/useDarkMode'
+import { useFormContext } from 'react-hook-form'
+import { AddressCombobox } from '@/components/ui/AddressCombobox'
+import {
+  getFirstFeatureOrCurrentAddress,
+  getNewSelectedAddress,
+} from '@/lib/utils/address'
 
 type MapDialogProps = {
   trigger: React.ReactElement
@@ -63,8 +71,9 @@ const MapDialog = ({
   const { dialogMap } = useMap()
   const { loading, config } = useConfig()
   const dialogRef = useRef<HTMLDialogElement>(null)
-  const [isMapSelected, setIsMapSelected] = useState<boolean>(false)
+  const [isMapSelected, setIsMapSelected] = useState<boolean | null>(null)
   const [mapFeatures, setMapFeatures] = useState<FeatureCollection | null>()
+  const { setValue } = useFormContext()
   const { isDarkMode } = useDarkMode()
 
   const [viewState, setViewState] = useState<ViewState>({
@@ -103,6 +112,50 @@ const MapDialog = ({
     setMarker([formState.coordinates[0], formState.coordinates[1]])
   }, [formState.coordinates])
 
+  // Set dialog map in parent component
+  useEffect(() => {
+    if (dialogMap && onMapReady) {
+      onMapReady(dialogMap)
+    }
+  }, [dialogMap, onMapReady])
+
+  // Set new map features with ID
+  useEffect(() => {
+    if (features && field) {
+      const featuresWithId = features.features.map((feature) => {
+        const featureType = getFeatureType(
+          field.meta.featureTypes,
+          feature.properties
+        )
+
+        return {
+          ...feature,
+          // @ts-ignore
+          id: getFeatureId(featureType, feature.properties),
+          description: getFeatureDescription(featureType, feature.properties),
+        }
+      })
+
+      setMapFeatures({ ...features, features: featuresWithId })
+    }
+  }, [features])
+
+  // memoize list of features to show in left sidebar
+  const featureList = useMemo(() => {
+    if (config && dialogMap) {
+      const mapFeaturesToShow = mapFeatures ? mapFeatures.features : []
+
+      const features =
+        dialogMap?.getZoom() > config.base.map.minimal_zoom
+          ? mapFeaturesToShow
+          : []
+
+      return uniqBy([...features, ...formState.selectedFeatures], 'id')
+    }
+
+    return []
+  }, [formState.selectedFeatures, mapFeatures?.features, dialogMap?.getZoom()])
+
   // Update position, flyTo position, after this set the marker position
   const updatePosition = (lat: number, lng: number) => {
     if (dialogMap) {
@@ -117,20 +170,31 @@ const MapDialog = ({
 
   // Handle click on map, setIsMapSelected to true
   // TODO: Reset selectedFeatures if click was right on map? (open for discussion)
-  const handleMapClick = (event: MapLayerMouseEvent) => {
+  const handleMapClick = async (event: MapLayerMouseEvent) => {
     updatePosition(event.lngLat.lat, event.lngLat.lng)
-
     setIsMapSelected(true)
+    const address = await getNewSelectedAddress(
+      event.lngLat.lat,
+      event.lngLat.lng,
+      config
+    )
+
+    updateForm({
+      ...formState,
+      address: address,
+    })
   }
 
   // Handle click on feature marker, set selectedFeatures and show error if maxNumberOfAssets is reached
-  const handleFeatureMarkerClick = (event: MarkerEvent, feature: Feature) => {
+  const handleFeatureMarkerClick = async (
+    event: MarkerEvent,
+    feature: Feature
+  ) => {
+    // @ts-ignore
+    event.originalEvent?.stopPropagation()
     // @ts-ignore
     const featureId = feature.id as number
     const maxNumberOfAssets = field?.meta.maxNumberOfAssets || 1
-
-    // @ts-ignore
-    event.originalEvent?.stopPropagation()
 
     if (dialogMap && featureId) {
       const newSelectedFeatureArray = Array.from(
@@ -154,9 +218,20 @@ const MapDialog = ({
         newSelectedFeatureArray.push(feature)
       }
 
+      const address = await getFirstFeatureOrCurrentAddress(
+        // @ts-ignore
+        feature.geometry.coordinates[1],
+        // @ts-ignore
+        feature.geometry.coordinates[0],
+        newSelectedFeatureArray,
+        config,
+        formState
+      )
+
       updateForm({
         ...formState,
         selectedFeatures: newSelectedFeatureArray,
+        address: address,
       })
 
       setIsMapSelected(false)
@@ -200,54 +275,43 @@ const MapDialog = ({
     )
   }
 
-  // Set dialog map in parent component
-  useEffect(() => {
-    if (dialogMap && onMapReady) {
-      onMapReady(dialogMap)
-    }
-  }, [dialogMap, onMapReady])
-
-  // Set new map features with ID
-  useEffect(() => {
-    if (features && field) {
-      const featuresWithId = features.features.map((feature) => {
-        const featureType = getFeatureType(
-          field.meta.featureTypes,
-          feature.properties
-        )
-
-        return {
-          ...feature,
-          // @ts-ignore
-          id: getFeatureId(featureType, feature.properties),
-          description: getFeatureDescription(featureType, feature.properties),
-        }
-      })
-
-      setMapFeatures({ ...features, features: featuresWithId })
-    }
-  }, [features])
-
-  // Close map dialog, update formState with coordinates
+  // Close map dialog, if isAssetSelect is not set only update formStore with new coordinates. Otherwise update field with type isAssetSelect with feature answers
   const closeMapDialog = async () => {
     updateForm({ ...formState, coordinates: marker })
-  }
-
-  // memoize list of features to show in left sidebar
-  const featureList = useMemo(() => {
-    if (config && dialogMap) {
-      const mapFeaturesToShow = mapFeatures ? mapFeatures.features : []
-
-      const features =
-        dialogMap?.getZoom() > config.base.map.minimal_zoom
-          ? mapFeaturesToShow
-          : []
-
-      return uniqBy([...features, ...formState.selectedFeatures], 'id')
+    if (isAssetSelect && field) {
+      const formValues = await Promise.all(
+        formState.selectedFeatures.map(async (feature) => {
+          const address = await getNearestAddressByCoordinate(
+            // @ts-ignore
+            feature.geometry.coordinates[1],
+            // @ts-ignore
+            feature.geometry.coordinates[0],
+            config ? config.base.map.find_address_in_distance : 30
+          )
+          return {
+            address: {
+              ...formatAddressToSignalenInput(
+                address ? address.weergavenaam : ''
+              ),
+            },
+            id: feature.id?.toString(),
+            coordinates: {
+              // @ts-ignore
+              lat: feature.geometry.coordinates[1],
+              // @ts-ignore
+              lng: feature.geometry.coordinates[0],
+            },
+            // @ts-ignore
+            description: feature.description,
+            // @ts-ignore
+            label: feature.description,
+            type: 'Feature',
+          }
+        })
+      )
+      setValue(field.key, formValues)
     }
-
-    return []
-  }, [formState.selectedFeatures, mapFeatures?.features, dialogMap?.getZoom()])
+  }
 
   const mapStyle = isDarkMode
     ? `${process.env.NEXT_PUBLIC_MAPTILER_MAP_DARK_MODE}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`
@@ -289,6 +353,10 @@ const MapDialog = ({
                   ? field.meta.language.title
                   : t('map_heading')}
               </Heading>
+              <AddressCombobox
+                updatePosition={updatePosition}
+                setIsMapSelected={setIsMapSelected}
+              />
               {isAssetSelect &&
                 dialogMap &&
                 config &&
@@ -303,7 +371,6 @@ const MapDialog = ({
                       feature={feature}
                       key={feature.id}
                       field={field}
-                      map={dialogMap}
                       setError={setError}
                       dialogRef={dialogRef}
                     />
@@ -345,7 +412,7 @@ const MapDialog = ({
                   ]
                 }
               >
-                {marker.length && isMapSelected && (
+                {marker.length && (isMapSelected === null || isMapSelected) && (
                   <Marker latitude={marker[0]} longitude={marker[1]}>
                     <MapMarker />
                   </Marker>

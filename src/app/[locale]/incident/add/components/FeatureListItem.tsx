@@ -7,11 +7,12 @@ import { FormField, FormFieldCheckbox, Icon } from '@/components/index'
 import { useTranslations } from 'next-intl'
 import { FeatureWithDescription } from '@/types/map'
 import { useFormStore } from '@/store/form_store'
+import { getFirstFeatureOrCurrentAddress } from '@/lib/utils/address'
+import { useConfig } from '@/hooks/useConfig'
 
 type FeatureListItemProps = {
   feature: FeatureWithDescription
   field: PublicQuestion
-  map: MapRef | undefined
   setError: Dispatch<SetStateAction<string | null>>
   dialogRef: RefObject<HTMLDialogElement>
   configUrl?: string
@@ -20,13 +21,13 @@ type FeatureListItemProps = {
 export const FeatureListItem = ({
   feature,
   field,
-  map,
   setError,
   dialogRef,
   configUrl,
 }: FeatureListItemProps) => {
   const t = useTranslations('describe_add.map')
   const { formState, updateForm } = useFormStore()
+  const { config } = useConfig()
 
   const featureId = feature.id
   const featureDescription = feature.description
@@ -42,7 +43,7 @@ export const FeatureListItem = ({
   }, [field.meta.featureTypes, feature.properties])
 
   // Add or remove feature to / from the newSelectedFeature state declared in DialogMap
-  const addOrRemoveFeature = (checked: boolean) => {
+  const addOrRemoveFeature = async (checked: boolean) => {
     const newSelectedFeatureArray = Array.from(
       formState.selectedFeatures ? formState.selectedFeatures : []
     )
@@ -64,9 +65,20 @@ export const FeatureListItem = ({
       newSelectedFeatureArray.splice(index, 1) // Remove the feature at the found index
     }
 
+    const address = await getFirstFeatureOrCurrentAddress(
+      // @ts-ignore
+      feature.geometry.coordinates[1],
+      // @ts-ignore
+      feature.geometry.coordinates[0],
+      newSelectedFeatureArray,
+      config,
+      formState
+    )
+
     updateForm({
       ...formState,
       selectedFeatures: newSelectedFeatureArray,
+      address: address,
     })
   }
 
