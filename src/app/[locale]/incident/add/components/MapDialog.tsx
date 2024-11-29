@@ -105,7 +105,7 @@ const MapDialog = ({
             : formState.coordinates[1],
       })
     }
-  }, [loading, config])
+  }, [loading, config, formState.coordinates])
 
   // Change marker position on formState.coordinates change
   useEffect(() => {
