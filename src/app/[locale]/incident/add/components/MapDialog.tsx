@@ -112,7 +112,6 @@ const MapDialog = ({
     if (dialogMap) {
       dialogMap.flyTo({
         center: [lng, lat],
-        speed: 0.5,
         zoom: 18,
       })
     }
