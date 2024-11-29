@@ -14,6 +14,10 @@
         "file_size_too_large": "Bestandsgrootte is te groot. Elk bestand moet kleiner zijn dan 20MB.",
         "file_size_too_small": "Bestandsgrootte is te klein. Elk bestand moet minimaal 30KB zijn."
       }
+    },
+    "alert": {
+      "help_text": "Lukt het niet om een melding te doen? Bel",
+      "opening_hours": "Wij zijn bereikbaar van maandag tot en met vrijdag van 08:00 tot 18:00 uur."
     }
   },
   "describe_add": {

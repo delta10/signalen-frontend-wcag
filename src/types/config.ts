@@ -1,15 +1,33 @@
 export type AppConfig = {
   base: {
     municipality: string
-    logo: string
-    logo_dark_mode: string
-    logo_alt_text: string
     municipality_display_name: string
     assets_url: string
     supportedLanguages: Array<{
       label: string
       lang: string
     }>
+    /**
+     * One or more class names for the NL Design System theme.
+     */
+    className?: string
+    naam: string
+    homepage: {
+      url: string
+      title: string
+    }
+    header: {
+      logo: {
+        alt: string
+        url: string
+        dark_mode_url: string
+        caption: string
+      }
+      title: string
+    }
+    contact: {
+      tel: string
+    }
     map: {
       find_address_in_distance: number
       minimal_zoom: number
@@ -22,6 +40,16 @@ export type AppConfig = {
       help: string
       home: string
       privacy: string
+    }
+    i18n: {
+      [index: string]: {
+        describe_report: {
+          alert: {
+            help_text: string
+            opening_hours: string
+          }
+        }
+      }
     }
   }
 }
