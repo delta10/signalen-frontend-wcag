@@ -31,17 +31,14 @@ import {
 } from '@tabler/icons-react'
 import { ButtonGroup } from '@/components'
 import {
-  formatAddressToSignalenInput,
   getFeatureDescription,
   getFeatureId,
   getFeatureType,
   isCoordinateInsideMaxBound,
 } from '@/lib/utils/map'
-import { getNearestAddressByCoordinate } from '@/services/location/address'
 import { Feature, FeatureCollection } from 'geojson'
 import { PublicQuestion } from '@/types/form'
 import { FeatureListItem } from '@/app/[locale]/incident/add/components/FeatureListItem'
-import { useFormContext } from 'react-hook-form'
 import { useDarkMode } from '@/hooks/useDarkMode'
 
 type MapDialogProps = {
@@ -68,7 +65,6 @@ const MapDialog = ({
   const dialogRef = useRef<HTMLDialogElement>(null)
   const [isMapSelected, setIsMapSelected] = useState<boolean>(false)
   const [mapFeatures, setMapFeatures] = useState<FeatureCollection | null>()
-  const { setValue } = useFormContext()
   const { isDarkMode } = useDarkMode()
 
   const [viewState, setViewState] = useState<ViewState>({
@@ -232,45 +228,9 @@ const MapDialog = ({
     }
   }, [features])
 
-  // Close map dialog, if isAssetSelect is not set only update formStore with new coordinates. Otherwise update field with type isAssetSelect with feature answers
+  // Close map dialog, update formState with coordinates
   const closeMapDialog = async () => {
     updateForm({ ...formState, coordinates: marker })
-
-    if (isAssetSelect && field) {
-      const formValues = await Promise.all(
-        formState.selectedFeatures.map(async (feature) => {
-          const address = await getNearestAddressByCoordinate(
-            // @ts-ignore
-            feature.geometry.coordinates[1],
-            // @ts-ignore
-            feature.geometry.coordinates[0],
-            config ? config.base.map.find_address_in_distance : 30
-          )
-
-          return {
-            address: {
-              ...formatAddressToSignalenInput(
-                address ? address.weergavenaam : ''
-              ),
-            },
-            id: feature.id?.toString(),
-            coordinates: {
-              // @ts-ignore
-              lat: feature.geometry.coordinates[1],
-              // @ts-ignore
-              lng: feature.geometry.coordinates[0],
-            },
-            // @ts-ignore
-            description: feature.description,
-            // @ts-ignore
-            label: feature.description,
-            type: 'Feature',
-          }
-        })
-      )
-
-      setValue(field.key, formValues)
-    }
   }
 
   // memoize list of features to show in left sidebar

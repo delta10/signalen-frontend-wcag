@@ -95,6 +95,10 @@ export const IncidentDescriptionForm = () => {
       ...formState,
       description: values.description,
       attachments: values.files,
+      selectedFeatures:
+        values.description !== formState.description
+          ? []
+          : formState.selectedFeatures,
       last_completed_step: Math.max(formState.last_completed_step, step),
     })
 
