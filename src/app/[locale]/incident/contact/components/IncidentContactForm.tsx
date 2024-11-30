@@ -89,13 +89,13 @@ const IncidentContactForm = () => {
 
   return (
     <div>
-      <div className="flex flex-col gap-4">
+      <div>
         <Heading level={2}>{t('heading')}</Heading>
         <Paragraph>{t('description')}</Paragraph>
       </div>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-8 items-start"
+        className="flex flex-col gap-8 items-start mt-4"
       >
         <FormFieldTextbox
           label={`${t('describe_phone_input_heading')} (${tGeneral('form.not_required_short')})`}
@@ -118,11 +118,11 @@ const IncidentContactForm = () => {
           <FieldsetLegend>
             <Heading level={2}>{t('send_to_other_instance_heading')}</Heading>
           </FieldsetLegend>
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col">
             <FormFieldDescription id="todo-id">
               <Paragraph>{t('send_to_other_instance_description')}</Paragraph>
             </FormFieldDescription>
-            <div className="w-full p-4 background-gray-200">
+            <div className="w-full">
               <FormFieldCheckbox
                 label={t('describe_checkbox_input_description', {
                   organization: config?.base.municipality_display_name,
