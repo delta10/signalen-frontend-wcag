@@ -390,7 +390,7 @@ const MapDialog = ({
                         : field?.meta.language.submitPlural ||
                           field?.meta.language.submit ||
                           t('go_further_without_selected_object')
-                    : t('choose_location')}
+                    : t('choose_this_location')}
                 </Button>
               </Dialog.Close>
             </div>
