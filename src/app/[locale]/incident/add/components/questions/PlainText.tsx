@@ -9,7 +9,5 @@ export const PlainText = ({ field }: PlainTextProps) => {
     <Alert type="error" data-testid="plain-text-hard-stop">
       <Markdown>{field.meta.value}</Markdown>
     </Alert>
-  ) : (
-    <></>
-  )
+  ) : null
 }

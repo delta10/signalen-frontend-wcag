@@ -159,11 +159,7 @@ export const IncidentQuestionsLocationForm = () => {
             const question = additionalQuestions[index]
             const fieldName = question.key
 
-            return (
-              <div key={fieldName} className="w-full">
-                <RenderSingleField field={question} />
-              </div>
-            )
+            return <RenderSingleField key={fieldName} field={question} />
           })
         ) : (
           <LocationSelect />
