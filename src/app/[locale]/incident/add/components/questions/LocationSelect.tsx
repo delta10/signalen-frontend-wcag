@@ -69,11 +69,11 @@ export const LocationSelect = ({ field }: LocationSelectProps) => {
                   className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 border-none"
                   type="button"
                 >
-                  Kies locatie
+                  {t('choose_location')}
                 </Button>
               ) : (
                 <LinkButton inline={true} id="location-button" type="button">
-                  Wijzig locatie
+                  {t('edit_location')}
                 </LinkButton>
               )
             }
