@@ -122,7 +122,7 @@ const IncidentContactForm = () => {
             <FormFieldDescription id="todo-id">
               <Paragraph>{t('send_to_other_instance_description')}</Paragraph>
             </FormFieldDescription>
-            <div className="w-full p-4 background-gray-200">
+            <div className="w-full">
               <FormFieldCheckbox
                 label={t('describe_checkbox_input_description', {
                   organization: config?.base.municipality_display_name,
