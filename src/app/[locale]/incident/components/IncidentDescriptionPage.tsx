@@ -7,9 +7,24 @@ import { Alert, Link } from '@/components'
 import { IncidentDescriptionForm } from '@/app/[locale]/incident/components/IncidentDescriptionForm'
 import FormProgress from '@/app/[locale]/components/FormProgress'
 import { useConfig } from '@/hooks/useConfig'
+import Markdown, { defaultUrlTransform } from 'react-markdown'
 
 const currentStep = 1
 const maxStep = 4
+
+const LinkRenderer: React.FC<{ href: string; children: React.ReactNode }> = ({
+  href,
+  children,
+}) => {
+  if (href.startsWith('tel:')) {
+    return <a href={href}>{children}</a>
+  }
+  return (
+    <a href={href} target="_blank" rel="noopener noreferrer">
+      {children}
+    </a>
+  )
+}
 
 export const IncidentDescriptionPage = () => {
   const t = useTranslations('describe_report')
@@ -34,13 +49,17 @@ export const IncidentDescriptionPage = () => {
           </FormProgress>
           {config ? (
             <Alert>
-              <Paragraph>
-                {`${t('alert.help_text')} `}
-                <Link href={`tel:${config.base.contact.tel}`}>
-                  {config.base.contact.tel}
-                </Link>
-              </Paragraph>
-              <Paragraph>{t('alert.opening_hours')}</Paragraph>
+              <Markdown
+                urlTransform={(url) =>
+                  url.startsWith('tel:') ? url : defaultUrlTransform(url)
+                }
+                components={{
+                  p: (props) => <Paragraph>{props.children}</Paragraph>,
+                  a: (props) => <Link {...props}>{props.children}</Link>,
+                }}
+              >
+                {t('alert.help_text')}
+              </Markdown>
             </Alert>
           ) : null}
           <IncidentDescriptionForm />

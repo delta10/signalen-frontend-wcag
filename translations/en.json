@@ -16,8 +16,7 @@
       }
     },
     "alert": {
-      "help_text": "Having trouble submitting a report? Call: ",
-      "opening_hours": "We are available Monday through Friday from 8:00 AM to 6:00 PM."
+      "help_text": "Having trouble submitting a report? Call: "
     }
   },
   "describe_add": {

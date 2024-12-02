@@ -5,10 +5,8 @@ export default function IncidentLayout({ children }: Layout) {
   const messages = useMessages()
 
   return (
-    <main>
-      <NextIntlClientProvider messages={messages}>
-        <div className="col-span-1 md:col-span-8">{children}</div>
-      </NextIntlClientProvider>
-    </main>
+    <NextIntlClientProvider messages={messages}>
+      <div className="col-span-1 md:col-span-8">{children}</div>
+    </NextIntlClientProvider>
   )
 }
