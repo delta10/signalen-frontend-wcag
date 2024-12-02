@@ -10,6 +10,7 @@
       "describe_upload_heading": "Add photos",
       "describe_upload_description": "Add a photo to clarify the situation (maximum of 5 photos).",
       "errors": {
+        "textarea_required": "Input error: enter what the notification is about",
         "file_type_invalid": "Invalid file type. Only JPEG, PNG, and GIF are accepted.",
         "file_size_too_large": "File size too large. Each file must be less than 20MB.",
         "file_size_too_small": "File size too small. Each file must be at least 30KB."
