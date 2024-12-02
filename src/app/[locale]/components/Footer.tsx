@@ -42,15 +42,18 @@ const Footer = () => {
 
   return (
     <PageFooter>
-      {links.map((link) => (
-        <Link
-          href={link.href}
-          key={link.label}
-          className="flex items-center !no-underline hover:!underline"
-        >
-          <IconChevronRight className="w-6 h-6" /> {link.label}
-        </Link>
-      ))}
+      <ul>
+        {links.map((link) => (
+          <li key={link.label}>
+            <Link
+              href={link.href}
+              className="flex items-center !no-underline hover:!underline"
+            >
+              <IconChevronRight className="w-6 h-6" /> {link.label}
+            </Link>
+          </li>
+        ))}
+      </ul>
     </PageFooter>
   )
 }
