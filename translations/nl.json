@@ -11,9 +11,9 @@
       "describe_upload_description": "Voeg een foto toe om de situatie te verduidelijken (maximaal 5 foto's).",
       "errors": {
         "textarea_required": "Invoerfout: vul in waar de melding over gaat",
-        "file_type_invalid": "Ongeldig bestandstype. Alleen JPEG, PNG, en GIF zijn toegestaan.",
-        "file_size_too_large": "Bestandsgrootte is te groot. Elk bestand moet kleiner zijn dan 20MB.",
-        "file_size_too_small": "Bestandsgrootte is te klein. Elk bestand moet minimaal 30KB zijn."
+        "file_type_invalid": "Invoerfout: ongeldig bestandstype. Alleen JPEG, PNG, en GIF zijn toegestaan.",
+        "file_size_too_large": "Invoerfout: bestandsgrootte is te groot. Elk bestand moet kleiner zijn dan 20MB.",
+        "file_size_too_small": "Invoerfout: bestandsgrootte is te klein. Elk bestand moet minimaal 30KB zijn."
       }
     },
     "alert": {

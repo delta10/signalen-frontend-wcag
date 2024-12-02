@@ -12,20 +12,6 @@ import Markdown, { defaultUrlTransform } from 'react-markdown'
 const currentStep = 1
 const maxStep = 4
 
-const LinkRenderer: React.FC<{ href: string; children: React.ReactNode }> = ({
-  href,
-  children,
-}) => {
-  if (href.startsWith('tel:')) {
-    return <a href={href}>{children}</a>
-  }
-  return (
-    <a href={href} target="_blank" rel="noopener noreferrer">
-      {children}
-    </a>
-  )
-}
-
 export const IncidentDescriptionPage = () => {
   const t = useTranslations('describe_report')
   const { loaded } = useFormStore()

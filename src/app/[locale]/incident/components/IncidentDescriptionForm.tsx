@@ -140,18 +140,19 @@ export const IncidentDescriptionForm = () => {
       />
 
       <Fieldset invalid={Boolean(form.formState.errors.files?.message)}>
-        <FieldsetLegend>{`${t('describe_textarea_heading')} (${tGeneral('form.not_required_short')})`}</FieldsetLegend>
+        <FieldsetLegend>
+          {`${t('describe_textarea_heading')} (${tGeneral('form.not_required_short')})`}
+          <FormFieldDescription>
+            {t('describe_upload_description')}
+          </FormFieldDescription>
 
-        <FormFieldDescription>
-          {t('describe_upload_description')}
-        </FormFieldDescription>
-
-        {Boolean(form.formState.errors.files?.message) &&
-          form.formState.errors.files?.message && (
-            <FormFieldErrorMessage>
-              {form.formState.errors.files?.message}
-            </FormFieldErrorMessage>
-          )}
+          {Boolean(form.formState.errors.files?.message) &&
+            form.formState.errors.files?.message && (
+              <FormFieldErrorMessage>
+                {form.formState.errors.files?.message}
+              </FormFieldErrorMessage>
+            )}
+        </FieldsetLegend>
 
         {/* @ts-ignore */}
         <FileUpload
