@@ -6,7 +6,7 @@
     "heading": "Beschrijf uw melding",
     "form": {
       "describe_textarea_heading": "Waar gaat het om?",
-      "describe_textarea_description": "Typ geen persoonsgegevens in deze omschrijving. We vragen dit later in dit formulier aan u.",
+      "describe_textarea_description": "Typ hier de inhoud van uw melding. U kunt slechts één melding tegelijk indienen. Vermeld geen persoonlijke gegevens in deze beschrijving; hier wordt later in het formulier naar gevraagd.",
       "describe_upload_heading": "Foto's toevoegen",
       "describe_upload_description": "Voeg een foto toe om de situatie te verduidelijken (maximaal 5 foto's).",
       "errors": {

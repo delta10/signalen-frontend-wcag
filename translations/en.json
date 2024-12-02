@@ -6,7 +6,7 @@
     "heading": "Describe your report",
     "form": {
       "describe_textarea_heading": "What is it about?",
-      "describe_textarea_description": "Do not type personal information in this description. We will ask this of you later in this form.",
+      "describe_textarea_description": "Enter the content of your report here. You can only submit one report at a time. Do not include personal information in this description; this will be requested later in the form.",
       "describe_upload_heading": "Add photos",
       "describe_upload_description": "Add a photo to clarify the situation (maximum of 5 photos).",
       "errors": {
