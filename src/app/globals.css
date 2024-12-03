@@ -185,6 +185,16 @@
   gap: 1rem;
 }
 
+/* 640px is the "SM" breakpoint in tailwind */
+@media only screen and (max-width: 640px) {
+  .summary-grid {
+    grid-template-areas:
+    "summary-heading summary-heading"
+    "summary-body summary-body"
+    "summary-link summary-link"
+  }
+}
+
 .summary-grid__heading {
   grid-area: summary-heading;
 }
