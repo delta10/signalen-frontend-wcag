@@ -91,7 +91,7 @@ const IncidentContactForm = () => {
 
   return (
     <div>
-      <Alert>
+      <Alert className="sr-only">
         <Paragraph>{`${t('alert_no_required_fields')} `}</Paragraph>
       </Alert>
       <div className="mt-8">
