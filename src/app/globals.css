@@ -73,15 +73,6 @@
   border: none;
 }
 
-/*todo: niet best practice met !important maar weet even niet hoe ik anders makkelijk de default styling moet overschrijven*/
-.pl-0-overwrite {
-  padding-left: 0 !important;
-}
-
-.pr-0-overwrite {
-  padding-right: 0 !important;
-}
-
 /* stepper */
 .stepper-button-hover:hover:not(:disabled, [aria-disabled='true']) {
   border: none;
