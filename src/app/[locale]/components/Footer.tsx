@@ -4,7 +4,7 @@ import { IconChevronRight } from '@tabler/icons-react'
 import { useEffect, useState } from 'react'
 import { useConfig } from '@/hooks/useConfig'
 import { useTranslations } from 'next-intl'
-import { Link, PageFooter } from '@/components'
+import { Icon, Link, PageFooter } from '@/components'
 
 type footerLink = {
   href: string
@@ -49,7 +49,10 @@ const Footer = () => {
               href={link.href}
               className="flex items-center !no-underline hover:!underline"
             >
-              <IconChevronRight className="w-6 h-6" /> {link.label}
+              <Icon className="!w-6 !h-6">
+                <IconChevronRight />
+              </Icon>
+              {link.label}
             </Link>
           </li>
         ))}
