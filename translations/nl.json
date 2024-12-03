@@ -98,7 +98,6 @@
   "general": {
     "form": {
       "title_separator": " · ",
-      "title_prefix_error": "Er ging iets fout!",
       "pre_heading": "Stap {current} van {max}",
       "back_button": "Vorige",
       "next_button": "Volgende",

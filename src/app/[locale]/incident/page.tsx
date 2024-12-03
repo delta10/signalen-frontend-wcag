@@ -4,16 +4,10 @@ import { createTitle } from '@/lib/utils/create-title'
 import { Metadata } from 'next/types'
 import { getServerConfig } from '@/services/config/config'
 
-// TODO: Consider if these should be static params
 const currentStep = 1
 const maxStep = 4
 
 export async function generateMetadata(): Promise<Metadata> {
-  // TODO: Somehow obtain errorMessage status, or remove this code.
-  // Trying to achieve this prefix because of NL Design System guidelines:
-  // "Update het <title> element in de <head>"
-  // https://nldesignsystem.nl/richtlijnen/formulieren/foutmeldingen/screenreaderfeedback
-  const errorMessage = ''
   const config = await getServerConfig()
   const t = await getTranslations('describe_report')
   const tGeneral = await getTranslations('general.form')
@@ -21,7 +15,6 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: createTitle(
       [
-        errorMessage ? tGeneral('title_prefix_error') : '',
         tGeneral('pre_heading', { current: currentStep, max: maxStep }),
         t('heading'),
         config.base.naam,

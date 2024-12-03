@@ -8,7 +8,6 @@ const currentStep = 3
 const maxStep = 4
 
 export async function generateMetadata(): Promise<Metadata> {
-  const errorMessage = ''
   const t = await getTranslations('describe_contact')
   const config = await getServerConfig()
   const tGeneral = await getTranslations('general.form')
@@ -16,7 +15,6 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: createTitle(
       [
-        errorMessage ? tGeneral('title_prefix_error') : '',
         tGeneral('pre_heading', { current: currentStep, max: maxStep }),
         t('heading'),
         config.base.naam,
