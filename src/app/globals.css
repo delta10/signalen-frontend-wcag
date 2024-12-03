@@ -170,6 +170,11 @@
     --utrecht-listbox-color: black;
 }
 
+/* contact page */
+.contact-paragraph {
+  color: var(--utrecht-form-field-description-color) !important;
+}
+
 /* summary page grid */
 .summary-grid {
   display: grid;

@@ -96,7 +96,7 @@ const IncidentContactForm = () => {
       </Alert>
       <div className="mt-8">
         <Heading level={2}>{t('heading')}</Heading>
-        <Paragraph>{t('description')}</Paragraph>
+        <Paragraph className="contact-paragraph">{t('description')}</Paragraph>
       </div>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
@@ -124,11 +124,11 @@ const IncidentContactForm = () => {
               {t('send_to_other_instance_heading')} (
               {tGeneral('form.not_required_short')})
             </Heading>
+            <FormFieldDescription id="todo-id">
+              {t('send_to_other_instance_description')}
+            </FormFieldDescription>
           </FieldsetLegend>
           <div className="flex flex-col">
-            <FormFieldDescription id="todo-id">
-              <Paragraph>{t('send_to_other_instance_description')}</Paragraph>
-            </FormFieldDescription>
             <div className="w-full">
               <FormFieldCheckbox
                 label={t('describe_checkbox_input_description', {
