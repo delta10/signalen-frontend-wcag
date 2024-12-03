@@ -10,12 +10,14 @@ import validator from 'validator'
 import { useFormStore } from '@/store/form_store'
 import { useEffect } from 'react'
 import {
+  Alert,
   Fieldset,
   FieldsetLegend,
   FormFieldCheckbox,
   FormFieldDescription,
   FormFieldTextbox,
   Heading,
+  Link,
   Paragraph,
 } from '@/components/index'
 import { getCurrentStep, getNextStepPath } from '@/lib/utils/stepper'
@@ -89,7 +91,10 @@ const IncidentContactForm = () => {
 
   return (
     <div>
-      <div>
+      <Alert>
+        <Paragraph>{`${t('alert_no_required_fields')} `}</Paragraph>
+      </Alert>
+      <div className="mt-8">
         <Heading level={2}>{t('heading')}</Heading>
         <Paragraph>{t('description')}</Paragraph>
       </div>
