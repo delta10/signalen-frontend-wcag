@@ -42,10 +42,7 @@
   border: 1px solid var(--utrecht-form-control-border-color);
 }
 
-/* TODO: zonder important doen deze rules niks */
 .iconbutton-preview-delete {
-  /* bg-gray-900 bg-opacity-50 */
-  /* TODO: bg color token toevoegen aan purmerend theme voor icon button trash? of? */
   background: rgba(0, 0, 0, 0.7) !important;
   border: none !important;
   border-radius: 0% !important;
@@ -59,7 +56,6 @@
 }
 
 .iconbutton-preview-delete:hover {
-  /* TODO: bg color grey-29 opacity on hover = 80% opacity in purmerend tokens */
   background-color: rgba(0, 0, 0, 0.5) !important;
   transition-duration: 200 !important;
   transition-delay: 100 !important;
