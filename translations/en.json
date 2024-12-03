@@ -98,7 +98,6 @@
   "general": {
     "form": {
       "title_separator": " · ",
-      "title_prefix_error": "Something went wrong!",
       "pre_heading": "Step {current} of {max}",
       "back_button": "Back",
       "next_button": "Next",
