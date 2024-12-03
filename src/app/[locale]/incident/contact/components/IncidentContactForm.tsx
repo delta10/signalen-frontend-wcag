@@ -115,7 +115,10 @@ const IncidentContactForm = () => {
         />
         <Fieldset aria-describedby="todo-id">
           <FieldsetLegend>
-            <Heading level={2}>{t('send_to_other_instance_heading')}</Heading>
+            <Heading level={2}>
+              {t('send_to_other_instance_heading')} (
+              {tGeneral('form.not_required_short')})
+            </Heading>
           </FieldsetLegend>
           <div className="flex flex-col">
             <FormFieldDescription id="todo-id">
