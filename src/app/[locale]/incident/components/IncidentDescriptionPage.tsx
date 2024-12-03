@@ -2,11 +2,12 @@
 
 import { useTranslations } from 'next-intl'
 import { useFormStore } from '@/store/form_store'
-import { Heading, Paragraph, HeadingGroup, PreHeading } from '@/components'
-import { Alert, Link } from '@/components'
+import { Heading, HeadingGroup, PreHeading } from '@/components'
+import { Alert } from '@/components'
 import { IncidentDescriptionForm } from '@/app/[locale]/incident/components/IncidentDescriptionForm'
 import FormProgress from '@/app/[locale]/components/FormProgress'
 import { useConfig } from '@/hooks/useConfig'
+import { RenderMarkdown } from '@/components/ui/RenderMarkdown'
 
 const currentStep = 1
 const maxStep = 4
@@ -34,13 +35,7 @@ export const IncidentDescriptionPage = () => {
           </FormProgress>
           {config ? (
             <Alert>
-              <Paragraph>
-                {`${t('alert.help_text')} `}
-                <Link href={`tel:${config.base.contact.tel}`}>
-                  {config.base.contact.tel}
-                </Link>
-              </Paragraph>
-              <Paragraph>{t('alert.opening_hours')}</Paragraph>
+              <RenderMarkdown text={t('alert.help_text')} />
             </Alert>
           ) : null}
           <IncidentDescriptionForm />

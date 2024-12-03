@@ -40,7 +40,6 @@ export type AppConfig = {
         describe_report: {
           alert: {
             help_text: string
-            opening_hours: string
           }
         }
       }

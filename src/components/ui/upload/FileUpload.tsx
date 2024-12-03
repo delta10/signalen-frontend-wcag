@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { IconCirclePlus } from '@tabler/icons-react'
 import PreviewFile from '@/components/ui/upload/PreviewFile'
 import { useTranslations } from 'next-intl'
+import { Icon } from '@/components'
 
 export const ACCEPTED_IMAGE_TYPES = [
   'image/jpeg',
@@ -62,11 +63,13 @@ export const FileUpload = React.forwardRef<HTMLLabelElement, FileUploadProps>(
               onKeyDown={(e) => handleKeyDown(e)}
             >
               <span className="flex justify-center items-center h-full relative">
-                <IconCirclePlus
+                <Icon
                   className={`transition-all duration-300 ${
-                    labelHovered ? 'w-16 h-16' : 'w-14 h-14'
+                    labelHovered ? '!w-16 !h-16' : '!w-14 !h-14'
                   }`}
-                />
+                >
+                  <IconCirclePlus />
+                </Icon>
               </span>
             </label>
             <input
