@@ -10,12 +10,14 @@ import validator from 'validator'
 import { useFormStore } from '@/store/form_store'
 import { useEffect } from 'react'
 import {
+  Alert,
   Fieldset,
   FieldsetLegend,
   FormFieldCheckbox,
   FormFieldDescription,
   FormFieldTextbox,
   Heading,
+  Link,
   Paragraph,
 } from '@/components/index'
 import { getCurrentStep, getNextStepPath } from '@/lib/utils/stepper'
@@ -89,9 +91,12 @@ const IncidentContactForm = () => {
 
   return (
     <div>
-      <div>
+      <Alert className="sr-only">
+        <Paragraph>{`${t('alert_no_required_fields')} `}</Paragraph>
+      </Alert>
+      <div className="mt-8">
         <Heading level={2}>{t('heading')}</Heading>
-        <Paragraph>{t('description')}</Paragraph>
+        <Paragraph className="contact-paragraph">{t('description')}</Paragraph>
       </div>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
@@ -99,7 +104,7 @@ const IncidentContactForm = () => {
       >
         <FormFieldTextbox
           label={`${t('describe_phone_input_heading')} (${tGeneral('form.not_required_short')})`}
-          autoComplete="phone"
+          autoComplete="tel"
           errorMessage={form.formState.errors.phone?.message}
           invalid={Boolean(form.formState.errors.phone?.message)}
           required={false}
@@ -107,7 +112,6 @@ const IncidentContactForm = () => {
         />
         <FormFieldTextbox
           label={`${t('describe_mail_input_heading')} (${tGeneral('form.not_required_short')})`}
-          type="email"
           autoComplete="email"
           errorMessage={form.formState.errors.email?.message}
           invalid={Boolean(form.formState.errors.email?.message)}
@@ -116,12 +120,15 @@ const IncidentContactForm = () => {
         />
         <Fieldset aria-describedby="todo-id">
           <FieldsetLegend>
-            <Heading level={2}>{t('send_to_other_instance_heading')}</Heading>
+            <Heading level={2}>
+              {t('send_to_other_instance_heading')} (
+              {tGeneral('form.not_required_short')})
+            </Heading>
+            <FormFieldDescription id="todo-id">
+              {t('send_to_other_instance_description')}
+            </FormFieldDescription>
           </FieldsetLegend>
           <div className="flex flex-col">
-            <FormFieldDescription id="todo-id">
-              <Paragraph>{t('send_to_other_instance_description')}</Paragraph>
-            </FormFieldDescription>
             <div className="w-full">
               <FormFieldCheckbox
                 label={t('describe_checkbox_input_description', {

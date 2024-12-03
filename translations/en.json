@@ -54,6 +54,7 @@
   "describe_contact": {
     "heading": "Contact details",
     "form": {
+      "alert_no_required_fields": "This form consists of optional questions only.",
       "heading": "May we call you for questions? And keep you informed via e-mail?",
       "description": "Often we have another question. With this we can solve the problem faster or better. Or we want to explain something. We would then like to give you a call. Or else we e-mail you.\n\nWe only use your phone number and e-mail address for this report.",
       "send_to_other_instance_heading": "May we forward your report?",

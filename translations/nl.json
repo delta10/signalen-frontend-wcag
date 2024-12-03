@@ -54,6 +54,7 @@
   "describe_contact": {
     "heading": "Contactgegevens",
     "form": {
+      "alert_no_required_fields": "Dit formulier bestaat enkel uit optionele vragen.",
       "heading": "Mogen we u bellen voor vragen? En op de hoogte houden via e-mail?",
       "description": "Vaak hebben we nog een vraag. Daarmee kunnen we het probleem sneller of beter oplossen. Of we willen iets uitleggen. Wij willen u dan graag even bellen. Of anders e-mailen wij u.\n\nWij gebruiken uw telefoonnummer en e-mailadres alléén voor deze melding.",
       "send_to_other_instance_heading": "Mogen we uw melding doorsturen?",
