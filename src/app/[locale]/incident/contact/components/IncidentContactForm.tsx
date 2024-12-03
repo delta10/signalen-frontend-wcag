@@ -99,7 +99,7 @@ const IncidentContactForm = () => {
       >
         <FormFieldTextbox
           label={`${t('describe_phone_input_heading')} (${tGeneral('form.not_required_short')})`}
-          autoComplete="phone"
+          autoComplete="tel"
           errorMessage={form.formState.errors.phone?.message}
           invalid={Boolean(form.formState.errors.phone?.message)}
           required={false}
@@ -107,7 +107,6 @@ const IncidentContactForm = () => {
         />
         <FormFieldTextbox
           label={`${t('describe_mail_input_heading')} (${tGeneral('form.not_required_short')})`}
-          type="email"
           autoComplete="email"
           errorMessage={form.formState.errors.email?.message}
           invalid={Boolean(form.formState.errors.email?.message)}
