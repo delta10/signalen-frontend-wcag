@@ -18,6 +18,7 @@
       "logo": {
         "alt": "Gemeente Purmerend logo, naar de homepagina",
         "url": "purmerend-logo.svg",
+        "dark_mode_url": "purmerend-logo-dark-mode.svg",
         "caption": "Purmerend"
       }
     },
@@ -27,19 +28,10 @@
     "map": {
       "find_address_in_distance": 30,
       "minimal_zoom": 17,
-      "center": [
-        51.6045656,
-        5.5342026
-      ],
+      "center": [51.6045656, 5.5342026],
       "maxBounds": [
-        [
-          3.31497114423,
-          50.803721015
-        ],
-        [
-          7.09205325687,
-          53.5104033474
-        ]
+        [3.31497114423, 50.803721015],
+        [7.09205325687, 53.5104033474]
       ]
     },
     "links": {
