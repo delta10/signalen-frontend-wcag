@@ -147,7 +147,7 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
 
       <FormFieldDescription>{t('use_map_description')}</FormFieldDescription>
       <div className="relative w-full">
-        <div style={{ minHeight: 200, height: 200 }}>
+        <div style={{ minHeight: 200, height: 200 }} role="img" aria-label="">
           <LocationMap />
         </div>
         <Paragraph>{formStoreState.address?.weergave_naam}</Paragraph>
@@ -173,9 +173,14 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
                   {t('choose_location')}
                 </Button>
               ) : (
-                <LinkButton inline={true} id="location-button" type="button">
+                <Button
+                  appearance="secondary-action-button"
+                  id="location-button"
+                  className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 border-none"
+                  type="button"
+                >
                   {t('edit_location')}
-                </LinkButton>
+                </Button>
               )
             }
           />
