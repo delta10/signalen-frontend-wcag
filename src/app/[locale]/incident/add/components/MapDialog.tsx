@@ -269,7 +269,15 @@ const MapDialog = ({
         dialogRef.current?.showModal()
       },
       (locationError) => {
-        setError(locationError.message)
+        // For documentation see: https://developer.mozilla.org/en-US/docs/Web/API/GeolocationPositionError.
+        // We map a custom error message here to the locationError.code
+        const locationErrors: { [key: number]: string } = {
+          1: t('current_location_permission_error'),
+          2: t('current_location_position_error'),
+          3: t('current_location_timeout_error'),
+        }
+
+        setError(locationErrors[locationError.code])
         dialogRef.current?.showModal()
       }
     )
@@ -332,7 +340,11 @@ const MapDialog = ({
             </Dialog.Title>
             <Dialog.Description>{t('dialog_description')}</Dialog.Description>
           </VisuallyHidden.Root>
-          <AlertDialog type="error" ref={dialogRef} style={{ marginTop: 128 }}>
+          <AlertDialog
+            type="error"
+            ref={dialogRef}
+            style={{ marginTop: 128, marginLeft: 16, marginRight: 16 }}
+          >
             <form method="dialog" className="map-alert-dialog__content">
               <Paragraph>{error}</Paragraph>
               <ButtonGroup>
