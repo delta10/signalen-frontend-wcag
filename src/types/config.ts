@@ -6,6 +6,7 @@ export type AppConfig = {
     supportedLanguages: Array<{
       label: string
       lang: string
+      name: string
     }>
     /**
      * One or more class names for the NL Design System theme.
