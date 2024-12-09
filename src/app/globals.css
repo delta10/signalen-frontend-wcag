@@ -140,6 +140,13 @@
   );
 }
 
+.focused-map-marker {
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  background-color: red;
+}
+
 /* colors */
 .background-gray-200 {
   background-color: var(--basis-color-gray-200);

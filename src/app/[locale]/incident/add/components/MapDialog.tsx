@@ -67,6 +67,7 @@ const MapDialog = ({
   const t = useTranslations('describe_add.map')
   const [marker, setMarker] = useState<[number, number] | []>([])
   const [error, setError] = useState<string | null>(null)
+  const [focusedItemId, setFocusedItemId] = useState<number | null>(null)
   const { formState, updateForm } = useFormStore()
   const { dialogMap } = useMap()
   const { loading, config } = useConfig()
@@ -343,7 +344,10 @@ const MapDialog = ({
           <AlertDialog
             type="error"
             ref={dialogRef}
-            style={{ marginTop: 128, marginLeft: 16, marginRight: 16 }}
+            style={{
+              margin: '128px auto 0',
+              maxWidth: 'calc(100% - 32px)',
+            }}
           >
             <form method="dialog" className="map-alert-dialog__content">
               <Paragraph>{error}</Paragraph>
@@ -387,6 +391,7 @@ const MapDialog = ({
                       field={field}
                       setError={setError}
                       dialogRef={dialogRef}
+                      setFocusedItemId={setFocusedItemId}
                     />
                   ))}
                 </ul>
@@ -448,13 +453,19 @@ const MapDialog = ({
                         onClick={(e) => handleFeatureMarkerClick(e, feature)}
                       >
                         {!formState.selectedFeatures.some(
-                          (featureItem) => featureItem.id === feature.id
+                          (featureItem) => featureItem.id === id
                         ) ? (
-                          <Icon>
-                            <img
-                              src={field?.meta.featureTypes[0].icon.iconUrl}
-                            />
-                          </Icon>
+                          focusedItemId === id ? (
+                            <Icon>
+                              <div className="focused-map-marker"></div>
+                            </Icon>
+                          ) : (
+                            <Icon>
+                              <img
+                                src={field?.meta.featureTypes[0].icon.iconUrl}
+                              />
+                            </Icon>
+                          )
                         ) : (
                           <Icon>
                             <img
