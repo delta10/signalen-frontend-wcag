@@ -147,7 +147,7 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
 
       <FormFieldDescription>{t('use_map_description')}</FormFieldDescription>
       <div className="relative w-full">
-        <div style={{ minHeight: 200, height: 200 }}>
+        <div style={{ minHeight: 200, height: 200 }} role="img" aria-label="">
           <LocationMap />
         </div>
         <Paragraph>{formStoreState.address?.weergave_naam}</Paragraph>
