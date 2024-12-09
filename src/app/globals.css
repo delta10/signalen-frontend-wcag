@@ -114,7 +114,9 @@
   position: absolute;
   right: 1em;
   bottom: 1em;
-  gap: 0 !important;
+  gap: 0.5rem !important;
+  display: flex;
+  flex-direction: column;
 }
 
 .map-alert-dialog__content {

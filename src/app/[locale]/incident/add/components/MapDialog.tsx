@@ -322,7 +322,7 @@ const MapDialog = ({
       <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay />
-        <Dialog.Content className="fixed inset-0 z-[1000] grid grid-cols-1 md:grid-cols-3 purmerend-theme background-white">
+        <Dialog.Content className="fixed inset-0 z-[1000] grid md:grid-cols-3 purmerend-theme background-white">
           <VisuallyHidden.Root>
             {/* TODO: Overleggen welke titel hier het meest vriendelijk is voor de gebruiker, multi-language support integreren */}
             <Dialog.Title>
@@ -346,7 +346,7 @@ const MapDialog = ({
               </ButtonGroup>
             </form>
           </AlertDialog>
-          <div className="col-span-1 p-4 flex flex-col max-h-screen gap-4">
+          <div className="col-span-1 p-4 flex flex-col max-h-[50vh] md:max-h-screen gap-4">
             <div className="flex flex-col overflow-hidden gap-4">
               <Heading level={1}>
                 {field?.meta.language.title
@@ -398,7 +398,7 @@ const MapDialog = ({
             </div>
           </div>
           {config && (
-            <div className="col-span-1 md:col-span-2 relative">
+            <div className="col-span-1 md:col-span-2 min-h-[50vh] md:max-h-screen relative">
               <Map
                 {...viewState}
                 id="dialogMap"
