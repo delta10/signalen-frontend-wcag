@@ -16,6 +16,7 @@ type FeatureListItemProps = {
   setError: Dispatch<SetStateAction<string | null>>
   dialogRef: RefObject<HTMLDialogElement>
   configUrl?: string
+  setFocusedItemId: Dispatch<SetStateAction<number | null>>
 }
 
 export const FeatureListItem = ({
@@ -24,6 +25,7 @@ export const FeatureListItem = ({
   setError,
   dialogRef,
   configUrl,
+  setFocusedItemId,
 }: FeatureListItemProps) => {
   const t = useTranslations('describe_add.map')
   const { formState, updateForm } = useFormStore()
@@ -85,7 +87,19 @@ export const FeatureListItem = ({
   // TODO: iets van een label toevoegen zodat voor een SR duidelijk wordt om welke lantaarnpaal, adres etc het gaat?
   return featureDescription ? (
     <li className="py-4 border-t bordercolor-gray-200">
-      <FormField className="flex flex-row items-center gap-2">
+      <FormField
+        className="flex flex-row items-center gap-2"
+        onFocus={(e) => {
+          setTimeout(() => {
+            setFocusedItemId(featureId)
+          }, 10)
+        }}
+        onBlur={(e) => {
+          setTimeout(() => {
+            setFocusedItemId(null)
+          }, 0)
+        }}
+      >
         {!formState.selectedFeatures.some(
           (featureItem) => featureItem.id === featureId
         ) ? (
