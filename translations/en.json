@@ -110,8 +110,7 @@
     "errors": {
       "required": "This field is required",
       "max_length": "This field has a maximal length of {maxLength} characters",
-      "location_required": "Location is required",
-      "is_blocking": "You cannot complete this form any further. Read below the answers where you can, however, submit your report."
+      "location_required": "Location is required"
     },
     "button": {
       "upload_file": "Upload file",

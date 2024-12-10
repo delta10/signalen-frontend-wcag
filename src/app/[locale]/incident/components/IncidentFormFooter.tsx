@@ -8,7 +8,7 @@ import { IconLoader2 } from '@tabler/icons-react'
 import { FieldErrors } from 'react-hook-form'
 import { getCurrentStep, getPreviousStepPath } from '@/lib/utils/stepper'
 import { FormStep } from '@/types/form'
-import { AlertText } from '@/components/ui/LiveText'
+import { useFormStore } from '@/store/form_store'
 
 type IncidentFormFooterProps = {
   handleSignalSubmit?: () => void
@@ -27,6 +27,7 @@ const IncidentFormFooter = ({
   const pathname = usePathname()
   const router = useRouter()
   const step = getCurrentStep(pathname)
+  const { formState } = useFormStore()
 
   const goBack = () => {
     const previousStep = getPreviousStepPath(step)
@@ -49,7 +50,11 @@ const IncidentFormFooter = ({
           </Button>
         )}
         {step < FormStep.STEP_4_SUMMARY && (
-          <Button appearance="primary-action-button" type="submit">
+          <Button
+            appearance="primary-action-button"
+            type="submit"
+            disabled={formState.isBlocking}
+          >
             {t('next_button')}
           </Button>
         )}

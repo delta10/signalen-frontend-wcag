@@ -110,8 +110,7 @@
     "errors": {
       "required": "Dit veld is verplicht",
       "max_length": "Dit veld heeft een maximale lengte van {maxLength} karakters",
-      "location_required": "Locatie is verplicht",
-      "is_blocking": "U kunt dit formulier niet verder invullen. Lees onder de antwoorden waar u uw melding wel kunt doen."
+      "location_required": "Locatie is verplicht"
     },
     "button": {
       "upload_file": "Upload bestand",
