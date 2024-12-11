@@ -24,6 +24,7 @@ import {
 } from '@/components'
 import { useConfig } from '@/hooks/useConfig'
 import {
+  IconChevronDown,
   IconCurrentLocation,
   IconMinus,
   IconPlus,
@@ -72,6 +73,7 @@ const MapDialog = ({
   const { dialogMap } = useMap()
   const { loading, config } = useConfig()
   const dialogRef = useRef<HTMLDialogElement>(null)
+  const mapContainerRef = useRef<HTMLDivElement>(null)
   const [isMapSelected, setIsMapSelected] = useState<boolean | null>(null)
   const [mapFeatures, setMapFeatures] = useState<FeatureCollection | null>()
   const { setValue } = useFormContext()
@@ -375,7 +377,24 @@ const MapDialog = ({
               />
               <div className="block md:hidden">
                 <Alert>
-                  <Paragraph>{t('scroll_for_map')}</Paragraph>
+                  <div className="flex flex-row items-center">
+                    <Paragraph>{t('scroll_for_map')}</Paragraph>
+                    <IconButton
+                      appearance="secondary-action-button"
+                      label={t('scroll_to_map_button')}
+                      onClick={() =>
+                        mapContainerRef.current?.scrollIntoView({
+                          behavior: 'smooth',
+                          block: 'center',
+                        })
+                      }
+                      className="ml-2"
+                    >
+                      <Icon>
+                        <IconChevronDown />
+                      </Icon>
+                    </IconButton>
+                  </div>
                 </Alert>
               </div>
               {isAssetSelect &&
@@ -420,7 +439,10 @@ const MapDialog = ({
             </div>
           </div>
           {config && (
-            <div className="col-span-1 md:col-span-2 min-h-[100vh] max-h-[50vh] md:max-h-screen relative">
+            <div
+              className="col-span-1 md:col-span-2 min-h-[100vh] max-h-[50vh] md:max-h-screen relative"
+              ref={mapContainerRef}
+            >
               <Map
                 {...viewState}
                 id="dialogMap"
