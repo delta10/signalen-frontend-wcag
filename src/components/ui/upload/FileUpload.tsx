@@ -105,9 +105,6 @@ export const FileUpload = React.forwardRef<HTMLLabelElement, FileUploadProps>(
               .map((image, index) => (
                 <PreviewFile
                   file={image}
-                  refObject={refObject}
-                  setRefObject={setRefObject}
-                  index={index}
                   onDelete={() => deleteFile(index)}
                   allowDelete={true}
                   key={index}
@@ -118,7 +115,7 @@ export const FileUpload = React.forwardRef<HTMLLabelElement, FileUploadProps>(
             <div className="file-upload-box">
               <label
                 htmlFor="fileUpload"
-                className="flex"
+                className="flex dashed-focus"
                 ref={ref}
                 tabIndex={0}
                 aria-label={
@@ -159,7 +156,7 @@ export const FileUpload = React.forwardRef<HTMLLabelElement, FileUploadProps>(
           ))}
         </div>
         {deletedFile !== null && (
-          <Alert ref={deleteAlertRef} tabIndex={0}>
+          <Alert ref={deleteAlertRef} tabIndex={0} className="dashed-focus">
             <Paragraph>{t('file.delete_successful')}</Paragraph>
             <UnorderedList className="pb-3">
               <UnorderedListItem>{deletedFile.name}</UnorderedListItem>
@@ -172,7 +169,7 @@ export const FileUpload = React.forwardRef<HTMLLabelElement, FileUploadProps>(
           </Alert>
         )}
         {files.length > 0 && UploadStatus.SUCCESS === fileUploadStatus && (
-          <Alert ref={uploadAlertRef} tabIndex={0}>
+          <Alert ref={uploadAlertRef} tabIndex={0} className="dashed-focus">
             <Paragraph>{t('file.upload_successful')}</Paragraph>
             <UnorderedList className="pb-3">
               {files.map((file, index) => (
