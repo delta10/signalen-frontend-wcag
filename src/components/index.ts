@@ -32,6 +32,9 @@ export {
   AlertDialog,
   Article,
   Select,
+  SecondaryActionButton,
+  UnorderedList,
+  UnorderedListItem,
 } from '@utrecht/component-library-react/dist/css-module'
 
 export { RadioGroup } from '@utrecht/radio-group-react'
