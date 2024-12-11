@@ -24,6 +24,7 @@ import {
 } from '@/components'
 import { useConfig } from '@/hooks/useConfig'
 import {
+  IconChevronDown,
   IconCurrentLocation,
   IconMinus,
   IconPlus,
@@ -67,10 +68,12 @@ const MapDialog = ({
   const t = useTranslations('describe_add.map')
   const [marker, setMarker] = useState<[number, number] | []>([])
   const [error, setError] = useState<string | null>(null)
+  const [focusedItemId, setFocusedItemId] = useState<number | null>(null)
   const { formState, updateForm } = useFormStore()
   const { dialogMap } = useMap()
   const { loading, config } = useConfig()
   const dialogRef = useRef<HTMLDialogElement>(null)
+  const mapContainerRef = useRef<HTMLDivElement>(null)
   const [isMapSelected, setIsMapSelected] = useState<boolean | null>(null)
   const [mapFeatures, setMapFeatures] = useState<FeatureCollection | null>()
   const { setValue } = useFormContext()
@@ -269,7 +272,15 @@ const MapDialog = ({
         dialogRef.current?.showModal()
       },
       (locationError) => {
-        setError(locationError.message)
+        // For documentation see: https://developer.mozilla.org/en-US/docs/Web/API/GeolocationPositionError.
+        // We map a custom error message here to the locationError.code
+        const locationErrors: { [key: number]: string } = {
+          1: t('current_location_permission_error'),
+          2: t('current_location_position_error'),
+          3: t('current_location_timeout_error'),
+        }
+
+        setError(locationErrors[locationError.code])
         dialogRef.current?.showModal()
       }
     )
@@ -322,7 +333,7 @@ const MapDialog = ({
       <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay />
-        <Dialog.Content className="fixed inset-0 z-[1000] grid grid-cols-1 md:grid-cols-3 purmerend-theme background-white">
+        <Dialog.Content className="fixed inset-0 z-[1000] grid md:grid-cols-3 purmerend-theme background-white overflow-scroll">
           <VisuallyHidden.Root>
             {/* TODO: Overleggen welke titel hier het meest vriendelijk is voor de gebruiker, multi-language support integreren */}
             <Dialog.Title>
@@ -332,7 +343,14 @@ const MapDialog = ({
             </Dialog.Title>
             <Dialog.Description>{t('dialog_description')}</Dialog.Description>
           </VisuallyHidden.Root>
-          <AlertDialog type="error" ref={dialogRef} style={{ marginTop: 128 }}>
+          <AlertDialog
+            type="error"
+            ref={dialogRef}
+            style={{
+              margin: '128px auto 0',
+              maxWidth: 'calc(100% - 32px)',
+            }}
+          >
             <form method="dialog" className="map-alert-dialog__content">
               <Paragraph>{error}</Paragraph>
               <ButtonGroup>
@@ -346,8 +364,8 @@ const MapDialog = ({
               </ButtonGroup>
             </form>
           </AlertDialog>
-          <div className="col-span-1 p-4 flex flex-col max-h-screen gap-4">
-            <div className="flex flex-col overflow-hidden gap-4">
+          <div className="col-span-1 p-4 flex flex-col min-h-[100vh] max-h-[100vh] md:max-h-screen gap-4">
+            <div className="flex flex-col overflow-scroll md:overflow-hidden gap-4">
               <Heading level={1}>
                 {field?.meta.language.title
                   ? field.meta.language.title
@@ -357,6 +375,28 @@ const MapDialog = ({
                 updatePosition={updatePosition}
                 setIsMapSelected={setIsMapSelected}
               />
+              <div className="block md:hidden">
+                <Alert>
+                  <div className="flex flex-row items-center">
+                    <Paragraph>{t('scroll_for_map')}</Paragraph>
+                    <IconButton
+                      appearance="secondary-action-button"
+                      label={t('scroll_to_map_button')}
+                      onClick={() =>
+                        mapContainerRef.current?.scrollIntoView({
+                          behavior: 'smooth',
+                          block: 'center',
+                        })
+                      }
+                      className="ml-2"
+                    >
+                      <Icon>
+                        <IconChevronDown />
+                      </Icon>
+                    </IconButton>
+                  </div>
+                </Alert>
+              </div>
               {isAssetSelect &&
                 dialogMap &&
                 config &&
@@ -375,6 +415,7 @@ const MapDialog = ({
                       field={field}
                       setError={setError}
                       dialogRef={dialogRef}
+                      setFocusedItemId={setFocusedItemId}
                     />
                   ))}
                 </ul>
@@ -398,7 +439,10 @@ const MapDialog = ({
             </div>
           </div>
           {config && (
-            <div className="col-span-1 md:col-span-2 relative">
+            <div
+              className="col-span-1 md:col-span-2 min-h-[100vh] max-h-[50vh] md:max-h-screen relative"
+              ref={mapContainerRef}
+            >
               <Map
                 {...viewState}
                 id="dialogMap"
@@ -406,6 +450,7 @@ const MapDialog = ({
                 onMove={(evt) => setViewState(evt.viewState)}
                 style={{ blockSize: '100%', inlineSize: '100%' }}
                 mapStyle={mapStyle}
+                scrollZoom={false}
                 attributionControl={false}
                 maxBounds={
                   config.base.map.maxBounds as [
@@ -436,13 +481,19 @@ const MapDialog = ({
                         onClick={(e) => handleFeatureMarkerClick(e, feature)}
                       >
                         {!formState.selectedFeatures.some(
-                          (featureItem) => featureItem.id === feature.id
+                          (featureItem) => featureItem.id === id
                         ) ? (
-                          <Icon>
-                            <img
-                              src={field?.meta.featureTypes[0].icon.iconUrl}
-                            />
-                          </Icon>
+                          focusedItemId === id ? (
+                            <Icon>
+                              <div className="focused-map-marker"></div>
+                            </Icon>
+                          ) : (
+                            <Icon>
+                              <img
+                                src={field?.meta.featureTypes[0].icon.iconUrl}
+                              />
+                            </Icon>
+                          )
                         ) : (
                           <Icon>
                             <img
