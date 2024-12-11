@@ -2,13 +2,17 @@
 
 import React, { useState } from 'react'
 import { useTranslations } from 'next-intl'
-import { Button, ButtonGroup } from '@/components/index'
+import { Button, ButtonGroup, Icon, LinkButton } from '@/components'
 import { usePathname, useRouter } from '@/routing/navigation'
-import { IconLoader2 } from '@tabler/icons-react'
+import {
+  IconChevronLeft,
+  IconChevronRight,
+  IconLoader2,
+  IconSend,
+} from '@tabler/icons-react'
 import { FieldErrors } from 'react-hook-form'
 import { getCurrentStep, getPreviousStepPath } from '@/lib/utils/stepper'
 import { FormStep } from '@/types/form'
-import { AlertText } from '@/components/ui/LiveText'
 
 type IncidentFormFooterProps = {
   handleSignalSubmit?: () => void
@@ -38,19 +42,21 @@ const IncidentFormFooter = ({
   const [busy, setBusy] = useState(false)
   return (
     <>
-      <ButtonGroup>
+      <ButtonGroup className="!flex !flex-row !items-end">
         {step > FormStep.STEP_1_DESCRIPTION && (
-          <Button
-            appearance="secondary-action-button"
-            type="button"
-            onClick={() => goBack()}
-          >
+          <LinkButton className="!pl-0 !mt-0" onClick={() => goBack()}>
+            <Icon>
+              <IconChevronLeft />
+            </Icon>
             {t('back_button')}
-          </Button>
+          </LinkButton>
         )}
         {step < FormStep.STEP_4_SUMMARY && (
           <Button appearance="primary-action-button" type="submit">
             {t('next_button')}
+            <Icon>
+              <IconChevronRight />
+            </Icon>
           </Button>
         )}
         {step === FormStep.STEP_4_SUMMARY && (
@@ -64,6 +70,9 @@ const IncidentFormFooter = ({
           >
             {loading && <IconLoader2 className="animate-spin" />}
             {t('submit_button')}
+            <Icon>
+              <IconSend />
+            </Icon>
           </Button>
         )}
       </ButtonGroup>
