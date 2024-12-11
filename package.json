@@ -46,7 +46,7 @@
   "devDependencies": {
     "@amsterdam/design-system-react": "0.13.1",
     "@fontsource/cantarell": "5.1.0",
-    "@nl-design-system-community/purmerend-design-tokens": "1.0.0",
+    "@nl-design-system-community/purmerend-design-tokens": "1.1.0",
     "@testing-library/dom": "10.4.0",
     "@testing-library/jest-dom": "6.6.3",
     "@testing-library/react": "16.0.1",
@@ -58,7 +58,7 @@
     "@utrecht/checkbox-group-react": "1.0.6",
     "@utrecht/component-library-css": "7.0.0",
     "@utrecht/component-library-react": "7.3.7",
-    "@utrecht/design-tokens": "2.2.0",
+    "@utrecht/design-tokens": "2.3.0",
     "@utrecht/nav-bar-react": "1.0.3",
     "@utrecht/page-body-react": "1.0.3",
     "@utrecht/page-footer-react": "1.0.3",
