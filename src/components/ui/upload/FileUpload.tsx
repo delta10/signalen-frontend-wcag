@@ -82,6 +82,10 @@ export const FileUpload = React.forwardRef<HTMLLabelElement, FileUploadProps>(
         setFileUploadStatus(UploadStatus.SUCCESS)
         setTimeout(() => {
           uploadAlertRef.current?.focus()
+          uploadAlertRef.current?.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+          })
         }, 0)
       } catch (error) {
         console.error('Error while handling file change:', error)
@@ -93,7 +97,14 @@ export const FileUpload = React.forwardRef<HTMLLabelElement, FileUploadProps>(
       setDeletedFile(files[index])
       const updatedFiles = files.filter((_, i) => i !== index)
       setValue('files', updatedFiles)
-      deleteAlertRef.current?.focus()
+
+      setTimeout(() => {
+        deleteAlertRef.current?.focus()
+        deleteAlertRef.current?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+        })
+      }, 0)
     }
 
     return (
