@@ -119,100 +119,122 @@ const IncidentSummaryForm = () => {
   return (
     <div className="flex flex-col gap-8">
       <Paragraph appearance="lead">{t('description')}</Paragraph>
+
       <Divider />
-      <div className="flex flex-col gap-4">
-        <div className="flex flex-col gap-1 md:flex-row justify-between">
+
+      <div className="summary-grid">
+        <div className="summary-grid__heading">
           <Heading level={2}>1. {tStepReport('heading')}</Heading>
+        </div>
+        <div className="summary-grid__main">
+          <IncidentSummaryFormItem
+            title={tStepReport('form.describe_textarea_heading')}
+            value={formState.description}
+          />
+          {files.length > 0 && (
+            <IncidentSummaryFormAttachments
+              title={tStepReport('form.describe_upload_heading')}
+              attachments={files}
+            />
+          )}
+        </div>
+        <div className="summary-grid__link">
           <NextLinkWrapper href={stepToPath[FormStep.STEP_1_DESCRIPTION]}>
             {t('edit_step_report')}
           </NextLinkWrapper>
         </div>
-        <IncidentSummaryFormItem
-          title={tStepReport('form.describe_textarea_heading')}
-          value={formState.description}
-        />
-        {files.length > 0 && (
-          <IncidentSummaryFormAttachments
-            title={tStepReport('form.describe_upload_heading')}
-            attachments={files}
-          />
-        )}
       </div>
+
       <Divider />
-      <div className="flex flex-col gap-4">
-        <div className="flex flex-col gap-1 md:flex-row justify-between">
+
+      <div className="summary-grid">
+        <div className="sumary-grid__heading">
           <Heading level={2}>2. {tStepAdd('heading')}</Heading>
+        </div>
+
+        <div className="summary-grid__main flex flex-col gap-4">
+          <IncidentSummaryFormItem
+            title={tStepAdd('form.add_map_heading')}
+            value={formState.address?.weergave_naam}
+          >
+            <div style={{ minHeight: 200, height: 200 }}>
+              <LocationMap />
+            </div>
+          </IncidentSummaryFormItem>
+
+          {formState.extra_properties.map((answer) => {
+            return (
+              <IncidentSummaryFormItem
+                title={answer.label}
+                key={answer.id}
+                value={
+                  typeof answer.answer === 'string'
+                    ? answer.answer
+                    : Array.isArray(answer.answer)
+                      ? answer.answer
+                          .filter(
+                            (singleAnswer) =>
+                              singleAnswer !== false && singleAnswer !== 'empty'
+                          )
+                          .map((singleAnswer) => singleAnswer.label)
+                          .join(', ')
+                      : answer.answer.label
+                }
+              />
+            )
+          })}
+        </div>
+
+        <div className="summary-grid__link">
           <NextLinkWrapper href={stepToPath[FormStep.STEP_2_ADD]}>
             {t('edit_step_add')}
           </NextLinkWrapper>
         </div>
-
-        <IncidentSummaryFormItem
-          title={tStepAdd('form.add_map_heading')}
-          value={formState.address?.weergave_naam}
-        >
-          <div style={{ minHeight: 200, height: 200 }}>
-            <LocationMap />
-          </div>
-        </IncidentSummaryFormItem>
-
-        {formState.extra_properties.map((answer) => {
-          return (
-            <IncidentSummaryFormItem
-              title={answer.label}
-              key={answer.id}
-              value={
-                typeof answer.answer === 'string'
-                  ? answer.answer
-                  : Array.isArray(answer.answer)
-                    ? answer.answer
-                        .filter(
-                          (singleAnswer) =>
-                            singleAnswer !== false && singleAnswer !== 'empty'
-                        )
-                        .map((singleAnswer) => singleAnswer.label)
-                        .join(', ')
-                    : answer.answer.label
-              }
-            />
-          )
-        })}
       </div>
+
       <Divider />
-      <div className="flex flex-col gap-4">
-        <div className="flex flex-col gap-1 md:flex-row justify-between">
+
+      <div className="summary-grid">
+        <div className="summary-grid__heading">
           <Heading level={2}>{tStepContact('heading')}</Heading>
+        </div>
+        <div className="summary-grid__main flex flex-col gap-4">
+          {!formState.phone &&
+          !formState.email &&
+          !formState.sharing_allowed ? (
+            <Paragraph>{tStepContact('form.no_contact_details')}</Paragraph>
+          ) : (
+            <>
+              {formState.phone && (
+                <IncidentSummaryFormItem
+                  title={tStepContact('form.describe_phone_input_heading')}
+                  value={formState.phone}
+                />
+              )}
+              {formState.email && (
+                <IncidentSummaryFormItem
+                  title={tStepContact('form.describe_mail_input_heading')}
+                  value={formState.email}
+                />
+              )}
+              {formState.sharing_allowed && (
+                <IncidentSummaryFormItem
+                  title={tStepContact('form.sharing_heading_short')}
+                  value={tStepContact(
+                    'form.describe_checkbox_input_description',
+                    { organization: config?.base.municipality_display_name }
+                  )}
+                />
+              )}
+            </>
+          )}
+        </div>
+
+        <div className="summary-grid__link">
           <NextLinkWrapper href={stepToPath[FormStep.STEP_3_CONTACT]}>
             {t('edit_step_contact')}
           </NextLinkWrapper>
         </div>
-        {!formState.phone && !formState.email && !formState.sharing_allowed ? (
-          <Paragraph>{tStepContact('form.no_contact_details')}</Paragraph>
-        ) : (
-          <>
-            {formState.phone && (
-              <IncidentSummaryFormItem
-                title={tStepContact('form.describe_phone_input_heading')}
-                value={formState.phone}
-              />
-            )}
-            {formState.email && (
-              <IncidentSummaryFormItem
-                title={tStepContact('form.describe_mail_input_heading')}
-                value={formState.email}
-              />
-            )}
-            {formState.sharing_allowed && (
-              <IncidentSummaryFormItem
-                title={tStepContact('form.sharing_heading_short')}
-                value={tStepContact(
-                  'form.describe_checkbox_input_description',
-                  { organization: config?.base.municipality_display_name }
-                )}
-              />
-            )}
-          </>
-        )}
       </div>
 
       <SubmitAlert error={error} loading={loading} />

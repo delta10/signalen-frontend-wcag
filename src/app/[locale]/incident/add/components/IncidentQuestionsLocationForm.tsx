@@ -7,7 +7,7 @@ import { useFormStore } from '@/store/form_store'
 import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentFormFooter'
 import { usePathname, useRouter } from '@/routing/navigation'
 import { PublicQuestion } from '@/types/form'
-import { Alert } from '@/components/index'
+import { Alert, Paragraph } from '@/components/index'
 import { RenderSingleField } from '@/app/[locale]/incident/add/components/questions/RenderSingleField'
 import { LocationSelect } from '@/app/[locale]/incident/add/components/questions/LocationSelect'
 import { useTranslations } from 'next-intl'
@@ -151,7 +151,9 @@ export const IncidentQuestionsLocationForm = () => {
       >
         {methods.formState.errors.submit && (
           <Alert type="error">
-            {methods.formState.errors.submit.message?.toString()}
+            <Paragraph>
+              {methods.formState.errors.submit.message?.toString()}
+            </Paragraph>
           </Alert>
         )}
         {additionalQuestions.length ? (

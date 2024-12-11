@@ -359,7 +359,9 @@ const MapDialog = ({
                 dialogMap &&
                 config &&
                 dialogMap.getZoom() < config.base.map.minimal_zoom && (
-                  <Alert type="error">{t('zoom_for_object')}</Alert>
+                  <Alert type="error">
+                    <Paragraph>{t('zoom_for_object')}</Paragraph>
+                  </Alert>
                 )}
               {field && dialogMap && config && (
                 <ul className="flex-1 overflow-y-auto">

@@ -115,7 +115,7 @@ export const AddressCombobox = ({
         aria-label="Adres"
         displayValue={(address: any) => address?.weergave_naam}
         onChange={(event) => setQuery(event.target.value)}
-        className={'utrecht-textbox utrecht-textbox--html'}
+        className={'utrecht-textbox utrecht-textbox--html-input'}
         onKeyDown={(e) => handleEnter(e)}
         autoComplete={'off'}
       />

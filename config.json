@@ -5,19 +5,20 @@
     "assets_url": "https://meldingen.demo.meierijstad.delta10.cloud",
     "supportedLanguages": [
       {
-        "label": "This page in English",
+        "label": "Switch to English",
         "lang": "en"
       },
       {
-        "label": "Deze pagina in het Nederlands",
+        "label": "Schakel over naar het Nederlands",
         "lang": "nl"
       }
     ],
     "naam": "gemeente Purmerend",
     "header": {
       "logo": {
-        "alt": "Logo: kop van een koe met onder elkaar de 3 delen van het woord Purmerend: 'pur', 'mer' en 'end'.",
+        "alt": "Gemeente Purmerend logo, naar de homepagina",
         "url": "purmerend-logo.svg",
+        "dark_mode_url": "purmerend-logo-dark-mode.svg",
         "caption": "Purmerend"
       }
     },
@@ -27,19 +28,10 @@
     "map": {
       "find_address_in_distance": 30,
       "minimal_zoom": 17,
-      "center": [
-        51.6045656,
-        5.5342026
-      ],
+      "center": [51.6045656, 5.5342026],
       "maxBounds": [
-        [
-          3.31497114423,
-          50.803721015
-        ],
-        [
-          7.09205325687,
-          53.5104033474
-        ]
+        [3.31497114423, 50.803721015],
+        [7.09205325687, 53.5104033474]
       ]
     },
     "links": {
@@ -53,16 +45,14 @@
       "nl": {
         "describe_report": {
           "alert": {
-            "help_text": "Lukt het niet om een melding te doen? Bel",
-            "opening_hours": "Wij zijn bereikbaar van maandag tot en met vrijdag van 08:00 tot 18:00 uur."
+            "help_text": "Problemen met het indienen van een melding? Bel [0299452452](tel:+0299452452) of mail naar [meldingen@purmerend.nl](mailto:meldingen@purmerend.nl). Wij zijn bereikbaar van maandag tot en met vrijdag van 8:00 uur tot 18:00 uur."
           }
         }
       },
       "en": {
         "describe_report": {
           "alert": {
-            "help_text": "Having trouble submitting a report? Call",
-            "opening_hours": "We are available Monday through Friday from 8:00 AM to 6:00 PM."
+            "help_text": "Having trouble submitting a report? Call [0299452452](tel:+0299452452) or mail [meldingen@purmerend.nl](mailto:meldingen@purmerend.nl). We are available monday through friday from 8:00 AM to 6:00 PM."
           }
         }
       }

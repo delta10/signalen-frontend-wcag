@@ -6,18 +6,18 @@
     "heading": "Describe your report",
     "form": {
       "describe_textarea_heading": "What is it about?",
-      "describe_textarea_description": "Do not type personal information in this description. We will ask this of you later in this form.",
+      "describe_textarea_description": "Enter the content of your report here. You can only submit one report at a time. Do not include personal information in this description; this will be requested later in the form.",
       "describe_upload_heading": "Add photos",
       "describe_upload_description": "Add a photo to clarify the situation (maximum of 5 photos).",
       "errors": {
-        "file_type_invalid": "Invalid file type. Only JPEG, PNG, and GIF are accepted.",
-        "file_size_too_large": "File size too large. Each file must be less than 20MB.",
-        "file_size_too_small": "File size too small. Each file must be at least 30KB."
+        "textarea_required": "Input error: enter what the notification is about",
+        "file_type_invalid": "Input error: invalid file type. Only JPEG, PNG, and GIF are accepted.",
+        "file_size_too_large": "Input error: file size too large. Each file must be less than 20MB.",
+        "file_size_too_small": "Input error: file size too small. Each file must be at least 30KB."
       }
     },
     "alert": {
-      "help_text": "Having trouble submitting a report? Call: ",
-      "opening_hours": "We are available Monday through Friday from 8:00 AM to 6:00 PM."
+      "help_text": "Having trouble submitting a report? Call: "
     }
   },
   "describe_add": {
@@ -54,6 +54,7 @@
   "describe_contact": {
     "heading": "Contact details",
     "form": {
+      "alert_no_required_fields": "This form consists of optional questions only.",
       "heading": "May we call you for questions? And keep you informed via e-mail?",
       "description": "Often we have another question. With this we can solve the problem faster or better. Or we want to explain something. We would then like to give you a call. Or else we e-mail you.\n\nWe only use your phone number and e-mail address for this report.",
       "send_to_other_instance_heading": "May we forward your report?",
