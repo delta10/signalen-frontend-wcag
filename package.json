@@ -3,11 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "clean": "rimraf .next/ tmp/",
     "dev": "next dev",
     "build": "next build",
+    "install-test-browsers": "playwright install",
     "start": "next start",
     "lint": "next lint",
     "test": "vitest",
+    "test-e2e": "playwright test test/e2e/",
     "update-patch": "npm-check-updates --configFileName .ncurc.patch.cjs",
     "update-minor": "npm-check-updates --configFileName .ncurc.minor.cjs",
     "update-major": "npm-check-updates --configFileName .ncurc.major.cjs",
@@ -43,8 +46,10 @@
   },
   "devDependencies": {
     "@amsterdam/design-system-react": "0.13.1",
+    "@axe-core/playwright": "4.10.1",
     "@fontsource/cantarell": "5.1.0",
     "@nl-design-system-community/purmerend-design-tokens": "1.1.2",
+    "@playwright/test": "1.49.1",
     "@testing-library/dom": "10.4.0",
     "@testing-library/jest-dom": "6.6.3",
     "@testing-library/react": "16.0.1",
@@ -77,6 +82,7 @@
     "jsdom": "25.0.1",
     "npm-check-updates": "17.1.11",
     "postcss": "8",
+    "rimraf": "6.0.1",
     "tailwindcss": "3.4.14",
     "typescript": "5",
     "vitest": "2.1.6"
