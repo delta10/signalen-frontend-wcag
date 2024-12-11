@@ -172,7 +172,6 @@ const MapDialog = ({
   }
 
   // Handle click on map, setIsMapSelected to true
-  // TODO: Reset selectedFeatures if click was right on map? (open for discussion)
   const handleMapClick = async (event: MapLayerMouseEvent) => {
     updatePosition(event.lngLat.lat, event.lngLat.lng)
     setIsMapSelected(true)
@@ -335,7 +334,6 @@ const MapDialog = ({
         <Dialog.Overlay />
         <Dialog.Content className="fixed inset-0 z-[1000] grid md:grid-cols-3 purmerend-theme background-white overflow-scroll">
           <VisuallyHidden.Root>
-            {/* TODO: Overleggen welke titel hier het meest vriendelijk is voor de gebruiker, multi-language support integreren */}
             <Dialog.Title>
               {field?.meta.language.title
                 ? field.meta.language.title

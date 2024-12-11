@@ -162,7 +162,6 @@ const IncidentSummaryForm = () => {
             </div>
           </IncidentSummaryFormItem>
 
-          {/* TODO: AssetSelect en LocationSelect hier tonen, indien een / beide zijn ingevuld */}
           {formState.extra_properties.map((answer) => {
             return (
               <IncidentSummaryFormItem
