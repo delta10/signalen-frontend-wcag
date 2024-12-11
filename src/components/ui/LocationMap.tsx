@@ -72,6 +72,13 @@ const LocationMap = () => {
         style={{ width: '100%', height: 200 }}
         mapStyle={mapStyle}
         attributionControl={false}
+        onLoad={() => {
+          const mapCanvas = document.getElementsByClassName(
+            'maplibregl-canvas'
+          )[0] as HTMLCanvasElement
+
+          mapCanvas.tabIndex = -1
+        }}
       >
         <Marker latitude={marker[0]} longitude={marker[1]}>
           <MapMarker />
