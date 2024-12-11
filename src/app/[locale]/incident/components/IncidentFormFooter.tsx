@@ -8,6 +8,7 @@ import {
   IconChevronLeft,
   IconChevronRight,
   IconLoader2,
+  IconSend,
 } from '@tabler/icons-react'
 import { FieldErrors } from 'react-hook-form'
 import { getCurrentStep, getPreviousStepPath } from '@/lib/utils/stepper'
@@ -69,6 +70,9 @@ const IncidentFormFooter = ({
           >
             {loading && <IconLoader2 className="animate-spin" />}
             {t('submit_button')}
+            <Icon>
+              <IconSend />
+            </Icon>
           </Button>
         )}
       </ButtonGroup>
