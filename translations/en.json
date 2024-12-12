@@ -51,7 +51,9 @@
       "use_map_description": "Or select a point on the map",
       "choose_location": "Choose location",
       "edit_location": "Edit location",
-      "chosen_location": "Selected location {location} click to change",
+      "chosen_location": "Selected location {location} click to edit",
+      "chosen_location_address_and_points": "Selected location {location} and selected points {points}, click to edit",
+      "chosen_location_points": "Selected points {points}, click to edit",
       "search_address_label": "Search by address or postal code"
     },
     "explainer": {

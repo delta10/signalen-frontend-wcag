@@ -52,6 +52,8 @@
       "choose_location": "Kies locatie",
       "edit_location": "Wijzig locatie",
       "chosen_location": "Geselecteerde locatie {location} klik om te wijzigen",
+      "chosen_location_address_and_points": "Geselecteerde locatie {location} en geselecteerde punten {points} klik om te wijzigen",
+      "chosen_location_points": "Geselecteerde punten {points} klik om te wijzigen",
       "search_address_label": "Zoek op adres of postcode"
     },
     "explainer": {
