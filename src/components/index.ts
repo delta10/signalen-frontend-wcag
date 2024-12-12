@@ -31,6 +31,7 @@ export {
   LinkButton,
   AlertDialog,
   Article,
+  PreserveData,
   Select,
   SpotlightSection,
 } from '@utrecht/component-library-react/dist/css-module'

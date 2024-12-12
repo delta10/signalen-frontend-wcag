@@ -10,7 +10,7 @@
       "describe_upload_heading": "Add photos",
       "describe_upload_description": "Add a photo to clarify the situation (maximum of 5 photos).",
       "errors": {
-        "textarea_required": "Input error: enter what the notification is about",
+        "textarea_required": "Input error: enter what the report is about",
         "file_type_invalid": "Input error: invalid file type. Only JPEG, PNG, and GIF are accepted.",
         "file_size_too_large": "Input error: file size too large. Each file must be less than 20MB.",
         "file_size_too_small": "Input error: file size too small. Each file must be at least 30KB."
@@ -94,12 +94,12 @@
     }
   },
   "describe_thankyou": {
-    "heading": "Thank you!",
-    "description_notification_number": "Your notification is registered with us under number:",
-    "description_notification_email": "Did you provide an email address? You will receive an email with all the details of your notification.",
-    "what_do_we_do_heading": "What do we do with your notification?",
-    "what_do_we_do_description": "Your notification is scheduled: we will inform you within 5 working days about how and when your notification will be handled. We will do this via email.",
-    "new_notification": "New notification"
+    "heading": "Report submitted",
+    "description_notification_number": "Your report is registered with us under number:",
+    "description_notification_email": "Did you provide an email address? You will receive an email with all the details of your report.",
+    "what_do_we_do_heading": "What do we do with your report?",
+    "what_do_we_do_description": "Your report is scheduled: we will inform you within 5 working days about how and when your report will be handled. We will do this via email.",
+    "new_notification": "New report"
   },
   "general": {
     "form": {
