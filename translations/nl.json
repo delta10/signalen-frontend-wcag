@@ -51,6 +51,7 @@
       "use_map_description": "Of selecteer een punt op de kaart",
       "choose_location": "Kies locatie",
       "edit_location": "Wijzig locatie",
+      "chosen_location": "Geselecteerde locatie {location} klik om te wijzigen",
       "search_address_label": "Zoek op adres of postcode"
     },
     "explainer": {

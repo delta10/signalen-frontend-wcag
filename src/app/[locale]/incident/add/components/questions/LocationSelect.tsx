@@ -56,7 +56,6 @@ export const LocationSelect = ({ field }: LocationSelectProps) => {
         <div style={{ minHeight: 200, height: 200 }} role="img" aria-label="">
           <LocationMap />
         </div>
-        <Paragraph>{formStoreState.address?.weergave_naam}</Paragraph>
         <MapProvider>
           <MapDialog
             trigger={
@@ -77,6 +76,14 @@ export const LocationSelect = ({ field }: LocationSelectProps) => {
                   id="location-button"
                   className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 border-none"
                   type="button"
+                  aria-label={
+                    formStoreState.address &&
+                    formStoreState.address.weergave_naam
+                      ? t('chosen_location', {
+                          location: formStoreState.address.weergave_naam,
+                        })
+                      : t('edit_location')
+                  }
                 >
                   {t('edit_location')}
                 </Button>
@@ -84,6 +91,9 @@ export const LocationSelect = ({ field }: LocationSelectProps) => {
             }
           />
         </MapProvider>
+      </div>
+      <div>
+        <Paragraph>{formStoreState.address?.weergave_naam}</Paragraph>
       </div>
     </Fieldset>
   )
