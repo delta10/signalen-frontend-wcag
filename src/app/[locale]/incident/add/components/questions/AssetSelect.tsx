@@ -150,10 +150,6 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
         <div style={{ minHeight: 200, height: 200 }} role="img" aria-label="">
           <LocationMap />
         </div>
-        <Paragraph>{formStoreState.address?.weergave_naam}</Paragraph>
-        {formStoreState.selectedFeatures.map((feature: any) => (
-          <Paragraph key={feature.id}>{feature.description}</Paragraph>
-        ))}
         <MapProvider>
           <MapDialog
             onMapReady={onMapReady}
@@ -178,6 +174,23 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
                   id="location-button"
                   className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 border-none"
                   type="button"
+                  aria-label={
+                    formStoreState.selectedFeatures.length
+                      ? formStoreState.address &&
+                        formStoreState.address.weergave_naam
+                        ? t('chosen_location_address_and_points', {
+                            location: formStoreState.address.weergave_naam,
+                            points: formStoreState.selectedFeatures
+                              .map((feature: any) => feature.description)
+                              .join(', '),
+                          })
+                        : t('chosen_location_points', {
+                            points: formStoreState.selectedFeatures
+                              .map((feature: any) => feature.description)
+                              .join(', '),
+                          })
+                      : t('edit_location')
+                  }
                 >
                   {t('edit_location')}
                 </Button>
@@ -185,6 +198,12 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
             }
           />
         </MapProvider>
+      </div>
+      <div>
+        <Paragraph>{formStoreState.address?.weergave_naam}</Paragraph>
+        {formStoreState.selectedFeatures.map((feature: any) => (
+          <Paragraph key={feature.id}>{feature.description}</Paragraph>
+        ))}
       </div>
     </Fieldset>
   )
