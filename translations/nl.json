@@ -34,11 +34,16 @@
       "dialog_description": "Kies een locatie op de kaart voor de locatie van uw melding.",
       "current_location": "Mijn locatie",
       "outside_max_bound_error": "Uw locatie valt buiten de kaart en is daardoor niet te zien.",
+      "current_location_permission_error": "Het ophalen van locatiegegevens is mislukt omdat de pagina niet over de benodigde toestemmingen beschikt. Controleer of locatiegebruik is toegestaan in de instellingen of of het beleid van de website dit blokkeert.",
+      "current_location_timeout_error": "Het ophalen van locatiegegevens duurde te lang. Zorg ervoor dat uw apparaat een goede verbinding heeft en probeer het opnieuw.",
+      "current_location_position_error": "Het ophalen van locatiegegevens is mislukt omdat een interne fout optrad bij het bepalen van de positie. Probeer het later opnieuw of controleer uw apparaatinstellingen.",
       "close_alert_notification": "Sluit melding",
       "address_search_label": "Zoek op adres",
       "max_number_of_assets_error": "U kunt maximaal {max, plural, one {# object} other {# objecten}} selecteren.",
       "go_further_without_selected_object": "Ga verder zonder object",
-      "zoom_for_object": "Zoom in om de objecten te zien",
+      "zoom_for_object": "Zoom in op de kaart om de objecten te zien",
+      "scroll_for_map": "Scroll naar onder om de kaart te weergeven",
+      "scroll_to_map_button": "Naar beneden",
       "map_zoom-in_button_label": "Zoom in op de kaart",
       "map_zoom-out_button_label": "Zoom uit op de kaart",
       "map_close_button_label": "Sluit de kaart",
@@ -89,7 +94,7 @@
     }
   },
   "describe_thankyou": {
-    "heading": "Bedankt!",
+    "heading": "Melding verzonden",
     "description_notification_number": "Uw melding is bij ons bekend onder nummer:",
     "description_notification_email": "Hebt u een e-mailadres ingevuld? Dan ontvangt u een e-mail met alle gegevens van uw melding.",
     "what_do_we_do_heading": "Wat doen we met uw melding?",
@@ -99,7 +104,6 @@
   "general": {
     "form": {
       "title_separator": " · ",
-      "title_prefix_error": "Er ging iets fout!",
       "pre_heading": "Stap {current} van {max}",
       "back_button": "Vorige",
       "next_button": "Volgende",

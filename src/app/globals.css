@@ -42,10 +42,7 @@
   border: 1px solid var(--utrecht-form-control-border-color);
 }
 
-/* TODO: zonder important doen deze rules niks */
 .iconbutton-preview-delete {
-  /* bg-gray-900 bg-opacity-50 */
-  /* TODO: bg color token toevoegen aan purmerend theme voor icon button trash? of? */
   background: rgba(0, 0, 0, 0.7) !important;
   border: none !important;
   border-radius: 0% !important;
@@ -59,7 +56,6 @@
 }
 
 .iconbutton-preview-delete:hover {
-  /* TODO: bg color grey-29 opacity on hover = 80% opacity in purmerend tokens */
   background-color: rgba(0, 0, 0, 0.5) !important;
   transition-duration: 200 !important;
   transition-delay: 100 !important;
@@ -71,15 +67,6 @@
     .utrecht-button--disabled
   ) {
   border: none;
-}
-
-/*todo: niet best practice met !important maar weet even niet hoe ik anders makkelijk de default styling moet overschrijven*/
-.pl-0-overwrite {
-  padding-left: 0 !important;
-}
-
-.pr-0-overwrite {
-  padding-right: 0 !important;
 }
 
 /* stepper */
@@ -114,7 +101,9 @@
   position: absolute;
   right: 1em;
   bottom: 1em;
-  gap: 0 !important;
+  gap: 0.5rem !important;
+  display: flex;
+  flex-direction: column;
 }
 
 .map-alert-dialog__content {
@@ -136,6 +125,13 @@
     --utrecht-map-marker-background-color,
     currentColor
   );
+}
+
+.focused-map-marker {
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  background-color: red;
 }
 
 /* colors */

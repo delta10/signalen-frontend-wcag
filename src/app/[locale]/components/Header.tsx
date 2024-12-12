@@ -39,7 +39,7 @@ const Header = () => {
   return (
     <>
       <PageHeader>
-        <div className="flex flex-row items-center justify-between">
+        <div className="flex flex-col md:flex-row gap-4 md:items-center justify-between">
           {homepageHref ? (
             <Link
               boxContent

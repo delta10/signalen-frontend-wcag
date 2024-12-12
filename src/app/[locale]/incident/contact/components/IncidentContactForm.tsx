@@ -67,12 +67,21 @@ const IncidentContactForm = () => {
 
   const form = useForm<z.infer<typeof incidentContactFormSchema>>({
     resolver: zodResolver(incidentContactFormSchema),
+    mode: 'onSubmit',
+    reValidateMode: 'onSubmit',
     defaultValues: {
       phone: formState.phone,
       email: formState.email,
       sharing_allowed: formState.sharing_allowed,
     },
   })
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLFormElement>) => {
+    // Prevent form submission when Enter is pressed and event target is instanceof HTMLInputElement
+    if (event.key === 'Enter' && event.target instanceof HTMLInputElement) {
+      event.preventDefault()
+    }
+  }
 
   const onSubmit = () => {
     updateForm({
@@ -101,6 +110,7 @@ const IncidentContactForm = () => {
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col gap-8 items-start mt-4"
+        onKeyDown={handleKeyDown}
       >
         <FormFieldTextbox
           label={`${t('describe_phone_input_heading')} (${tGeneral('form.not_required_short')})`}

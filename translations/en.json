@@ -10,7 +10,7 @@
       "describe_upload_heading": "Add photos",
       "describe_upload_description": "Add a photo to clarify the situation (maximum of 5 photos).",
       "errors": {
-        "textarea_required": "Input error: enter what the notification is about",
+        "textarea_required": "Input error: enter what the report is about",
         "file_type_invalid": "Input error: invalid file type. Only JPEG, PNG, and GIF are accepted.",
         "file_size_too_large": "Input error: file size too large. Each file must be less than 20MB.",
         "file_size_too_small": "Input error: file size too small. Each file must be at least 30KB."
@@ -36,9 +36,14 @@
       "close_alert_notification": "Close notification",
       "address_search_label": "Search by address",
       "outside_max_bound_error": "Your location is outside the map bounds and is therefore not visible.",
+      "current_location_permission_error": "Failed to retrieve location data because the page does not have the necessary permissions. Check if location usage is allowed in the settings or if the website's policy is blocking it.",
+      "current_location_timeout_error": "Failed to retrieve location data because it took too long. Ensure that your device has a good connection and try again.",
+      "current_location_position_error": "Failed to retrieve location data because an internal error occurred while determining the position. Try again later or check your device settings.",
       "max_number_of_assets_error": "You can select at most {max, plural, one {# object} other {# objects}}.",
       "go_further_without_selected_object": "Continue without object",
-      "zoom_for_object": "Zoom in to see the objects",
+      "zoom_for_object": "Zoom in on the map to see the objects",
+      "scroll_for_map": "Scroll down to display the map",
+      "scroll_to_map_button": "Scroll down",
       "map_zoom-in_button_label": "Zoom in on the map",
       "map_zoom-out_button_label": "Zoom out on the map",
       "map_close_button_label": "Close the map",
@@ -89,17 +94,16 @@
     }
   },
   "describe_thankyou": {
-    "heading": "Thank you!",
-    "description_notification_number": "Your notification is registered with us under number:",
-    "description_notification_email": "Did you provide an email address? You will receive an email with all the details of your notification.",
-    "what_do_we_do_heading": "What do we do with your notification?",
-    "what_do_we_do_description": "Your notification is scheduled: we will inform you within 5 working days about how and when your notification will be handled. We will do this via email.",
-    "new_notification": "New notification"
+    "heading": "Report submitted",
+    "description_notification_number": "Your report is registered with us under number:",
+    "description_notification_email": "Did you provide an email address? You will receive an email with all the details of your report.",
+    "what_do_we_do_heading": "What do we do with your report?",
+    "what_do_we_do_description": "Your report is scheduled: we will inform you within 5 working days about how and when your report will be handled. We will do this via email.",
+    "new_notification": "New report"
   },
   "general": {
     "form": {
       "title_separator": " · ",
-      "title_prefix_error": "Something went wrong!",
       "pre_heading": "Step {current} of {max}",
       "back_button": "Back",
       "next_button": "Next",

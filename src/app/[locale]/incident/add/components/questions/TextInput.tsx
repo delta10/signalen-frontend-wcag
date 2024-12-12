@@ -16,7 +16,6 @@ export const TextInput = ({ field }: TextInputProps) => {
   const tForm = useTranslations('general.form')
   const errorMessage = errors[field.key]?.message as string
 
-  /* TODO: Implement not required for label */
   return (
     <FormFieldTextbox
       {...register(field.key, getValidators(field, tError))}
