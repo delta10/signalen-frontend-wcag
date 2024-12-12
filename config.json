@@ -6,11 +6,13 @@
     "supportedLanguages": [
       {
         "label": "Switch to English",
-        "lang": "en"
+        "lang": "en",
+        "name": "English"
       },
       {
         "label": "Schakel over naar het Nederlands",
-        "lang": "nl"
+        "lang": "nl",
+        "name": "Nederlands"
       }
     ],
     "naam": "gemeente Purmerend",
