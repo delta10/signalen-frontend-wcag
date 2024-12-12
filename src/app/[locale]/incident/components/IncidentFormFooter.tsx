@@ -13,6 +13,7 @@ import {
 import { FieldErrors } from 'react-hook-form'
 import { getCurrentStep, getPreviousStepPath } from '@/lib/utils/stepper'
 import { FormStep } from '@/types/form'
+import { useFormStore } from '@/store/form_store'
 
 type IncidentFormFooterProps = {
   handleSignalSubmit?: () => void
@@ -31,6 +32,7 @@ const IncidentFormFooter = ({
   const pathname = usePathname()
   const router = useRouter()
   const step = getCurrentStep(pathname)
+  const { formState } = useFormStore()
 
   const goBack = () => {
     const previousStep = getPreviousStepPath(step)
@@ -52,7 +54,11 @@ const IncidentFormFooter = ({
           </LinkButton>
         )}
         {step < FormStep.STEP_4_SUMMARY && (
-          <Button appearance="primary-action-button" type="submit">
+          <Button
+            appearance="primary-action-button"
+            type="submit"
+            disabled={formState.isBlocking}
+          >
             {t('next_button')}
             <Icon>
               <IconChevronRight />

@@ -7,7 +7,6 @@ import { useFormStore } from '@/store/form_store'
 import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentFormFooter'
 import { usePathname, useRouter } from '@/routing/navigation'
 import { PublicQuestion } from '@/types/form'
-import { Alert, Paragraph } from '@/components/index'
 import { RenderSingleField } from '@/app/[locale]/incident/add/components/questions/RenderSingleField'
 import { LocationSelect } from '@/app/[locale]/incident/add/components/questions/LocationSelect'
 import { useTranslations } from 'next-intl'
@@ -74,17 +73,6 @@ export const IncidentQuestionsLocationForm = () => {
     }
   }, [formStoreState.coordinates, methods])
 
-  useEffect(() => {
-    if (formStoreState.isBlocking) {
-      methods.setError('submit', {
-        type: 'manual',
-        message: t('is_blocking'),
-      })
-    } else {
-      methods.clearErrors('submit')
-    }
-  }, [formStoreState.isBlocking, methods.setError, methods.clearErrors])
-
   const onSubmit = (data: any) => {
     const questionKeys = Object.keys(data)
     const questionsToSubmit = additionalQuestions.filter(
@@ -149,13 +137,6 @@ export const IncidentQuestionsLocationForm = () => {
         onSubmit={methods.handleSubmit(onSubmit)}
         className="flex flex-col gap-8 items-start"
       >
-        {methods.formState.errors.submit && (
-          <Alert type="error">
-            <Paragraph>
-              {methods.formState.errors.submit.message?.toString()}
-            </Paragraph>
-          </Alert>
-        )}
         {additionalQuestions.length ? (
           Object.keys(additionalQuestions).map((value, index, array) => {
             const question = additionalQuestions[index]
