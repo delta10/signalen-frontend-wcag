@@ -119,6 +119,10 @@
   gap: 8px;
 }
 
+.utrecht-alert {
+  --utrecht-paragraph-color: currentColor;
+}
+
 .map-marker-icon {
   --utrecht-icon-size: var(--utrecht-map-marker-size, 42px);
   --utrecht-icon-color: var(
@@ -132,6 +136,12 @@
   height: 42px;
   border-radius: 999px;
   background-color: red;
+}
+
+/* link */
+.utrecht-link {
+  --utrecht-link-color: currentColor;
+  --utrecht-link-hover-color: black;
 }
 
 /* colors */
@@ -162,8 +172,8 @@
 }
 
 .purmerend-theme {
-    --utrecht-listbox-background-color: white;
-    --utrecht-listbox-color: black;
+  --utrecht-listbox-background-color: white;
+  --utrecht-listbox-color: black;
 }
 
 /* contact page */
@@ -175,8 +185,8 @@
 .summary-grid {
   display: grid;
   grid-template-areas:
-    "summary-heading summary-link"
-    "summary-body summary-body";
+    'summary-heading summary-link'
+    'summary-body summary-body';
   grid-template-columns: 1fr auto;
   gap: 1rem;
 }
@@ -185,9 +195,9 @@
 @media only screen and (max-width: 640px) {
   .summary-grid {
     grid-template-areas:
-    "summary-heading summary-heading"
-    "summary-body summary-body"
-    "summary-link summary-link"
+      'summary-heading summary-heading'
+      'summary-body summary-body'
+      'summary-link summary-link';
   }
 }
 
