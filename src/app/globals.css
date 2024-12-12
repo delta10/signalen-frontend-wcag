@@ -202,3 +202,8 @@
 .summary-grid__link {
   grid-area: summary-link;
 }
+
+/* combobox */
+.address-listbox {
+  border-radius: var(--utrecht-textbox-border-radius, var(--utrecht-form-control-border-radius, 0)) !important;
+}

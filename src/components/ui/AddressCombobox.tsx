@@ -121,7 +121,7 @@ export const AddressCombobox = ({
       />
       <ComboboxOptions
         anchor="bottom"
-        className="utrecht-listbox utrecht-listbox--html-div fixed z-[9999] pointer-events-auto"
+        className="address-listbox utrecht-listbox utrecht-listbox--html-div fixed z-[9999] pointer-events-auto"
       >
         <div className={'utrecht-listbox__list'}>
           {addressOptions.length > 0 ? (
@@ -129,13 +129,13 @@ export const AddressCombobox = ({
               <ComboboxOption
                 key={address.id}
                 value={address}
-                className="utrecht-listbox__option data-[focus]:bg-blue-100"
+                className="utrecht-listbox__option data-[focus]:bg-blue-100 !px-3 !py-1"
               >
                 {address.weergave_naam}
               </ComboboxOption>
             ))
           ) : (
-            <span className="utrecht-listbox__option data-[focus]:bg-blue-100">
+            <span className="utrecht-listbox__option data-[focus]:bg-blue-100 !px-3 !py-1">
               {t('no_results')}
             </span>
           )}
