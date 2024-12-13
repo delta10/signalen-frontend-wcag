@@ -118,10 +118,15 @@
     },
     "button": {
       "upload_file": "Upload bestand",
-      "delete_file": "Verwijder bestand: {file}"
+      "upload_extra_file": "Upload nog een file",
+      "delete_file": "Verwijder bestand: {file}",
+      "close": "Sluit",
+      "close_alert": "Sluit dialoog melding"
     },
     "file": {
-      "preview": "Voorbeeld weergave van bestand: {file} "
+      "preview": "Voorbeeld weergave van bestand: {file}",
+      "upload_successful": "De volgende afbeeldingen zijn succesvol geselecteerd:",
+      "delete_successful": "De volgende afbeelding is verwijderd van de geselecteerde afbeeldingen:"
     },
     "loading": "Laden..."
   },
