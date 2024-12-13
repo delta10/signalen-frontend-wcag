@@ -1,4 +1,4 @@
-import { useTranslations } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import React, { useEffect, useRef } from 'react'
 import {
   Alert,
@@ -14,6 +14,7 @@ export const SubmitAlert = ({
   loading: boolean
 }) => {
   const t = useTranslations('describe_summary')
+  const locale = useLocale()
   const alertRef = useRef<HTMLDivElement | null>(null)
   const multilineRef = useRef<HTMLPreElement>(null)
 
@@ -40,7 +41,12 @@ export const SubmitAlert = ({
       <Alert ref={alertRef} type="error" id="submit-described-by">
         <Heading level={3}>{t('submit_alert.error.heading')}</Heading>
         <Paragraph className="pt-2">
-          {t('submit_alert.error.description')}
+          {t('submit_alert.error.description', {
+            time: new Intl.DateTimeFormat(locale, {
+              hour: 'numeric',
+              minute: 'numeric',
+            }).format(new Date()),
+          })}
         </Paragraph>
       </Alert>
     )
