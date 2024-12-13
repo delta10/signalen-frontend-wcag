@@ -7,8 +7,7 @@ import {
   UnorderedList,
   UnorderedListItem,
 } from '@utrecht/component-library-react'
-import { RenderMarkdown } from '@/components/ui/RenderMarkdown'
-import Markdown from 'react-markdown'
+import { IconChevronDown } from '@tabler/icons-react'
 
 const MapExplainerAccordion = () => {
   const t = useTranslations('describe_add.explainer')
@@ -56,6 +55,7 @@ const MapExplainerAccordion = () => {
   return (
     <Accordion ref={accordionRef} className="purmerend-theme">
       <AccordionSection
+        icon={<IconChevronDown />}
         headingLevel={3}
         label={t('label')}
         expanded={openAcc} // Default collapsed

@@ -114,6 +114,7 @@ export const AddressCombobox = ({
     >
       <ComboboxInput
         aria-label="Adres"
+        name="address"
         displayValue={(address: any) => address?.weergave_naam}
         onChange={(event) => setQuery(event.target.value)}
         className={'utrecht-textbox utrecht-textbox--html-input'}

@@ -420,10 +420,14 @@ const MapDialog = ({
               </Heading>
               <MapExplainerAccordion />
 
-              <AddressCombobox
-                updatePosition={updatePosition}
-                setIsMapSelected={setIsMapSelected}
-              />
+              <div className="flex flex-col">
+                <label htmlFor="address">Adres</label>
+                <AddressCombobox
+                  updatePosition={updatePosition}
+                  setIsMapSelected={setIsMapSelected}
+                />
+              </div>
+
               <div className="block md:hidden">
                 <Alert>
                   <div className="flex flex-row items-center">
