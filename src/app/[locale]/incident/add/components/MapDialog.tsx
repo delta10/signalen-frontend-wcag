@@ -198,6 +198,26 @@ const MapDialog = ({
     })
   }
 
+  const keyDownHandler = async (event: any) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      const coordinates = dialogMap?.getCenter()
+      if (coordinates) {
+        updatePosition(coordinates.lat, coordinates.lng)
+        setIsMapSelected(true)
+        const address = await getNewSelectedAddress(
+          coordinates.lat,
+          coordinates.lng,
+          config
+        )
+
+        updateForm({
+          ...formState,
+          address: address,
+        })
+      }
+    }
+  }
+
   // Handle click on feature marker, set selectedFeatures and show error if maxNumberOfAssets is reached
   const handleFeatureMarkerClick = async (
     event: MarkerEvent,
@@ -337,29 +357,6 @@ const MapDialog = ({
   const mapStyle = isDarkMode
     ? `${process.env.NEXT_PUBLIC_MAPTILER_MAP_DARK_MODE}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`
     : `${process.env.NEXT_PUBLIC_MAPTILER_MAP}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`
-
-  const keyDownHandler = async (event: any) => {
-    if (event.key === 'Enter' || event.key === ' ') {
-      console.log('keydown')
-      const coordinates = dialogMap?.getCenter()
-      if (coordinates) {
-        updatePosition(coordinates.lat, coordinates.lng)
-        setIsMapSelected(true)
-        const address = await getNewSelectedAddress(
-          coordinates.lat,
-          coordinates.lng,
-          config
-        )
-
-        console.log('in handle', address)
-
-        updateForm({
-          ...formState,
-          address: address,
-        })
-      }
-    }
-  }
 
   useEffect(() => {
     const element = document.getElementsByClassName('maplibregl-canvas')
