@@ -51,12 +51,13 @@ const MapExplainerAccordion = () => {
   return (
     <Accordion ref={accordionRef} className="purmerend-theme">
       <AccordionSection
+        headingLevel={3}
         label={t('label')}
         expanded={openAcc} // Default collapsed
         onActivate={() => setOpenAcc(!openAcc)}
         body={null}
       >
-        <Heading level={3}>{t(explainerDictionaryNames.title)}</Heading>
+        <Heading level={4}>{t(explainerDictionaryNames.title)}</Heading>
 
         {explainerDictionaryNames.sections.map((section, index) => (
           <div key={index}>
