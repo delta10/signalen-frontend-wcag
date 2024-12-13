@@ -60,6 +60,7 @@
     "@utrecht/component-library-css": "7.0.0",
     "@utrecht/component-library-react": "8.0.2",
     "@utrecht/design-tokens": "2.4.0",
+    "@utrecht/link-list-css": "2.3.0",
     "@utrecht/nav-bar-react": "1.0.3",
     "@utrecht/page-body-react": "1.0.3",
     "@utrecht/page-footer-react": "1.0.3",
