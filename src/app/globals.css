@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.utrecht-textbox {
+  --utrecht-form-control-placeholder-font-style: italic;
+}
+
 /* fonts */
 .empty-box {
   width: 100px;
@@ -145,6 +149,7 @@
 .utrecht-link {
   --utrecht-link-color: currentColor;
   --utrecht-link-hover-color: black;
+  --utrecht-link-text-decoration-color: currentColor;
 }
 
 /* colors */
@@ -243,12 +248,22 @@
 }
 
 .dashed-focus:focus-visible {
-  --_utrecht-focus-ring-box-shadow: 0 0 0 var(--utrecht-focus-outline-width, 0) var(--utrecht-focus-inverse-outline-color, transparent);
+  --_utrecht-focus-ring-box-shadow: 0 0 0 var(--utrecht-focus-outline-width, 0)
+    var(--utrecht-focus-inverse-outline-color, transparent);
   box-shadow: var(--_utrecht-focus-ring-box-shadow);
   outline-color: var(--utrecht-focus-outline-color, revert);
   outline-offset: var(--utrecht-focus-outline-offset, revert);
   outline-style: var(--utrecht-focus-outline-style, revert);
   outline-width: var(--utrecht-focus-outline-width, revert);
+  z-index: 1;
+  --_utrecht-link-state-text-decoration: var(
+    --utrecht-link-focus-visible-text-decoration,
+    var(--utrecht-link-focus-text-decoration)
+  );
+  --_utrecht-link-state-text-decoration-thickness: var(
+    --utrecht-link-focus-visible-text-decoration-thickness,
+    var(--utrecht-link-focus-text-decoration-thickness)
+  );
 }
 
 .maplibregl-canvas-container:focus-visible, .maplibregl-canvas-container > canvas.maplibregl-canvas:focus-visible {
