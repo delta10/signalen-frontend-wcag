@@ -119,10 +119,15 @@
     },
     "button": {
       "upload_file": "Upload file",
-      "delete_file": "Delete file: {file}"
+      "upload_extra_file": "Upload another file",
+      "delete_file": "Delete file: {file}",
+      "close": "Close",
+      "close_alert": "Close dialog message"
     },
     "file": {
-      "preview": "Preview image of file: {file}"
+      "preview": "Preview image of file: {file}",
+      "upload_successful": "The following images are successfully selected",
+      "delete_successful": "The following image is removed from selected images"
     },
     "loading": "Loading..."
   },

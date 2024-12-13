@@ -1,7 +1,7 @@
 'use client'
 
 import * as z from 'zod'
-import { useForm } from 'react-hook-form'
+import { FormProvider, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
 import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentFormFooter'
@@ -14,16 +14,15 @@ import {
   ACCEPTED_IMAGE_TYPES,
   FileUpload,
   MAX_FILE_SIZE,
-  MAX_NUMBER_FILES,
   MIN_FILE_SIZE,
 } from '@/components/ui/upload/FileUpload'
 
-import { FormFieldTextarea } from '@/components/index'
 import {
   Fieldset,
   FieldsetLegend,
   FormFieldDescription,
   FormFieldErrorMessage,
+  FormFieldTextarea,
 } from '@/components/index'
 import { getCurrentStep, getNextStepPath } from '@/lib/utils/stepper'
 import { getAttachments } from '@/lib/utils/attachments'
@@ -66,7 +65,7 @@ export const IncidentDescriptionForm = () => {
       files: getAttachments(formState.attachments),
     },
   })
-  const { register, setFocus } = form
+  const { register } = form
 
   const { description } = form.watch()
 
@@ -108,62 +107,44 @@ export const IncidentDescriptionForm = () => {
     }
   }
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files
-    if (files && files.length > 0) {
-      const filesArray = form
-        .getValues('files')
-        .concat(Array.from(files))
-        .slice(0, MAX_NUMBER_FILES)
-      form.setValue('files', filesArray)
-    }
-  }
-
-  const deleteFile = (index: number) => {
-    const updatedFiles = form.getValues('files').filter((_, i) => i !== index)
-    form.setValue('files', updatedFiles)
-  }
-
+  // @ts-ignore
   return (
-    <form
-      onSubmit={form.handleSubmit(onSubmit)}
-      className="flex flex-col gap-8 items-start"
-    >
-      <FormFieldTextarea
-        rows={5}
-        description={t('describe_textarea_description')}
-        label={`${t('describe_textarea_heading')} (${tGeneral('form.required_short')})`}
-        errorMessage={form.formState.errors.description?.message}
-        invalid={Boolean(form.formState.errors.description?.message)}
-        required={true}
-        {...form.register('description')}
-      />
-
-      <Fieldset invalid={Boolean(form.formState.errors.files?.message)}>
-        <FieldsetLegend>
-          {`${t('describe_textarea_heading')} (${tGeneral('form.not_required_short')})`}
-          <FormFieldDescription>
-            {t('describe_upload_description')}
-          </FormFieldDescription>
-
-          {Boolean(form.formState.errors.files?.message) &&
-            form.formState.errors.files?.message && (
-              <FormFieldErrorMessage>
-                {form.formState.errors.files?.message}
-              </FormFieldErrorMessage>
-            )}
-        </FieldsetLegend>
-
-        {/* @ts-ignore */}
-        <FileUpload
-          onFileUpload={(e) => handleFileChange(e)}
-          onDelete={(index) => deleteFile(index)}
-          files={form.getValues('files')}
-          {...register('files', { required: false })}
+    <FormProvider {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex flex-col gap-8 items-start"
+      >
+        <FormFieldTextarea
+          rows={5}
+          description={t('describe_textarea_description')}
+          label={`${t('describe_textarea_heading')} (${tGeneral('form.required_short')})`}
+          errorMessage={form.formState.errors.description?.message}
+          invalid={Boolean(form.formState.errors.description?.message)}
+          required={true}
+          {...form.register('description')}
         />
-      </Fieldset>
 
-      <IncidentFormFooter />
-    </form>
+        <Fieldset invalid={Boolean(form.formState.errors.files?.message)}>
+          <FieldsetLegend>
+            {`${t('describe_textarea_heading')} (${tGeneral('form.not_required_short')})`}
+            <FormFieldDescription>
+              {t('describe_upload_description')}
+            </FormFieldDescription>
+
+            {Boolean(form.formState.errors.files?.message) &&
+              form.formState.errors.files?.message && (
+                <FormFieldErrorMessage>
+                  {form.formState.errors.files?.message}
+                </FormFieldErrorMessage>
+              )}
+          </FieldsetLegend>
+
+          {/* @ts-ignore */}
+          <FileUpload {...register('files', { required: false })} />
+        </Fieldset>
+
+        <IncidentFormFooter />
+      </form>
+    </FormProvider>
   )
 }
