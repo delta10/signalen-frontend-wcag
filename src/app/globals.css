@@ -82,7 +82,6 @@
   left: 1em;
   top: 1em;
   display: flex;
-  flex-direction: column;
   gap: 8px;
 }
 
@@ -211,4 +210,8 @@
 
 .summary-grid__link {
   grid-area: summary-link;
+}
+
+.maplibregl-canvas-container > canvas.maplibregl-canvas:focus-visible {
+
 }

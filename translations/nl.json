@@ -50,7 +50,8 @@
       "choose_address_description": "Zoek op adres",
       "use_map_description": "Of selecteer een punt op de kaart",
       "choose_location": "Kies locatie",
-      "edit_location": "Wijzig locatie"
+      "edit_location": "Wijzig locatie",
+      "explainer_label": "Extra uitleg toch"
     },
     "address": {
       "no_results": "Er zijn geen adressen gevonden, controleer uw spelling of probeer een minder specifieke zoekopdracht."

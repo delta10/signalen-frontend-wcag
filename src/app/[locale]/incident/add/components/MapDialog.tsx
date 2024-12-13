@@ -1,6 +1,16 @@
 import * as Dialog from '@radix-ui/react-dialog'
-import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { uniqBy } from 'lodash'
+import React, {
+  ForwardedRef,
+  forwardRef,
+  PropsWithChildren,
+  ReactNode,
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
+import { debounce, uniqBy } from 'lodash'
 import Map, {
   MapLayerMouseEvent,
   MapRef,
@@ -49,6 +59,7 @@ import {
   getFirstFeatureOrCurrentAddress,
   getNewSelectedAddress,
 } from '@/lib/utils/address'
+import MapExplainerAccordion from './questions/MapExplainerAccordion'
 
 type MapDialogProps = {
   trigger: React.ReactElement
@@ -327,6 +338,47 @@ const MapDialog = ({
     ? `${process.env.NEXT_PUBLIC_MAPTILER_MAP_DARK_MODE}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`
     : `${process.env.NEXT_PUBLIC_MAPTILER_MAP}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`
 
+  const keyDownHandler = async (event: any) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      console.log('keydown')
+      const coordinates = dialogMap?.getCenter()
+      if (coordinates) {
+        updatePosition(coordinates.lat, coordinates.lng)
+        setIsMapSelected(true)
+        const address = await getNewSelectedAddress(
+          coordinates.lat,
+          coordinates.lng,
+          config
+        )
+
+        console.log('in handle', address)
+
+        updateForm({
+          ...formState,
+          address: address,
+        })
+      }
+    }
+  }
+
+  useEffect(() => {
+    const element = document.getElementsByClassName('maplibregl-canvas')
+    const canvas = element[1]
+    const debouncedHandler = debounce(keyDownHandler, 500)
+
+    // Create a reference to the wrapped handler function
+    const eventHandler = (e: KeyboardEvent) => debouncedHandler(e)
+
+    // @ts-ignore
+    canvas?.addEventListener('keydown', eventHandler)
+
+    // Cleanup using the same function reference
+    return () => {
+      // @ts-ignore
+      canvas?.removeEventListener('keydown', eventHandler)
+    }
+  }, [dialogMap, onMapReady])
+
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
@@ -373,6 +425,7 @@ const MapDialog = ({
                 updatePosition={updatePosition}
                 setIsMapSelected={setIsMapSelected}
               />
+              <MapExplainerAccordion />
               <div className="block md:hidden">
                 <Alert>
                   <div className="flex flex-row items-center">

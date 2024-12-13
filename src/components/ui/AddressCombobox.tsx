@@ -72,6 +72,13 @@ export const AddressCombobox = ({
     getAddressOptions()
   }, [query])
 
+  const [address, setAddress] = useState<Address | null>(null)
+
+  useEffect(() => {
+    setAddress(formState.address)
+    console.log('in combo', address)
+  }, [formState.address])
+
   const onChangeAddress = (selectedAddress: Address) => {
     if (!selectedAddress) {
       return
