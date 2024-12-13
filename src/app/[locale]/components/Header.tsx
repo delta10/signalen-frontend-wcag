@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { useConfig } from '@/hooks/useConfig'
 import { useDarkMode } from '@/hooks/useDarkMode'
 import { useTranslations } from 'next-intl'
+import { NextSvgImage } from '@/components/ui/NextSvgImage'
 
 const Header = () => {
   const { config } = useConfig()
@@ -26,13 +27,7 @@ const Header = () => {
 
   const logoElement = (
     <Logo caption={config ? config.base.header.logo.caption : ''}>
-      <Image
-        src={`/assets/${logo}`}
-        alt={logoAltText}
-        width={275}
-        height={150}
-        priority={true}
-      />
+      <NextSvgImage src={`/assets/${logo}`} alt={logoAltText} priority={true} />
     </Logo>
   )
 
