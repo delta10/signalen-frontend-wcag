@@ -50,8 +50,35 @@
       "choose_address_description": "Zoek op adres",
       "use_map_description": "Of selecteer een punt op de kaart",
       "choose_location": "Kies locatie",
-      "edit_location": "Wijzig locatie",
-      "explainer_label": "Extra uitleg toch"
+      "edit_location": "Wijzig locatie"
+    },
+    "explainer": {
+      "label": "Hoe gebruik ik de kaart?",
+      "explainer_title": "De kaart gebruiken",
+      "choose_location": "Een locatie kiezen",
+      "location_explanation": "U kunt op drie manieren een locatie kiezen:",
+      "type_address": "Type een adres in het zoekveld bovenaan",
+      "my_location": "Gebruik de \"Mijn locatie\" knop om uw huidige locatie te selecteren",
+      "click_map": "Klik direct op een punt op de kaart",
+      "navigation": "Navigeren op de kaart",
+      "navigation_explanation": "De kaart kunt u op verschillende manieren bedienen:",
+      "move": "Sleep met de muis om de kaart te verschuiven",
+      "zoom": "Gebruik het scrollwiel van uw muis om in en uit te zoomen",
+      "buttons": "Gebruik de + en - knoppen op de kaart om stapsgewijs in en uit te zoomen",
+      "object_selection": "Objecten selecteren",
+      "selection_explanation": "Wanneer er objecten op de kaart worden getoond:",
+      "max_number": "U kunt maximaal 5 objecten selecteren",
+      "select_map": "Selecteren kan door op het object op de kaart te klikken",
+      "select_list": "Of door het object in de lijst onder de kaart aan te klikken",
+      "keyboard_controls": "Toetsenbord gebruiken",
+      "keyboard_explanation": "Voor mensen die een toetsenbord gebruiken:",
+      "focus_map": "Zorg er eerst voor dat de kaart in focus is",
+      "to_continue": "Vervolgens kunt u:",
+      "arrow_keys": "De pijltjestoetsen gebruiken om de kaart te verschuiven",
+      "zoom_buttons": "+ en - toetsen gebruiken om in en uit te zoomen",
+      "keyboard_object_selection": "Spatie of enter drukken om het punt in het midden van de kaart te selecteren",
+      "tab_navigation_buttons": "Tab gebruiken om tussen de knoppen op de kaart te navigeren (zoals zoom en \"Mijn locatie\")",
+      "tab_navigation_objects": "Als er objecten beschikbaar zijn, met tab er doorheen bladeren en door middel van spatie selecteren"
     },
     "address": {
       "no_results": "Er zijn geen adressen gevonden, controleer uw spelling of probeer een minder specifieke zoekopdracht."

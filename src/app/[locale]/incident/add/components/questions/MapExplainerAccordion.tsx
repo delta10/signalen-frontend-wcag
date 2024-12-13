@@ -11,68 +11,94 @@ import { RenderMarkdown } from '@/components/ui/RenderMarkdown'
 import Markdown from 'react-markdown'
 
 const MapExplainerAccordion = () => {
-  const t = useTranslations('describe_add.map')
+  const t = useTranslations('describe_add.explainer')
   const accordionRef = useRef<HTMLDivElement>(null)
   const [openAcc, setOpenAcc] = useState<boolean>(false)
 
-  // todo kleuren
-  const teksttemp =
-    '# De kaart gebruiken\n' +
-    '\n' +
-    '## Een locatie kiezen\n' +
-    'U kunt op drie manieren een locatie kiezen:\n' +
-    '1. Type een adres in het zoekveld bovenaan\n' +
-    '2. Gebruik de "Mijn locatie" knop om uw huidige locatie te selecteren\n' +
-    '3. Klik direct op een punt op de kaart\n' +
-    '\n' +
-    '## Navigeren op de kaart\n' +
-    'De kaart kunt u op verschillende manieren bedienen:\n' +
-    '- Sleep met de muis om de kaart te verschuiven\n' +
-    '- Gebruik het scrollwiel van uw muis om in en uit te zoomen\n' +
-    '- Gebruik de + en - knoppen op de kaart om stapsgewijs in en uit te zoomen\n' +
-    '\n' +
-    '## Objecten selecteren\n' +
-    'Wanneer er objecten op de kaart worden getoond:\n' +
-    '- U kunt maximaal 5 objecten selecteren\n' +
-    '- Selecteren kan door op het object op de kaart te klikken\n' +
-    '- Of door het object in de lijst onder de kaart aan te klikken\n' +
-    '\n' +
-    '## Toetsenbord gebruiken\n' +
-    'Voor mensen die liever het toetsenbord gebruiken:\n' +
-    '- Klik eerst op de kaart zodat deze de focus heeft\n' +
-    '- Vervolgens kunt u:\n' +
-    '  - De pijltjestoetsen gebruiken om de kaart te verschuiven\n' +
-    '  - + en - toetsen gebruiken om in en uit te zoomen\n' +
-    '  - Spatie of enter drukken om het punt in het midden van de kaart te selecteren\n' +
-    '  - Tab gebruiken om tussen de knoppen op de kaart te navigeren (zoals zoom en "Mijn locatie")\n' +
-    '  - Als er objecten geselecteerd zijn, met tab er doorheen bladeren'
-
+  // todo: later kijken hoe dit dynamischer kan.
+  const explainerDictionaryNames = {
+    title: 'explainer_title',
+    sections: [
+      {
+        name: 'choose_location',
+        explanation: 'location_explanation',
+        bullet_list: ['type_address', 'my_location', 'click_map'],
+      },
+      {
+        name: 'navigation',
+        explanation: 'navigation_explanation',
+        bullet_list: ['move', 'zoom', 'buttons'],
+      },
+      {
+        name: 'object_selection',
+        explanation: 'selection_explanation',
+        bullet_list: ['max_number', 'select_map', 'select_list'],
+      },
+      {
+        name: 'keyboard_controls',
+        explanation: 'keyboard_explanation',
+        additional_steps: ['focus_map', 'to_continue'],
+        bullet_list: [
+          'arrow_keys',
+          'zoom_buttons',
+          'keyboard_object_selection',
+          'tab_navigation_buttons',
+          'tab_navigation_objects',
+        ],
+      },
+    ],
+  }
   return (
-    <Accordion ref={accordionRef}>
+    <Accordion ref={accordionRef} className="purmerend-theme">
       <AccordionSection
-        label={t('explainer_label')}
+        label={t('label')}
         expanded={openAcc} // Default collapsed
         onActivate={() => setOpenAcc(!openAcc)}
-        body={teksttemp}
+        body={null}
       >
-        {/*<RenderMarkdown text={teksttemp}></RenderMarkdown>*/}
-        <Heading level={2}>De kaart gebruiken</Heading>
-        <Heading level={4} className="pt-2">
-          Een locatie kiezen
-        </Heading>
-        <Paragraph className="contact-paragraph">
-          U kunt op drie manieren een locatie kiezen:
-        </Paragraph>
-        <UnorderedList>
-          <UnorderedListItem>Type een adres in het</UnorderedListItem>
-          <UnorderedListItem>
-            Gebruik de &#34;Mijn locatie&#34; knop om uw huidige locatie te
-            selecteren
-          </UnorderedListItem>
-          <UnorderedListItem>
-            Klik direct op een punt op de kaart
-          </UnorderedListItem>
-        </UnorderedList>
+        <Heading level={3}>{t(explainerDictionaryNames.title)}</Heading>
+
+        {explainerDictionaryNames.sections.map((section, index) => (
+          <div key={index}>
+            <Heading level={5} className="pt-2">
+              {t(section.name)}
+            </Heading>
+            <Paragraph className="contact-paragraph">
+              {t(section.explanation)}
+            </Paragraph>
+            {section.additional_steps &&
+              section.additional_steps.length > 0 && (
+                <UnorderedList className="purmerend-theme">
+                  {section.additional_steps?.map((bullet, index) => (
+                    <UnorderedListItem key={index} className="subtle-list-item">
+                      {t(bullet)}
+                    </UnorderedListItem>
+                  ))}
+                  {section.bullet_list.length > 0 && (
+                    <UnorderedList className="purmerend-theme">
+                      {section.bullet_list.map((bullet, index) => (
+                        <UnorderedListItem
+                          key={index}
+                          className="subtle-list-item"
+                        >
+                          {t(bullet)}
+                        </UnorderedListItem>
+                      ))}
+                    </UnorderedList>
+                  )}
+                </UnorderedList>
+              )}
+            {!section.additional_steps && section.bullet_list.length > 0 && (
+              <UnorderedList className="purmerend-theme">
+                {section.bullet_list.map((bullet, index) => (
+                  <UnorderedListItem key={index} className="subtle-list-item">
+                    {t(bullet)}
+                  </UnorderedListItem>
+                ))}
+              </UnorderedList>
+            )}
+          </div>
+        ))}
       </AccordionSection>
     </Accordion>
   )

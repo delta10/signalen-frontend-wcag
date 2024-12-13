@@ -418,11 +418,12 @@ const MapDialog = ({
                   ? field.meta.language.title
                   : t('map_heading')}
               </Heading>
+              <MapExplainerAccordion />
+
               <AddressCombobox
                 updatePosition={updatePosition}
                 setIsMapSelected={setIsMapSelected}
               />
-              <MapExplainerAccordion />
               <div className="block md:hidden">
                 <Alert>
                   <div className="flex flex-row items-center">
