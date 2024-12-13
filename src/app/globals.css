@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.utrecht-textbox {
+  --utrecht-form-control-placeholder-font-style: italic;
+}
+
 /* fonts */
 .empty-box {
   width: 100px;
