@@ -376,6 +376,9 @@ const MapDialog = ({
     }
   }, [dialogMap, onMapReady])
 
+  const assetSelectFeatureLabel =
+    isAssetSelect && field ? field.meta.language.title || field.meta.label : ''
+
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
@@ -421,7 +424,7 @@ const MapDialog = ({
               <MapExplainerAccordion />
 
               <div className="flex flex-col">
-                <label htmlFor="address">Adres</label>
+                <label htmlFor="address">{t('search_address_label')}</label>
                 <AddressCombobox
                   updatePosition={updatePosition}
                   setIsMapSelected={setIsMapSelected}
@@ -450,46 +453,53 @@ const MapDialog = ({
                   </div>
                 </Alert>
               </div>
-              {isAssetSelect &&
-                dialogMap &&
-                config &&
-                dialogMap.getZoom() < config.base.map.minimal_zoom && (
-                  <Alert type="error">
-                    <Paragraph>{t('zoom_for_object')}</Paragraph>
-                  </Alert>
-                )}
-              {field && dialogMap && config && (
-                <ul className="flex-1 overflow-y-auto">
-                  {featureList.map((feature: any) => (
-                    <FeatureListItem
-                      configUrl={config?.base.assets_url}
-                      feature={feature}
-                      key={feature.id}
-                      field={field}
-                      setError={setError}
-                      dialogRef={dialogRef}
-                      setFocusedItemId={setFocusedItemId}
-                    />
-                  ))}
-                </ul>
-              )}
+              {isAssetSelect && dialogMap && config && field ? (
+                <div className="flex flex-col overflow-scroll md:overflow-hidden gap-2">
+                  {dialogMap.getZoom() < config.base.map.minimal_zoom && (
+                    <Alert type="error">
+                      <Paragraph>{t('zoom_for_object')}</Paragraph>
+                    </Alert>
+                  )}
+                  {featureList.length > 0 && (
+                    <Heading level={3} className="pb-3">
+                      {assetSelectFeatureLabel}
+                    </Heading>
+                  )}
+                  {featureList.length > 0 && (
+                    <ul
+                      className="flex-1 overflow-y-auto mb-4"
+                      aria-labelledby="object-list-label"
+                    >
+                      {featureList.map((feature: any) => (
+                        <FeatureListItem
+                          configUrl={config?.base.assets_url}
+                          feature={feature}
+                          key={feature.id}
+                          field={field}
+                          setError={setError}
+                          dialogRef={dialogRef}
+                          setFocusedItemId={setFocusedItemId}
+                        />
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              ) : null}
             </div>
-            <div>
-              <Dialog.Close asChild onClick={() => closeMapDialog()}>
-                <Button appearance="primary-action-button">
-                  {isAssetSelect
-                    ? formState.selectedFeatures.length === 0
-                      ? t('go_further_without_selected_object')
-                      : formState.selectedFeatures.length === 1
-                        ? field?.meta.language.submit ||
-                          t('go_further_without_selected_object')
-                        : field?.meta.language.submitPlural ||
-                          field?.meta.language.submit ||
-                          t('go_further_without_selected_object')
-                    : t('choose_this_location')}
-                </Button>
-              </Dialog.Close>
-            </div>
+            <Dialog.Close asChild onClick={() => closeMapDialog()}>
+              <Button appearance="primary-action-button">
+                {isAssetSelect
+                  ? formState.selectedFeatures.length === 0
+                    ? t('go_further_without_selected_object')
+                    : formState.selectedFeatures.length === 1
+                      ? field?.meta.language.submit ||
+                        t('go_further_without_selected_object')
+                      : field?.meta.language.submitPlural ||
+                        field?.meta.language.submit ||
+                        t('go_further_without_selected_object')
+                  : t('choose_this_location')}
+              </Button>
+            </Dialog.Close>
           </div>
           {config && (
             <div
@@ -570,7 +580,7 @@ const MapDialog = ({
 
               <Dialog.Close asChild>
                 <IconButton
-                  className="map-close-button"
+                  className="map-button map-close-button"
                   label={t('map_close_button_label')}
                 >
                   <IconX />
@@ -579,14 +589,14 @@ const MapDialog = ({
 
               <ButtonGroup direction="column" className="map-zoom-button-group">
                 <IconButton
-                  className="map-zoom-button"
+                  className="map-button map-zoom-button"
                   onClick={() => dialogMap?.flyTo({ zoom: viewState.zoom + 1 })}
                   label={t('map_zoom-in_button_label')}
                 >
                   <IconPlus />
                 </IconButton>
                 <IconButton
-                  className="map-zoom-button"
+                  className="map-button map-zoom-button"
                   onClick={() => dialogMap?.flyTo({ zoom: viewState.zoom - 1 })}
                   label={t('map_zoom-out_button_label')}
                 >

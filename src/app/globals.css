@@ -89,6 +89,10 @@
   padding: 12px 16px !important;
 }
 
+.map-button {
+  padding: 16px !important;
+}
+
 .map-close-button {
   position: absolute;
   right: 1em;
