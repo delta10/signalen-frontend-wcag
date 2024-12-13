@@ -32,7 +32,12 @@ const MapExplainerAccordion = () => {
       {
         name: 'object_selection',
         explanation: 'selection_explanation',
-        bullet_list: ['max_number', 'select_map', 'select_list'],
+        bullet_list: [
+          'zoom_for_objects',
+          'max_number',
+          'select_map',
+          'select_list',
+        ],
       },
       {
         name: 'keyboard_controls',
