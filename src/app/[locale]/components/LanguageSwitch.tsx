@@ -19,9 +19,9 @@ const LanguageSwitch = () => {
 
   return (
     <div className="pr-4">
-      <ButtonGroup>
+      <ButtonGroup className="flex flex-col md:flex-row !gap-0 md:!gap-4">
         {config &&
-          config.base.supportedLanguages.map(({ label, lang }) => (
+          config.base.supportedLanguages.map(({ label, lang, name }) => (
             <LinkButton
               inline
               pressed={lang === locale}
@@ -31,7 +31,7 @@ const LanguageSwitch = () => {
               disabled={isPending || lang === locale}
               onClick={() => onLanguageChange(lang)}
             >
-              {lang.toUpperCase()}
+              {name}
             </LinkButton>
           ))}
       </ButtonGroup>

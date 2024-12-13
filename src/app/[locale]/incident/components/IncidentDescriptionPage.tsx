@@ -3,7 +3,7 @@
 import { useTranslations } from 'next-intl'
 import { useFormStore } from '@/store/form_store'
 import { Heading, HeadingGroup, PreHeading } from '@/components'
-import { Alert } from '@/components'
+import { SpotlightSection } from '@/components'
 import { IncidentDescriptionForm } from '@/app/[locale]/incident/components/IncidentDescriptionForm'
 import FormProgress from '@/app/[locale]/components/FormProgress'
 import { useConfig } from '@/hooks/useConfig'
@@ -34,9 +34,9 @@ export const IncidentDescriptionPage = () => {
             </HeadingGroup>
           </FormProgress>
           {config ? (
-            <Alert>
+            <SpotlightSection type="info">
               <RenderMarkdown text={t('alert.help_text')} />
-            </Alert>
+            </SpotlightSection>
           ) : null}
           <IncidentDescriptionForm />
         </div>

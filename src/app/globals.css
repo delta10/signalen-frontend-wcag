@@ -42,10 +42,7 @@
   border: 1px solid var(--basis-document-subtle-color);
 }
 
-/* TODO: zonder important doen deze rules niks */
 .iconbutton-preview-delete {
-  /* bg-gray-900 bg-opacity-50 */
-  /* TODO: bg color token toevoegen aan purmerend theme voor icon button trash? of? */
   background: rgba(0, 0, 0, 0.7) !important;
   border: none !important;
   border-radius: 0% !important;
@@ -59,7 +56,6 @@
 }
 
 .iconbutton-preview-delete:hover {
-  /* TODO: bg color grey-29 opacity on hover = 80% opacity in purmerend tokens */
   background-color: rgba(0, 0, 0, 0.5) !important;
   transition-duration: 200 !important;
   transition-delay: 100 !important;
@@ -71,15 +67,6 @@
     .utrecht-button--disabled
   ) {
   border: none;
-}
-
-/*todo: niet best practice met !important maar weet even niet hoe ik anders makkelijk de default styling moet overschrijven*/
-.pl-0-overwrite {
-  padding-left: 0 !important;
-}
-
-.pr-0-overwrite {
-  padding-right: 0 !important;
 }
 
 /* stepper */
@@ -114,7 +101,9 @@
   position: absolute;
   right: 1em;
   bottom: 1em;
-  gap: 0 !important;
+  gap: 0.5rem !important;
+  display: flex;
+  flex-direction: column;
 }
 
 .map-alert-dialog__content {
@@ -130,12 +119,29 @@
   gap: 8px;
 }
 
+.utrecht-alert {
+  --utrecht-paragraph-color: currentColor;
+}
+
 .map-marker-icon {
   --utrecht-icon-size: var(--utrecht-map-marker-size, 42px);
   --utrecht-icon-color: var(
     --utrecht-map-marker-background-color,
     currentColor
   );
+}
+
+.focused-map-marker {
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  background-color: red;
+}
+
+/* link */
+.utrecht-link {
+  --utrecht-link-color: currentColor;
+  --utrecht-link-hover-color: black;
 }
 
 /* colors */
@@ -166,8 +172,8 @@
 }
 
 .purmerend-theme {
-    --utrecht-listbox-background-color: white;
-    --utrecht-listbox-color: black;
+  --utrecht-listbox-background-color: white;
+  --utrecht-listbox-color: black;
 }
 
 /* contact page */
@@ -179,8 +185,8 @@
 .summary-grid {
   display: grid;
   grid-template-areas:
-    "summary-heading summary-link"
-    "summary-body summary-body";
+    'summary-heading summary-link'
+    'summary-body summary-body';
   grid-template-columns: 1fr auto;
   gap: 1rem;
 }
@@ -189,9 +195,9 @@
 @media only screen and (max-width: 640px) {
   .summary-grid {
     grid-template-areas:
-    "summary-heading summary-heading"
-    "summary-body summary-body"
-    "summary-link summary-link"
+      'summary-heading summary-heading'
+      'summary-body summary-body'
+      'summary-link summary-link';
   }
 }
 

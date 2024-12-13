@@ -157,12 +157,15 @@ const IncidentSummaryForm = () => {
             title={tStepAdd('form.add_map_heading')}
             value={formState.address?.weergave_naam}
           >
-            <div style={{ minHeight: 200, height: 200 }}>
+            <div
+              style={{ minHeight: 200, height: 200 }}
+              role="img"
+              aria-label=""
+            >
               <LocationMap />
             </div>
           </IncidentSummaryFormItem>
 
-          {/* TODO: AssetSelect en LocationSelect hier tonen, indien een / beide zijn ingevuld */}
           {formState.extra_properties.map((answer) => {
             return (
               <IncidentSummaryFormItem
