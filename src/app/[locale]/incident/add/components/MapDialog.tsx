@@ -423,7 +423,7 @@ const MapDialog = ({
               </Heading>
               <MapExplainerAccordion />
 
-              <div className="flex flex-col">
+              <div className="flex flex-col py-2">
                 <label htmlFor="address">{t('search_address_label')}</label>
                 <AddressCombobox
                   updatePosition={updatePosition}
@@ -454,20 +454,18 @@ const MapDialog = ({
                 </Alert>
               </div>
               {isAssetSelect && dialogMap && config && field ? (
-                <div className="flex flex-col overflow-scroll md:overflow-hidden gap-2">
+                <div className="flex flex-col overflow-scroll md:overflow-hidden gap-4 pt-2">
                   {dialogMap.getZoom() < config.base.map.minimal_zoom && (
                     <Alert type="error">
                       <Paragraph>{t('zoom_for_object')}</Paragraph>
                     </Alert>
                   )}
                   {featureList.length > 0 && (
-                    <Heading level={3} className="pb-3">
-                      {assetSelectFeatureLabel}
-                    </Heading>
+                    <Heading level={3}>{assetSelectFeatureLabel}</Heading>
                   )}
                   {featureList.length > 0 && (
                     <ul
-                      className="flex-1 overflow-y-auto mb-4"
+                      className="flex-1 overflow-y-auto mb-2"
                       aria-labelledby="object-list-label"
                     >
                       {featureList.map((feature: any) => (
