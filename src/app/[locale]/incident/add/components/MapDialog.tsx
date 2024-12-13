@@ -332,7 +332,7 @@ const MapDialog = ({
       <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay />
-        <Dialog.Content className="fixed inset-0 z-[1000] grid md:grid-cols-3 purmerend-theme background-white overflow-scroll">
+        <Dialog.Content className="grid md:grid-cols-3 overflow-scroll signalen-modal-dialog signalen-modal-dialog--cover-viewport">
           <VisuallyHidden.Root>
             <Dialog.Title>
               {field?.meta.language.title
