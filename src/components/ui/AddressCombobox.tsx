@@ -7,14 +7,13 @@ import {
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useConfig } from '@/hooks/useConfig'
 import { getSuggestedAddresses } from '@/services/location/address'
-
+import { StatusText } from '@/components/index'
 // Import the Select Combobox component for the side-effects of injecting CSS
 // for related components, such as Textbox and Listbox.
 import '@utrecht/select-combobox-react/dist/css'
 import { useFormStore } from '@/store/form_store'
 import { Address } from '@/types/form'
 import { useTranslations } from 'next-intl'
-import { any } from 'zod'
 
 type AddressComboboxProps = {
   updatePosition?: (lat: number, lng: number, flyTo?: boolean) => void
@@ -136,8 +135,8 @@ export const AddressCombobox = ({
               </ComboboxOption>
             ))
           ) : (
-            <ComboboxOption value={any} className="p-3">
-              <span>{t('no_results')}</span>
+            <ComboboxOption value="" className="p-3 utrecht-listbox--disabled">
+              <StatusText>{t('no_results')}</StatusText>
             </ComboboxOption>
           )}
         </div>
