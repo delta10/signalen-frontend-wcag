@@ -14,6 +14,7 @@ import '@utrecht/select-combobox-react/dist/css'
 import { useFormStore } from '@/store/form_store'
 import { Address } from '@/types/form'
 import { useTranslations } from 'next-intl'
+import { any } from 'zod'
 
 type AddressComboboxProps = {
   updatePosition?: (lat: number, lng: number, flyTo?: boolean) => void
@@ -135,9 +136,9 @@ export const AddressCombobox = ({
               </ComboboxOption>
             ))
           ) : (
-            <span className="utrecht-listbox__option data-[focus]:bg-blue-100">
-              {t('no_results')}
-            </span>
+            <ComboboxOption value={any} className="p-3">
+              <span>{t('no_results')}</span>
+            </ComboboxOption>
           )}
         </div>
       </ComboboxOptions>
