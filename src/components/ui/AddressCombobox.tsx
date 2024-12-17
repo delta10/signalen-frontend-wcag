@@ -107,12 +107,14 @@ export const AddressCombobox = ({
 
   return (
     <Combobox
+      key={formState.address?.id || 'default_key'}
       value={formState.address}
-      onChange={onChangeAddress}
+      onChange={(newAddress: Address) => onChangeAddress(newAddress)}
       onClose={() => setQuery('')}
     >
       <ComboboxInput
         aria-label="Adres"
+        name="address"
         displayValue={(address: any) => address?.weergave_naam}
         onChange={(event) => setQuery(event.target.value)}
         className={'utrecht-textbox utrecht-textbox--html-input'}
