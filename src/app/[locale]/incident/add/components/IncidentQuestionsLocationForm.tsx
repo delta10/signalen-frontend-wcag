@@ -23,6 +23,20 @@ export const IncidentQuestionsLocationForm = () => {
     resolver: (values) => {
       const errors: Record<string, any> = {}
 
+      // Required fields validation
+      Object.keys(values).forEach((key) => {
+        const question = additionalQuestions.find(
+          (question) => question.key === key
+        )
+
+        if (!values[key] && question?.required) {
+          errors[key] = {
+            type: 'required',
+            message: t('required'),
+          }
+        }
+      })
+
       // Location validation
       if (
         !isCoordinates(formStoreState.coordinates) ||

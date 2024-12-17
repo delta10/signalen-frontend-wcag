@@ -3,7 +3,7 @@ import { useTranslations } from 'next-intl'
 import { QuestionField } from '@/types/form'
 import { getValidators } from '@/lib/utils/form-validator'
 import { useFormContext } from 'react-hook-form'
-import { RadioGroup } from '@/components/index'
+import { RadioGroupNLDS } from '@/components/ui/RadioGroupNLDS'
 
 interface RadioGroupProps extends QuestionField {}
 
@@ -18,7 +18,7 @@ export const RadioInput = ({ field }: RadioGroupProps) => {
   const errorMessage = errors[field.key]?.message as string
 
   return (
-    <RadioGroup
+    <RadioGroupNLDS
       label={`${field.meta.label} ${field.required ? `(${tForm('required_short')})` : `(${tForm('not_required_short')})`}`}
       required={field.required}
       id={`${field.key}`}
@@ -36,6 +36,6 @@ export const RadioInput = ({ field }: RadioGroupProps) => {
       invalid={Boolean(errorMessage)}
       errorMessage={errorMessage}
       description={field.meta.subtitle}
-    ></RadioGroup>
+    ></RadioGroupNLDS>
   )
 }
