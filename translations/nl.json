@@ -85,7 +85,7 @@
     "submit_alert": {
       "error": {
         "heading": "Versturen mislukt",
-        "description": "Wegens een technische fout kon de melding niet worden verzonden. We hebben uw gegevens niet ontvangen. Probeer het over een paar minuten opnieuw."
+        "description": "Wegens een technische fout kon de melding niet worden verzonden. We hebben uw gegevens niet ontvangen. Het is nu {time}. Probeer het over een paar minuten opnieuw."
       },
       "loading": {
         "heading": "Bezig met afhandelen",
