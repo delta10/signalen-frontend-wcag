@@ -57,6 +57,7 @@ const IncidentFormFooter = ({
           <Button
             appearance="primary-action-button"
             type="submit"
+            className="!flex !flex-row !items-center"
             disabled={formState.isBlocking}
           >
             {t('next_button')}
@@ -69,6 +70,7 @@ const IncidentFormFooter = ({
           <Button
             appearance="primary-action-button"
             type="submit"
+            className="!flex !flex-row !items-center"
             disabled={loading || !!errors?.submit}
             tabIndex={loading ? 0 : undefined}
             aria-describedby={ariaDescribedById}
