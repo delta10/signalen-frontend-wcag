@@ -60,6 +60,7 @@ import {
   getNewSelectedAddress,
 } from '@/lib/utils/address'
 import MapExplainerAccordion from './questions/MapExplainerAccordion'
+import { useWindowSize } from 'usehooks-ts'
 
 type MapDialogProps = {
   trigger: React.ReactElement
@@ -89,6 +90,7 @@ const MapDialog = ({
   const [mapFeatures, setMapFeatures] = useState<FeatureCollection | null>()
   const { setValue } = useFormContext()
   const { isDarkMode } = useDarkMode()
+  const { width = 0 } = useWindowSize()
 
   const [viewState, setViewState] = useState<ViewState>({
     latitude: 0,
@@ -511,7 +513,7 @@ const MapDialog = ({
                 onMove={(evt) => setViewState(evt.viewState)}
                 style={{ blockSize: '100%', inlineSize: '100%' }}
                 mapStyle={mapStyle}
-                scrollZoom={false}
+                scrollZoom={!(width !== 0 && width < 768)}
                 attributionControl={false}
                 maxBounds={
                   config.base.map.maxBounds as [
