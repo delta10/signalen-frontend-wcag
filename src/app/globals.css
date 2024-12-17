@@ -80,6 +80,29 @@
   text-decoration: underline;
 }
 
+/* modal dialog */
+:root {
+  --signalen-modal-dialog-background-color: var(
+    --utrecht-body-background-color
+  );
+  --signalen-modal-dialog-color: var(--utrecht-body-color);
+}
+
+.signalen-modal-dialog {
+  background-color: var(--signalen-modal-dialog-background-color, Canvas);
+  color: var(--signalen-modal-dialog-color, CanvasText);
+  z-index: var(--signalen-modal-z-index, 1);
+}
+
+.signalen-modal-dialog--cover-viewport {
+  position: fixed;
+  inset-inline-end: 0;
+  inset-inline-start: 0;
+  inset-block-end: 0;
+  inset-block-start: 0;
+  overflow-block: auto;
+}
+
 /* map */
 .map-location-group {
   position: absolute;
