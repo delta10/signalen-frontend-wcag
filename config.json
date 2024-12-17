@@ -5,11 +5,6 @@
     "assets_url": "https://meldingen.demo.meierijstad.delta10.cloud",
     "supportedLanguages": [
       {
-        "label": "Switch to English",
-        "lang": "en",
-        "name": "English"
-      },
-      {
         "label": "Schakel over naar het Nederlands",
         "lang": "nl",
         "name": "Nederlands"
