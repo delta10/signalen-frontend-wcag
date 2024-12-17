@@ -7,7 +7,7 @@ import {
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useConfig } from '@/hooks/useConfig'
 import { getSuggestedAddresses } from '@/services/location/address'
-
+import { StatusText } from '@/components/index'
 // Import the Select Combobox component for the side-effects of injecting CSS
 // for related components, such as Textbox and Listbox.
 import '@utrecht/select-combobox-react/dist/css'
@@ -135,9 +135,9 @@ export const AddressCombobox = ({
               </ComboboxOption>
             ))
           ) : (
-            <span className="utrecht-listbox__option data-[focus]:bg-blue-100">
-              {t('no_results')}
-            </span>
+            <ComboboxOption value="" className="p-3 utrecht-listbox--disabled">
+              <StatusText>{t('no_results')}</StatusText>
+            </ComboboxOption>
           )}
         </div>
       </ComboboxOptions>
