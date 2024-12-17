@@ -4,7 +4,7 @@ import { IconChevronRight } from '@tabler/icons-react'
 import { useEffect, useState } from 'react'
 import { useConfig } from '@/hooks/useConfig'
 import { useTranslations } from 'next-intl'
-import { Icon, Link, PageFooter } from '@/components'
+import { Icon, LinkList, PageFooter } from '@/components'
 
 type footerLink = {
   href: string
@@ -42,21 +42,17 @@ const Footer = () => {
 
   return (
     <PageFooter>
-      <ul>
-        {links.map((link) => (
-          <li key={link.label}>
-            <Link
-              href={link.href}
-              className="flex items-center !no-underline hover:!underline"
-            >
-              <Icon className="!w-6 !h-6">
-                <IconChevronRight />
-              </Icon>
-              {link.label}
-            </Link>
-          </li>
-        ))}
-      </ul>
+      <LinkList
+        links={links.map(({ href, label }) => ({
+          href,
+          children: label,
+          icon: (
+            <Icon>
+              <IconChevronRight />
+            </Icon>
+          ),
+        }))}
+      />
     </PageFooter>
   )
 }

@@ -63,6 +63,7 @@ export const NextLinkWrapper = forwardRef(
           role={role || (placeholder ? 'link' : undefined)}
           className={clsx(
             'utrecht-link',
+            'utrecht-link--html-a',
             {
               'utrecht-link--box-content': boxContent,
               'utrecht-link--external': external,
