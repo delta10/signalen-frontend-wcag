@@ -184,18 +184,18 @@
   --utrecht-listbox-color: black;
 }
 
-.purmerend-theme > .utrecht-accordion__section > .utrecht-accordion__header > button > span {
+.utrecht-accordion__section > .utrecht-accordion__header > button > span {
   color: var(--basis-color-primary-fill-1);
   stroke: var(--basis-color-primary-fill-1);
 
 }
 
-.purmerend-theme > .utrecht-accordion__section > .utrecht-accordion__panel {
+.utrecht-accordion__section > .utrecht-accordion__panel {
   max-height: 50vh;
   overflow-y: auto;
 }
 
-.purmerend-theme > .utrecht-accordion__section > .utrecht-accordion__header > button {
+.utrecht-accordion__section > .utrecht-accordion__header > button {
   border: 1px solid var(--basis-color-primary-fill-1);
   display: flex;
   align-items: center;
