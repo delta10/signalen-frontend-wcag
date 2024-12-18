@@ -487,7 +487,7 @@ const MapDialog = ({
               ) : null}
             </div>
             <Dialog.Close asChild onClick={() => closeMapDialog()}>
-              <Button appearance="primary-action-button">
+              <Button appearance="primary-action-button" className="ml-4">
                 {isAssetSelect
                   ? formState.selectedFeatures.length === 0
                     ? t('go_further_without_selected_object')
