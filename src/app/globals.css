@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.utrecht-textbox {
+  --utrecht-form-control-placeholder-font-style: italic;
+}
+
 /* fonts */
 .empty-box {
   width: 100px;
@@ -10,13 +14,13 @@
 
 /* file upload */
 .empty-box.border {
-  border: 1px dashed var(--utrecht-form-control-border-color);
+  border: 1px dashed var(--basis-document-subtle-color);
 }
 
 .file-upload-box {
   width: 100px;
   height: 100px;
-  border: 1px dashed var(--utrecht-form-control-border-color);
+  border: 1px dashed var(--basis-document-subtle-color);
 }
 
 .file-upload-box > label {
@@ -39,7 +43,7 @@
   top: 29px;
   left: 29px;
   border-radius: 50%;
-  border: 1px solid var(--utrecht-form-control-border-color);
+  border: 1px solid var(--basis-document-subtle-color);
 }
 
 .iconbutton-preview-delete {
@@ -61,19 +65,27 @@
   transition-delay: 100 !important;
 }
 
-.utrecht-button:focus:not(
-    :disabled,
-    [aria-disabled='true'],
-    .utrecht-button--disabled
-  ) {
-  border: none;
+/* modal dialog */
+:root {
+  --signalen-modal-dialog-background-color: var(
+    --utrecht-body-background-color
+  );
+  --signalen-modal-dialog-color: var(--utrecht-body-color);
 }
 
-/* stepper */
-.stepper-button-hover:hover:not(:disabled, [aria-disabled='true']) {
-  border: none;
-  outline: none;
-  text-decoration: underline;
+.signalen-modal-dialog {
+  background-color: var(--signalen-modal-dialog-background-color, Canvas);
+  color: var(--signalen-modal-dialog-color, CanvasText);
+  z-index: var(--signalen-modal-z-index, 1);
+}
+
+.signalen-modal-dialog--cover-viewport {
+  position: fixed;
+  inset-inline-end: 0;
+  inset-inline-start: 0;
+  inset-block-end: 0;
+  inset-block-start: 0;
+  overflow-block: auto;
 }
 
 /* map */
@@ -82,12 +94,15 @@
   left: 1em;
   top: 1em;
   display: flex;
-  flex-direction: column;
   gap: 8px;
 }
 
 .map-location-alert {
   padding: 12px 16px !important;
+}
+
+.map-button {
+  padding: 16px !important;
 }
 
 .map-close-button {
@@ -117,6 +132,10 @@
   flex-direction: row;
   align-items: center;
   gap: 8px;
+}
+
+.utrecht-alert {
+  --utrecht-paragraph-color: currentColor;
 }
 
 .map-marker-icon {
@@ -162,8 +181,32 @@
 }
 
 .purmerend-theme {
-    --utrecht-listbox-background-color: white;
-    --utrecht-listbox-color: black;
+  --utrecht-listbox-background-color: white;
+  --utrecht-listbox-color: black;
+}
+
+.utrecht-accordion__section > .utrecht-accordion__header > button > span {
+  color: var(--basis-color-primary-fill-1);
+  stroke: var(--basis-color-primary-fill-1);
+}
+
+.utrecht-accordion__section > .utrecht-accordion__panel {
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
+.utrecht-accordion__section > .utrecht-accordion__header > button {
+  border: 1px solid var(--basis-color-primary-fill-1);
+  display: flex;
+  align-items: center;
+}
+
+.subtle-list-item {
+  color: var(--basis-document-subtle-color) !important;
+}
+
+.subtle-list-item::marker {
+  color: var(--basis-document-subtle-color) !important;
 }
 
 /* contact page */
@@ -175,8 +218,8 @@
 .summary-grid {
   display: grid;
   grid-template-areas:
-    "summary-heading summary-link"
-    "summary-body summary-body";
+    'summary-heading summary-link'
+    'summary-body summary-body';
   grid-template-columns: 1fr auto;
   gap: 1rem;
 }
@@ -185,9 +228,9 @@
 @media only screen and (max-width: 640px) {
   .summary-grid {
     grid-template-areas:
-    "summary-heading summary-heading"
-    "summary-body summary-body"
-    "summary-link summary-link"
+      'summary-heading summary-heading'
+      'summary-body summary-body'
+      'summary-link summary-link';
   }
 }
 
@@ -202,6 +245,51 @@
 .summary-grid__link {
   grid-area: summary-link;
 }
+
+.maplibregl-canvas:focus-visible,
+.dashed-focus:focus-visible {
+  --_utrecht-focus-ring-box-shadow: 0 0 0 var(--utrecht-focus-outline-width, 0)
+    var(--utrecht-focus-inverse-outline-color, transparent);
+  box-shadow: var(--_utrecht-focus-ring-box-shadow);
+  outline-color: var(--utrecht-focus-outline-color, revert);
+  outline-offset: var(--utrecht-focus-outline-offset, revert);
+  outline-style: var(--utrecht-focus-outline-style, revert);
+  outline-width: var(--utrecht-focus-outline-width, revert);
+  --_utrecht-link-state-text-decoration: var(
+    --utrecht-link-focus-visible-text-decoration,
+    var(--utrecht-link-focus-text-decoration)
+  );
+  --_utrecht-link-state-text-decoration-thickness: var(
+    --utrecht-link-focus-visible-text-decoration-thickness,
+    var(--utrecht-link-focus-text-decoration-thickness)
+  );
+}
+
+.maplibregl-canvas {
+  /* The map canvas is rendered in an `overflow: hidden` container,
+   * so the focus ring is not visible. Render the focus ring on the inside
+   * instead. */
+  --utrecht-focus-outline-offset: calc(
+    -1 * var(--utrecht-focus-outline-width, 0)
+  );
+
+  /* Make sure the map canvas is visible in forced colors mode too */
+  forced-color-adjust: none;
+}
+
+.utrecht-page-footer__content {
+  --utrecht-link-color: currentColor;
+  --utrecht-link-hover-color: currentColor;
+  --utrecht-link-focus-color: currentColor;
+  --utrecht-link-focus-background-color: var(--utrecht-focus-background-color);
+  --utrecht-link-focus-color: var(--utrecht-focus-color);
+}
+
+:root {
+  --utrecht-icon-inset-block-start: 0.15em !important;
+  --utrecht-link-list-icon-inset-block-start: 0.15em !important;
+}
+
 
 /* combobox */
 .address-listbox {

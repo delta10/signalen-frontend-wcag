@@ -34,6 +34,9 @@ export {
   PreserveData,
   Select,
   SpotlightSection,
+  SecondaryActionButton,
+  UnorderedList,
+  UnorderedListItem,
 } from '@utrecht/component-library-react/dist/css-module'
 
 export { RadioGroup } from '@utrecht/radio-group-react'
@@ -45,6 +48,6 @@ export { PageHeader } from '@utrecht/page-header-react/dist/css'
 export { PageFooter } from '@utrecht/page-footer-react/dist/css'
 export { PageBody } from '@utrecht/page-body-react/dist/css'
 export { NavBar } from '@utrecht/nav-bar-react/dist/css'
-
+export { LinkList } from './ui/LinkList'
 // export { SelectCombobox } from '@/components/ui/SelectCombobox'
 export { MapMarker } from './ui/MapMarker'

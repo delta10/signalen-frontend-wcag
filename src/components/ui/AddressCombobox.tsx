@@ -7,7 +7,7 @@ import {
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useConfig } from '@/hooks/useConfig'
 import { getSuggestedAddresses } from '@/services/location/address'
-
+import { StatusText } from '@/components/index'
 // Import the Select Combobox component for the side-effects of injecting CSS
 // for related components, such as Textbox and Listbox.
 import '@utrecht/select-combobox-react/dist/css'
@@ -107,12 +107,14 @@ export const AddressCombobox = ({
 
   return (
     <Combobox
+      key={formState.address?.id || 'default_key'}
       value={formState.address}
-      onChange={onChangeAddress}
+      onChange={(newAddress: Address) => onChangeAddress(newAddress)}
       onClose={() => setQuery('')}
     >
       <ComboboxInput
         aria-label="Adres"
+        name="address"
         displayValue={(address: any) => address?.weergave_naam}
         onChange={(event) => setQuery(event.target.value)}
         className={'utrecht-textbox utrecht-textbox--html-input'}
@@ -135,9 +137,9 @@ export const AddressCombobox = ({
               </ComboboxOption>
             ))
           ) : (
-            <span className="utrecht-listbox__option data-[focus]:bg-blue-100 !px-3 !py-1">
-              {t('no_results')}
-            </span>
+            <ComboboxOption value="" className="!px-3 !py-1 utrecht-listbox--disabled">
+              <StatusText>{t('no_results')}</StatusText>
+            </ComboboxOption>
           )}
         </div>
       </ComboboxOptions>
