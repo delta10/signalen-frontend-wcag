@@ -87,7 +87,7 @@ export const IncidentQuestionsLocationForm = () => {
     }
   }, [formStoreState.coordinates, methods])
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     const questionKeys = Object.keys(data)
     const questionsToSubmit = additionalQuestions.filter(
       (question) =>
@@ -133,7 +133,7 @@ export const IncidentQuestionsLocationForm = () => {
       }
     })
 
-    updateForm({
+    await updateForm({
       ...formStoreState,
       extra_properties: answers,
       last_completed_step: Math.max(formStoreState.last_completed_step, step),

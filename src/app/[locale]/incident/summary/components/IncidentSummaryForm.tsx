@@ -83,7 +83,7 @@ const IncidentSummaryForm = () => {
       })
 
       // Set SIG number
-      updateForm({
+      await updateForm({
         ...formState,
         sig_number: res.id_display,
         last_completed_step: Math.max(formState.last_completed_step, step),

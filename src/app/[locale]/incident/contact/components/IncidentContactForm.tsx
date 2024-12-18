@@ -83,8 +83,8 @@ const IncidentContactForm = () => {
     }
   }
 
-  const onSubmit = () => {
-    updateForm({
+  const onSubmit = async () => {
+    await updateForm({
       ...formState,
       email: form.getValues('email')?.trim(),
       phone: form.getValues('phone')?.trim(),

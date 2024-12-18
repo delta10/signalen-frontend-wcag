@@ -74,7 +74,7 @@ export const IncidentDescriptionForm = () => {
       if (value) {
         const { main, sub } = await getCategoryForDescription(value)
 
-        updateForm({
+        await updateForm({
           ...formState,
           main_category: main,
           sub_category: sub,
@@ -89,8 +89,10 @@ export const IncidentDescriptionForm = () => {
     }
   }, [description])
 
-  const onSubmit = (values: z.infer<typeof incidentDescriptionFormSchema>) => {
-    updateForm({
+  const onSubmit = async (
+    values: z.infer<typeof incidentDescriptionFormSchema>
+  ) => {
+    await updateForm({
       ...formState,
       description: values.description,
       attachments: values.files,
