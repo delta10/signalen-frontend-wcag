@@ -404,8 +404,11 @@ const MapDialog = ({
               maxWidth: 'calc(100% - 32px)',
             }}
           >
-            <form method="dialog" className="map-alert-dialog__content">
-              <Paragraph>{error}</Paragraph>
+            <form
+              method="dialog"
+              className="map-alert-dialog__content md:!min-w-[400px] md:!max-w-[400px]"
+            >
+              {error}
               <ButtonGroup>
                 <Button
                   appearance="secondary-action-button"
