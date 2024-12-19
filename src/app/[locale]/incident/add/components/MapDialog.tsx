@@ -31,6 +31,7 @@ import {
   Alert,
   Button,
   MapMarker,
+  SpotlightSection,
 } from '@/components'
 import { useConfig } from '@/hooks/useConfig'
 import {
@@ -403,8 +404,11 @@ const MapDialog = ({
               maxWidth: 'calc(100% - 32px)',
             }}
           >
-            <form method="dialog" className="map-alert-dialog__content">
-              <Paragraph>{error}</Paragraph>
+            <form
+              method="dialog"
+              className="map-alert-dialog__content md:!min-w-[400px] md:!max-w-[400px]"
+            >
+              {error}
               <ButtonGroup>
                 <Button
                   appearance="secondary-action-button"
@@ -458,9 +462,9 @@ const MapDialog = ({
               {isAssetSelect && dialogMap && config && field ? (
                 <div className="flex flex-col overflow-scroll md:overflow-hidden gap-4 pt-2">
                   {dialogMap.getZoom() < config.base.map.minimal_zoom && (
-                    <Alert type="error">
+                    <SpotlightSection type="info">
                       <Paragraph>{t('zoom_for_object')}</Paragraph>
-                    </Alert>
+                    </SpotlightSection>
                   )}
                   {featureList.length > 0 && (
                     <Heading level={3}>{assetSelectFeatureLabel}</Heading>
@@ -487,10 +491,15 @@ const MapDialog = ({
               ) : null}
             </div>
             <Dialog.Close asChild onClick={() => closeMapDialog()}>
-              <Button appearance="primary-action-button" className="ml-4">
+              <Button
+                appearance="primary-action-button"
+                className="ml-4 mr-4 mb-4"
+              >
                 {isAssetSelect
                   ? formState.selectedFeatures.length === 0
-                    ? t('go_further_without_selected_object')
+                    ? formState.address
+                      ? t('choose_this_location_no_asset_but_address')
+                      : t('go_further_without_selected_object')
                     : formState.selectedFeatures.length === 1
                       ? field?.meta.language.submit ||
                         t('go_further_without_selected_object')

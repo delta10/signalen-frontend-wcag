@@ -30,6 +30,7 @@
       "map_heading": "Choose your location",
       "map_label": "Where is the location?",
       "choose_this_location": "Use this location",
+      "choose_this_location_no_asset_but_address": "Continue without object but with address",
       "dialog_title": "Choose Location",
       "dialog_description": "Choose a location on the map for the location of your report.",
       "current_location": "My location",
