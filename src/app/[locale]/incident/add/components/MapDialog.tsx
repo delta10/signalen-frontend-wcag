@@ -31,6 +31,7 @@ import {
   Alert,
   Button,
   MapMarker,
+  SpotlightSection,
 } from '@/components'
 import { useConfig } from '@/hooks/useConfig'
 import {
@@ -458,9 +459,9 @@ const MapDialog = ({
               {isAssetSelect && dialogMap && config && field ? (
                 <div className="flex flex-col overflow-scroll md:overflow-hidden gap-4 pt-2">
                   {dialogMap.getZoom() < config.base.map.minimal_zoom && (
-                    <Alert type="error">
+                    <SpotlightSection type="info">
                       <Paragraph>{t('zoom_for_object')}</Paragraph>
-                    </Alert>
+                    </SpotlightSection>
                   )}
                   {featureList.length > 0 && (
                     <Heading level={3}>{assetSelectFeatureLabel}</Heading>
