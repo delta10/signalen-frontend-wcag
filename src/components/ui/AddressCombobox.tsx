@@ -4,7 +4,13 @@ import {
   ComboboxOption,
   ComboboxOptions,
 } from '@headlessui/react'
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import React, {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 import { useConfig } from '@/hooks/useConfig'
 import { getSuggestedAddresses } from '@/services/location/address'
 import { StatusText } from '@/components/index'
@@ -29,6 +35,7 @@ export const AddressCombobox = ({
   const [addressOptions, setAddressOptions] = useState<any[]>([])
   const { formState, updateForm } = useFormStore()
   const t = useTranslations('describe_add.address')
+  const comboboxRef = useRef<HTMLInputElement | null>(null)
 
   const parsePoint = (str: string): [number, number] | undefined => {
     const match = /POINT\((\d+(?:\.\d+)?)\s+(\d+(?:\.\d+)?)\)/i.exec(str)
@@ -72,8 +79,15 @@ export const AddressCombobox = ({
     getAddressOptions()
   }, [query])
 
+  const focusCombobox = () => {
+    setTimeout(() => {
+      comboboxRef.current?.focus()
+    }, 0)
+  }
+
   const onChangeAddress = (selectedAddress: Address) => {
     if (!selectedAddress) {
+      focusCombobox()
       return
     }
 
@@ -96,6 +110,8 @@ export const AddressCombobox = ({
     if (setIsMapSelected) {
       setIsMapSelected(true)
     }
+
+    focusCombobox()
   }
 
   const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -120,6 +136,7 @@ export const AddressCombobox = ({
         className={'utrecht-textbox utrecht-textbox--html-input'}
         onKeyDown={(e) => handleEnter(e)}
         autoComplete={'off'}
+        ref={comboboxRef}
       />
       <ComboboxOptions
         anchor="bottom"
@@ -137,7 +154,10 @@ export const AddressCombobox = ({
               </ComboboxOption>
             ))
           ) : (
-            <ComboboxOption value="" className="!px-3 !py-1 utrecht-listbox--disabled">
+            <ComboboxOption
+              value=""
+              className="!px-3 !py-1 utrecht-listbox--disabled"
+            >
               <StatusText>{t('no_results')}</StatusText>
             </ComboboxOption>
           )}
