@@ -10,7 +10,7 @@ import {
   IconLoader2,
   IconSend,
 } from '@tabler/icons-react'
-import { FieldErrors } from 'react-hook-form'
+import { FieldErrors, useFormContext } from 'react-hook-form'
 import { getCurrentStep, getPreviousStepPath } from '@/lib/utils/stepper'
 import { FormStep } from '@/types/form'
 import { useFormStore } from '@/store/form_store'
@@ -33,6 +33,7 @@ const IncidentFormFooter = ({
   const router = useRouter()
   const step = getCurrentStep(pathname)
   const { formState } = useFormStore()
+  const form = useFormContext()
 
   const goBack = () => {
     const previousStep = getPreviousStepPath(step)
@@ -58,7 +59,7 @@ const IncidentFormFooter = ({
             appearance="primary-action-button"
             type="submit"
             className="!flex !flex-row !items-center"
-            disabled={formState.isBlocking}
+            disabled={formState.isBlocking && step === FormStep.STEP_2_ADD}
           >
             {t('next_button')}
             <Icon>
