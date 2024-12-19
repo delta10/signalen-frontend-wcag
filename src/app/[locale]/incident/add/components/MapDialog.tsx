@@ -491,10 +491,15 @@ const MapDialog = ({
               ) : null}
             </div>
             <Dialog.Close asChild onClick={() => closeMapDialog()}>
-              <Button appearance="primary-action-button" className="ml-4">
+              <Button
+                appearance="primary-action-button"
+                className="ml-4 mr-4 mb-4"
+              >
                 {isAssetSelect
                   ? formState.selectedFeatures.length === 0
-                    ? t('go_further_without_selected_object')
+                    ? formState.address
+                      ? t('choose_this_location_no_asset_but_address')
+                      : t('go_further_without_selected_object')
                     : formState.selectedFeatures.length === 1
                       ? field?.meta.language.submit ||
                         t('go_further_without_selected_object')

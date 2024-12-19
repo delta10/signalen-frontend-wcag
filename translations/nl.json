@@ -30,6 +30,7 @@
       "map_heading": "Kies uw locatie",
       "map_label": "Waar is het?",
       "choose_this_location": "Gebruik deze locatie",
+      "choose_this_location_no_asset_but_address": "Ga verder zonder object maar met locatie",
       "dialog_title": "Locatie kiezen",
       "dialog_description": "Kies een locatie op de kaart voor de locatie van uw melding.",
       "current_location": "Mijn locatie",
