@@ -53,7 +53,7 @@ const MapExplainerAccordion = () => {
     ],
   }
   return (
-    <Accordion ref={accordionRef} className="purmerend-theme">
+    <Accordion ref={accordionRef}>
       <AccordionSection
         icon={<IconChevronDown />}
         headingLevel={3}
@@ -69,24 +69,19 @@ const MapExplainerAccordion = () => {
             <Heading level={5} className="pt-2">
               {t(section.name)}
             </Heading>
-            <Paragraph className="contact-paragraph">
-              {t(section.explanation)}
-            </Paragraph>
+            <Paragraph>{t(section.explanation)}</Paragraph>
             {section.additional_steps &&
               section.additional_steps.length > 0 && (
-                <UnorderedList className="purmerend-theme">
+                <UnorderedList>
                   {section.additional_steps?.map((bullet, index) => (
-                    <UnorderedListItem key={index} className="subtle-list-item">
+                    <UnorderedListItem key={index}>
                       {t(bullet)}
                     </UnorderedListItem>
                   ))}
                   {section.bullet_list.length > 0 && (
-                    <UnorderedList className="purmerend-theme">
+                    <UnorderedList>
                       {section.bullet_list.map((bullet, index) => (
-                        <UnorderedListItem
-                          key={index}
-                          className="subtle-list-item"
-                        >
+                        <UnorderedListItem key={index}>
                           {t(bullet)}
                         </UnorderedListItem>
                       ))}
@@ -95,11 +90,9 @@ const MapExplainerAccordion = () => {
                 </UnorderedList>
               )}
             {!section.additional_steps && section.bullet_list.length > 0 && (
-              <UnorderedList className="purmerend-theme">
+              <UnorderedList>
                 {section.bullet_list.map((bullet, index) => (
-                  <UnorderedListItem key={index} className="subtle-list-item">
-                    {t(bullet)}
-                  </UnorderedListItem>
+                  <UnorderedListItem key={index}>{t(bullet)}</UnorderedListItem>
                 ))}
               </UnorderedList>
             )}

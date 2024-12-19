@@ -205,19 +205,6 @@
   align-items: center;
 }
 
-.subtle-list-item {
-  color: var(--basis-document-subtle-color) !important;
-}
-
-.subtle-list-item::marker {
-  color: var(--basis-document-subtle-color) !important;
-}
-
-/* contact page */
-.contact-paragraph {
-  color: var(--utrecht-form-field-description-color) !important;
-}
-
 /* summary page grid */
 .summary-grid {
   display: grid;
