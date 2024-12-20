@@ -47,7 +47,7 @@ const IncidentFormFooter = ({
       <ButtonGroup className="!flex !flex-row !items-end">
         {step > FormStep.STEP_1_DESCRIPTION && (
           <LinkButton className="!pl-0 !mt-0" onClick={() => goBack()}>
-            <Icon>
+            <Icon className="!static">
               <IconChevronLeft />
             </Icon>
             {t('back_button')}
@@ -61,7 +61,7 @@ const IncidentFormFooter = ({
             disabled={formState.isBlocking}
           >
             {t('next_button')}
-            <Icon>
+            <Icon className="!static">
               <IconChevronRight />
             </Icon>
           </Button>
@@ -78,7 +78,7 @@ const IncidentFormFooter = ({
           >
             {loading && <IconLoader2 className="animate-spin" />}
             {t('submit_button')}
-            <Icon>
+            <Icon className="!static">
               <IconSend />
             </Icon>
           </Button>
