@@ -386,7 +386,7 @@ const MapDialog = ({
       <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay />
-        <Dialog.Content className="grid md:grid-cols-3 overflow-scroll signalen-modal-dialog signalen-modal-dialog--cover-viewport">
+        <Dialog.Content className="grid md:grid-cols-3 overflow-y-auto signalen-modal-dialog signalen-modal-dialog--cover-viewport">
           <VisuallyHidden.Root>
             <Dialog.Title>
               {field?.meta.language.title
@@ -417,7 +417,7 @@ const MapDialog = ({
             </form>
           </AlertDialog>
           <div className="col-span-1 flex flex-col min-h-[100vh] max-h-[100vh] md:max-h-screen gap-4">
-            <div className="flex flex-col overflow-scroll md:overflow-hidden gap-4 p-4">
+            <div className="flex flex-col overflow-y-auto md:overflow-hidden gap-4 p-4">
               <Heading level={1}>
                 {field?.meta.language.title
                   ? field.meta.language.title
@@ -456,7 +456,7 @@ const MapDialog = ({
                 </Alert>
               </div>
               {isAssetSelect && dialogMap && config && field ? (
-                <div className="flex flex-col overflow-scroll md:overflow-hidden gap-4 pt-2">
+                <div className="flex flex-col overflow-y-auto md:overflow-hidden gap-4 pt-2">
                   {dialogMap.getZoom() < config.base.map.minimal_zoom && (
                     <Alert type="error">
                       <Paragraph>{t('zoom_for_object')}</Paragraph>
