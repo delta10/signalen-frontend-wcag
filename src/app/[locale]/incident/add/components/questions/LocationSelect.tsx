@@ -7,7 +7,6 @@ import React from 'react'
 import {
   Button,
   Paragraph,
-  LinkButton,
   Fieldset,
   FieldsetLegend,
   FormFieldDescription,
@@ -25,6 +24,7 @@ export interface LocationSelectProps {
 export const LocationSelect = ({ field }: LocationSelectProps) => {
   const {
     formState: { errors },
+    register,
   } = useFormContext()
   const errorMessage = errors['location']?.message as string
   const { formState: formStoreState } = useFormStore()
@@ -47,7 +47,7 @@ export const LocationSelect = ({ field }: LocationSelectProps) => {
         {t('choose_address_description')}
       </FormFieldDescription>
 
-      <div className="mb-4">
+      <div className="mb-4" {...register('location')}>
         <AddressCombobox />
       </div>
 
