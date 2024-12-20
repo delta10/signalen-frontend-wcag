@@ -86,7 +86,7 @@
       "tab_navigation_objects": "When objects are available, use tab to browse through them and select with space"
     },
     "address": {
-      "no_results": "No addresses found, please check your spelling or try a less specific search."
+      "no_results": "No addresses found."
     }
   },
   "describe_contact": {

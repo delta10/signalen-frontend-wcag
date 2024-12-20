@@ -27,6 +27,7 @@ export const AddressCombobox = ({
   const [query, setQuery] = useState('')
   const { config } = useConfig()
   const [addressOptions, setAddressOptions] = useState<any[]>([])
+  const [loading, setLoading] = useState<boolean>(false)
   const { formState, updateForm } = useFormStore()
   const t = useTranslations('describe_add.address')
 
@@ -46,6 +47,7 @@ export const AddressCombobox = ({
 
     const getAddressOptions = async () => {
       if (query.length >= 1) {
+        setLoading(true)
         const apiCall = await getSuggestedAddresses(
           normalizedQuery,
           municipality
@@ -62,7 +64,7 @@ export const AddressCombobox = ({
         }))
 
         setAddressOptions(options)
-
+        setLoading(false)
         return
       }
 
@@ -121,28 +123,33 @@ export const AddressCombobox = ({
         onKeyDown={(e) => handleEnter(e)}
         autoComplete={'off'}
       />
-      <ComboboxOptions
-        anchor="bottom"
-        className="address-listbox utrecht-listbox utrecht-listbox--html-div fixed z-[9999] pointer-events-auto"
-      >
-        <div className={'utrecht-listbox__list'}>
-          {addressOptions.length > 0 ? (
-            addressOptions.map((address) => (
+      {!loading && (
+        <ComboboxOptions
+          anchor="bottom"
+          className="address-listbox utrecht-listbox utrecht-listbox--html-div fixed z-[9999] pointer-events-auto"
+        >
+          <div className={'utrecht-listbox__list'}>
+            {addressOptions.length > 0 ? (
+              addressOptions.map((address) => (
+                <ComboboxOption
+                  key={address.id}
+                  value={address}
+                  className="utrecht-listbox__option data-[focus]:bg-blue-100 !px-3 !py-1"
+                >
+                  {address.weergave_naam}
+                </ComboboxOption>
+              ))
+            ) : (
               <ComboboxOption
-                key={address.id}
-                value={address}
-                className="utrecht-listbox__option data-[focus]:bg-blue-100 !px-3 !py-1"
+                value=""
+                className="!px-3 !py-1 utrecht-listbox--disabled"
               >
-                {address.weergave_naam}
+                <StatusText>{t('no_results')}</StatusText>
               </ComboboxOption>
-            ))
-          ) : (
-            <ComboboxOption value="" className="!px-3 !py-1 utrecht-listbox--disabled">
-              <StatusText>{t('no_results')}</StatusText>
-            </ComboboxOption>
-          )}
-        </div>
-      </ComboboxOptions>
+            )}
+          </div>
+        </ComboboxOptions>
+      )}
     </Combobox>
   )
 }
