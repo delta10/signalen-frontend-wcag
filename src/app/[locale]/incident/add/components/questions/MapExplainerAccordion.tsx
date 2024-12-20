@@ -62,42 +62,51 @@ const MapExplainerAccordion = () => {
         onActivate={() => setOpenAcc(!openAcc)}
         body={null}
       >
-        <Heading level={4}>{t(explainerDictionaryNames.title)}</Heading>
+        <div
+          tabIndex={0}
+          role="region"
+          aria-label="Accordion content: De kaart gebruiken"
+          className="dashed-focus"
+        >
+          <Heading level={4}>{t(explainerDictionaryNames.title)}</Heading>
 
-        {explainerDictionaryNames.sections.map((section, index) => (
-          <div key={index}>
-            <Heading level={5} className="pt-2">
-              {t(section.name)}
-            </Heading>
-            <Paragraph>{t(section.explanation)}</Paragraph>
-            {section.additional_steps &&
-              section.additional_steps.length > 0 && (
+          {explainerDictionaryNames.sections.map((section, index) => (
+            <div key={index}>
+              <Heading level={5} className="pt-2">
+                {t(section.name)}
+              </Heading>
+              <Paragraph>{t(section.explanation)}</Paragraph>
+              {section.additional_steps &&
+                section.additional_steps.length > 0 && (
+                  <UnorderedList>
+                    {section.additional_steps?.map((bullet, index) => (
+                      <UnorderedListItem key={index}>
+                        {t(bullet)}
+                      </UnorderedListItem>
+                    ))}
+                    {section.bullet_list.length > 0 && (
+                      <UnorderedList>
+                        {section.bullet_list.map((bullet, index) => (
+                          <UnorderedListItem key={index}>
+                            {t(bullet)}
+                          </UnorderedListItem>
+                        ))}
+                      </UnorderedList>
+                    )}
+                  </UnorderedList>
+                )}
+              {!section.additional_steps && section.bullet_list.length > 0 && (
                 <UnorderedList>
-                  {section.additional_steps?.map((bullet, index) => (
+                  {section.bullet_list.map((bullet, index) => (
                     <UnorderedListItem key={index}>
                       {t(bullet)}
                     </UnorderedListItem>
                   ))}
-                  {section.bullet_list.length > 0 && (
-                    <UnorderedList>
-                      {section.bullet_list.map((bullet, index) => (
-                        <UnorderedListItem key={index}>
-                          {t(bullet)}
-                        </UnorderedListItem>
-                      ))}
-                    </UnorderedList>
-                  )}
                 </UnorderedList>
               )}
-            {!section.additional_steps && section.bullet_list.length > 0 && (
-              <UnorderedList>
-                {section.bullet_list.map((bullet, index) => (
-                  <UnorderedListItem key={index}>{t(bullet)}</UnorderedListItem>
-                ))}
-              </UnorderedList>
-            )}
-          </div>
-        ))}
+            </div>
+          ))}
+        </div>
       </AccordionSection>
     </Accordion>
   )
