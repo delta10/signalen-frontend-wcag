@@ -7,7 +7,7 @@ import {
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useConfig } from '@/hooks/useConfig'
 import { getSuggestedAddresses } from '@/services/location/address'
-import { StatusText } from '@/components/index'
+import { Listbox, ListboxOption, StatusText } from '@/components/index'
 // Import the Select Combobox component for the side-effects of injecting CSS
 // for related components, such as Textbox and Listbox.
 import '@utrecht/select-combobox-react/dist/css'
@@ -73,53 +73,38 @@ export const AddressCombobox = ({
   }, [query])
 
   const onChangeAddress = (selectedAddress: Address) => {
-    if (!selectedAddress) {
-      return
-    }
+    if (selectedAddress) {
+      updateForm({
+        ...formState,
+        address: selectedAddress,
+        coordinates: [
+          selectedAddress.coordinates[1],
+          selectedAddress.coordinates[0],
+        ],
+      })
 
-    if (selectedAddress && updatePosition) {
-      updatePosition(
-        selectedAddress.coordinates[1],
-        selectedAddress.coordinates[0]
-      )
+      if (updatePosition) {
+        updatePosition(
+          selectedAddress.coordinates[1],
+          selectedAddress.coordinates[0]
+        )
+      }
     }
-
-    updateForm({
-      ...formState,
-      address: selectedAddress,
-      coordinates: [
-        selectedAddress.coordinates[1],
-        selectedAddress.coordinates[0],
-      ],
-    })
 
     if (setIsMapSelected) {
       setIsMapSelected(true)
     }
   }
 
-  const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    // Make sure to prevent the user for submitting the for by selecting an adres or pressing enter while ComboboxInput is focussed.
-    if (e.key === 'Enter' && addressOptions.length <= 0) {
-      e.preventDefault()
-    }
-  }
-
   return (
-    <Combobox
-      key={formState.address?.id || 'default_key'}
-      value={formState.address}
-      onChange={(newAddress: Address) => onChangeAddress(newAddress)}
-      onClose={() => setQuery('')}
-    >
+    <Combobox value={formState.address} onChange={onChangeAddress}>
       <ComboboxInput
         aria-label="Adres"
-        name="address"
-        displayValue={(address: any) => address?.weergave_naam}
-        onChange={(event) => setQuery(event.target.value)}
         className={'utrecht-textbox utrecht-textbox--html-input'}
-        onKeyDown={(e) => handleEnter(e)}
-        autoComplete={'off'}
+        displayValue={(address: any) => address?.weergave_naam}
+        name="address"
+        onChange={(event) => setQuery(event.target.value)}
+        autoComplete="off"
       />
       <ComboboxOptions
         anchor="bottom"
@@ -137,7 +122,10 @@ export const AddressCombobox = ({
               </ComboboxOption>
             ))
           ) : (
-            <ComboboxOption value="" className="!px-3 !py-1 utrecht-listbox--disabled">
+            <ComboboxOption
+              className="!px-3 !py-1 utrecht-listbox--disabled"
+              value=""
+            >
               <StatusText>{t('no_results')}</StatusText>
             </ComboboxOption>
           )}
