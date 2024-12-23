@@ -42,6 +42,46 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the web form.
 
+## End-to-end tests
+
+To run the end-to-end tests you need to have the "headless browsers" installed. Headless browsers are invisible browsers that run from the command line.
+
+```shell
+npm run install-test-browsers
+```
+
+The end-to-end tests work best when you build the project and start the production server on localhost:3000 with:
+
+```shell
+npm run build
+npm run start
+```
+
+While leaving the server on localhost:3000 running, you can run the end to end tests in a separate terminal with:
+
+```shell
+npm run test-e2e
+```
+
+To view the results run the following command and open the [test results page on localhost:9323](http://localhost:9323):
+
+```shell
+npx playwright show-report tmp/playwright-html-report
+```
+
+### Multilanguage support
+To set up and try out multilanguage support add the following lines to the `config.json`:
+```
+"supportedLanguages": [
+  ...,
+  {
+    "label": "Switch to English",
+    "lang": "en",
+    "name": "English"
+  }
+ ]
+```
+
 ## Techniques
 
 - [Next.js](https://nextjs.org) with the App Router for the web application.

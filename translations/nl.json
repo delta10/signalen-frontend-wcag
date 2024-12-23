@@ -30,6 +30,7 @@
       "map_heading": "Kies uw locatie",
       "map_label": "Waar is het?",
       "choose_this_location": "Gebruik deze locatie",
+      "choose_this_location_no_asset_but_address": "Ga verder zonder {object} maar met locatie",
       "dialog_title": "Locatie kiezen",
       "dialog_description": "Kies een locatie op de kaart voor de locatie van uw melding.",
       "current_location": "Mijn locatie",
@@ -40,8 +41,8 @@
       "close_alert_notification": "Sluit melding",
       "address_search_label": "Zoek op adres",
       "max_number_of_assets_error": "U kunt maximaal {max, plural, one {# object} other {# objecten}} selecteren.",
-      "go_further_without_selected_object": "Ga verder zonder object",
-      "zoom_for_object": "Zoom in op de kaart om de objecten te zien",
+      "go_further_without_selected_object": "Ga verder zonder {object}",
+      "zoom_for_object": "Zoom in op de kaart om de {objects} te zien",
       "scroll_for_map": "Scroll naar onder om de kaart te weergeven",
       "scroll_to_map_button": "Naar beneden",
       "map_zoom-in_button_label": "Zoom in op de kaart",
@@ -54,7 +55,9 @@
       "chosen_location": "Geselecteerde locatie {location} klik om te wijzigen",
       "chosen_location_address_and_points": "Geselecteerde locatie {location} en geselecteerde punten {points} klik om te wijzigen",
       "chosen_location_points": "Geselecteerde punten {points} klik om te wijzigen",
-      "search_address_label": "Zoek op adres of postcode"
+      "search_address_label": "Zoek op adres of postcode",
+      "object": "object",
+      "objects": "objecten"
     },
     "explainer": {
       "label": "Hoe gebruik ik de kaart?",
@@ -71,7 +74,7 @@
       "buttons": "Gebruik de + en - knoppen op de kaart om stapsgewijs in en uit te zoomen",
       "object_selection": "Objecten selecteren (optioneel)",
       "selection_explanation": "Wanneer er objecten op de kaart worden getoond:",
-      "zoom_for_objects": "Zoom eerst op de kaart in om de objecten te kunnen zien",
+      "zoom_for_objects": "Zoom eerst op de kaart in om de bijbehorende objecten te kunnen zien",
       "max_number": "U kunt maximaal 5 objecten selecteren",
       "select_map": "Selecteren kan door op het object op de kaart te klikken",
       "select_list": "Of door het object(en) in de lijst in het zijpaneel te selecteren",

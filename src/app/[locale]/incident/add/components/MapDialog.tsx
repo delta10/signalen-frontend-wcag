@@ -31,6 +31,7 @@ import {
   Alert,
   Button,
   MapMarker,
+  SpotlightSection,
 } from '@/components'
 import { useConfig } from '@/hooks/useConfig'
 import {
@@ -61,6 +62,7 @@ import {
 } from '@/lib/utils/address'
 import MapExplainerAccordion from './questions/MapExplainerAccordion'
 import { useWindowSize } from 'usehooks-ts'
+import { string } from 'zod'
 
 type MapDialogProps = {
   trigger: React.ReactElement
@@ -69,6 +71,11 @@ type MapDialogProps = {
   field?: PublicQuestion
   isAssetSelect?: boolean
 } & React.HTMLAttributes<HTMLDivElement>
+
+type objectDisplayName = {
+  singular: string
+  plural: string
+}
 
 const MapDialog = ({
   trigger,
@@ -91,6 +98,14 @@ const MapDialog = ({
   const { setValue } = useFormContext()
   const { isDarkMode } = useDarkMode()
   const { width = 0 } = useWindowSize()
+
+  const objectDisplayName = useMemo(
+    () => ({
+      singular: field?.meta.language.objectTypeSingular || t('object'),
+      plural: field?.meta.language.objectTypePlural || t('objects'),
+    }),
+    [field?.meta.language]
+  )
 
   const [viewState, setViewState] = useState<ViewState>({
     latitude: 0,
@@ -403,8 +418,11 @@ const MapDialog = ({
               maxWidth: 'calc(100% - 32px)',
             }}
           >
-            <form method="dialog" className="map-alert-dialog__content">
-              <Paragraph>{error}</Paragraph>
+            <form
+              method="dialog"
+              className="map-alert-dialog__content md:!min-w-[400px] md:!max-w-[400px]"
+            >
+              {error}
               <ButtonGroup>
                 <Button
                   appearance="secondary-action-button"
@@ -459,9 +477,13 @@ const MapDialog = ({
               {isAssetSelect && dialogMap && config && field ? (
                 <div className="flex flex-col gap-4 pt-2 flex-grow">
                   {dialogMap.getZoom() < config.base.map.minimal_zoom && (
-                    <Alert type="error">
-                      <Paragraph>{t('zoom_for_object')}</Paragraph>
-                    </Alert>
+                    <SpotlightSection type="info">
+                      <Paragraph>
+                        {t('zoom_for_object', {
+                          objects: objectDisplayName?.plural,
+                        })}
+                      </Paragraph>
+                    </SpotlightSection>
                   )}
                   {featureList.length > 0 && (
                     <Heading level={3}>{assetSelectFeatureLabel}</Heading>
@@ -488,16 +510,29 @@ const MapDialog = ({
               ) : null}
             </div>
             <Dialog.Close asChild onClick={() => closeMapDialog()}>
-              <Button appearance="primary-action-button" className="ml-4">
+              <Button
+                appearance="primary-action-button"
+                className="ml-4 mr-4 mb-4"
+              >
                 {isAssetSelect
                   ? formState.selectedFeatures.length === 0
-                    ? t('go_further_without_selected_object')
+                    ? formState.address
+                      ? t('choose_this_location_no_asset_but_address', {
+                          object: objectDisplayName.singular,
+                        })
+                      : t('go_further_without_selected_object', {
+                          object: objectDisplayName.singular,
+                        })
                     : formState.selectedFeatures.length === 1
                       ? field?.meta.language.submit ||
-                        t('go_further_without_selected_object')
+                        t('go_further_without_selected_object', {
+                          object: objectDisplayName.singular,
+                        })
                       : field?.meta.language.submitPlural ||
                         field?.meta.language.submit ||
-                        t('go_further_without_selected_object')
+                        t('go_further_without_selected_object', {
+                          object: objectDisplayName.singular,
+                        })
                   : t('choose_this_location')}
               </Button>
             </Dialog.Close>

@@ -29,6 +29,8 @@ export {
   Icon,
   RadioButton,
   LinkButton,
+  Listbox,
+  ListboxOption,
   AlertDialog,
   Article,
   PreserveData,
@@ -37,6 +39,7 @@ export {
   SecondaryActionButton,
   UnorderedList,
   UnorderedListItem,
+  Textbox,
 } from '@utrecht/component-library-react/dist/css-module'
 
 export { RadioGroup } from '@utrecht/radio-group-react'
