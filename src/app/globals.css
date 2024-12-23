@@ -189,6 +189,21 @@
   --utrecht-listbox-color: black;
 }
 
+@media (prefers-color-scheme: dark) {
+  .purmerend-theme--media-query,
+  .purmerend-theme--media-query-color-scheme {
+    --purmerend-logo-color-1: rgba(255 255 255 / 1);
+    --purmerend-logo-color-2: rgba(255 255 255 / 0.75);
+    --purmerend-logo-color-3: rgba(255 255 255 / 0.5);
+  }
+  .purmerend-theme--media-query :any-link:focus-visible,
+  .purmerend-theme--media-query-color-scheme :any-link:focus-visible {
+    --purmerend-logo-color-1: rgba(0 0 0 / 1);
+    --purmerend-logo-color-2: rgba(0 0 0 / 0.75);
+    --purmerend-logo-color-3: rgba(0 0 0 / 0.5);
+  }
+}
+
 .utrecht-accordion__section > .utrecht-accordion__header > button > span {
   color: var(--basis-color-primary-fill-1);
   stroke: var(--basis-color-primary-fill-1);
@@ -281,8 +296,10 @@
   --utrecht-link-list-icon-inset-block-start: 0.15em !important;
 }
 
-
 /* combobox */
 .address-listbox {
-  border-radius: var(--utrecht-textbox-border-radius, var(--utrecht-form-control-border-radius, 0)) !important;
+  border-radius: var(
+    --utrecht-textbox-border-radius,
+    var(--utrecht-form-control-border-radius, 0)
+  ) !important;
 }
