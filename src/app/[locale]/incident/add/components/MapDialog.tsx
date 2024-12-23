@@ -62,6 +62,7 @@ import {
 } from '@/lib/utils/address'
 import MapExplainerAccordion from './questions/MapExplainerAccordion'
 import { useWindowSize } from 'usehooks-ts'
+import { string } from 'zod'
 
 type MapDialogProps = {
   trigger: React.ReactElement
@@ -70,6 +71,11 @@ type MapDialogProps = {
   field?: PublicQuestion
   isAssetSelect?: boolean
 } & React.HTMLAttributes<HTMLDivElement>
+
+type objectDisplayName = {
+  singular: string
+  plural: string
+}
 
 const MapDialog = ({
   trigger,
@@ -92,6 +98,14 @@ const MapDialog = ({
   const { setValue } = useFormContext()
   const { isDarkMode } = useDarkMode()
   const { width = 0 } = useWindowSize()
+
+  const objectDisplayName = useMemo(
+    () => ({
+      singular: field?.meta.language.objectTypeSingular || t('object'),
+      plural: field?.meta.language.objectTypePlural || t('objects'),
+    }),
+    [field?.meta.language]
+  )
 
   const [viewState, setViewState] = useState<ViewState>({
     latitude: 0,
@@ -463,7 +477,11 @@ const MapDialog = ({
                 <div className="flex flex-col overflow-scroll md:overflow-hidden gap-4 pt-2">
                   {dialogMap.getZoom() < config.base.map.minimal_zoom && (
                     <SpotlightSection type="info">
-                      <Paragraph>{t('zoom_for_object')}</Paragraph>
+                      <Paragraph>
+                        {t('zoom_for_object', {
+                          objects: objectDisplayName?.plural,
+                        })}
+                      </Paragraph>
                     </SpotlightSection>
                   )}
                   {featureList.length > 0 && (
@@ -498,14 +516,22 @@ const MapDialog = ({
                 {isAssetSelect
                   ? formState.selectedFeatures.length === 0
                     ? formState.address
-                      ? t('choose_this_location_no_asset_but_address')
-                      : t('go_further_without_selected_object')
+                      ? t('choose_this_location_no_asset_but_address', {
+                          object: objectDisplayName.singular,
+                        })
+                      : t('go_further_without_selected_object', {
+                          object: objectDisplayName.singular,
+                        })
                     : formState.selectedFeatures.length === 1
                       ? field?.meta.language.submit ||
-                        t('go_further_without_selected_object')
+                        t('go_further_without_selected_object', {
+                          object: objectDisplayName.singular,
+                        })
                       : field?.meta.language.submitPlural ||
                         field?.meta.language.submit ||
-                        t('go_further_without_selected_object')
+                        t('go_further_without_selected_object', {
+                          object: objectDisplayName.singular,
+                        })
                   : t('choose_this_location')}
               </Button>
             </Dialog.Close>

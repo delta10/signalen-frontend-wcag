@@ -30,7 +30,7 @@
       "map_heading": "Choose your location",
       "map_label": "Where is the location?",
       "choose_this_location": "Use this location",
-      "choose_this_location_no_asset_but_address": "Continue without object but with address",
+      "choose_this_location_no_asset_but_address": "Continue without {object} but with address",
       "dialog_title": "Choose Location",
       "dialog_description": "Choose a location on the map for the location of your report.",
       "current_location": "My location",
@@ -41,8 +41,8 @@
       "current_location_timeout_error": "Failed to retrieve location data because it took too long. Ensure that your device has a good connection and try again.",
       "current_location_position_error": "Failed to retrieve location data because an internal error occurred while determining the position. Try again later or check your device settings.",
       "max_number_of_assets_error": "You can select at most {max, plural, one {# object} other {# objects}}.",
-      "go_further_without_selected_object": "Continue without object",
-      "zoom_for_object": "Zoom in on the map to see the objects",
+      "go_further_without_selected_object": "Continue without {object}",
+      "zoom_for_object": "Zoom in on the map to see the {objects}",
       "scroll_for_map": "Scroll down to display the map",
       "scroll_to_map_button": "Scroll down",
       "map_zoom-in_button_label": "Zoom in on the map",
@@ -72,7 +72,7 @@
       "buttons": "Use the + and - buttons on the map to zoom in and out step by step",
       "object_selection": "Selecting objects (optional)",
       "selection_explanation": "When objects are shown on the map:",
-      "zoom_for_objects": "First zoom in on the map to see the objects",
+      "zoom_for_objects": "First zoom in on the map to see the relevant objects",
       "max_number": "You can select up to 5 objects",
       "select_map": "Select by clicking on the object on the map",
       "select_list": "Or by selecting the object(s) in the list in the side panel",
@@ -84,7 +84,9 @@
       "zoom_buttons": "Use the + and - keys to zoom in and out",
       "keyboard_object_selection": "Press space or enter to select the point in the center of the map",
       "tab_navigation_buttons": "Use tab to navigate between the buttons on the map (such as zoom and \"My location\")",
-      "tab_navigation_objects": "When objects are available, use tab to browse through them and select with space"
+      "tab_navigation_objects": "When objects are available, use tab to browse through them and select with space",
+      "object": "object",
+      "objects": "objects"
     },
     "address": {
       "no_results": "No addresses found, please check your spelling or try a less specific search."
