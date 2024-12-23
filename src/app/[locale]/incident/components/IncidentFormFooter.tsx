@@ -59,7 +59,7 @@ const IncidentFormFooter = ({
             appearance="primary-action-button"
             type="submit"
             className="!flex !flex-row !items-center"
-            disabled={formState.isBlocking && step === FormStep.STEP_2_ADD}
+            disabled={formState.isBlocking}
           >
             {t('next_button')}
             <Icon>
