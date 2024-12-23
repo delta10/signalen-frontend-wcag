@@ -96,9 +96,10 @@ export const RenderSingleField = ({ field }: { field: PublicQuestion }) => {
     if (typeof extraProperty.answer !== 'string') {
       // If the answer is an array (of selected checkboxes), map selected IDs
       const selectedAnswers =
-        typeof extraProperty.answer !== 'string'
+        // @ts-ignore
+        typeof extraProperty.answer !== 'string' && extraProperty.answer.length
           ? // @ts-ignore
-            extraProperty.answer.map((answer: any) => answer?.id)
+            extraProperty.answer?.map((answer: any) => answer?.id)
           : []
 
       // Generate the array as expected by react-hook-form, based on options

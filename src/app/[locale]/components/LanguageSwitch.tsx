@@ -19,7 +19,7 @@ const LanguageSwitch = () => {
 
   return (
     <div className="pr-4">
-      <ButtonGroup className="flex flex-col md:flex-row !gap-0 md:!gap-4">
+      <ButtonGroup>
         {config &&
           config.base.supportedLanguages.map(({ label, lang, name }) => (
             <LinkButton

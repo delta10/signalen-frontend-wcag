@@ -78,6 +78,7 @@ const LocationMap = () => {
           )[0] as HTMLCanvasElement
 
           mapCanvas.tabIndex = -1
+          mapCanvas.classList.add('dashed-focus')
         }}
       >
         <Marker latitude={marker[0]} longitude={marker[1]}>

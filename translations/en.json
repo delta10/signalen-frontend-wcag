@@ -50,7 +50,40 @@
       "choose_address_description": "Search by address",
       "use_map_description": "Or select a point on the map",
       "choose_location": "Choose location",
-      "edit_location": "Edit location"
+      "edit_location": "Edit location",
+      "chosen_location": "Selected location {location} click to edit",
+      "chosen_location_address_and_points": "Selected location {location} and selected points {points}, click to edit",
+      "chosen_location_points": "Selected points {points}, click to edit",
+      "search_address_label": "Search by address or postal code"
+    },
+    "explainer": {
+      "label": "How do I use the map?",
+      "explainer_title": "Using the map",
+      "choose_location": "Selecting a location",
+      "location_explanation": "You can select a location in three ways:",
+      "type_address": "Type an address in the search field at the top",
+      "my_location": "Use the \"My location\" button to select your current location",
+      "click_map": "Click directly on a point on the map",
+      "navigation": "Navigating the map",
+      "navigation_explanation": "You can control the map in several ways:",
+      "move": "Drag with the mouse to move the map",
+      "zoom": "Use the mouse scroll wheel to zoom in and out",
+      "buttons": "Use the + and - buttons on the map to zoom in and out step by step",
+      "object_selection": "Selecting objects (optional)",
+      "selection_explanation": "When objects are shown on the map:",
+      "zoom_for_objects": "First zoom in on the map to see the objects",
+      "max_number": "You can select up to 5 objects",
+      "select_map": "Select by clicking on the object on the map",
+      "select_list": "Or by selecting the object(s) in the list in the side panel",
+      "keyboard_controls": "Using the keyboard",
+      "keyboard_explanation": "For people using a keyboard:",
+      "focus_map": "First make sure the map is in focus",
+      "to_continue": "Then you can:",
+      "arrow_keys": "Use the arrow keys to move the map",
+      "zoom_buttons": "Use the + and - keys to zoom in and out",
+      "keyboard_object_selection": "Press space or enter to select the point in the center of the map",
+      "tab_navigation_buttons": "Use tab to navigate between the buttons on the map (such as zoom and \"My location\")",
+      "tab_navigation_objects": "When objects are available, use tab to browse through them and select with space"
     },
     "address": {
       "no_results": "No addresses found, please check your spelling or try a less specific search."
@@ -85,7 +118,7 @@
     "submit_alert": {
       "error": {
         "heading": "Submit failed",
-        "description": "Due to a technical error, the report could not be sent. We did not receive your information. Please try again in a few minutes."
+        "description": "Due to a technical error, the report could not be sent. We did not receive your information. The time is now {time}. Please try again in a few minutes."
       },
       "loading": {
         "heading": "Processing",

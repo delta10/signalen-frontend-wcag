@@ -1,6 +1,16 @@
 import * as Dialog from '@radix-ui/react-dialog'
-import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { uniqBy } from 'lodash'
+import React, {
+  ForwardedRef,
+  forwardRef,
+  PropsWithChildren,
+  ReactNode,
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
+import { debounce, uniqBy } from 'lodash'
 import Map, {
   MapLayerMouseEvent,
   MapRef,
@@ -49,6 +59,8 @@ import {
   getFirstFeatureOrCurrentAddress,
   getNewSelectedAddress,
 } from '@/lib/utils/address'
+import MapExplainerAccordion from './questions/MapExplainerAccordion'
+import { useWindowSize } from 'usehooks-ts'
 
 type MapDialogProps = {
   trigger: React.ReactElement
@@ -78,6 +90,7 @@ const MapDialog = ({
   const [mapFeatures, setMapFeatures] = useState<FeatureCollection | null>()
   const { setValue } = useFormContext()
   const { isDarkMode } = useDarkMode()
+  const { width = 0 } = useWindowSize()
 
   const [viewState, setViewState] = useState<ViewState>({
     latitude: 0,
@@ -185,6 +198,26 @@ const MapDialog = ({
       ...formState,
       address: address,
     })
+  }
+
+  const keyDownHandler = async (event: any) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      const coordinates = dialogMap?.getCenter()
+      if (coordinates) {
+        updatePosition(coordinates.lat, coordinates.lng)
+        setIsMapSelected(true)
+        const address = await getNewSelectedAddress(
+          coordinates.lat,
+          coordinates.lng,
+          config
+        )
+
+        updateForm({
+          ...formState,
+          address: address,
+        })
+      }
+    }
   }
 
   // Handle click on feature marker, set selectedFeatures and show error if maxNumberOfAssets is reached
@@ -327,12 +360,33 @@ const MapDialog = ({
     ? `${process.env.NEXT_PUBLIC_MAPTILER_MAP_DARK_MODE}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`
     : `${process.env.NEXT_PUBLIC_MAPTILER_MAP}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`
 
+  useEffect(() => {
+    const element = document.getElementsByClassName('maplibregl-canvas')
+    const canvas = element[1]
+    const debouncedHandler = debounce(keyDownHandler, 500)
+
+    // Create a reference to the wrapped handler function
+    const eventHandler = (e: KeyboardEvent) => debouncedHandler(e)
+
+    // @ts-ignore
+    canvas?.addEventListener('keydown', eventHandler)
+
+    // Cleanup using the same function reference
+    return () => {
+      // @ts-ignore
+      canvas?.removeEventListener('keydown', eventHandler)
+    }
+  }, [dialogMap, onMapReady])
+
+  const assetSelectFeatureLabel =
+    isAssetSelect && field ? field.meta.language.title || field.meta.label : ''
+
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay />
-        <Dialog.Content className="fixed inset-0 z-[1000] grid md:grid-cols-3 purmerend-theme background-white overflow-scroll">
+        <Dialog.Content className="grid md:grid-cols-3 overflow-scroll signalen-modal-dialog signalen-modal-dialog--cover-viewport">
           <VisuallyHidden.Root>
             <Dialog.Title>
               {field?.meta.language.title
@@ -362,17 +416,23 @@ const MapDialog = ({
               </ButtonGroup>
             </form>
           </AlertDialog>
-          <div className="col-span-1 p-4 flex flex-col min-h-[100vh] max-h-[100vh] md:max-h-screen gap-4">
-            <div className="flex flex-col overflow-scroll md:overflow-hidden gap-4">
+          <div className="col-span-1 flex flex-col min-h-[100vh] max-h-[100vh] md:max-h-screen gap-4">
+            <div className="flex flex-col overflow-scroll md:overflow-hidden gap-4 p-4">
               <Heading level={1}>
                 {field?.meta.language.title
                   ? field.meta.language.title
                   : t('map_heading')}
               </Heading>
-              <AddressCombobox
-                updatePosition={updatePosition}
-                setIsMapSelected={setIsMapSelected}
-              />
+              <MapExplainerAccordion />
+
+              <div className="flex flex-col py-2">
+                <label htmlFor="address">{t('search_address_label')}</label>
+                <AddressCombobox
+                  updatePosition={updatePosition}
+                  setIsMapSelected={setIsMapSelected}
+                />
+              </div>
+
               <div className="block md:hidden">
                 <Alert>
                   <div className="flex flex-row items-center">
@@ -395,46 +455,51 @@ const MapDialog = ({
                   </div>
                 </Alert>
               </div>
-              {isAssetSelect &&
-                dialogMap &&
-                config &&
-                dialogMap.getZoom() < config.base.map.minimal_zoom && (
-                  <Alert type="error">
-                    <Paragraph>{t('zoom_for_object')}</Paragraph>
-                  </Alert>
-                )}
-              {field && dialogMap && config && (
-                <ul className="flex-1 overflow-y-auto">
-                  {featureList.map((feature: any) => (
-                    <FeatureListItem
-                      configUrl={config?.base.assets_url}
-                      feature={feature}
-                      key={feature.id}
-                      field={field}
-                      setError={setError}
-                      dialogRef={dialogRef}
-                      setFocusedItemId={setFocusedItemId}
-                    />
-                  ))}
-                </ul>
-              )}
+              {isAssetSelect && dialogMap && config && field ? (
+                <div className="flex flex-col overflow-scroll md:overflow-hidden gap-4 pt-2">
+                  {dialogMap.getZoom() < config.base.map.minimal_zoom && (
+                    <Alert type="error">
+                      <Paragraph>{t('zoom_for_object')}</Paragraph>
+                    </Alert>
+                  )}
+                  {featureList.length > 0 && (
+                    <Heading level={3}>{assetSelectFeatureLabel}</Heading>
+                  )}
+                  {featureList.length > 0 && (
+                    <ul
+                      className="flex-1 overflow-y-auto mb-2"
+                      aria-labelledby="object-list-label"
+                    >
+                      {featureList.map((feature: any) => (
+                        <FeatureListItem
+                          configUrl={config?.base.assets_url}
+                          feature={feature}
+                          key={feature.id}
+                          field={field}
+                          setError={setError}
+                          dialogRef={dialogRef}
+                          setFocusedItemId={setFocusedItemId}
+                        />
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              ) : null}
             </div>
-            <div>
-              <Dialog.Close asChild onClick={() => closeMapDialog()}>
-                <Button appearance="primary-action-button">
-                  {isAssetSelect
-                    ? formState.selectedFeatures.length === 0
-                      ? t('go_further_without_selected_object')
-                      : formState.selectedFeatures.length === 1
-                        ? field?.meta.language.submit ||
-                          t('go_further_without_selected_object')
-                        : field?.meta.language.submitPlural ||
-                          field?.meta.language.submit ||
-                          t('go_further_without_selected_object')
-                    : t('choose_this_location')}
-                </Button>
-              </Dialog.Close>
-            </div>
+            <Dialog.Close asChild onClick={() => closeMapDialog()}>
+              <Button appearance="primary-action-button" className="ml-4">
+                {isAssetSelect
+                  ? formState.selectedFeatures.length === 0
+                    ? t('go_further_without_selected_object')
+                    : formState.selectedFeatures.length === 1
+                      ? field?.meta.language.submit ||
+                        t('go_further_without_selected_object')
+                      : field?.meta.language.submitPlural ||
+                        field?.meta.language.submit ||
+                        t('go_further_without_selected_object')
+                  : t('choose_this_location')}
+              </Button>
+            </Dialog.Close>
           </div>
           {config && (
             <div
@@ -448,7 +513,7 @@ const MapDialog = ({
                 onMove={(evt) => setViewState(evt.viewState)}
                 style={{ blockSize: '100%', inlineSize: '100%' }}
                 mapStyle={mapStyle}
-                scrollZoom={false}
+                scrollZoom={!(width !== 0 && width < 768)}
                 attributionControl={false}
                 maxBounds={
                   config.base.map.maxBounds as [
@@ -515,7 +580,7 @@ const MapDialog = ({
 
               <Dialog.Close asChild>
                 <IconButton
-                  className="map-close-button"
+                  className="map-button map-close-button"
                   label={t('map_close_button_label')}
                 >
                   <IconX />
@@ -524,14 +589,14 @@ const MapDialog = ({
 
               <ButtonGroup direction="column" className="map-zoom-button-group">
                 <IconButton
-                  className="map-zoom-button"
+                  className="map-button map-zoom-button"
                   onClick={() => dialogMap?.flyTo({ zoom: viewState.zoom + 1 })}
                   label={t('map_zoom-in_button_label')}
                 >
                   <IconPlus />
                 </IconButton>
                 <IconButton
-                  className="map-zoom-button"
+                  className="map-button map-zoom-button"
                   onClick={() => dialogMap?.flyTo({ zoom: viewState.zoom - 1 })}
                   label={t('map_zoom-out_button_label')}
                 >
