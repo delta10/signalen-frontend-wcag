@@ -29,6 +29,8 @@ export {
   Icon,
   RadioButton,
   LinkButton,
+  ListboxOptionGroup,
+  ListboxOption,
   AlertDialog,
   Article,
   PreserveData,

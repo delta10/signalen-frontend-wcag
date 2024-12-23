@@ -4,16 +4,27 @@ import {
   ComboboxOption,
   ComboboxOptions,
 } from '@headlessui/react'
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import React, {
+  Dispatch,
+  Fragment,
+  SetStateAction,
+  useEffect,
+  useState,
+} from 'react'
 import { useConfig } from '@/hooks/useConfig'
 import { getSuggestedAddresses } from '@/services/location/address'
-import { StatusText } from '@/components/index'
+import {
+  ListboxOption,
+  ListboxOptionGroup,
+  StatusText,
+} from '@/components/index'
 // Import the Select Combobox component for the side-effects of injecting CSS
 // for related components, such as Textbox and Listbox.
 import '@utrecht/select-combobox-react/dist/css'
 import { useFormStore } from '@/store/form_store'
 import { Address } from '@/types/form'
 import { useTranslations } from 'next-intl'
+import { Listbox, UnorderedList } from '@utrecht/component-library-react'
 
 type AddressComboboxProps = {
   updatePosition?: (lat: number, lng: number, flyTo?: boolean) => void
@@ -72,7 +83,7 @@ export const AddressCombobox = ({
     }
 
     getAddressOptions()
-  }, [query])
+  }, [config, query])
 
   const onChangeAddress = (selectedAddress: Address) => {
     if (!selectedAddress) {
@@ -124,30 +135,22 @@ export const AddressCombobox = ({
         autoComplete={'off'}
       />
       {!loading && (
-        <ComboboxOptions
-          anchor="bottom"
-          className="address-listbox utrecht-listbox utrecht-listbox--html-div fixed z-[9999] pointer-events-auto"
-        >
-          <div className={'utrecht-listbox__list'}>
-            {addressOptions.length > 0 ? (
-              addressOptions.map((address) => (
-                <ComboboxOption
-                  key={address.id}
-                  value={address}
-                  className="utrecht-listbox__option data-[focus]:bg-blue-100 !px-3 !py-1"
-                >
-                  {address.weergave_naam}
-                </ComboboxOption>
-              ))
-            ) : (
-              <ComboboxOption
-                value=""
-                className="!px-3 !py-1 utrecht-listbox--disabled"
-              >
-                <StatusText>{t('no_results')}</StatusText>
+        <ComboboxOptions as={Listbox} anchor="bottom">
+          {addressOptions.length > 0 ? (
+            addressOptions.map((address) => (
+              <ComboboxOption key={address.id} value={address} as={Fragment}>
+                {({ focus }) => (
+                  <ListboxOption active={focus}>
+                    {address.weergave_naam}
+                  </ListboxOption>
+                )}
               </ComboboxOption>
-            )}
-          </div>
+            ))
+          ) : (
+            <ComboboxOption value="" as={ListboxOption} disabled>
+              <StatusText>{t('no_results')}</StatusText>
+            </ComboboxOption>
+          )}
         </ComboboxOptions>
       )}
     </Combobox>
