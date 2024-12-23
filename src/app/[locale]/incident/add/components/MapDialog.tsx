@@ -417,12 +417,13 @@ const MapDialog = ({
             </form>
           </AlertDialog>
           <div className="col-span-1 flex flex-col min-h-[100vh] max-h-[100vh] md:max-h-screen gap-4">
-            <div className="flex flex-col overflow-y-auto md:overflow-hidden gap-4 p-4">
+            <div className="flex flex-col overflow-y-auto gap-4 p-4">
               <Heading level={1}>
                 {field?.meta.language.title
                   ? field.meta.language.title
                   : t('map_heading')}
               </Heading>
+
               <MapExplainerAccordion />
 
               <div className="flex flex-col py-2">
@@ -456,7 +457,7 @@ const MapDialog = ({
                 </Alert>
               </div>
               {isAssetSelect && dialogMap && config && field ? (
-                <div className="flex flex-col overflow-y-auto md:overflow-hidden gap-4 pt-2">
+                <div className="flex flex-col gap-4 pt-2 flex-grow">
                   {dialogMap.getZoom() < config.base.map.minimal_zoom && (
                     <Alert type="error">
                       <Paragraph>{t('zoom_for_object')}</Paragraph>
@@ -467,7 +468,7 @@ const MapDialog = ({
                   )}
                   {featureList.length > 0 && (
                     <ul
-                      className="flex-1 overflow-y-auto mb-2"
+                      className="flex-1 overflow-y-auto mb-2 max-h-[45vh]"
                       aria-labelledby="object-list-label"
                     >
                       {featureList.map((feature: any) => (
