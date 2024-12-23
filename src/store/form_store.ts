@@ -28,7 +28,7 @@ const useFormStore = create<FormStore>()(
         ...initialFormState,
       },
       loaded: false,
-      updateForm: (obj) =>
+      updateForm: async (obj) =>
         set((state) => {
           state.formState = obj
         }),
