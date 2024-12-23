@@ -410,18 +410,8 @@ const MapDialog = ({
             </Dialog.Title>
             <Dialog.Description>{t('dialog_description')}</Dialog.Description>
           </VisuallyHidden.Root>
-          <AlertDialog
-            type="error"
-            ref={dialogRef}
-            style={{
-              margin: '128px auto 0',
-              maxWidth: 'calc(100% - 32px)',
-            }}
-          >
-            <form
-              method="dialog"
-              className="map-alert-dialog__content md:!min-w-[400px] md:!max-w-[400px]"
-            >
+          <AlertDialog type="error" ref={dialogRef}>
+            <form method="dialog" className="map-alert-dialog__content">
               {error}
               <ButtonGroup>
                 <Button
