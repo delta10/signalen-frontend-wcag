@@ -69,6 +69,19 @@ To view the results run the following command and open the [test results page on
 npx playwright show-report tmp/playwright-html-report
 ```
 
+### Multilanguage support
+To set up and try out multilanguage support add the following lines to the `config.json`:
+```
+"supportedLanguages": [
+  ...,
+  {
+    "label": "Switch to English",
+    "lang": "en",
+    "name": "English"
+  }
+ ]
+```
+
 ## Techniques
 
 - [Next.js](https://nextjs.org) with the App Router for the web application.
