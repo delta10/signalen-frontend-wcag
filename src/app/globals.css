@@ -295,11 +295,3 @@
   --utrecht-icon-inset-block-start: 0.15em !important;
   --utrecht-link-list-icon-inset-block-start: 0.15em !important;
 }
-
-/* combobox */
-.address-listbox {
-  border-radius: var(
-    --utrecht-textbox-border-radius,
-    var(--utrecht-form-control-border-radius, 0)
-  ) !important;
-}
