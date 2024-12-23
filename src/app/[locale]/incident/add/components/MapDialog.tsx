@@ -622,22 +622,27 @@ const MapDialog = ({
                 </IconButton>
               </Dialog.Close>
 
-              <ButtonGroup direction="column" className="map-zoom-button-group">
-                <IconButton
-                  className="map-button map-zoom-button"
-                  onClick={() => dialogMap?.flyTo({ zoom: viewState.zoom + 1 })}
-                  label={t('map_zoom-in_button_label')}
+              {dialogMap && (
+                <ButtonGroup
+                  direction="column"
+                  className="map-zoom-button-group"
                 >
-                  <IconPlus />
-                </IconButton>
-                <IconButton
-                  className="map-button map-zoom-button"
-                  onClick={() => dialogMap?.flyTo({ zoom: viewState.zoom - 1 })}
-                  label={t('map_zoom-out_button_label')}
-                >
-                  <IconMinus />
-                </IconButton>
-              </ButtonGroup>
+                  <IconButton
+                    className="map-button map-zoom-button"
+                    onClick={() => dialogMap.zoomIn()}
+                    label={t('map_zoom-in_button_label')}
+                  >
+                    <IconPlus />
+                  </IconButton>
+                  <IconButton
+                    className="map-button map-zoom-button"
+                    onClick={() => dialogMap.zoomOut()}
+                    label={t('map_zoom-out_button_label')}
+                  >
+                    <IconMinus />
+                  </IconButton>
+                </ButtonGroup>
+              )}
             </div>
           )}
         </Dialog.Content>
