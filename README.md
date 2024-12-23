@@ -42,6 +42,19 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the web form.
 
+### Multilanguage support
+To set up and try out multilanguage support add the following lines to the `config.json`:
+```
+"supportedLanguages": [
+  ...,
+  {
+    "label": "Switch to English",
+    "lang": "en",
+    "name": "English"
+  }
+ ]
+```
+
 ## Techniques
 
 - [Next.js](https://nextjs.org) with the App Router for the web application.
