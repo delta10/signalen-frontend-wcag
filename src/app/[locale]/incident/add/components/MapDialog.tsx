@@ -72,11 +72,6 @@ type MapDialogProps = {
   isAssetSelect?: boolean
 } & React.HTMLAttributes<HTMLDivElement>
 
-type objectDisplayName = {
-  singular: string
-  plural: string
-}
-
 const MapDialog = ({
   trigger,
   onMapReady,
@@ -93,7 +88,7 @@ const MapDialog = ({
   const { loading, config } = useConfig()
   const dialogRef = useRef<HTMLDialogElement>(null)
   const mapContainerRef = useRef<HTMLDivElement>(null)
-  const [isMapSelected, setIsMapSelected] = useState<boolean | null>(null)
+  const [isMapSelected, setIsMapSelected] = useState<boolean | null>(true)
   const [mapFeatures, setMapFeatures] = useState<FeatureCollection | null>()
   const { setValue } = useFormContext()
   const { isDarkMode } = useDarkMode()
@@ -110,7 +105,7 @@ const MapDialog = ({
   const [viewState, setViewState] = useState<ViewState>({
     latitude: 0,
     longitude: 0,
-    zoom: 15,
+    zoom: 18,
     bearing: 0,
     padding: {
       top: 0,
@@ -169,7 +164,7 @@ const MapDialog = ({
 
       setMapFeatures({ ...features, features: featuresWithId })
     }
-  }, [features])
+  }, [features, field])
 
   // memoize list of features to show in left sidebar
   const featureList = useMemo(() => {
@@ -185,7 +180,7 @@ const MapDialog = ({
     }
 
     return []
-  }, [formState.selectedFeatures, mapFeatures?.features, dialogMap?.getZoom()])
+  }, [config, dialogMap, formState, mapFeatures])
 
   // Update position, flyTo position, after this set the marker position
   const updatePosition = (lat: number, lng: number) => {
@@ -434,7 +429,7 @@ const MapDialog = ({
               </ButtonGroup>
             </form>
           </AlertDialog>
-          <div className="col-span-1 flex flex-col min-h-[100vh] max-h-[100vh] md:max-h-screen gap-4">
+          <form className="col-span-1 flex flex-col min-h-[100vh] max-h-[100vh] md:max-h-screen gap-4">
             <div className="flex flex-col overflow-y-auto gap-4 p-4">
               <Heading level={1}>
                 {field?.meta.language.title
@@ -446,10 +441,7 @@ const MapDialog = ({
 
               <div className="flex flex-col py-2">
                 <label htmlFor="address">{t('search_address_label')}</label>
-                <AddressCombobox
-                  updatePosition={updatePosition}
-                  setIsMapSelected={setIsMapSelected}
-                />
+                <AddressCombobox />
               </div>
 
               <div className="block md:hidden">
@@ -513,6 +505,7 @@ const MapDialog = ({
               <Button
                 appearance="primary-action-button"
                 className="ml-4 mr-4 mb-4"
+                type="submit"
               >
                 {isAssetSelect
                   ? formState.selectedFeatures.length === 0
@@ -536,7 +529,7 @@ const MapDialog = ({
                   : t('choose_this_location')}
               </Button>
             </Dialog.Close>
-          </div>
+          </form>
           {config && (
             <div
               className="col-span-1 md:col-span-2 min-h-[100vh] max-h-[50vh] md:max-h-screen relative"

@@ -85,18 +85,23 @@ export const AddressCombobox = ({
       updateForm({
         ...formState,
         address: selectedAddress,
-        coordinates: [
+        coordinates: selectedAddress && [
           selectedAddress.coordinates[1],
           selectedAddress.coordinates[0],
         ],
       })
+    } else {
+      updateForm({
+        ...formState,
+        address: selectedAddress,
+      })
+    }
 
-      if (updatePosition) {
-        updatePosition(
-          selectedAddress.coordinates[1],
-          selectedAddress.coordinates[0]
-        )
-      }
+    if (selectedAddress && updatePosition) {
+      updatePosition(
+        selectedAddress.coordinates[1],
+        selectedAddress.coordinates[0]
+      )
     }
 
     if (setIsMapSelected) {
