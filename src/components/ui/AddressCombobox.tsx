@@ -113,7 +113,7 @@ export const AddressCombobox = ({
         autoComplete="off"
       />
 
-      <ComboboxOptions as={Listbox} anchor="bottom">
+      <ComboboxOptions as={Listbox} anchor="bottom" className="z-[9999]">
         {addressOptions.length > 0 ? (
           addressOptions.map((address) => (
             <ComboboxOption key={address.id} value={address} as={Fragment}>
