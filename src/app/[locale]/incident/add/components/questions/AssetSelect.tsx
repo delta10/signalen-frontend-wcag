@@ -30,6 +30,7 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
   const {
     setValue,
     formState: { errors },
+    register,
   } = useFormContext()
   const errorMessage = errors['location']?.message as string
   const { formState: formStoreState } = useFormStore()
@@ -141,7 +142,7 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
         {t('choose_address_description')}
       </FormFieldDescription>
 
-      <div className="mb-4">
+      <div className="mb-4" {...register('location')}>
         <AddressCombobox />
       </div>
 

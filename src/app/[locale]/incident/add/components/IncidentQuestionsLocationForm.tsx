@@ -146,10 +146,18 @@ export const IncidentQuestionsLocationForm = () => {
     }
   }
 
+  const handleError = (errors: Record<string, any>) => {
+    // Get the first field with an error
+    const firstErrorKey = Object.keys(errors)[0]
+    if (firstErrorKey) {
+      methods.setFocus(firstErrorKey) // Focus the field with the first error
+    }
+  }
+
   return (
     <FormProvider {...methods}>
       <form
-        onSubmit={methods.handleSubmit(onSubmit)}
+        onSubmit={methods.handleSubmit(onSubmit, handleError)}
         className="flex flex-col gap-8 items-start"
       >
         {additionalQuestions.length ? (

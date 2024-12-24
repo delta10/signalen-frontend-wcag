@@ -89,7 +89,7 @@
       "objects": "objects"
     },
     "address": {
-      "no_results": "No addresses found, please check your spelling or try a less specific search."
+      "no_results": "No addresses found."
     }
   },
   "describe_contact": {

@@ -33,6 +33,7 @@ export const AddressCombobox = ({
   const [query, setQuery] = useState('')
   const { config } = useConfig()
   const [addressOptions, setAddressOptions] = useState<any[]>([])
+  const [loading, setLoading] = useState<boolean>(false)
   const { formState, updateForm } = useFormStore()
   const t = useTranslations('describe_add.address')
 
@@ -52,6 +53,7 @@ export const AddressCombobox = ({
 
     const getAddressOptions = async () => {
       if (query.length >= 1) {
+        setLoading(true)
         const apiCall = await getSuggestedAddresses(
           normalizedQuery,
           municipality
@@ -68,7 +70,7 @@ export const AddressCombobox = ({
         }))
 
         setAddressOptions(options)
-
+        setLoading(false)
         return
       }
 
@@ -112,24 +114,27 @@ export const AddressCombobox = ({
         onChange={(event) => setQuery(event.target.value)}
         autoComplete="off"
       />
-
-      <ComboboxOptions as={Listbox} anchor="bottom" className="z-[9999]">
-        {addressOptions.length > 0 ? (
-          addressOptions.map((address) => (
-            <ComboboxOption key={address.id} value={address} as={Fragment}>
-              {({ focus }) => (
-                <ListboxOption active={focus}>
-                  {address.weergave_naam}
-                </ListboxOption>
-              )}
-            </ComboboxOption>
-          ))
-        ) : (
-          <ComboboxOption value="" as={ListboxOption} disabled>
-            <StatusText>{t('no_results')}</StatusText>
-          </ComboboxOption>
-        )}
-      </ComboboxOptions>
+      {!loading && (
+        <ComboboxOptions as={Listbox} anchor="bottom" className="z-[9999]">
+          <div>
+            {addressOptions.length > 0 ? (
+              addressOptions.map((address) => (
+                <ComboboxOption as={Fragment} key={address.id} value={address}>
+                  {({ focus }) => (
+                    <ListboxOption active={focus}>
+                      {address.weergave_naam}
+                    </ListboxOption>
+                  )}
+                </ComboboxOption>
+              ))
+            ) : (
+              <ComboboxOption value="" as={ListboxOption} disabled>
+                <StatusText>{t('no_results')}</StatusText>
+              </ComboboxOption>
+            )}
+          </div>
+        </ComboboxOptions>
+      )}
     </Combobox>
   )
 }
