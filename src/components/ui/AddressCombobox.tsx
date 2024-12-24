@@ -108,15 +108,16 @@ export const AddressCombobox = ({
     <Combobox value={formState.address} onChange={onChangeAddress}>
       <ComboboxInput
         aria-label="Adres"
-        as={Textbox}
         displayValue={(address: any) => address?.weergave_naam}
         name="address"
         onChange={(event) => setQuery(event.target.value)}
         autoComplete="off"
+        className={'utrecht-textbox utrecht-textbox--html-input'}
       />
       {!loading && (
         <ComboboxOptions
           anchor="bottom"
+          className="address-listbox utrecht-listbox utrecht-listbox--html-div fixed z-[9999] pointer-events-auto"
         >
           <div>
             {addressOptions.length > 0 ? (
@@ -124,6 +125,7 @@ export const AddressCombobox = ({
                 <ComboboxOption
                   key={address.id}
                   value={address}
+                  className="utrecht-listbox__option data-[focus]:bg-blue-100 !px-3 !py-1"
                 >
                   {address.weergave_naam}
                 </ComboboxOption>
