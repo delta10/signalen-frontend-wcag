@@ -115,31 +115,20 @@ export const AddressCombobox = ({
         autoComplete="off"
       />
       {!loading && (
-        <ComboboxOptions
-          as={Listbox}
-          anchor="bottom"
-          className="z-[9999]"
-        >
+        <ComboboxOptions as={Listbox} anchor="bottom" className="z-[9999]">
           <div>
             {addressOptions.length > 0 ? (
               addressOptions.map((address) => (
-                <ComboboxOption
-                  as={Fragment}
-                  key={address.id}
-                  value={address}
-                >
+                <ComboboxOption as={Fragment} key={address.id} value={address}>
                   {({ focus }) => (
-                <ListboxOption active={focus}>
-                  {address.weergave_naam}
-                </ListboxOption>
-              )}
+                    <ListboxOption active={focus}>
+                      {address.weergave_naam}
+                    </ListboxOption>
+                  )}
                 </ComboboxOption>
               ))
             ) : (
-              <ComboboxOption
-                value=""
-                as={ListboxOption} disabled
-              >
+              <ComboboxOption value="" as={ListboxOption} disabled>
                 <StatusText>{t('no_results')}</StatusText>
               </ComboboxOption>
             )}
