@@ -11,9 +11,14 @@ import { LocationSelect } from '@/app/[locale]/incident/add/components/questions
 import { evaluateConditions } from '@/lib/utils/check-visibility'
 import { AssetSelect } from '@/app/[locale]/incident/add/components/questions/AssetSelect'
 
-export const RenderSingleField = ({ field }: { field: PublicQuestion }) => {
+type props = {
+  field: PublicQuestion
+  setIsBlocking: any
+}
+
+export const RenderSingleField = ({ field, setIsBlocking }: props) => {
   const [shouldRender, setShouldRender] = useState<boolean>(false)
-  const { watch, setValue } = useFormContext()
+  const { watch, setValue, unregister } = useFormContext()
   const { formState: formStoreState, updateForm } = useFormStore()
 
   const watchValues = watch()
@@ -131,6 +136,11 @@ export const RenderSingleField = ({ field }: { field: PublicQuestion }) => {
 
   // Register the field immediately with initial value
   useEffect(() => {
+    // unregisters field if it should not render
+    if (!shouldRender) {
+      unregister(field.key)
+    }
+
     const defaultValue =
       field.field_type === FieldTypes.CHECKBOX_INPUT
         ? getDefaultValueCheckboxInput(field.key)
@@ -145,15 +155,18 @@ export const RenderSingleField = ({ field }: { field: PublicQuestion }) => {
   // control hard stop
   useEffect(() => {
     if (field.meta.validators) {
-      const isBlocking =
-        field.meta.validators === 'isBlocking'
-          ? true
-          : !!field.meta.validators.includes('isBlocking')
+      const isBlocking = !!(
+        field.meta.validators === 'isBlocking' ||
+        (typeof field.meta.validators === 'object' &&
+          field.meta.validators.includes('isBlocking'))
+      )
 
-      updateForm({
-        ...formStoreState,
-        isBlocking: shouldRender ? isBlocking : false,
-      })
+      setIsBlocking(shouldRender ? isBlocking : false)
+      // refactor uit de state
+      // updateForm({
+      //   ...formStoreState,
+      //   isBlocking: shouldRender ? isBlocking : false,
+      // })
     }
   }, [field, shouldRender])
 

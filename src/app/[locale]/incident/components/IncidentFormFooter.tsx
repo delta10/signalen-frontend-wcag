@@ -10,7 +10,7 @@ import {
   IconLoader2,
   IconSend,
 } from '@tabler/icons-react'
-import { FieldErrors } from 'react-hook-form'
+import { FieldErrors, useFormContext } from 'react-hook-form'
 import { getCurrentStep, getPreviousStepPath } from '@/lib/utils/stepper'
 import { FormStep } from '@/types/form'
 import { useFormStore } from '@/store/form_store'
@@ -20,6 +20,7 @@ type IncidentFormFooterProps = {
   loading?: boolean
   ariaDescribedById?: string
   errors?: FieldErrors
+  blockNext?: boolean
 } & React.HTMLAttributes<HTMLDivElement>
 
 const IncidentFormFooter = ({
@@ -27,12 +28,14 @@ const IncidentFormFooter = ({
   loading,
   ariaDescribedById,
   errors,
+  blockNext,
 }: IncidentFormFooterProps) => {
   const t = useTranslations('general.form')
   const pathname = usePathname()
   const router = useRouter()
   const step = getCurrentStep(pathname)
   const { formState } = useFormStore()
+  const form = useFormContext()
 
   const goBack = () => {
     const previousStep = getPreviousStepPath(step)
@@ -58,7 +61,7 @@ const IncidentFormFooter = ({
             appearance="primary-action-button"
             type="submit"
             className="!flex !flex-row !items-center"
-            disabled={formState.isBlocking}
+            disabled={blockNext}
           >
             {t('next_button')}
             <Icon>
