@@ -20,6 +20,7 @@ type IncidentFormFooterProps = {
   loading?: boolean
   ariaDescribedById?: string
   errors?: FieldErrors
+  blockNext?: boolean
 } & React.HTMLAttributes<HTMLDivElement>
 
 const IncidentFormFooter = ({
@@ -27,6 +28,7 @@ const IncidentFormFooter = ({
   loading,
   ariaDescribedById,
   errors,
+  blockNext,
 }: IncidentFormFooterProps) => {
   const t = useTranslations('general.form')
   const pathname = usePathname()
@@ -59,7 +61,7 @@ const IncidentFormFooter = ({
             appearance="primary-action-button"
             type="submit"
             className="!flex !flex-row !items-center"
-            disabled={formState.isBlocking}
+            disabled={blockNext}
           >
             {t('next_button')}
             <Icon>
