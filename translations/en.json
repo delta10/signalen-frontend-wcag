@@ -135,7 +135,7 @@
     "description_notification_email": "Did you provide an email address? You will receive an email with all the details of your report.",
     "what_do_we_do_heading": "What do we do with your report?",
     "what_do_we_do_description": "Your report is scheduled: we will inform you within 5 working days about how and when your report will be handled. We will do this via email.",
-    "new_notification": "New report"
+    "new_notification": "Create another report"
   },
   "general": {
     "form": {
