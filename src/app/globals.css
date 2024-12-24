@@ -124,11 +124,17 @@
   display: flex;
   flex-direction: column;
 }
+.utrecht-alert-dialog {
+  margin: 0 auto;
+  margin-block-start: 128px !important;
+}
 
 .map-alert-dialog__content {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  max-width: 400px;
+  min-width: 400px;
 }
 
 .utrecht-alert__content-closable {
@@ -138,9 +144,9 @@
   gap: 8px;
 }
 
-.utrecht-alert {
+/* .utrecht-alert {
   --utrecht-paragraph-color: currentColor;
-}
+} */
 
 .map-marker-icon {
   --utrecht-icon-size: var(--utrecht-map-marker-size, 42px);
