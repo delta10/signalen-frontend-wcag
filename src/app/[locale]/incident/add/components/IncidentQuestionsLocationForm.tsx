@@ -15,6 +15,7 @@ import { getCurrentStep, getNextStepPath } from '@/lib/utils/stepper'
 
 export const IncidentQuestionsLocationForm = () => {
   const { formState: formStoreState, updateForm } = useFormStore()
+  const [isBlocking, setIsBlocking] = useState(false)
   const [additionalQuestions, setAdditionalQuestions] = useState<
     PublicQuestion[]
   >([])
@@ -164,12 +165,21 @@ export const IncidentQuestionsLocationForm = () => {
             const question = additionalQuestions[index]
             const fieldName = question.key
 
-            return <RenderSingleField key={fieldName} field={question} />
+            return (
+              <RenderSingleField
+                key={fieldName}
+                field={question}
+                setIsBlocking={setIsBlocking}
+              />
+            )
           })
         ) : (
           <LocationSelect />
         )}
-        <IncidentFormFooter errors={methods.formState.errors} />
+        <IncidentFormFooter
+          errors={methods.formState.errors}
+          blockNext={isBlocking}
+        />
       </form>
     </FormProvider>
   )
