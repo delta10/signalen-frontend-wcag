@@ -14,8 +14,7 @@
     "header": {
       "logo": {
         "alt": "Gemeente Purmerend logo, naar de homepagina",
-        "url": "purmerend-logo.svg",
-        "dark_mode_url": "purmerend-logo-design-tokens.svg",
+        "url": "purmerend-logo-design-tokens.svg",
         "caption": "Purmerend"
       }
     },
