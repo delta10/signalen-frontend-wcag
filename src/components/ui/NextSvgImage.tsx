@@ -15,7 +15,7 @@ export const NextSvgImage = ({
 }: NextSvgImageProps) => {
   return (
     <>
-      {priority ? (
+      {typeof src === 'string' && priority ? (
         <Head>
           <link rel="preload" href={src} as="fetch" />
         </Head>
