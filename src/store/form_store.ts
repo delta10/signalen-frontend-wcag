@@ -2,7 +2,8 @@ import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
 import { FormStore, FormStoreState } from '@/types/stores'
-import { FormStep } from '@/types/form'
+import { FormStep, isMinimalAddress } from '@/types/form'
+import merge from 'lodash/merge'
 
 const initialFormState: FormStoreState = {
   description: '',
@@ -21,7 +22,11 @@ const initialFormState: FormStoreState = {
   last_completed_step: FormStep.STEP_0,
 }
 
-const useFormStore = create<FormStore>()(
+export const createFormState = (
+  data: Partial<FormStoreState>
+): FormStoreState => merge({}, initialFormState, data)
+
+export const useFormStore = create<FormStore>()(
   persist(
     immer((set) => ({
       formState: {
@@ -47,4 +52,29 @@ const useFormStore = create<FormStore>()(
   )
 )
 
-export { useFormStore }
+export const createSessionStorageFixture = (
+  data: Partial<FormStoreState>
+): { [index: string]: string } => {
+  const formState = createFormState(data)
+  return {
+    form: JSON.stringify({
+      state: {
+        formState,
+        loaded: false,
+      },
+      version: 0,
+    }),
+  }
+}
+
+export const isValidForStep2 = (formState: FormStoreState) => {
+  return formState.description.length >= 1
+}
+
+export const isValidForStep3 = (formState: FormStoreState) => {
+  return (
+    isValidForStep2(formState) &&
+    !!formState.address &&
+    isMinimalAddress(formState.address)
+  )
+}
