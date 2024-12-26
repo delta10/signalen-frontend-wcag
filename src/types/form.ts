@@ -38,7 +38,7 @@ export enum FormStep {
 }
 
 export interface Address {
-  postcode: string
+  postcode?: string
   huisnummer: string | number
   woonplaats: string
   openbare_ruimte: string
