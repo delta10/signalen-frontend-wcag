@@ -1,7 +1,7 @@
 'use client'
 
 import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentFormFooter'
-import { useTranslations } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { Divider } from '@/components/ui/Divider'
 import React, { ReactNode, useEffect, useState } from 'react'
 import { signalsClient } from '@/services/client/api-client'
@@ -19,6 +19,10 @@ import { getCurrentStep } from '@/lib/utils/stepper'
 import { getAttachments } from '@/lib/utils/attachments'
 import { useConfig } from '@/hooks/useConfig'
 import { ParagraphOrList } from '@/components/ui/ParagraphOrList'
+import {
+  coords2degreeMinuteSecondsFlat,
+  isCoordinatesTuple,
+} from '@/lib/utils/format-coordinates'
 
 const IncidentSummaryForm = () => {
   const t = useTranslations('describe_summary')
@@ -33,6 +37,7 @@ const IncidentSummaryForm = () => {
   const pathname = usePathname()
   const step = getCurrentStep(pathname)
   const { config } = useConfig()
+  const locale = useLocale()
 
   useEffect(() => {
     router.prefetch('/incident/thankyou')
@@ -117,6 +122,12 @@ const IncidentSummaryForm = () => {
     }
   }
 
+  const numberFormat = new Intl.NumberFormat(locale)
+  const unitDisplay: 'short' | 'long' = 'long'
+  const coordinates = isCoordinatesTuple(formState.coordinates)
+    ? coords2degreeMinuteSecondsFlat(formState.coordinates)
+    : null
+
   return (
     <div className="flex flex-col gap-8">
       <Paragraph appearance="lead">{t('description')}</Paragraph>
@@ -163,9 +174,62 @@ const IncidentSummaryForm = () => {
             value={formState.address?.weergave_naam}
           >
             <div
-              style={{ minHeight: 200, height: 200 }}
+              className="signalen-map-img"
               role="img"
-              aria-label=""
+              inert
+              data-lat={formState.coordinates && formState.coordinates[0]}
+              data-lon={formState.coordinates && formState.coordinates[1]}
+              aria-label={
+                coordinates
+                  ? t('map_coords', {
+                      coords: t('coords', {
+                        latitudeDegree: numberFormat.format(
+                          coordinates.latitudeDegree
+                        ),
+                        latitudeMinute: numberFormat.format(
+                          coordinates.latitudeMinute
+                        ),
+                        latitudeSecond: numberFormat.format(
+                          coordinates.latitudeSecond
+                        ),
+                        longitudeDegree: numberFormat.format(
+                          coordinates.longitudeDegree
+                        ),
+                        longitudeMinute: numberFormat.format(
+                          coordinates.longitudeMinute
+                        ),
+                        longitudeSecond: numberFormat.format(
+                          coordinates.longitudeSecond
+                        ),
+                        latitudeDescription: coordinates.north
+                          ? t('north')
+                          : coordinates.south
+                            ? t('south')
+                            : '',
+                        longitudeDescription: coordinates.east
+                          ? t('east')
+                          : coordinates.west
+                            ? t('west')
+                            : '',
+                        degreeSuffix:
+                          // @ts-ignore
+                          unitDisplay === 'short'
+                            ? t('degree_short')
+                            : t('degree_long'),
+                        minuteSuffix:
+                          // @ts-ignore
+                          unitDisplay === 'short'
+                            ? t('minute_short')
+                            : t('minute_long'),
+                        secondSuffix:
+                          // @ts-ignore
+                          unitDisplay === 'short'
+                            ? t('second_short')
+                            : t('second_long'),
+                      }),
+                    })
+                  : undefined
+              }
             >
               <LocationMap />
             </div>
