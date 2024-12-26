@@ -46,3 +46,11 @@ export interface Address {
   id: string
   coordinates: number[]
 }
+
+export const isMinimalAddress = ({ coordinates }: Address): boolean => {
+  return (
+    Array.isArray(coordinates) &&
+    coordinates.length === 2 &&
+    coordinates.every((n) => typeof n === 'number' && Number.isFinite(n))
+  )
+}
