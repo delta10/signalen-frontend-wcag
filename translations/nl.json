@@ -114,6 +114,7 @@
   },
   "describe_summary": {
     "heading": "Versturen",
+    "step_marker": "Stap {step}.",
     "description": "Controleer uw gegevens en verstuur uw melding.",
     "edit_step_report": "Wijzig uw melding",
     "edit_step_add": "Wijzig locatie en vragen",

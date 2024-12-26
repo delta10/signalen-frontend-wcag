@@ -114,6 +114,7 @@
   },
   "describe_summary": {
     "heading": "Submit",
+    "step_marker": "Step {step}.",
     "description": "Check your information and submit your report.",
     "edit_step_report": "Edit your report",
     "edit_step_add": "Edit location and questions",
