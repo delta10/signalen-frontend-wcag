@@ -129,6 +129,7 @@ export const FileUpload = React.forwardRef<HTMLLabelElement, FileUploadProps>(
                 className="flex dashed-focus"
                 ref={ref}
                 tabIndex={0}
+                role="button"
                 aria-label={
                   files.length === 0
                     ? t('button.upload_file')
