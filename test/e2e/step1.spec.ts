@@ -1,6 +1,9 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { expect, test as base } from '@playwright/test'
+import { expect, test as base, BrowserContext } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
+import { describe } from 'vitest'
+import { createSessionStorageFixture } from '@/store/form_store'
+import { FormStoreState } from '@/types/stores'
 
 type AxeFixture = {
   makeAxeBuilder: () => AxeBuilder
@@ -20,6 +23,22 @@ export const test = base.extend<AxeFixture>({
     await use(makeAxeBuilder)
   },
 })
+
+const sessionStorageFixture = (
+  context: BrowserContext,
+  sessionStorage: { [index: string]: string }
+) =>
+  context.addInitScript((storage) => {
+    for (const [key, value] of Object.entries(storage)) {
+      window.sessionStorage.setItem(key, value)
+      console.log(key, value)
+    }
+  }, sessionStorage)
+
+const formStateFixture = (
+  context: BrowserContext,
+  formState: Partial<FormStoreState>
+) => sessionStorageFixture(context, createSessionStorageFixture(formState))
 
 test.use({
   locale: 'nl-NL',
@@ -66,9 +85,10 @@ parameters.slice(0, 1).forEach(async ({ name, testConfig, forcedColors }) => {
 
       const heading = page.getByRole('heading', {
         name: 'Beschrijf uw melding',
+        level: 1,
       })
 
-      await expect(heading).toBeDefined()
+      await expect(heading).toBeVisible()
     })
 
     test('Next link', async ({ page }) => {
@@ -76,7 +96,7 @@ parameters.slice(0, 1).forEach(async ({ name, testConfig, forcedColors }) => {
 
       const link = page.getByRole('button', { name: 'Volgende' })
 
-      await expect(link).toBeDefined()
+      await expect(link).toBeVisible()
     })
 
     test('Next page (too soon)', async ({ page }) => {
@@ -86,7 +106,7 @@ parameters.slice(0, 1).forEach(async ({ name, testConfig, forcedColors }) => {
 
       await link.click()
 
-      await expect(link).toBeDefined()
+      await expect(link).toBeVisible()
     })
 
     test('Focus textbox', async ({ page }) => {
@@ -94,7 +114,7 @@ parameters.slice(0, 1).forEach(async ({ name, testConfig, forcedColors }) => {
 
       const textbox = page.getByRole('textbox', { name: 'Waar gaat het om?' })
 
-      await expect(textbox).toBeDefined()
+      await expect(textbox).toBeVisible()
 
       await textbox.focus()
     })
@@ -104,11 +124,13 @@ parameters.slice(0, 1).forEach(async ({ name, testConfig, forcedColors }) => {
 
       const textbox = page.getByRole('textbox', { name: 'Waar gaat het om?' })
 
-      await expect(textbox).toBeDefined()
+      await expect(textbox).toBeVisible()
 
       await textbox.focus()
 
       page.keyboard.insertText('lamp kapot')
+
+      await textbox.blur()
     })
 
     test('Enter text (a11y)', async ({ makeAxeBuilder, page }) => {
@@ -119,14 +141,81 @@ parameters.slice(0, 1).forEach(async ({ name, testConfig, forcedColors }) => {
       expect(accessibilityScanResults.violations).toEqual([])
     })
 
+    test('Previously entered text', async ({ page, context }) => {
+      formStateFixture(context, { description: 'lamp is kapot' })
+
+      await page.goto(websiteURL)
+
+      const textbox = page.getByRole('textbox', { name: 'Waar gaat het om?' })
+
+      await expect(textbox).toBeVisible()
+
+      await expect(textbox).toHaveValue('lamp is kapot')
+    })
+
+    test('Go to next step', async ({ page, context }) => {
+      formStateFixture(context, { description: 'lamp' })
+
+      await page.goto(websiteURL)
+
+      // Submitting the form stores the form data, so it will be available
+      // in tests of the next step.
+      const button = page.getByRole('button', { name: 'Volgende' })
+
+      await expect(button).toBeVisible()
+
+      await button.click()
+    })
+
     test('Next page', async ({ page }) => {
       await page.goto(websiteURL)
 
-      const link = page.getByRole('button', { name: 'Volgende' })
+      const button = page.getByRole('button', { name: 'Volgende' })
 
-      await link.click()
+      await button.click()
 
-      await expect(link).toBeDefined()
+      await expect(button).toBeVisible()
+    })
+
+    test.describe('step 2', () => {
+      const pageURL = 'http://localhost:3000/nl/incident/vulaan'
+      test('has title', async ({ page, context }) => {
+        formStateFixture(context, { description: 'lamp' })
+
+        await page.goto(pageURL)
+
+        // Expect a title "to contain" a substring with the step
+        await expect(page).toHaveTitle(/Stap 2 van 4/i)
+
+        // Expect a title "to contain" a substring.
+        await expect(page).toHaveTitle(/Purmerend/i)
+      })
+
+      test('has heading', async ({ context, page }) => {
+        formStateFixture(context, { description: 'lamp' })
+
+        await page.goto(pageURL)
+
+        const heading = page.getByRole('heading', {
+          name: 'Locatie en vragen',
+          level: 1,
+        })
+
+        await expect(heading).toBeVisible()
+      })
+
+      test('Focus combobox', async ({ context, page }) => {
+        formStateFixture(context, { description: 'lamp' })
+
+        await page.goto(pageURL)
+
+        // const combobox = page.getByRole('combobox', { name: 'Adres' })
+        const combobox = page.getByRole('combobox')
+
+        await expect(combobox).toBeVisible()
+
+        await combobox.focus()
+      })
     })
   })
 })
