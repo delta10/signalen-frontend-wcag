@@ -128,7 +128,19 @@
         "heading": "Processing",
         "description": "Your report is being processed. You will automatically go to the next page once the report is received.\n\nPlease wait a moment...."
       }
-    }
+    },
+    "map_coords": "map zoomed into {coords}",
+    "coords": "{latitudeDegrees} {latitudeMinutes} {latitudeDescription}, {longitudeDegrees} {longitudeMinutes} {longitudeDescription}",
+    "north": "North",
+    "south": "South",
+    "east": "East",
+    "west": "West",
+    "degree_long": " degrees",
+    "minute_long": " minutes",
+    "second_long": " seconds",
+    "degree_short": "°",
+    "minute_short": "′",
+    "second_short": "″"
   },
   "describe_thankyou": {
     "heading": "Report submitted",
