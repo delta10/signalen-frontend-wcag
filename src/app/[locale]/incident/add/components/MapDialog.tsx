@@ -434,7 +434,7 @@ const MapDialog = ({
               </ButtonGroup>
             </form>
           </AlertDialog>
-          <div className="col-span-1 flex flex-col min-h-[100vh] max-h-[100vh] md:max-h-screen gap-4">
+          <form className="col-span-1 flex flex-col min-h-[100vh] max-h-[100vh] md:max-h-screen gap-4">
             <div className="flex flex-col overflow-y-auto gap-4 p-4">
               <Heading level={1}>
                 {field?.meta.language.title
@@ -513,6 +513,7 @@ const MapDialog = ({
               <Button
                 appearance="primary-action-button"
                 className="ml-4 mr-4 mb-4"
+                type="submit"
               >
                 {isAssetSelect
                   ? formState.selectedFeatures.length === 0
@@ -536,7 +537,7 @@ const MapDialog = ({
                   : t('choose_this_location')}
               </Button>
             </Dialog.Close>
-          </div>
+          </form>
           {config && (
             <div
               className="col-span-1 md:col-span-2 min-h-[100vh] max-h-[50vh] md:max-h-screen relative"
