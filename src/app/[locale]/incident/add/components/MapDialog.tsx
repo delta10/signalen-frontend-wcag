@@ -434,7 +434,10 @@ const MapDialog = ({
               </ButtonGroup>
             </form>
           </AlertDialog>
-          <form className="col-span-1 flex flex-col min-h-[100vh] max-h-[100vh] md:max-h-screen gap-4">
+          <form
+            method="dialog"
+            className="col-span-1 flex flex-col min-h-[100vh] max-h-[100vh] md:max-h-screen gap-4"
+          >
             <div className="flex flex-col overflow-y-auto gap-4 p-4">
               <Heading level={1}>
                 {field?.meta.language.title
