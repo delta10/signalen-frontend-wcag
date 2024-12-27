@@ -1,4 +1,5 @@
-import Map, { Marker, ViewState } from 'react-map-gl/maplibre'
+import { Marker, ViewState } from 'react-map-gl/maplibre'
+import { Map } from './Map'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useFormStore } from '@/store/form_store'

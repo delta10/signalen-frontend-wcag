@@ -1,0 +1,31 @@
+/* summary page grid */
+.summary-grid {
+  display: grid;
+  grid-template-areas:
+    'summary-heading summary-link'
+    'summary-body summary-body';
+  grid-template-columns: 1fr auto;
+  gap: 1rem;
+}
+
+/* 640px is the "SM" breakpoint in tailwind */
+@media only screen and (max-width: 640px) {
+  .summary-grid {
+    grid-template-areas:
+      'summary-heading summary-heading'
+      'summary-body summary-body'
+      'summary-link summary-link';
+  }
+}
+
+.summary-grid__heading {
+  grid-area: summary-heading;
+}
+
+.summary-grid__main {
+  grid-area: summary-body;
+}
+
+.summary-grid__link {
+  grid-area: summary-link;
+}
