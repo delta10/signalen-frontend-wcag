@@ -25,11 +25,11 @@ const Header = () => {
         organization: config?.base.municipality_display_name,
       })
 
-  const logoElement = (
+  const logoElement = logo ? (
     <Logo caption={config ? config.base.header.logo.caption : ''}>
       <NextSvgImage src={`/assets/${logo}`} alt={logoAltText} priority={true} />
     </Logo>
-  )
+  ) : null
 
   return (
     <>

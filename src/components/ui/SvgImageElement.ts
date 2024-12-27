@@ -66,7 +66,7 @@ export class SvgImageElement extends HTMLElement {
       )
     }
 
-    if (src) {
+    if (typeof src === 'string') {
       const init = async () => {
         const response = await fetch(src)
         const data = await response.text()
