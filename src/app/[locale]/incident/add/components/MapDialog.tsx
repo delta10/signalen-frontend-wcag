@@ -104,7 +104,7 @@ const MapDialog = ({
       singular: field?.meta.language.objectTypeSingular || t('object'),
       plural: field?.meta.language.objectTypePlural || t('objects'),
     }),
-    [field?.meta.language]
+    [field?.meta.language, t]
   )
 
   const [viewState, setViewState] = useState<ViewState>({
@@ -124,8 +124,8 @@ const MapDialog = ({
   // Set viewState coordinates to configured ones
   useEffect(() => {
     if (!loading && config) {
-      setViewState({
-        ...viewState,
+      setViewState((currentState) => ({
+        ...currentState,
         latitude:
           formState.coordinates[0] === 0
             ? config.base.map.center[0]
@@ -134,7 +134,7 @@ const MapDialog = ({
           formState.coordinates[1] === 0
             ? config.base.map.center[1]
             : formState.coordinates[1],
-      })
+      }))
     }
   }, [loading, config, formState.coordinates])
 
@@ -169,7 +169,7 @@ const MapDialog = ({
 
       setMapFeatures({ ...features, features: featuresWithId })
     }
-  }, [features])
+  }, [features, field])
 
   // memoize list of features to show in left sidebar
   const featureList = useMemo(() => {
@@ -185,7 +185,7 @@ const MapDialog = ({
     }
 
     return []
-  }, [formState.selectedFeatures, mapFeatures?.features, dialogMap?.getZoom()])
+  }, [config, dialogMap, formState.selectedFeatures, mapFeatures])
 
   // Update position, flyTo position, after this set the marker position
   const updatePosition = (lat: number, lng: number) => {
@@ -391,7 +391,7 @@ const MapDialog = ({
       // @ts-ignore
       canvas?.removeEventListener('keydown', eventHandler)
     }
-  }, [dialogMap, onMapReady])
+  }, [dialogMap, keyDownHandler, onMapReady])
 
   const assetSelectFeatureLabel =
     isAssetSelect && field ? field.meta.language.title || field.meta.label : ''

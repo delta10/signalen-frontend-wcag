@@ -84,7 +84,7 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
         dialogMap.off('move', setNewFeatures)
       }
     }
-  }, [dialogMap])
+  }, [config, dialogMap, field])
 
   // If formStoreState.selectedFeatures changes, populate form with selected assets
   useEffect(() => {
@@ -127,7 +127,7 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
     }
 
     populateFormValueWithAssets()
-  }, [formStoreState.selectedFeatures])
+  }, [config, field, formStoreState.selectedFeatures, setValue])
 
   return (
     <Fieldset invalid={Boolean(errorMessage)} className="w-full">
