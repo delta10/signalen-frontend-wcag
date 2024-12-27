@@ -1,15 +1,5 @@
 import * as Dialog from '@radix-ui/react-dialog'
-import React, {
-  ForwardedRef,
-  forwardRef,
-  PropsWithChildren,
-  ReactNode,
-  useEffect,
-  useId,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { debounce, uniqBy } from 'lodash'
 import {
   MapLayerMouseEvent,
@@ -63,7 +53,6 @@ import {
 } from '@/lib/utils/address'
 import MapExplainerAccordion from './questions/MapExplainerAccordion'
 import { useWindowSize } from 'usehooks-ts'
-import { string } from 'zod'
 import './MapDialog.css'
 
 type MapDialogProps = {
@@ -73,11 +62,6 @@ type MapDialogProps = {
   field?: PublicQuestion
   isAssetSelect?: boolean
 } & React.HTMLAttributes<HTMLDivElement>
-
-type objectDisplayName = {
-  singular: string
-  plural: string
-}
 
 const MapDialog = ({
   trigger,
