@@ -73,12 +73,15 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
     }
 
     if (dialogMap) {
-      dialogMap.on('moveend', setNewFeatures)
+      dialogMap.on('load', setNewFeatures)
+
+      dialogMap.on('move', setNewFeatures)
     }
 
     return () => {
       if (dialogMap) {
-        dialogMap.off('moveend', setNewFeatures)
+        dialogMap.off('load', setNewFeatures)
+        dialogMap.off('move', setNewFeatures)
       }
     }
   }, [dialogMap])
