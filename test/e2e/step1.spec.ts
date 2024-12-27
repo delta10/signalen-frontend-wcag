@@ -128,7 +128,7 @@ parameters.slice(0, 1).forEach(async ({ name, testConfig, forcedColors }) => {
 
       await textbox.focus()
 
-      page.keyboard.insertText('lamp kapot')
+      await textbox.fill('lamp kapot')
 
       await textbox.blur()
     })
@@ -209,12 +209,38 @@ parameters.slice(0, 1).forEach(async ({ name, testConfig, forcedColors }) => {
 
         await page.goto(pageURL)
 
-        // const combobox = page.getByRole('combobox', { name: 'Adres' })
-        const combobox = page.getByRole('combobox')
+        const combobox = page.getByRole('combobox', { name: 'Adres' })
 
         await expect(combobox).toBeVisible()
 
         await combobox.focus()
+      })
+
+      test('Open location dialog', async ({ context, page }) => {
+        formStateFixture(context, { description: 'lamp' })
+
+        await page.goto(pageURL)
+
+        const locationButton = page.getByRole('button', {
+          name: 'Kies Locatie',
+        })
+
+        await expect(locationButton).toBeVisible()
+
+        await locationButton.click()
+      })
+
+      test('Click my location button', async ({ context, page }) => {
+        formStateFixture(context, { description: 'lamp' })
+        await page.goto(pageURL)
+
+        const myLocationButton = page.getByRole('button', {
+          name: 'Mijn locatie',
+        })
+
+        await expect(myLocationButton).toBeVisible()
+
+        await myLocationButton.click()
       })
     })
   })
