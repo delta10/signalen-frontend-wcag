@@ -47,12 +47,12 @@ const FormProgress = ({ children }: FormProgressProps) => {
 
         <div className="flex flex-col gap-3 pb-2">
           {children}
-          <div className="overflow-hidden w-full background-gray-200">
+          <div className="overflow-hidden w-full disabled-fill-1">
             <div
               style={{
                 width: `${percentage}%`,
               }}
-              className="h-2 background-primary"
+              className="h-2 primary-fill-1"
             />
           </div>
         </div>
