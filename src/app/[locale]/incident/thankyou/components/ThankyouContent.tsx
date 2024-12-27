@@ -18,7 +18,7 @@ export const ThankyouContent = () => {
   }
 
   return (
-    <div className="flex flex-col gap-8">
+    <main className="flex flex-col gap-8">
       <Heading level={1}>{t('heading')}</Heading>
       <div className="flex flex-col gap-2">
         <Paragraph>
@@ -34,6 +34,6 @@ export const ThankyouContent = () => {
       <Button appearance="primary-action-button" onClick={() => resetState()}>
         {t('new_notification')}
       </Button>
-    </div>
+    </main>
   )
 }
