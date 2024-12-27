@@ -36,6 +36,16 @@ export const RadioInput = ({ field }: RadioGroupProps) => {
       invalid={Boolean(errorMessage)}
       errorMessage={errorMessage}
       description={field.meta.subtitle}
+      onFocus={(evt) => {
+        const label = evt.target.closest('label')
+        if (label) {
+          label.scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest',
+            inline: 'nearest',
+          })
+        }
+      }}
     ></RadioGroupNLDS>
   )
 }

@@ -122,6 +122,16 @@ export const FeatureListItem = ({
           id={featureId.toString()}
           // @ts-ignore
           onChange={(e) => addOrRemoveFeature(e.target.checked)}
+          onFocus={(evt) => {
+            const label = evt.target.closest('label')
+            if (label) {
+              label.scrollIntoView({
+                behavior: 'smooth',
+                block: 'nearest',
+                inline: 'nearest',
+              })
+            }
+          }}
         />
       </FormField>
     </li>

@@ -4,6 +4,7 @@ import { getValidators } from '@/lib/utils/form-validator'
 import React from 'react'
 import { useFormContext } from 'react-hook-form'
 import { CheckboxGroup } from '@/components/index'
+import type { FocusEvent } from 'react'
 
 interface CheckboxInputProps extends QuestionField {}
 
@@ -31,6 +32,16 @@ export const CheckboxInput = ({ field }: CheckboxInputProps) => {
           label: field.meta.values[key],
           value: key,
           id: `${field.key}-${key}`,
+          onFocus: (evt: FocusEvent<HTMLInputElement>) => {
+            const label = evt.target.closest('label')
+            if (label) {
+              label.scrollIntoView({
+                behavior: 'smooth',
+                block: 'nearest',
+                inline: 'nearest',
+              })
+            }
+          },
         }
       })}
       invalid={Boolean(errorMessage)}
