@@ -21,6 +21,7 @@ import { getGeoJsonFeatures } from '@/services/location/features'
 import { FeatureCollection } from 'geojson'
 import { AddressCombobox } from '@/components/ui/AddressCombobox'
 import { getNearestAddressByCoordinate } from '@/services/location/address'
+import { ParagraphOrList } from '@/components/ui/ParagraphOrList'
 
 export interface AssetSelectProps {
   field?: PublicQuestion
@@ -205,9 +206,12 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
       </div>
       <div>
         <Paragraph>{formStoreState.address?.weergave_naam}</Paragraph>
-        {formStoreState.selectedFeatures.map((feature: any) => (
-          <Paragraph key={feature.id}>{feature.description}</Paragraph>
-        ))}
+        <ParagraphOrList
+          entries={formStoreState.selectedFeatures.map((feature: any) => [
+            feature.id,
+            feature.description,
+          ])}
+        />
       </div>
     </Fieldset>
   )

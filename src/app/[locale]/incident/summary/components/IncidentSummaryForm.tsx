@@ -3,7 +3,7 @@
 import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentFormFooter'
 import { useTranslations } from 'next-intl'
 import { Divider } from '@/components/ui/Divider'
-import React, { useEffect, useState } from 'react'
+import React, { ReactNode, useEffect, useState } from 'react'
 import { signalsClient } from '@/services/client/api-client'
 import { stepToPath, usePathname, useRouter } from '@/routing/navigation'
 import { postAttachments } from '@/services/attachment/attachments'
@@ -18,6 +18,7 @@ import { LocationMap } from '@/components/ui/LocationMap'
 import { getCurrentStep } from '@/lib/utils/stepper'
 import { getAttachments } from '@/lib/utils/attachments'
 import { useConfig } from '@/hooks/useConfig'
+import { ParagraphOrList } from '@/components/ui/ParagraphOrList'
 
 const IncidentSummaryForm = () => {
   const t = useTranslations('describe_summary')
@@ -176,17 +177,23 @@ const IncidentSummaryForm = () => {
                 title={answer.label}
                 key={answer.id}
                 value={
-                  typeof answer.answer === 'string'
-                    ? answer.answer
-                    : Array.isArray(answer.answer)
-                      ? answer.answer
-                          .filter(
-                            (singleAnswer) =>
-                              singleAnswer !== false && singleAnswer !== 'empty'
-                          )
-                          .map((singleAnswer) => singleAnswer.label)
-                          .join(', ')
-                      : answer.answer.label
+                  typeof answer.answer === 'string' ? (
+                    answer.answer
+                  ) : Array.isArray(answer.answer) ? (
+                    <ParagraphOrList
+                      entries={answer.answer
+                        .filter(
+                          (singleAnswer) =>
+                            singleAnswer !== false && singleAnswer !== 'empty'
+                        )
+                        .map((singleAnswer, index) => [
+                          singleAnswer.id || index,
+                          singleAnswer.label,
+                        ])}
+                    />
+                  ) : (
+                    answer.answer.label
+                  )
                 }
               />
             )
@@ -264,8 +271,8 @@ export const IncidentSummaryFormItem = ({
   children,
 }: {
   title: string
-  value: string | null | undefined
-  children?: React.ReactElement
+  value: ReactNode | null | undefined
+  children?: ReactNode
 }) => {
   return (
     <div className="flex flex-col gap-1">
