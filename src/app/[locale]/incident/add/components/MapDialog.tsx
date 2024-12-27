@@ -110,7 +110,7 @@ const MapDialog = ({
   const [viewState, setViewState] = useState<ViewState>({
     latitude: 0,
     longitude: 0,
-    zoom: 15,
+    zoom: 18,
     bearing: 0,
     padding: {
       top: 0,
