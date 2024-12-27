@@ -124,7 +124,9 @@ const IncidentSummaryForm = () => {
 
       <div className="summary-grid">
         <div className="summary-grid__heading">
-          <Heading level={2}>1. {tStepReport('heading')}</Heading>
+          <Heading level={2}>
+            {t('step_marker', { step: 1 })} {tStepReport('heading')}
+          </Heading>
         </div>
         <div className="summary-grid__main">
           <IncidentSummaryFormItem
@@ -149,7 +151,9 @@ const IncidentSummaryForm = () => {
 
       <div className="summary-grid">
         <div className="sumary-grid__heading">
-          <Heading level={2}>2. {tStepAdd('heading')}</Heading>
+          <Heading level={2}>
+            {t('step_marker', { step: 2 })} {tStepAdd('heading')}
+          </Heading>
         </div>
 
         <div className="summary-grid__main flex flex-col gap-4">
@@ -200,7 +204,9 @@ const IncidentSummaryForm = () => {
 
       <div className="summary-grid">
         <div className="summary-grid__heading">
-          <Heading level={2}>{tStepContact('heading')}</Heading>
+          <Heading level={2}>
+            {t('step_marker', { step: 3 })} {tStepContact('heading')}
+          </Heading>
         </div>
         <div className="summary-grid__main flex flex-col gap-4">
           {!formState.phone &&
