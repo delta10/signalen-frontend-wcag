@@ -28,7 +28,8 @@
       "maxBounds": [
         [3.31497114423, 50.803721015],
         [7.09205325687, 53.5104033474]
-      ]
+      ],
+      "default_zoom": 12
     },
     "links": {
       "about": "https://signalen.org",

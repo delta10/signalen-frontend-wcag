@@ -96,7 +96,9 @@ const MapDialog = ({
   const [viewState, setViewState] = useState<ViewState>({
     latitude: 0,
     longitude: 0,
-    zoom: 18,
+    zoom: formState.address
+      ? config?.base.map.minimal_zoom || 17
+      : config?.base.map.default_zoom || 12,
     bearing: 0,
     padding: {
       top: 0,
@@ -157,10 +159,20 @@ const MapDialog = ({
     }
   }, [features, field])
 
+  useEffect(() => {
+    setViewState((state) => ({
+      ...state,
+      zoom: formState.address
+        ? config?.base.map.minimal_zoom || 17
+        : config?.base.map.default_zoom || 12,
+    }))
+  }, [config, formState])
+
   // memoize list of features to show in left sidebar
   const featureList = useMemo(() => {
     if (config && dialogMap) {
-      const mapFeaturesToShow = mapFeatures ? mapFeatures.features : []
+      const mapFeaturesToShow =
+        mapFeatures && formState.address ? mapFeatures.features : []
 
       const features =
         dialogMap?.getZoom() > config.base.map.minimal_zoom
@@ -171,14 +183,14 @@ const MapDialog = ({
     }
 
     return []
-  }, [config, dialogMap, formState.selectedFeatures, mapFeatures])
+  }, [config, dialogMap, formState, mapFeatures])
 
   // Update position, flyTo position, after this set the marker position
   const updatePosition = (lat: number, lng: number) => {
     if (dialogMap) {
       dialogMap.flyTo({
         center: [lng, lat],
-        zoom: 18,
+        zoom: config?.base.map.minimal_zoom || 17,
       })
     }
 
@@ -552,6 +564,7 @@ const MapDialog = ({
                 {onMapReady &&
                   dialogMap &&
                   dialogMap.getZoom() > config.base.map.minimal_zoom &&
+                  formState.address &&
                   mapFeatures?.features.map((feature) => {
                     const id = feature.id as number
 

@@ -14,7 +14,9 @@ const LocationMap = () => {
   const [viewState, setViewState] = useState<ViewState>({
     latitude: 0,
     longitude: 0,
-    zoom: 14,
+    zoom: formState.address
+      ? config?.base.map.minimal_zoom || 17
+      : config?.base.map.default_zoom || 12,
     bearing: 0,
     padding: {
       top: 0,
@@ -49,12 +51,21 @@ const LocationMap = () => {
 
   // Update viewState, to move map view with marker
   useEffect(() => {
-    setViewState({
-      ...viewState,
+    setViewState((state) => ({
+      ...state,
       latitude: marker[0],
       longitude: marker[1],
-    })
+    }))
   }, [marker])
+
+  useEffect(() => {
+    setViewState((state) => ({
+      ...state,
+      zoom: formState.address
+        ? config?.base.map.minimal_zoom || 17
+        : config?.base.map.default_zoom || 12,
+    }))
+  }, [config, formState])
 
   const mapStyle = isDarkMode
     ? `${process.env.NEXT_PUBLIC_MAPTILER_MAP_DARK_MODE}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`
