@@ -1,5 +1,6 @@
 import { IconMapPinFilled } from '@tabler/icons-react'
 import { Icon } from '@/components/index'
+import './MapMarker.css'
 
 export const MapMarker = () => (
   <Icon

@@ -1,0 +1,31 @@
+.signalen-progress-bar {
+  box-sizing: border-box;
+  display: inline-flex;
+  background-color: var(
+    --signalen-progress-bar-background-color,
+    var(--basis-color-disabled-fill-1)
+  );
+  block-size: var(--signalen-progress-bar-block-size, 0.5rem);
+  border-radius: var(--signalen-progress-bar-border-radius);
+  overflow: hidden;
+}
+
+.signalen-progress-bar__complete {
+  display: block;
+  background-color: var(
+    --signalen-progress-bar-complete-background-color,
+    var(--basis-color-primary-fill-1)
+  );
+}
+
+@media screen and (forced-colors: active) {
+  .signalen-progress-bar {
+    border-width: 1px;
+    border-style: solid;
+    border-color: CanvasText;
+    background-color: Canvas;
+  }
+  .signalen-progress-bar__complete {
+    background-color: CanvasText;
+  }
+}
