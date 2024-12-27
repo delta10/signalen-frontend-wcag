@@ -387,7 +387,10 @@ const MapDialog = ({
       <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay />
-        <Dialog.Content className="grid md:grid-cols-3 overflow-y-auto signalen-modal-dialog signalen-modal-dialog--cover-viewport">
+        <Dialog.Content
+          className="grid md:grid-cols-3 overflow-y-auto signalen-modal-dialog signalen-modal-dialog--cover-viewport"
+          id="headlessui-portal-root"
+        >
           <VisuallyHidden.Root>
             <Dialog.Title>
               {field?.meta.language.title
