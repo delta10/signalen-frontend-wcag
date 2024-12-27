@@ -128,7 +128,19 @@
         "heading": "Bezig met afhandelen",
         "description": "Uw melding wordt afgehandeld. U gaat automatisch naar de volgende pagina zodra de melding is ontvangen.\n\nEen ogenblik geduld alstublieft..."
       }
-    }
+    },
+    "coords": "{latitudeDegree}{degreeSuffix} {latitudeMinute}{minuteSuffix} {latitudeDescription}, {longitudeDegree}{degreeSuffix} {longitudeMinute}{minuteSuffix} {longitudeDescription}",
+    "map_coords": "kaart ingezoomd op {coords}",
+    "north": "noorderbreedte",
+    "south": "zuiderbreedte",
+    "east": "oosterlengte",
+    "west": "westerlengte",
+    "degree_long": " graden",
+    "minute_long": " minuten",
+    "second_long": " seconden",
+    "degree_short": "°",
+    "minute_short": "′",
+    "second_short": "″"
   },
   "describe_thankyou": {
     "heading": "Melding verzonden",
