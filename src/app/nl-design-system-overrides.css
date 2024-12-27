@@ -86,3 +86,7 @@
     var(--utrecht-radio-button-focus-color)
   ) !important;
 }
+
+.utrecht-checkbox--custom.utrecht-checkbox--html-input:focus:not(:checked) {
+  background-image: none !important;
+}
