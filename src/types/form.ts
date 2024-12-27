@@ -38,11 +38,19 @@ export enum FormStep {
 }
 
 export interface Address {
-  postcode: string
+  postcode?: string
   huisnummer: string | number
   woonplaats: string
   openbare_ruimte: string
   weergave_naam: string | null
   id: string
   coordinates: number[]
+}
+
+export const isMinimalAddress = ({ coordinates }: Address): boolean => {
+  return (
+    Array.isArray(coordinates) &&
+    coordinates.length === 2 &&
+    coordinates.every((n) => typeof n === 'number' && Number.isFinite(n))
+  )
 }

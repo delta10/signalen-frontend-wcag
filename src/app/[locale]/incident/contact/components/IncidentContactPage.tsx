@@ -1,7 +1,7 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
-import { useFormStore } from '@/store/form_store'
+import { isValidForStep3, useFormStore } from '@/store/form_store'
 import { Heading, HeadingGroup, PreHeading } from '@/components'
 import { IncidentContactForm } from '@/app/[locale]/incident/contact/components/IncidentContactForm'
 import FormProgress from '@/app/[locale]/components/FormProgress'
@@ -19,11 +19,13 @@ export const IncidentContactPage = () => {
   const { loaded, formState } = useFormStore()
 
   useEffect(() => {
-    if (loaded && formState.last_completed_step < FormStep.STEP_2_ADD) {
+    if (loaded && !isValidForStep3(formState)) {
       const lastPath = getLastPath(formState.last_completed_step)
 
       if (lastPath) {
         redirect(lastPath)
+      } else {
+        redirect('/')
       }
     }
   }, [loaded, formState])
