@@ -1,0 +1,24 @@
+.purmerend-theme {
+  --signalen-modal-dialog-background-color: var(
+    --utrecht-body-background-color
+  );
+  --signalen-modal-dialog-color: var(--utrecht-body-color);
+  --utrecht-icon-inset-block-start: 0.15em !important;
+  --utrecht-link-list-icon-inset-block-start: 0.15em !important;
+  --signalen-progress-bar-border-radius: 4px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .purmerend-theme--media-query,
+  .purmerend-theme--media-query-color-scheme {
+    --purmerend-logo-color-1: rgba(255 255 255 / 1);
+    --purmerend-logo-color-2: rgba(255 255 255 / 0.75);
+    --purmerend-logo-color-3: rgba(255 255 255 / 0.5);
+  }
+  .purmerend-theme--media-query :any-link:focus-visible,
+  .purmerend-theme--media-query-color-scheme :any-link:focus-visible {
+    --purmerend-logo-color-1: rgba(0 0 0 / 1);
+    --purmerend-logo-color-2: rgba(0 0 0 / 0.75);
+    --purmerend-logo-color-3: rgba(0 0 0 / 0.5);
+  }
+}

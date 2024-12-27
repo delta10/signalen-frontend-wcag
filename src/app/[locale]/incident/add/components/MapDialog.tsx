@@ -11,7 +11,7 @@ import React, {
   useState,
 } from 'react'
 import { debounce, uniqBy } from 'lodash'
-import Map, {
+import {
   MapLayerMouseEvent,
   MapRef,
   Marker,
@@ -19,6 +19,7 @@ import Map, {
   useMap,
   ViewState,
 } from 'react-map-gl/maplibre'
+import { Map } from '@/components/ui/Map'
 import { useTranslations } from 'next-intl'
 import * as VisuallyHidden from '@radix-ui/react-visually-hidden'
 import { useFormStore } from '@/store/form_store'
@@ -63,6 +64,7 @@ import {
 import MapExplainerAccordion from './questions/MapExplainerAccordion'
 import { useWindowSize } from 'usehooks-ts'
 import { string } from 'zod'
+import './MapDialog.css'
 
 type MapDialogProps = {
   trigger: React.ReactElement

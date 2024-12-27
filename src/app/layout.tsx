@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
+import './nl-design-system-overrides.css'
+import './purmerend.css'
 import '@utrecht/design-tokens/dist/index.css'
 import '@nl-design-system-community/purmerend-design-tokens/dist/index.css'
 import '@nl-design-system-community/purmerend-design-tokens/src/font.js'

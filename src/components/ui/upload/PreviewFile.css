@@ -1,0 +1,29 @@
+/* fonts */
+.empty-box {
+  width: 100px;
+  height: 100px;
+}
+
+/* file upload */
+.empty-box.border {
+  border: 1px dashed var(--basis-document-subtle-color);
+}
+
+.iconbutton-preview-delete {
+  background: rgba(0, 0, 0, 0.7) !important;
+  border: none !important;
+  border-radius: 0% !important;
+  min-inline-size: 100px !important;
+  position: absolute !important;
+  bottom: 0 !important;
+  color: white !important;
+  display: flex !important;
+  justify-content: center !important;
+  justify-items: center !important;
+}
+
+.iconbutton-preview-delete:hover {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  transition-duration: 200 !important;
+  transition-delay: 100 !important;
+}

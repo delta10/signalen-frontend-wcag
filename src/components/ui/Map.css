@@ -1,0 +1,16 @@
+.maplibregl-canvas {
+  /* The map canvas is rendered in an `overflow: hidden` container,
+     * so the focus ring is not visible. Render the focus ring on the inside
+     * instead. */
+  --utrecht-focus-outline-offset: calc(
+    -1 * var(--utrecht-focus-outline-width, 0)
+  );
+
+  /* Make sure the map canvas is visible in forced colors mode too */
+  forced-color-adjust: none;
+}
+
+.signalen-map-img {
+  /* Override the `grab` cursor from maplibre */
+  cursor: default;
+}

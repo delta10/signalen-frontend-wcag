@@ -12,6 +12,7 @@ import {
   UnorderedListItem,
 } from '@/components'
 import { useFormContext } from 'react-hook-form'
+import './FileUpload.css'
 
 export const ACCEPTED_IMAGE_TYPES = [
   'image/jpeg',

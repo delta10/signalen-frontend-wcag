@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { IconButton } from '@/components'
 import { IconTrash } from '@tabler/icons-react'
+import './PreviewFile.css'
 
 type Props = {
   file: File
