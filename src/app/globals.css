@@ -158,20 +158,16 @@
 }
 
 /* colors */
-.background-gray-200 {
-  background-color: var(--basis-color-gray-200);
+.disabled-fill-1 {
+  background-color: var(--basis-color-disabled-fill-1);
 }
 
-.background-primary {
+.primary-fill-1 {
   background-color: var(--basis-color-primary-fill-1);
 }
 
-.background-white {
-  background-color: var(--basis-color-white);
-}
-
-.bordercolor-gray-200 {
-  border-color: var(--basis-color-gray-200);
+.disabled-border-1 {
+  border-color: var(--basis-color-disabled-fill-1);
 }
 
 /* spinner */
