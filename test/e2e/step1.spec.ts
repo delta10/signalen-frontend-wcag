@@ -288,6 +288,19 @@ parameters.slice(0, 1).forEach(async ({ name, testConfig, forcedColors }) => {
 
           await myLocationButton.click()
         })
+
+        test('Back Button', async ({ context, page }) => {
+          formStateFixture(context, { description: 'lamp' })
+          await page.goto(pageURL)
+
+          const backButton = page.getByRole('button', { name: 'Vorige' })
+
+          await expect(backButton).toBeVisible()
+
+          await backButton.focus()
+
+          await backButton.click()
+        })
       })
     })
   })
