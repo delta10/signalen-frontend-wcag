@@ -1,6 +1,4 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-
-export { expect } from '@playwright/test'
 import { test as base, BrowserContext } from '@playwright/test' // hier hoort eigenlijk expect nog bij te staan - die gaf error en heb ik nu apart als export
 import AxeBuilder from '@axe-core/playwright'
 import { createSessionStorageFixture } from '@/store/form_store'
