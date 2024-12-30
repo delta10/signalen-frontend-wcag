@@ -1,0 +1,28 @@
+.file-upload-box {
+  width: 100px;
+  height: 100px;
+  border: 1px dashed var(--basis-document-subtle-color);
+}
+
+.file-upload-box > label {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  height: 100%;
+  width: 100%;
+}
+
+.file-upload-box > span {
+  position: absolute;
+  display: flex;
+  -webkit-box-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  top: 29px;
+  left: 29px;
+  border-radius: 50%;
+  border: 1px solid var(--basis-document-subtle-color);
+}

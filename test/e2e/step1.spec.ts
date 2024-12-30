@@ -128,7 +128,7 @@ parameters.slice(0, 1).forEach(async ({ name, testConfig, forcedColors }) => {
 
       await textbox.focus()
 
-      page.keyboard.insertText('lamp kapot')
+      await textbox.fill('lamp kapot')
 
       await textbox.blur()
     })
@@ -209,12 +209,98 @@ parameters.slice(0, 1).forEach(async ({ name, testConfig, forcedColors }) => {
 
         await page.goto(pageURL)
 
-        // const combobox = page.getByRole('combobox', { name: 'Adres' })
-        const combobox = page.getByRole('combobox')
+        const combobox = page.getByRole('combobox', { name: 'Adres' })
 
         await expect(combobox).toBeVisible()
 
         await combobox.focus()
+      })
+
+      test.describe('location selection', () => {
+        test('Open location dialog', async ({ context, page }) => {
+          formStateFixture(context, { description: 'lamp' })
+          await page.goto(pageURL)
+
+          const locationButton = page.getByRole('button', {
+            name: 'Kies Locatie',
+          })
+
+          await expect(locationButton).toBeVisible()
+          await locationButton.click()
+
+          const dialogHeading = page.getByRole('heading', {
+            name: 'Kies uw locatie',
+            level: 1,
+          })
+
+          await expect(dialogHeading).toBeVisible()
+        })
+
+        test('Search Adres', async ({ context, page }) => {
+          formStateFixture(context, { description: 'lamp' })
+          await page.goto(pageURL)
+
+          const combobox = page.getByRole('combobox', { name: 'address' })
+          await expect(combobox).toBeVisible()
+
+          await combobox.fill('Mr. van Coothstraat 3, Veghel')
+          await combobox.focus()
+
+          // Look for suggestions to appear
+          await page.waitForSelector('[role="option"]')
+
+          // Select the first suggestion
+          await page.keyboard.press('ArrowDown')
+          await page.keyboard.press('Enter')
+
+          // Now we can check the value
+          await expect(combobox).toHaveValue(/Coothstraat/)
+
+          await combobox.blur()
+        })
+
+        test('accordion', async ({ context, page }) => {
+          formStateFixture(context, { description: 'lamp' })
+          await page.goto(pageURL)
+
+          const accordionButton = page.getByRole('button', {
+            name: 'Hoe gebruik ik de kaart?',
+          })
+          await expect(accordionButton).toBeVisible()
+
+          await accordionButton.click()
+
+          const panel = page.getByRole('region', {
+            name: 'Accordion content: De kaart gebruiken',
+          })
+          await expect(panel).toBeVisible()
+        })
+
+        test('Click my location button', async ({ context, page }) => {
+          formStateFixture(context, { description: 'lamp' })
+          await page.goto(pageURL)
+
+          const myLocationButton = page.getByRole('button', {
+            name: 'Mijn locatie',
+          })
+
+          await expect(myLocationButton).toBeVisible()
+
+          await myLocationButton.click()
+        })
+
+        test('Back Button', async ({ context, page }) => {
+          formStateFixture(context, { description: 'lamp' })
+          await page.goto(pageURL)
+
+          const backButton = page.getByRole('button', { name: 'Vorige' })
+
+          await expect(backButton).toBeVisible()
+
+          await backButton.focus()
+
+          await backButton.click()
+        })
       })
     })
   })

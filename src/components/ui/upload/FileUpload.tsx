@@ -7,11 +7,13 @@ import {
   ButtonGroup,
   Icon,
   Paragraph,
+  PreserveData,
   SecondaryActionButton,
   UnorderedList,
   UnorderedListItem,
 } from '@/components'
 import { useFormContext } from 'react-hook-form'
+import './FileUpload.css'
 
 export const ACCEPTED_IMAGE_TYPES = [
   'image/jpeg',
@@ -171,7 +173,9 @@ export const FileUpload = React.forwardRef<HTMLLabelElement, FileUploadProps>(
           <Alert ref={deleteAlertRef} tabIndex={0} className="dashed-focus">
             <Paragraph>{t('file.delete_successful')}</Paragraph>
             <UnorderedList className="pb-3">
-              <UnorderedListItem>{deletedFile.name}</UnorderedListItem>
+              <UnorderedListItem>
+                <PreserveData>{deletedFile.name}</PreserveData>
+              </UnorderedListItem>
             </UnorderedList>
             <ButtonGroup>
               <SecondaryActionButton onClick={() => setDeletedFile(null)}>
@@ -185,7 +189,9 @@ export const FileUpload = React.forwardRef<HTMLLabelElement, FileUploadProps>(
             <Paragraph>{t('file.upload_successful')}</Paragraph>
             <UnorderedList className="pb-3">
               {files.map((file, index) => (
-                <UnorderedListItem key={index}>{file.name}</UnorderedListItem>
+                <UnorderedListItem key={index}>
+                  <PreserveData>{file.name}</PreserveData>
+                </UnorderedListItem>
               ))}
             </UnorderedList>
             <ButtonGroup>

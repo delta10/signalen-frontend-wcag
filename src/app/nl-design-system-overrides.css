@@ -1,0 +1,92 @@
+.utrecht-textbox {
+  --utrecht-form-control-placeholder-font-style: italic;
+}
+
+.utrecht-alert__content-closable {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+.utrecht-alert {
+  --utrecht-paragraph-color: currentColor;
+}
+
+/* page header */
+.utrecht-logo__caption {
+  display: none;
+}
+
+.utrecht-accordion__section > .utrecht-accordion__header > button > span {
+  color: var(--basis-color-primary-fill-1);
+  stroke: var(--basis-color-primary-fill-1);
+}
+
+.utrecht-accordion__section > .utrecht-accordion__panel {
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
+.utrecht-accordion__section > .utrecht-accordion__header > button {
+  border: 1px solid var(--basis-color-primary-fill-1);
+  display: flex;
+  align-items: center;
+}
+
+.utrecht-page-footer__content {
+  --utrecht-link-color: currentColor;
+  --utrecht-link-hover-color: currentColor;
+  --utrecht-link-focus-color: currentColor;
+  --utrecht-link-focus-background-color: var(--utrecht-focus-background-color);
+  --utrecht-link-focus-color: var(--utrecht-focus-color);
+}
+
+.utrecht-listbox {
+  /* this issue will be fixed in the design system */
+  max-inline-size: 100%;
+}
+
+.utrecht-button {
+  /* this issue will be fixed in the design system */
+  min-block-size: max(
+    var(--utrecht-button-min-block-size, 44px),
+    fit-content
+  ) !important;
+  min-inline-size: max(
+    var(--utrecht-button-min-inline-size, 44px),
+    fit-content
+  ) !important;
+}
+
+.utrecht-alert-dialog {
+  /* this issue will be fixed in the design system */
+  align-self: center;
+  justify-self: center;
+  overflow-block: auto;
+  max-block-size: 100%;
+  max-inline-size: 100%;
+}
+
+.utrecht-radio-button:focus {
+  --_utrecht-radio-button-interactive-background-color: var(
+    --_utrecht-radio-button-state-focus-background-color,
+    var(--utrecht-radio-button-focus-background-color)
+  ) !important;
+  --_utrecht-radio-button-interactive-border-color: var(
+    --_utrecht-radio-button-state-focus-border-color,
+    var(--utrecht-radio-button-focus-border-color)
+  ) !important;
+  --_utrecht-radio-button-interactive-border-width: var(
+    --_utrecht-radio-button-state-focus-border-width,
+    var(--utrecht-radio-button-focus-border-width)
+  ) !important;
+  --_utrecht-radio-button-interactive-color: var(
+    --_utrecht-radio-button-state-focus-color,
+    var(--utrecht-radio-button-focus-color)
+  ) !important;
+}
+
+.utrecht-checkbox--custom.utrecht-checkbox--html-input:focus:not(:checked) {
+  background-image: none !important;
+}

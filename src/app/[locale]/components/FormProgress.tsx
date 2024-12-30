@@ -7,6 +7,7 @@ import { usePathname, useRouter } from '@/routing/navigation'
 import { FormStep } from '@/types/form'
 import { getCurrentStep, getPreviousStepPath } from '@/lib/utils/stepper'
 import { IconChevronLeft } from '@tabler/icons-react'
+import { ProgressBar } from './ProgressBar'
 
 interface FormProgressProps {
   children?: React.ReactElement
@@ -47,14 +48,7 @@ const FormProgress = ({ children }: FormProgressProps) => {
 
         <div className="flex flex-col gap-3 pb-2">
           {children}
-          <div className="overflow-hidden w-full disabled-fill-1">
-            <div
-              style={{
-                width: `${percentage}%`,
-              }}
-              className="h-2 primary-fill-1"
-            />
-          </div>
+          <ProgressBar value={step / 4} />
         </div>
       </div>
     )

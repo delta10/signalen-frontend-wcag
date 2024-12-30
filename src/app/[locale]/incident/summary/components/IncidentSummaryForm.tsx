@@ -23,6 +23,12 @@ import {
   coords2degreeMinuteSecondsFlat,
   isCoordinatesTuple,
 } from '@/lib/utils/format-coordinates'
+import {
+  SummaryGrid,
+  SummaryGridHeading,
+  SummaryGridLink,
+  SummaryGridMain,
+} from './SummaryGrid'
 
 const IncidentSummaryForm = () => {
   const t = useTranslations('describe_summary')
@@ -134,13 +140,13 @@ const IncidentSummaryForm = () => {
 
       <Divider />
 
-      <div className="summary-grid">
-        <div className="summary-grid__heading">
+      <SummaryGrid>
+        <SummaryGridHeading>
           <Heading level={2}>
             {t('step_marker', { step: 1 })} {tStepReport('heading')}
           </Heading>
-        </div>
-        <div className="summary-grid__main">
+        </SummaryGridHeading>
+        <SummaryGridMain>
           <IncidentSummaryFormItem
             title={tStepReport('form.describe_textarea_heading')}
             value={formState.description}
@@ -151,24 +157,24 @@ const IncidentSummaryForm = () => {
               attachments={files}
             />
           )}
-        </div>
-        <div className="summary-grid__link">
+        </SummaryGridMain>
+        <SummaryGridLink>
           <NextLinkWrapper href={stepToPath[FormStep.STEP_1_DESCRIPTION]}>
             {t('edit_step_report')}
           </NextLinkWrapper>
-        </div>
-      </div>
+        </SummaryGridLink>
+      </SummaryGrid>
 
       <Divider />
 
-      <div className="summary-grid">
-        <div className="sumary-grid__heading">
+      <SummaryGrid>
+        <SummaryGridHeading>
           <Heading level={2}>
             {t('step_marker', { step: 2 })} {tStepAdd('heading')}
           </Heading>
-        </div>
+        </SummaryGridHeading>
 
-        <div className="summary-grid__main flex flex-col gap-4">
+        <SummaryGridMain className="flex flex-col gap-4">
           <IncidentSummaryFormItem
             title={tStepAdd('form.add_map_heading')}
             value={formState.address?.weergave_naam}
@@ -262,24 +268,24 @@ const IncidentSummaryForm = () => {
               />
             )
           })}
-        </div>
+        </SummaryGridMain>
 
-        <div className="summary-grid__link">
+        <SummaryGridLink>
           <NextLinkWrapper href={stepToPath[FormStep.STEP_2_ADD]}>
             {t('edit_step_add')}
           </NextLinkWrapper>
-        </div>
-      </div>
+        </SummaryGridLink>
+      </SummaryGrid>
 
       <Divider />
 
-      <div className="summary-grid">
-        <div className="summary-grid__heading">
+      <SummaryGrid>
+        <SummaryGridHeading>
           <Heading level={2}>
             {t('step_marker', { step: 3 })} {tStepContact('heading')}
           </Heading>
-        </div>
-        <div className="summary-grid__main flex flex-col gap-4">
+        </SummaryGridHeading>
+        <SummaryGridMain className="flex flex-col gap-4">
           {!formState.phone &&
           !formState.email &&
           !formState.sharing_allowed ? (
@@ -309,14 +315,14 @@ const IncidentSummaryForm = () => {
               )}
             </>
           )}
-        </div>
+        </SummaryGridMain>
 
-        <div className="summary-grid__link">
+        <SummaryGridLink>
           <NextLinkWrapper href={stepToPath[FormStep.STEP_3_CONTACT]}>
             {t('edit_step_contact')}
           </NextLinkWrapper>
-        </div>
-      </div>
+        </SummaryGridLink>
+      </SummaryGrid>
 
       <SubmitAlert error={error} loading={loading} />
 
