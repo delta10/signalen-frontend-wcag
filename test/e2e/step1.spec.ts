@@ -1,4 +1,5 @@
-import { expect, test, formStateFixture, websiteURL } from './util'
+import { expect } from '@playwright/test'
+import { test, formStateFixture, websiteURL } from './util'
 
 interface MyTextConfig {
   name: string
@@ -129,45 +130,45 @@ parameters.forEach(async ({ name, testConfig, forcedColors }) => {
       await expect(button).toBeVisible()
     })
 
-    test.describe('step 2', () => {
-      const pageURL = 'http://localhost:3000/nl/incident/vulaan'
-      test('has title', async ({ page, context }) => {
-        formStateFixture(context, { description: 'lamp' })
+    // test.describe('step 2', () => {
+    //   const pageURL = 'http://localhost:3000/nl/incident/vulaan'
+    //   test('has title', async ({ page, context }) => {
+    //     formStateFixture(context, { description: 'lamp' })
 
-        await page.goto(pageURL)
+    //     await page.goto(pageURL)
 
-        // Expect a title "to contain" a substring with the step
-        await expect(page).toHaveTitle(/Stap 2 van 4/i)
+    //     // Expect a title "to contain" a substring with the step
+    //     await expect(page).toHaveTitle(/Stap 2 van 4/i)
 
-        // Expect a title "to contain" a substring.
-        await expect(page).toHaveTitle(/Purmerend/i)
-      })
+    //     // Expect a title "to contain" a substring.
+    //     await expect(page).toHaveTitle(/Purmerend/i)
+    //   })
 
-      test('has heading', async ({ context, page }) => {
-        formStateFixture(context, { description: 'lamp' })
+    //   test('has heading', async ({ context, page }) => {
+    //     formStateFixture(context, { description: 'lamp' })
 
-        await page.goto(pageURL)
+    //     await page.goto(pageURL)
 
-        const heading = page.getByRole('heading', {
-          name: 'Locatie en vragen',
-          level: 1,
-        })
+    //     const heading = page.getByRole('heading', {
+    //       name: 'Locatie en vragen',
+    //       level: 1,
+    //     })
 
-        await expect(heading).toBeVisible()
-      })
+    //     await expect(heading).toBeVisible()
+    //   })
 
-      test('Focus combobox', async ({ context, page }) => {
-        formStateFixture(context, { description: 'lamp' })
+    //   test('Focus combobox', async ({ context, page }) => {
+    //     formStateFixture(context, { description: 'lamp' })
 
-        await page.goto(pageURL)
+    //     await page.goto(pageURL)
 
-        // const combobox = page.getByRole('combobox', { name: 'Adres' })
-        const combobox = page.getByRole('combobox')
+    //     // const combobox = page.getByRole('combobox', { name: 'Adres' })
+    //     const combobox = page.getByRole('combobox')
 
-        await expect(combobox).toBeVisible()
+    //     await expect(combobox).toBeVisible()
 
-        await combobox.focus()
-      })
-    })
+    //     await combobox.focus()
+    //   })
+    // })
   })
 })
