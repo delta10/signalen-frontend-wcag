@@ -26,6 +26,7 @@ export type AppConfig = {
     map: {
       find_address_in_distance: number
       minimal_zoom: number
+      default_zoom: number
       center: number[]
       maxBounds: number[][]
     }
