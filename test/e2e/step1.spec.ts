@@ -1,52 +1,4 @@
-/* eslint-disable react-hooks/rules-of-hooks */
-import { expect, test as base, BrowserContext } from '@playwright/test'
-import AxeBuilder from '@axe-core/playwright'
-import { describe } from 'vitest'
-import { createSessionStorageFixture } from '@/store/form_store'
-import { FormStoreState } from '@/types/stores'
-
-type AxeFixture = {
-  makeAxeBuilder: () => AxeBuilder
-}
-
-// Extend base test by providing "makeAxeBuilder"
-//
-// This new "test" can be used in multiple test files, and each of them will get
-// a consistently configured AxeBuilder instance.
-export const test = base.extend<AxeFixture>({
-  makeAxeBuilder: async ({ page }, use, testInfo) => {
-    const makeAxeBuilder = () =>
-      new AxeBuilder({ page })
-        .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
-        .exclude('#commonly-reused-element-with-known-issue')
-
-    await use(makeAxeBuilder)
-  },
-})
-
-const sessionStorageFixture = (
-  context: BrowserContext,
-  sessionStorage: { [index: string]: string }
-) =>
-  context.addInitScript((storage) => {
-    for (const [key, value] of Object.entries(storage)) {
-      window.sessionStorage.setItem(key, value)
-      console.log(key, value)
-    }
-  }, sessionStorage)
-
-const formStateFixture = (
-  context: BrowserContext,
-  formState: Partial<FormStoreState>
-) => sessionStorageFixture(context, createSessionStorageFixture(formState))
-
-test.use({
-  locale: 'nl-NL',
-  timezoneId: 'Europe/Amsterdam',
-  geolocation: { latitude: 51.6045656, longitude: 5.5342026 },
-})
-
-const websiteURL = 'http://localhost:3000/'
+import { expect, test, formStateFixture, websiteURL } from './util'
 
 interface MyTextConfig {
   name: string
@@ -63,7 +15,7 @@ const parameters: MyTextConfig[] = [
   // { name: 'Forced colors', forcedColors: true },
 ]
 
-parameters.slice(0, 1).forEach(async ({ name, testConfig, forcedColors }) => {
+parameters.forEach(async ({ name, testConfig, forcedColors }) => {
   test.describe(`${name}`, () => {
     // TODO: Make new context for each test config to avoid interference
     if (testConfig) {
