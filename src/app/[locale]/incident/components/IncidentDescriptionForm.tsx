@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
 import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentFormFooter'
 import { usePathname, useRouter } from '@/routing/navigation'
-import React, { useEffect } from 'react'
+import React, { useEffect, useId } from 'react'
 import { getCategoryForDescription } from '@/services/classification'
 import { debounce } from 'lodash'
 import { useFormStore } from '@/store/form_store'
@@ -26,6 +26,7 @@ import {
 } from '@/components/index'
 import { getCurrentStep, getNextStepPath } from '@/lib/utils/stepper'
 import { getAttachments } from '@/lib/utils/attachments'
+import { clsx } from 'clsx'
 
 export const IncidentDescriptionForm = () => {
   const t = useTranslations('describe_report.form')
@@ -34,6 +35,8 @@ export const IncidentDescriptionForm = () => {
   const router = useRouter()
   const pathname = usePathname()
   const step = getCurrentStep(pathname)
+  const descriptionId = useId()
+  const errorMessageId = useId()
 
   useEffect(() => {
     router.prefetch('/incident/add')
@@ -107,6 +110,8 @@ export const IncidentDescriptionForm = () => {
     }
   }
 
+  const invalidFiles = !!form.formState.errors.files?.message
+
   // @ts-ignore
   return (
     <FormProvider {...form}>
@@ -124,20 +129,24 @@ export const IncidentDescriptionForm = () => {
           {...form.register('description')}
         />
 
-        <Fieldset invalid={Boolean(form.formState.errors.files?.message)}>
+        <Fieldset
+          invalid={invalidFiles}
+          aria-describedby={clsx(descriptionId, {
+            [errorMessageId]: invalidFiles,
+          })}
+        >
           <FieldsetLegend>
             {`${t('describe_textarea_heading')} (${tGeneral('form.not_required_short')})`}
-            <FormFieldDescription>
-              {t('describe_upload_description')}
-            </FormFieldDescription>
-
-            {Boolean(form.formState.errors.files?.message) &&
-              form.formState.errors.files?.message && (
-                <FormFieldErrorMessage>
-                  {form.formState.errors.files?.message}
-                </FormFieldErrorMessage>
-              )}
           </FieldsetLegend>
+          <FormFieldDescription id={descriptionId}>
+            {t('describe_upload_description')}
+          </FormFieldDescription>
+
+          {invalidFiles && (
+            <FormFieldErrorMessage id={errorMessageId}>
+              {form.formState.errors.files?.message}
+            </FormFieldErrorMessage>
+          )}
 
           {/* @ts-ignore */}
           <FileUpload {...register('files', { required: false })} />
