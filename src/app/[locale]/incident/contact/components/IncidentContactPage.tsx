@@ -30,7 +30,7 @@ export const IncidentContactPage = () => {
 
   if (loaded) {
     return (
-      <div className="flex flex-col gap-12">
+      <main className="flex flex-col gap-12">
         <FormProgress>
           <HeadingGroup>
             <Heading level={1}>{t('heading')}</Heading>
@@ -41,7 +41,7 @@ export const IncidentContactPage = () => {
         </FormProgress>
 
         <IncidentContactForm />
-      </div>
+      </main>
     )
   }
 }

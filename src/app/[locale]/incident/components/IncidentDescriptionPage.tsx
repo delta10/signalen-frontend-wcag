@@ -20,27 +20,25 @@ export const IncidentDescriptionPage = () => {
 
   if (loaded) {
     return (
-      <>
-        <div className="flex flex-col gap-12">
-          <FormProgress>
-            <HeadingGroup>
-              <Heading level={1}>{t('heading')}</Heading>
-              <PreHeading>
-                {tGeneral('pre_heading', {
-                  current: currentStep,
-                  max: maxStep,
-                })}
-              </PreHeading>
-            </HeadingGroup>
-          </FormProgress>
-          {config ? (
-            <SpotlightSection type="info">
-              <RenderMarkdown text={t('alert.help_text')} />
-            </SpotlightSection>
-          ) : null}
-          <IncidentDescriptionForm />
-        </div>
-      </>
+      <main className="flex flex-col gap-12">
+        <FormProgress>
+          <HeadingGroup>
+            <Heading level={1}>{t('heading')}</Heading>
+            <PreHeading>
+              {tGeneral('pre_heading', {
+                current: currentStep,
+                max: maxStep,
+              })}
+            </PreHeading>
+          </HeadingGroup>
+        </FormProgress>
+        {config ? (
+          <SpotlightSection type="info">
+            <RenderMarkdown text={t('alert.help_text')} />
+          </SpotlightSection>
+        ) : null}
+        <IncidentDescriptionForm />
+      </main>
     )
   }
 }
