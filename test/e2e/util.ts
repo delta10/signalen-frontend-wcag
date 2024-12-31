@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { test as base, BrowserContext } from '@playwright/test' // hier hoort eigenlijk expect nog bij te staan - die gaf error en heb ik nu apart als export
+import { test as base, BrowserContext } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
 import { createSessionStorageFixture } from '@/store/form_store'
 import { FormStoreState } from '@/types/stores'
@@ -38,11 +38,5 @@ export const formStateFixture = (
   context: BrowserContext,
   formState: Partial<FormStoreState>
 ) => sessionStorageFixture(context, createSessionStorageFixture(formState))
-
-test.use({
-  locale: 'nl-NL',
-  timezoneId: 'Europe/Amsterdam',
-  geolocation: { latitude: 51.6045656, longitude: 5.5342026 },
-})
 
 export const websiteURL = 'http://localhost:3000/'
