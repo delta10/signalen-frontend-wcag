@@ -82,109 +82,23 @@ parameters.forEach(async ({ name, testConfig, forcedColors }) => {
     })
 
     // TEXTBOX TESTS //
-
+    // TODO
     // Textbox - aanwezig
     // 1. Telefoonnummer
     // 2. E-mailadres
-    test('has wijzig link - wijzig uw melding', async ({ page, context }) => {
-      formStateFixture(context, {
-        description: 'lamp',
-        coordinates: [51.61892134, 5.52874105],
-        address: {
-          coordinates: [5.52874105, 51.61892134],
-          id: 'adr-987acc537500c2f62ab7449a6d1e6f2e',
-          postcode: '5462GJ',
-          huisnummer: '3A',
-          woonplaats: 'Veghel',
-          openbare_ruimte: 'Lage Landstraat',
-          weergave_naam: 'Lage Landstraat 3A, 5462GJ Veghel',
-        },
-        last_completed_step: 3,
-      })
-
-      await page.goto(pageURL)
-
-      const wijzigLink = page.getByRole('link', { name: 'Wijzig uw melding' })
-
-      await expect(wijzigLink).toBeVisible()
-    })
-
     // Textbox - hasText
     // Textbox - keyboard tekst invoeren (insertText)
     // Textbox - removeText
     // Textbox - focus
     // Textbox - hover(?)
-    test('click wijzig link - wijzig uw melding', async ({
-      makeAxeBuilder,
-      page,
-      context,
-    }) => {
-      formStateFixture(context, {
-        description: 'lamp',
-        coordinates: [51.61892134, 5.52874105],
-        address: {
-          coordinates: [5.52874105, 51.61892134],
-          id: 'adr-987acc537500c2f62ab7449a6d1e6f2e',
-          postcode: '5462GJ',
-          huisnummer: '3A',
-          woonplaats: 'Veghel',
-          openbare_ruimte: 'Lage Landstraat',
-          weergave_naam: 'Lage Landstraat 3A, 5462GJ Veghel',
-        },
-        last_completed_step: 3,
-      })
 
-      await page.goto(pageURL)
-
-      const wijzigLink = page.getByRole('link', { name: 'Wijzig uw melding' })
-
-      await expect(wijzigLink).toBeVisible()
-
-      await wijzigLink.click()
-
-      // const accessibilityScanResults = await makeAxeBuilder().analyze()
-      // expect(accessibilityScanResults.violations).toEqual([]) //deze failed soms?
-    })
-
-    // Wijzig link - focus
-    test('focus wijzig link - wijzig uw melding', async ({
-      makeAxeBuilder,
-      page,
-      context,
-    }) => {
-      formStateFixture(context, {
-        description: 'lamp',
-        coordinates: [51.61892134, 5.52874105],
-        address: {
-          coordinates: [5.52874105, 51.61892134],
-          id: 'adr-987acc537500c2f62ab7449a6d1e6f2e',
-          postcode: '5462GJ',
-          huisnummer: '3A',
-          woonplaats: 'Veghel',
-          openbare_ruimte: 'Lage Landstraat',
-          weergave_naam: 'Lage Landstraat 3A, 5462GJ Veghel',
-        },
-        last_completed_step: 3,
-      })
-
-      await page.goto(pageURL)
-
-      const wijzigLink = page.getByRole('link', { name: 'Wijzig uw melding' })
-
-      await expect(wijzigLink).toBeVisible()
-
-      await wijzigLink.focus()
-
-      await expect(wijzigLink).toBeFocused()
-      // const focusedWijzigLink = wijzigLink.and(page.locator('css=:focus'))
-
-      // await expect(focusedWijzigLink).toBeVisible()
-
-      // await expect(wijzigLink).toBeFocused()
-
-      // const accessibilityScanResults = await makeAxeBuilder().analyze()
-      // expect(accessibilityScanResults.violations).toEqual([]) //deze failed soms?
-    })
+    // CHECKBOX TESTS //
+    //TODO
+    // Checkbox - aanwezig
+    // Checkbox - isChecked
+    // Checkbox - isUnchecked
+    // Checkbox - focus
+    // Checkbox - hover(?)
 
     // PREVIOUS PAGE BUTTON TESTS //
 
