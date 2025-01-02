@@ -459,9 +459,9 @@ parameters.forEach(async ({ name, testConfig, forcedColors }) => {
       // expect(accessibilityScanResults.violations).toEqual([]) //deze failed soms?
     })
 
-    // PREVIOUS PAGE BUTTON TESTS //
+    // PREVIOUS STEP BUTTON TESTS //
 
-    // Previous page button - aanwezig (2x)
+    // Previous step button - aanwezig (2x)
     // 1. getByRole('group').getByRole('button', { name: 'Vorige' })
     // 2. locator('div').filter({ hasText: /^Vorige$/ })
     test('has "previous page" buttons', async ({ page, context }) => {
@@ -492,7 +492,7 @@ parameters.forEach(async ({ name, testConfig, forcedColors }) => {
       await expect(bottomPreviousButton).toBeVisible()
     })
 
-    // Previous page button - click
+    // Previous step button - click
     test('click - "previous page" buttons', async ({ page, context }) => {
       formStateFixture(context, {
         description: 'lamp',
@@ -527,7 +527,7 @@ parameters.forEach(async ({ name, testConfig, forcedColors }) => {
       await expect(bottomPreviousButton).toBeVisible() //hier zie ik dat ie naar stap 3 terug navigeert
     })
 
-    // Previous page button - focus
+    // Previous step button - focus
     test('focus - "previous page" buttons', async ({
       makeAxeBuilder,
       page,
@@ -565,7 +565,7 @@ parameters.forEach(async ({ name, testConfig, forcedColors }) => {
       await expect(bottomPreviousButton).toBeFocused()
     })
 
-    // Previous page button - hover
+    // Previous step button - hover
     test('hover - "previous page" buttons', async ({
       makeAxeBuilder,
       page,
@@ -603,7 +603,7 @@ parameters.forEach(async ({ name, testConfig, forcedColors }) => {
       await expect(bottomPreviousButton).toBeVisible()
     })
 
-    // Previous page button - press (keyboard)
+    // Previous step button - press (keyboard)
     test('press - "previous page" buttons', async ({ page, context }) => {
       formStateFixture(context, {
         description: 'lamp',
@@ -644,7 +644,7 @@ parameters.forEach(async ({ name, testConfig, forcedColors }) => {
     // Submit button - submits
     // Submit button - navigates to thankyou page
     // Wijzig link - navigates to page 1, 2 or 3
-    // Previous page button - navigates to prev. page
+    // Previous step button - navigates to prev. page
 
     // loader?
 
