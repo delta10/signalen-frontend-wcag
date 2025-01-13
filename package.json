@@ -20,7 +20,7 @@
     "@headlessui/react": "2.2.0",
     "@hookform/resolvers": "3.9.0",
     "@radix-ui/react-dialog": "1.1.2",
-    "@radix-ui/react-visually-hidden": "1.1.0",
+    "@radix-ui/react-visually-hidden": "1.1.1",
     "@tabler/icons-react": "3.26.0",
     "@types/lodash": "4.17.13",
     "axios-retry": "4.5.0",
