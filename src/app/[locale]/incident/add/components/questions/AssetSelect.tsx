@@ -58,7 +58,7 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
         field.meta.endpoint &&
         zoom &&
         config &&
-        zoom > config.base.map.minimal_zoom
+        zoom >= config.base.map.minimal_zoom
       ) {
         const endpoint = field.meta.endpoint
           .replaceAll('{srsName}', 'EPSG:4326')

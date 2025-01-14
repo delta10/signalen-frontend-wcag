@@ -159,23 +159,13 @@ const MapDialog = ({
     }
   }, [features, field])
 
-  useEffect(() => {
-    setViewState((state) => ({
-      ...state,
-      zoom: formState.address
-        ? config?.base.map.minimal_zoom || 17
-        : config?.base.map.default_zoom || 12,
-    }))
-  }, [config, formState])
-
   // memoize list of features to show in left sidebar
   const featureList = useMemo(() => {
     if (config && dialogMap) {
-      const mapFeaturesToShow =
-        mapFeatures && formState.address ? mapFeatures.features : []
+      const mapFeaturesToShow = mapFeatures ? mapFeatures.features : []
 
       const features =
-        dialogMap?.getZoom() > config.base.map.minimal_zoom
+        dialogMap?.getZoom() >= config.base.map.minimal_zoom
           ? mapFeaturesToShow
           : []
 
@@ -556,6 +546,7 @@ const MapDialog = ({
                   ]
                 }
               >
+                {/* Address or selected point on map marker */}
                 {marker.length && (isMapSelected === null || isMapSelected) && (
                   <Marker latitude={marker[0]} longitude={marker[1]}>
                     <MapMarker />
@@ -563,8 +554,7 @@ const MapDialog = ({
                 )}
                 {onMapReady &&
                   dialogMap &&
-                  dialogMap.getZoom() > config.base.map.minimal_zoom &&
-                  formState.address &&
+                  dialogMap.getZoom() >= config.base.map.minimal_zoom &&
                   mapFeatures?.features.map((feature) => {
                     const id = feature.id as number
 

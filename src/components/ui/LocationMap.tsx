@@ -32,6 +32,9 @@ const LocationMap = () => {
     if (!loading && config) {
       setViewState({
         ...viewState,
+        zoom: formState.address
+          ? config?.base.map.minimal_zoom || 17
+          : config?.base.map.default_zoom || 12,
         latitude:
           formState.coordinates[0] === 0
             ? config.base.map.center[0]
@@ -57,15 +60,6 @@ const LocationMap = () => {
       longitude: marker[1],
     }))
   }, [marker])
-
-  useEffect(() => {
-    setViewState((state) => ({
-      ...state,
-      zoom: formState.address
-        ? config?.base.map.minimal_zoom || 17
-        : config?.base.map.default_zoom || 12,
-    }))
-  }, [config, formState])
 
   const mapStyle = isDarkMode
     ? `${process.env.NEXT_PUBLIC_MAPTILER_MAP_DARK_MODE}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`
