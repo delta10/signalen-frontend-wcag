@@ -96,9 +96,7 @@ const MapDialog = ({
   const [viewState, setViewState] = useState<ViewState>({
     latitude: 0,
     longitude: 0,
-    zoom: formState.address
-      ? config?.base.map.minimal_zoom || 17
-      : config?.base.map.default_zoom || 12,
+    zoom: config?.base.map.default_zoom || 12,
     bearing: 0,
     padding: {
       top: 0,
@@ -111,7 +109,7 @@ const MapDialog = ({
 
   // Set viewState coordinates to configured ones
   useEffect(() => {
-    if (!loading && config) {
+    if (!loading && config && dialogMap) {
       setViewState((currentState) => ({
         ...currentState,
         latitude:
@@ -122,9 +120,12 @@ const MapDialog = ({
           formState.coordinates[1] === 0
             ? config.base.map.center[1]
             : formState.coordinates[1],
+        zoom: formState.address
+          ? config?.base.map.minimal_zoom || 17
+          : config?.base.map.default_zoom || 12,
       }))
     }
-  }, [loading, config, formState.coordinates])
+  }, [loading, config, formState.coordinates, dialogMap])
 
   // Change marker position on formState.coordinates change
   useEffect(() => {
@@ -180,7 +181,10 @@ const MapDialog = ({
     if (dialogMap) {
       dialogMap.flyTo({
         center: [lng, lat],
-        zoom: config?.base.map.minimal_zoom || 17,
+        zoom: Math.max(
+          config?.base.map.minimal_zoom || 17,
+          dialogMap.getZoom()
+        ),
       })
     }
 
