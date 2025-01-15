@@ -7,7 +7,6 @@ import React, { useEffect, useState } from 'react'
 import {
   Button,
   Paragraph,
-  LinkButton,
   Fieldset,
   FieldsetLegend,
   FormFieldDescription,
@@ -205,7 +204,11 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
         </MapProvider>
       </div>
       <div>
-        <Paragraph>{formStoreState.address?.weergave_naam}</Paragraph>
+        <Paragraph>
+          {formStoreState.address?.weergave_naam
+            ? formStoreState.address?.weergave_naam
+            : t('pinned_location')}
+        </Paragraph>
         <ParagraphOrList
           entries={formStoreState.selectedFeatures.map((feature: any) => [
             feature.id,

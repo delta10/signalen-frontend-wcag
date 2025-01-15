@@ -57,7 +57,8 @@
       "chosen_location_points": "Geselecteerde punten {points} klik om te wijzigen",
       "search_address_label": "Zoek op adres of postcode",
       "object": "object",
-      "objects": "objecten"
+      "objects": "objecten",
+      "pinned_location": "De locatie is gepind op de kaart"
     },
     "explainer": {
       "label": "Hoe gebruik ik de kaart?",

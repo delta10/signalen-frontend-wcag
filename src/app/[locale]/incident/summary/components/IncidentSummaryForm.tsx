@@ -177,7 +177,11 @@ const IncidentSummaryForm = () => {
         <SummaryGridMain className="flex flex-col gap-4">
           <IncidentSummaryFormItem
             title={tStepAdd('form.add_map_heading')}
-            value={formState.address?.weergave_naam}
+            value={
+              formState.address?.weergave_naam
+                ? formState.address?.weergave_naam
+                : tStepAdd('map.pinned_location')
+            }
           >
             <div
               className="signalen-map-img"

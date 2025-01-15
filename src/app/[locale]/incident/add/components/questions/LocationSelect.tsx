@@ -93,7 +93,11 @@ export const LocationSelect = ({ field }: LocationSelectProps) => {
         </MapProvider>
       </div>
       <div>
-        <Paragraph>{formStoreState.address?.weergave_naam}</Paragraph>
+        <Paragraph>
+          {formStoreState.address?.weergave_naam
+            ? formStoreState.address?.weergave_naam
+            : t('pinned_location')}
+        </Paragraph>
       </div>
     </Fieldset>
   )
