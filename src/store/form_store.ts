@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
 import { FormStore, FormStoreState } from '@/types/stores'
-import { FormStep, isMinimalAddress } from '@/types/form'
+import { FormStep, hasValidCoordinates } from '@/types/form'
 import merge from 'lodash/merge'
 
 const initialFormState: FormStoreState = {
@@ -73,8 +73,6 @@ export const isValidForStep2 = (formState: FormStoreState) => {
 
 export const isValidForStep3 = (formState: FormStoreState) => {
   return (
-    isValidForStep2(formState) &&
-    !!formState.address &&
-    isMinimalAddress(formState.address)
+    isValidForStep2(formState) && hasValidCoordinates(formState.coordinates)
   )
 }
