@@ -423,7 +423,7 @@ const MapDialog = ({
             </form>
           </AlertDialog>
           <div className="col-span-1 flex flex-col min-h-[100vh] max-h-[100vh] md:max-h-screen gap-4">
-            <div className="flex flex-col overflow-y-auto gap-4 p-4">
+            <div className="flex flex-col overflow-y-auto gap-4 px-4 pt-4">
               <Heading level={1}>
                 {field?.meta.language.title
                   ? field.meta.language.title
@@ -478,7 +478,7 @@ const MapDialog = ({
                   )}
                   {featureList.length > 0 && (
                     <ul
-                      className="flex-1 overflow-y-auto mb-2 max-h-[45vh]"
+                      className="flex-1 overflow-y-auto mb-2 max-h-[50vh]"
                       aria-labelledby="object-list-label"
                     >
                       {featureList.map((feature: any) => (
@@ -497,7 +497,11 @@ const MapDialog = ({
                 </div>
               ) : null}
             </div>
-            <Dialog.Close asChild onClick={() => closeMapDialog()}>
+            <Dialog.Close
+              className="flex items-end"
+              asChild
+              onClick={() => closeMapDialog()}
+            >
               <Button
                 appearance="primary-action-button"
                 className="ml-4 mr-4 mb-4"
