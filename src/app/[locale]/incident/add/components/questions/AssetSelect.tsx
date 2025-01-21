@@ -19,7 +19,10 @@ import { FormFieldErrorMessage } from '@/components'
 import { getGeoJsonFeatures } from '@/services/location/features'
 import { FeatureCollection } from 'geojson'
 import { AddressCombobox } from '@/components/ui/AddressCombobox'
-import { getNearestAddressByCoordinate } from '@/services/location/address'
+import {
+  getLocationDisplayName,
+  getNearestAddressByCoordinate,
+} from '@/services/location/address'
 import { ParagraphOrList } from '@/components/ui/ParagraphOrList'
 
 export interface AssetSelectProps {
@@ -205,9 +208,7 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
       </div>
       <div>
         <Paragraph>
-          {formStoreState.address?.weergave_naam
-            ? formStoreState.address?.weergave_naam
-            : t('pinned_location')}
+          {getLocationDisplayName(formStoreState, t('pinned_location'))}
         </Paragraph>
         <ParagraphOrList
           entries={formStoreState.selectedFeatures.map((feature: any) => [
