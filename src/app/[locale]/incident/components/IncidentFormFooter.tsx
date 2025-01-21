@@ -45,7 +45,7 @@ const IncidentFormFooter = ({
     <>
       <ButtonGroup className="!flex !flex-row !items-end">
         {step > FormStep.STEP_1_DESCRIPTION && (
-          <LinkButton className="!pl-0 !mt-0" onClick={() => goBack()}>
+          <LinkButton className="!pl-0 !mt-0 !pr-3" onClick={() => goBack()}>
             <Icon className="!static">
               <IconChevronLeft />
             </Icon>
