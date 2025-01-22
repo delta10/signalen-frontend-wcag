@@ -111,7 +111,7 @@ const MapDialog = ({
     // Check if there is either an address selecter or point on the map.
     if (
       formState.address ||
-      (marker.length && (isMapSelected === null || isMapSelected))
+      (formState.coordinates[0] !== 0 && formState.coordinates[1] !== 0)
     ) {
       return config?.base.map.minimal_zoom || 17
     }
