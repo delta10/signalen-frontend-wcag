@@ -10,10 +10,9 @@ import {
   IconLoader2,
   IconSend,
 } from '@tabler/icons-react'
-import { FieldErrors, useFormContext } from 'react-hook-form'
+import { FieldErrors } from 'react-hook-form'
 import { getCurrentStep, getPreviousStepPath } from '@/lib/utils/stepper'
 import { FormStep } from '@/types/form'
-import { useFormStore } from '@/store/form_store'
 
 type IncidentFormFooterProps = {
   handleSignalSubmit?: () => void
@@ -34,8 +33,6 @@ const IncidentFormFooter = ({
   const pathname = usePathname()
   const router = useRouter()
   const step = getCurrentStep(pathname)
-  const { formState } = useFormStore()
-  const form = useFormContext()
 
   const goBack = () => {
     const previousStep = getPreviousStepPath(step)
@@ -44,12 +41,11 @@ const IncidentFormFooter = ({
     }
   }
 
-  const [busy, setBusy] = useState(false)
   return (
     <>
       <ButtonGroup className="!flex !flex-row !items-end">
         {step > FormStep.STEP_1_DESCRIPTION && (
-          <LinkButton className="!pl-0 !mt-0" onClick={() => goBack()}>
+          <LinkButton className="!pl-0 !mt-0 !pr-3" onClick={() => goBack()}>
             <Icon className="!static">
               <IconChevronLeft />
             </Icon>

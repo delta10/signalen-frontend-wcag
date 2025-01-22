@@ -29,6 +29,7 @@ import {
   SummaryGridLink,
   SummaryGridMain,
 } from './SummaryGrid'
+import { getLocationDisplayName } from '@/services/location/address'
 
 const IncidentSummaryForm = () => {
   const t = useTranslations('describe_summary')
@@ -177,7 +178,10 @@ const IncidentSummaryForm = () => {
         <SummaryGridMain className="flex flex-col gap-4">
           <IncidentSummaryFormItem
             title={tStepAdd('form.add_map_heading')}
-            value={formState.address?.weergave_naam}
+            value={getLocationDisplayName(
+              formState,
+              tStepAdd('map.pinned_location')
+            )}
           >
             <div
               className="signalen-map-img"

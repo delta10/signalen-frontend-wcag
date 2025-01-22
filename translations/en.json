@@ -55,7 +55,8 @@
       "chosen_location": "Selected location {location} click to edit",
       "chosen_location_address_and_points": "Selected location {location} and selected points {points}, click to edit",
       "chosen_location_points": "Selected points {points}, click to edit",
-      "search_address_label": "Search by address or postal code"
+      "search_address_label": "Search by address or postal code",
+      "pinned_location": "The location is pinned on the map"
     },
     "explainer": {
       "label": "How do I use the map?",

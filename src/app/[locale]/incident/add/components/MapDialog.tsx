@@ -96,9 +96,7 @@ const MapDialog = ({
   const [viewState, setViewState] = useState<ViewState>({
     latitude: 0,
     longitude: 0,
-    zoom: formState.address
-      ? config?.base.map.minimal_zoom || 17
-      : config?.base.map.default_zoom || 12,
+    zoom: config?.base.map.default_zoom || 12,
     bearing: 0,
     padding: {
       top: 0,
@@ -109,9 +107,21 @@ const MapDialog = ({
     pitch: 0,
   })
 
+  const getInitiaalZoomLevel = () => {
+    // Check if there is either an address selecter or point on the map.
+    if (
+      formState.address ||
+      (formState.coordinates[0] !== 0 && formState.coordinates[1] !== 0)
+    ) {
+      return config?.base.map.minimal_zoom || 17
+    }
+
+    return config?.base.map.default_zoom || 12
+  }
+
   // Set viewState coordinates to configured ones
   useEffect(() => {
-    if (!loading && config) {
+    if (!loading && config && dialogMap) {
       setViewState((currentState) => ({
         ...currentState,
         latitude:
@@ -122,9 +132,10 @@ const MapDialog = ({
           formState.coordinates[1] === 0
             ? config.base.map.center[1]
             : formState.coordinates[1],
+        zoom: getInitiaalZoomLevel(),
       }))
     }
-  }, [loading, config, formState.coordinates])
+  }, [loading, config, formState.coordinates, dialogMap])
 
   // Change marker position on formState.coordinates change
   useEffect(() => {
@@ -159,23 +170,13 @@ const MapDialog = ({
     }
   }, [features, field])
 
-  useEffect(() => {
-    setViewState((state) => ({
-      ...state,
-      zoom: formState.address
-        ? config?.base.map.minimal_zoom || 17
-        : config?.base.map.default_zoom || 12,
-    }))
-  }, [config, formState])
-
   // memoize list of features to show in left sidebar
   const featureList = useMemo(() => {
     if (config && dialogMap) {
-      const mapFeaturesToShow =
-        mapFeatures && formState.address ? mapFeatures.features : []
+      const mapFeaturesToShow = mapFeatures ? mapFeatures.features : []
 
       const features =
-        dialogMap?.getZoom() > config.base.map.minimal_zoom
+        dialogMap?.getZoom() >= config.base.map.minimal_zoom
           ? mapFeaturesToShow
           : []
 
@@ -190,7 +191,10 @@ const MapDialog = ({
     if (dialogMap) {
       dialogMap.flyTo({
         center: [lng, lat],
-        zoom: config?.base.map.minimal_zoom || 17,
+        zoom: Math.max(
+          config?.base.map.minimal_zoom || 17,
+          dialogMap.getZoom()
+        ),
       })
     }
 
@@ -428,11 +432,8 @@ const MapDialog = ({
               </ButtonGroup>
             </form>
           </AlertDialog>
-          <form
-            method="dialog"
-            className="col-span-1 flex flex-col min-h-[100vh] max-h-[100vh] md:max-h-screen gap-4"
-          >
-            <div className="flex flex-col overflow-y-auto gap-4 p-4">
+          <div className="col-span-1 flex flex-col min-h-[100vh] max-h-[100vh] md:max-h-screen gap-4">
+            <div className="flex flex-col overflow-y-auto gap-4 px-4 pt-4">
               <Heading level={1}>
                 {field?.meta.language.title
                   ? field.meta.language.title
@@ -483,34 +484,38 @@ const MapDialog = ({
                     </SpotlightSection>
                   )}
                   {featureList.length > 0 && (
-                    <Heading level={3}>{assetSelectFeatureLabel}</Heading>
-                  )}
-                  {featureList.length > 0 && (
-                    <ul
-                      className="flex-1 overflow-y-auto mb-2 max-h-[45vh]"
-                      aria-labelledby="object-list-label"
-                    >
-                      {featureList.map((feature: any) => (
-                        <FeatureListItem
-                          configUrl={config?.base.assets_url}
-                          feature={feature}
-                          key={feature.id}
-                          field={field}
-                          setError={setError}
-                          dialogRef={dialogRef}
-                          setFocusedItemId={setFocusedItemId}
-                        />
-                      ))}
-                    </ul>
+                    <>
+                      <Heading level={3}>{assetSelectFeatureLabel}</Heading>
+                      <ul
+                        className="flex-1 overflow-y-auto mb-2 max-h-[calc(100vh-22em)]"
+                        aria-labelledby="object-list-label"
+                      >
+                        {featureList.map((feature: any) => (
+                          <FeatureListItem
+                            configUrl={config?.base.assets_url}
+                            feature={feature}
+                            key={feature.id}
+                            field={field}
+                            setError={setError}
+                            dialogRef={dialogRef}
+                            setFocusedItemId={setFocusedItemId}
+                          />
+                        ))}
+                      </ul>
+                    </>
                   )}
                 </div>
               ) : null}
             </div>
-            <Dialog.Close asChild onClick={() => closeMapDialog()}>
+            <Dialog.Close
+              className="flex items-end"
+              asChild
+              onClick={() => closeMapDialog()}
+            >
               <Button
                 appearance="primary-action-button"
                 className="ml-4 mr-4 mb-4"
-                type="submit"
+                type="button"
               >
                 {isAssetSelect
                   ? formState.selectedFeatures.length === 0
@@ -534,7 +539,7 @@ const MapDialog = ({
                   : t('choose_this_location')}
               </Button>
             </Dialog.Close>
-          </form>
+          </div>
           {config && (
             <div
               className="col-span-1 md:col-span-2 min-h-[100vh] max-h-[50vh] md:max-h-screen relative"
@@ -556,15 +561,16 @@ const MapDialog = ({
                   ]
                 }
               >
+                {/* Address or selected point on map marker */}
                 {marker.length && (isMapSelected === null || isMapSelected) && (
                   <Marker latitude={marker[0]} longitude={marker[1]}>
                     <MapMarker />
                   </Marker>
                 )}
+                {/* Show available features assets on the map */}
                 {onMapReady &&
                   dialogMap &&
-                  dialogMap.getZoom() > config.base.map.minimal_zoom &&
-                  formState.address &&
+                  dialogMap.getZoom() >= config.base.map.minimal_zoom &&
                   mapFeatures?.features.map((feature) => {
                     const id = feature.id as number
 

@@ -1,6 +1,7 @@
 import { axiosInstance } from '@/services/client/api-client'
 import { AxiosResponse } from 'axios'
 import { AddressCoordinateResponse, AddressSuggestResponse } from '@/types/pdok'
+import { FormStoreState } from '@/types/stores'
 
 // Fetches suggested addresses from PDOK API based on search query and municipality
 // @param {string} searchQuery - Text to search for addresses
@@ -48,4 +49,23 @@ export const getNearestAddressByCoordinate = async (
   } catch (error) {
     return null
   }
+}
+
+export const getLocationDisplayName = (
+  formState: FormStoreState,
+  coordinateMessage: string
+) => {
+  if (formState.address?.weergave_naam) {
+    return formState.address?.weergave_naam
+  }
+
+  if (
+    formState.coordinates.length === 2 &&
+    formState.coordinates[0] > 0 &&
+    formState.coordinates[1] > 0
+  ) {
+    return coordinateMessage
+  }
+
+  return ''
 }

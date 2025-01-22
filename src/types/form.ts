@@ -47,10 +47,12 @@ export interface Address {
   coordinates: number[]
 }
 
-export const isMinimalAddress = ({ coordinates }: Address): boolean => {
+export const hasValidCoordinates = (coordinates: number[]): boolean => {
   return (
     Array.isArray(coordinates) &&
     coordinates.length === 2 &&
-    coordinates.every((n) => typeof n === 'number' && Number.isFinite(n))
+    coordinates.every(
+      (n) => typeof n === 'number' && Number.isFinite(n) && n > 0
+    )
   )
 }

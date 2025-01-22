@@ -7,7 +7,6 @@ import React, { useEffect, useState } from 'react'
 import {
   Button,
   Paragraph,
-  LinkButton,
   Fieldset,
   FieldsetLegend,
   FormFieldDescription,
@@ -20,7 +19,10 @@ import { FormFieldErrorMessage } from '@/components'
 import { getGeoJsonFeatures } from '@/services/location/features'
 import { FeatureCollection } from 'geojson'
 import { AddressCombobox } from '@/components/ui/AddressCombobox'
-import { getNearestAddressByCoordinate } from '@/services/location/address'
+import {
+  getLocationDisplayName,
+  getNearestAddressByCoordinate,
+} from '@/services/location/address'
 import { ParagraphOrList } from '@/components/ui/ParagraphOrList'
 
 export interface AssetSelectProps {
@@ -58,7 +60,7 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
         field.meta.endpoint &&
         zoom &&
         config &&
-        zoom > config.base.map.minimal_zoom
+        zoom >= config.base.map.minimal_zoom
       ) {
         const endpoint = field.meta.endpoint
           .replaceAll('{srsName}', 'EPSG:4326')
@@ -205,7 +207,9 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
         </MapProvider>
       </div>
       <div>
-        <Paragraph>{formStoreState.address?.weergave_naam}</Paragraph>
+        <Paragraph>
+          {getLocationDisplayName(formStoreState, t('pinned_location'))}
+        </Paragraph>
         <ParagraphOrList
           entries={formStoreState.selectedFeatures.map((feature: any) => [
             feature.id,
