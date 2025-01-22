@@ -107,6 +107,18 @@ const MapDialog = ({
     pitch: 0,
   })
 
+  const getInitiaalZoomLevel = () => {
+    // Check if there is either an address selecter or point on the map.
+    if (
+      formState.address ||
+      (marker.length && (isMapSelected === null || isMapSelected))
+    ) {
+      return config?.base.map.minimal_zoom || 17
+    }
+
+    return config?.base.map.default_zoom || 12
+  }
+
   // Set viewState coordinates to configured ones
   useEffect(() => {
     if (!loading && config && dialogMap) {
@@ -120,9 +132,7 @@ const MapDialog = ({
           formState.coordinates[1] === 0
             ? config.base.map.center[1]
             : formState.coordinates[1],
-        zoom: formState.address
-          ? config?.base.map.minimal_zoom || 17
-          : config?.base.map.default_zoom || 12,
+        zoom: getInitiaalZoomLevel(),
       }))
     }
   }, [loading, config, formState.coordinates, dialogMap])
@@ -474,25 +484,25 @@ const MapDialog = ({
                     </SpotlightSection>
                   )}
                   {featureList.length > 0 && (
-                    <Heading level={3}>{assetSelectFeatureLabel}</Heading>
-                  )}
-                  {featureList.length > 0 && (
-                    <ul
-                      className="flex-1 overflow-y-auto mb-2 max-h-[50vh]"
-                      aria-labelledby="object-list-label"
-                    >
-                      {featureList.map((feature: any) => (
-                        <FeatureListItem
-                          configUrl={config?.base.assets_url}
-                          feature={feature}
-                          key={feature.id}
-                          field={field}
-                          setError={setError}
-                          dialogRef={dialogRef}
-                          setFocusedItemId={setFocusedItemId}
-                        />
-                      ))}
-                    </ul>
+                    <>
+                      <Heading level={3}>{assetSelectFeatureLabel}</Heading>
+                      <ul
+                        className="flex-1 overflow-y-auto mb-2 max-h-[calc(100vh-22em)]"
+                        aria-labelledby="object-list-label"
+                      >
+                        {featureList.map((feature: any) => (
+                          <FeatureListItem
+                            configUrl={config?.base.assets_url}
+                            feature={feature}
+                            key={feature.id}
+                            field={field}
+                            setError={setError}
+                            dialogRef={dialogRef}
+                            setFocusedItemId={setFocusedItemId}
+                          />
+                        ))}
+                      </ul>
+                    </>
                   )}
                 </div>
               ) : null}
@@ -557,6 +567,7 @@ const MapDialog = ({
                     <MapMarker />
                   </Marker>
                 )}
+                {/* Show available features assets on the map */}
                 {onMapReady &&
                   dialogMap &&
                   dialogMap.getZoom() >= config.base.map.minimal_zoom &&
