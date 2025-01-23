@@ -22,6 +22,36 @@ const initialFormState: FormStoreState = {
   last_completed_step: FormStep.STEP_0,
 }
 
+export const defaultStep3FormState: Partial<FormStoreState> = {
+  description: 'lamp',
+  coordinates: [51.61892134, 5.52874105],
+  address: {
+    coordinates: [5.52874105, 51.61892134],
+    id: 'adr-987acc537500c2f62ab7449a6d1e6f2e',
+    postcode: '5462GJ',
+    huisnummer: '3A',
+    woonplaats: 'Veghel',
+    openbare_ruimte: 'Lage Landstraat',
+    weergave_naam: 'Lage Landstraat 3A, 5462GJ Veghel',
+  },
+  last_completed_step: 2,
+}
+
+export const defaultStep4FormState: Partial<FormStoreState> = {
+  description: 'lamp',
+  coordinates: [51.61892134, 5.52874105],
+  address: {
+    coordinates: [5.52874105, 51.61892134],
+    id: 'adr-987acc537500c2f62ab7449a6d1e6f2e',
+    postcode: '5462GJ',
+    huisnummer: '3A',
+    woonplaats: 'Veghel',
+    openbare_ruimte: 'Lage Landstraat',
+    weergave_naam: 'Lage Landstraat 3A, 5462GJ Veghel',
+  },
+  last_completed_step: 3,
+}
+
 export const createFormState = (
   data: Partial<FormStoreState>
 ): FormStoreState => merge({}, initialFormState, data)
