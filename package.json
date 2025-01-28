@@ -59,7 +59,7 @@
     "@types/react-dom": "18",
     "@types/validator": "13.12.2",
     "@utrecht/body-react": "0.0.3",
-    "@utrecht/checkbox-group-react": "1.0.7",
+    "@utrecht/checkbox-group-react": "1.0.8",
     "@utrecht/component-library-css": "7.0.0",
     "@utrecht/component-library-react": "8.0.4",
     "@utrecht/design-tokens": "2.4.0",
