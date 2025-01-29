@@ -34,6 +34,7 @@ import useMapDialog from '@/hooks/useMapDialog'
 import { MapDialogContentProps } from '@/app/[locale]/incident/add/components/MapDialogContent'
 import * as Dialog from '@radix-ui/react-dialog'
 import { useFormStore } from '@/store/form_store'
+import clsx from 'clsx'
 
 const MapDialogMobileContent = ({
   onMapReady,
@@ -47,7 +48,7 @@ const MapDialogMobileContent = ({
   const t = useTranslations('describe_add.map')
 
   const [fullscreenMap, setFullscreenMap] = useState(false)
-  const [showList, setShowList] = useState(false)
+  const [showList, setShowList] = useState<boolean>(false)
 
   const {
     dialogMap,
@@ -95,8 +96,8 @@ const MapDialogMobileContent = ({
         </form>
       </AlertDialog>
       {/*min-h-[100vh] max-h-[100vh]*/}
-      <div className="col-span-1 flex flex-col  md:max-h-screen gap-4">
-        <div className="flex flex-col overflow-y-auto gap-1 md:gap-4 px-4 pt-4">
+      <div className="col-span-1 flex flex-col md:max-h-screen gap-4">
+        <div className="flex flex-col overflow-y-auto gap-1 md:gap-4 py-3 px-2">
           <div className="flex justify-between items-center">
             <Heading level={1} className="!text-xl">
               {field?.meta.language.title
@@ -115,18 +116,23 @@ const MapDialogMobileContent = ({
 
           {/*<MapExplainerAccordion />*/}
 
-          <div className="flex flex-col md:py-2">
+          <div
+            className={clsx(
+              'flex flex-col md:py-2',
+              fullscreenMap ? 'hidden' : ''
+            )}
+          >
             <label htmlFor="address" className="!text-lg">
               {t('search_address_label')}
             </label>
             <AddressCombobox
               updatePosition={updatePosition}
               setIsMapSelected={setIsMapSelected}
+              mobileView={true}
             />
           </div>
-
           {isAssetSelect && dialogMap && config && field ? (
-            <div className="flex flex-col gap-4 py-2 flex-grow">
+            <div>
               {dialogMap.getZoom() < config.base.map.minimal_zoom && (
                 <SpotlightSection type="info" className="!p-2">
                   <Paragraph className="!text-base">
@@ -136,35 +142,48 @@ const MapDialogMobileContent = ({
                   </Paragraph>
                 </SpotlightSection>
               )}
-              {featureList.length > 0 && (
-                <>
-                  <Heading level={3}>{assetSelectFeatureLabel}</Heading>
-                  <ul
-                    className="flex-1 overflow-y-auto mb-2 max-h-[calc(100vh-22em)]"
-                    aria-labelledby="object-list-label"
-                  >
-                    {featureList.map((feature: any) => (
-                      <FeatureListItem
-                        configUrl={config?.base.assets_url}
-                        feature={feature}
-                        key={feature.id}
-                        field={field}
-                        setError={setError}
-                        dialogRef={dialogRef}
-                        setFocusedItemId={setFocusedItemId}
-                      />
-                    ))}
-                  </ul>
-                </>
-              )}
             </div>
           ) : null}
         </div>
       </div>
       {/*min-h-[100vh] max-h-[50vh]*/}
+      {showList && field && (
+        <div className="px-3">
+          <Heading level={3}>{assetSelectFeatureLabel}</Heading>
+          {featureList.length > 0 && (
+            <ul
+              className="flex-1 overflow-y-auto my-3 max-h-[calc(100vh-17em)]"
+              aria-labelledby="object-list-label"
+            >
+              {featureList.map((feature: any) => (
+                <FeatureListItem
+                  configUrl={config?.base.assets_url}
+                  feature={feature}
+                  key={feature.id}
+                  field={field}
+                  setError={setError}
+                  dialogRef={dialogRef}
+                  setFocusedItemId={setFocusedItemId}
+                />
+              ))}
+            </ul>
+          )}
+          <div className="mb-0 mt-auto">
+            <Button
+              onClick={() => setShowList(false)}
+              className="!text-lg !px-4 !py-3"
+            >
+              Kaart
+            </Button>
+          </div>
+        </div>
+      )}
       {config && (
         <div
-          className="col-span-1 md:col-span-2  md:max-h-screen relative"
+          className={clsx(
+            'col-span-1 md:col-span-2 md:max-h-screen relative',
+            showList ? 'hidden' : ''
+          )}
           ref={mapContainerRef}
         >
           <Map
@@ -245,16 +264,16 @@ const MapDialogMobileContent = ({
               label="fullscreen todo"
             >
               {fullscreenMap ? (
-                <IconArrowsDiagonal />
-              ) : (
                 <IconArrowsDiagonalMinimize2 />
+              ) : (
+                <IconArrowsDiagonal />
               )}
             </IconButton>
           </div>
 
           <div className="map-list-group">
             <Button
-              onClick={() => setShowList(false)}
+              onClick={() => setShowList(true)}
               className="!text-lg !px-4 !py-3"
             >
               Lijst
@@ -282,11 +301,16 @@ const MapDialogMobileContent = ({
         </div>
       )}
 
-      <div className="flex justify-center py-4">
+      <div
+        className={clsx(
+          'flex justify-center py-3 px-3',
+          fullscreenMap ? 'hidden' : ''
+        )}
+      >
         <Dialog.Close asChild onClick={() => closeMapDialog()}>
           <Button
             appearance="primary-action-button"
-            className="!text-lg"
+            className="mobile !text-lg !w-max "
             type="button"
           >
             {isAssetSelect

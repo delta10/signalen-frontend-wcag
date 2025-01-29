@@ -2,6 +2,12 @@
   --utrecht-form-control-placeholder-font-style: italic;
 }
 
+.utrecht-textbox.mobile {
+  padding: var(--basis-space-text-xs) !important;
+  font-size: var(--basis-typography-font-size-6) !important;
+}
+
+
 .utrecht-alert__content-closable {
   display: flex;
   flex-direction: row;
@@ -50,13 +56,18 @@
 .utrecht-button {
   /* this issue will be fixed in the design system */
   min-block-size: max(
-    var(--utrecht-button-min-block-size, 44px),
-    fit-content
+      var(--utrecht-button-min-block-size, 44px),
+      fit-content
   ) !important;
   min-inline-size: max(
-    var(--utrecht-button-min-inline-size, 44px),
-    fit-content
+      var(--utrecht-button-min-inline-size, 44px),
+      fit-content
   ) !important;
+}
+
+.utrecht-button.mobile {
+  width: 100% !important;
+  max-inline-size: 100%;
 }
 
 .utrecht-alert-dialog {
@@ -70,20 +81,20 @@
 
 .utrecht-radio-button:focus {
   --_utrecht-radio-button-interactive-background-color: var(
-    --_utrecht-radio-button-state-focus-background-color,
-    var(--utrecht-radio-button-focus-background-color)
+      --_utrecht-radio-button-state-focus-background-color,
+      var(--utrecht-radio-button-focus-background-color)
   ) !important;
   --_utrecht-radio-button-interactive-border-color: var(
-    --_utrecht-radio-button-state-focus-border-color,
-    var(--utrecht-radio-button-focus-border-color)
+      --_utrecht-radio-button-state-focus-border-color,
+      var(--utrecht-radio-button-focus-border-color)
   ) !important;
   --_utrecht-radio-button-interactive-border-width: var(
-    --_utrecht-radio-button-state-focus-border-width,
-    var(--utrecht-radio-button-focus-border-width)
+      --_utrecht-radio-button-state-focus-border-width,
+      var(--utrecht-radio-button-focus-border-width)
   ) !important;
   --_utrecht-radio-button-interactive-color: var(
-    --_utrecht-radio-button-state-focus-color,
-    var(--utrecht-radio-button-focus-color)
+      --_utrecht-radio-button-state-focus-color,
+      var(--utrecht-radio-button-focus-color)
   ) !important;
 }
 

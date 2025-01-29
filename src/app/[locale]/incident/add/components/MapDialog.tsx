@@ -29,13 +29,14 @@ const MapDialog = ({
 }: MapDialogProps) => {
   const t = useTranslations('describe_add.map')
   const isMobile = useMediaQuery('only screen and (max-width : 768px)')
+
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay />
         <Dialog.Content
-          className="grid md:grid-cols-3 overflow-y-auto signalen-modal-dialog signalen-modal-dialog--cover-viewport"
+          className="grid grid-rows-[auto_1fr_auto] md:grid-cols-3 overflow-y-auto signalen-modal-dialog signalen-modal-dialog--cover-viewport"
           id="headlessui-portal-root"
         >
           <VisuallyHidden.Root>
