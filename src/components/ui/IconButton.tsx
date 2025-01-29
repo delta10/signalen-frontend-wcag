@@ -7,6 +7,7 @@ import React, {
 } from 'react'
 import { Button, ButtonProps, Icon } from '@/components/index'
 import clsx from 'clsx'
+import { useMediaQuery } from '@uidotdev/usehooks'
 
 export interface IconButtonProps extends ButtonProps {
   label: ReactNode
@@ -26,11 +27,16 @@ export const IconButton = forwardRef(
   ) => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const labelId = id ? `${id}-label` : useId()
+    const isMobile = useMediaQuery('only screen and (max-width : 768px)')
 
     return (
       <Button
         aria-labelledby={labelId}
-        className={clsx('signalen-icon-button', className)}
+        className={clsx(
+          'signalen-icon-button',
+          className,
+          isMobile ? '!p-3' : ''
+        )}
         ref={ref}
         {...restProps}
       >

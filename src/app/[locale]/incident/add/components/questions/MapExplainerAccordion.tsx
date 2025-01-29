@@ -8,6 +8,7 @@ import {
   UnorderedListItem,
 } from '@utrecht/component-library-react'
 import { IconChevronDown } from '@tabler/icons-react'
+import { useMediaQuery } from '@uidotdev/usehooks'
 
 const MapExplainerAccordion = () => {
   const t = useTranslations('describe_add.explainer')

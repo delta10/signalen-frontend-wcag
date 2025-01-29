@@ -1,8 +1,28 @@
-/* map */
-.map-location-group {
-  position: absolute;
+/* map
+todo: aanpassen voor volledig scherm
   left: 1em;
   top: 1em;
+*/
+.map-location-group {
+  position: absolute;
+  left: 0.5em;
+  top: 0.5em;
+  display: flex;
+  gap: 8px;
+}
+
+.map-fullscreen-group {
+  position: absolute;
+  right: 0.5em;
+  top: 0.5em;
+  display: flex;
+  gap: 8px;
+}
+
+.map-list-group {
+  position: absolute;
+  left: 0.5em;
+  bottom: 0.5em;
   display: flex;
   gap: 8px;
 }
@@ -28,8 +48,8 @@
 
 .map-zoom-button-group {
   position: absolute;
-  right: 1em;
-  bottom: 1em;
+  right: 0.5em;
+  bottom: 0.5em;
   gap: 0.5rem !important;
   display: flex;
   flex-direction: column;
