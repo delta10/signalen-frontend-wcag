@@ -165,7 +165,7 @@ const MapDialogMobileContent = ({
           <Heading level={3}>{assetSelectFeatureLabel}</Heading>
           {featureList.length > 0 && (
             <ul
-              className="flex-1 overflow-y-auto my-3 max-h-[calc(100vh-20em)]"
+              className="flex-1 overflow-y-auto my-3 min-h-60 max-h-[calc(100vh-20em)]"
               aria-labelledby="object-list-label"
             >
               {featureList.map((feature: any) => (
@@ -186,7 +186,7 @@ const MapDialogMobileContent = ({
       {config && !isAccordionOpen && (
         <div
           className={clsx(
-            'col-span-1 md:col-span-2 md:max-h-screen relative',
+            'col-span-1 min-h-60 relative',
             showList ? 'hidden' : ''
           )}
           ref={mapContainerRef}
