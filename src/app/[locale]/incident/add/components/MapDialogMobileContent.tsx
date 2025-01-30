@@ -50,6 +50,7 @@ const MapDialogMobileContent = ({
 
   const [fullscreenMap, setFullscreenMap] = useState(false)
   const [showList, setShowList] = useState<boolean>(false)
+  const [isAccordionOpen, setIsAccordionOpen] = useState<boolean>(false)
 
   const {
     dialogMap,
@@ -122,9 +123,13 @@ const MapDialogMobileContent = ({
               fullscreenMap ? 'hidden' : ''
             )}
           >
-            <MapExplainerAccordion mobileView={true} />
+            <MapExplainerAccordion
+              mobileView={true}
+              isOpen={isAccordionOpen}
+              setIsOpen={setIsAccordionOpen}
+            />
 
-            <label htmlFor="address" className="!text-lg mt-2">
+            <label htmlFor="address" className="!text-lg mt-4">
               {t('search_address_label')}
             </label>
             <AddressCombobox
@@ -136,7 +141,7 @@ const MapDialogMobileContent = ({
           {isAssetSelect && dialogMap && config && field ? (
             <div>
               {dialogMap.getZoom() < config.base.map.minimal_zoom && (
-                <SpotlightSection type="info" className="!p-2">
+                <SpotlightSection type="info" className="!p-2 !mt-2">
                   <Paragraph className="!text-base">
                     {t('zoom_for_object', {
                       objects: objectDisplayName?.plural,
@@ -172,7 +177,7 @@ const MapDialogMobileContent = ({
           )}
         </div>
       )}
-      {config && (
+      {config && !isAccordionOpen && (
         <div
           className={clsx(
             'col-span-1 md:col-span-2 md:max-h-screen relative',
@@ -296,17 +301,9 @@ const MapDialogMobileContent = ({
         </div>
       )}
 
-      {/*{showList && (*/}
-      {/*  <Button*/}
-      {/*    onClick={() => setShowList(false)}*/}
-      {/*    className="utrecht-button--subtle map-icon-button !text-lg !px-2 !py-2 mt-2 ml-3"*/}
-      {/*  >*/}
-      {/*    Kaart*/}
-      {/*  </Button>*/}
-      {/*)}*/}
       {/*todo ff kijken naar padding met lijst geen lijst vol scherm etc*/}
 
-      <div className={clsx('flex justify-center mt-2 pb-3 px-3')}>
+      <div className={clsx('flex justify-center my-3 px-3 self-end')}>
         {showList && (
           <Button
             onClick={() => setShowList(false)}
@@ -319,7 +316,7 @@ const MapDialogMobileContent = ({
           <Dialog.Close asChild onClick={() => closeMapDialog()}>
             <Button
               appearance="primary-action-button"
-              className="mobile !text-lg !w-max"
+              className="mobile !text-lg !w-max "
               type="button"
             >
               {isAssetSelect

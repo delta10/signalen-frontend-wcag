@@ -46,7 +46,16 @@
 
 /* todo erplaats 1.25 ergens anderes heen*/
 .utrecht-accordion.mobile > .utrecht-accordion__section > .utrecht-accordion__header > button > span {
+  font-size: 1rem;
+}
+
+/* todo erplaats 1.25 ergens anderes heen*/
+.utrecht-accordion.mobile .utrecht-paragraph, .utrecht-unordered-list {
   font-size: 1.125rem !important;
+}
+
+.utrecht-accordion.mobile .utrecht-heading-4, .utrecht-heading-5 {
+  font-size: 1.2rem !important;
 }
 
 .utrecht-page-footer__content {

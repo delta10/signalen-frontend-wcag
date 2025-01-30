@@ -10,14 +10,32 @@ import {
 import { IconChevronDown } from '@tabler/icons-react'
 import { cn } from '@/lib/utils/style'
 
+type MapExplainerAccordion = {
+  mobileView?: boolean
+  isOpen?: boolean
+  setIsOpen?: any
+}
+
 const MapExplainerAccordion = ({
   mobileView = false,
-}: {
-  mobileView?: boolean
-}) => {
+  isOpen,
+  setIsOpen,
+}: MapExplainerAccordion) => {
   const t = useTranslations('describe_add.explainer')
   const accordionRef = useRef<HTMLDivElement>(null)
-  const [openAcc, setOpenAcc] = useState<boolean>(false)
+
+  const [internalOpen, setInternalOpen] = useState<boolean>(false)
+
+  // Determine whether to use controlled or internal state
+  const isAccordionOpen = isOpen ?? internalOpen
+
+  const toggleAccordion = () => {
+    if (setIsOpen) {
+      setIsOpen(!isAccordionOpen) // External control
+    } else {
+      setInternalOpen(!internalOpen) // Internal control
+    }
+  }
 
   // todo: later kijken hoe dit dynamischer kan.
   const explainerDictionaryNames = {
@@ -68,8 +86,8 @@ const MapExplainerAccordion = ({
         icon={<IconChevronDown />}
         headingLevel={3}
         label={t('label')}
-        expanded={openAcc} // Default collapsed
-        onActivate={() => setOpenAcc(!openAcc)}
+        expanded={isAccordionOpen} // Default collapsed
+        onActivate={() => toggleAccordion()}
         body={null}
       >
         <div
