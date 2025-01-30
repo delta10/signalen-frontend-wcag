@@ -1,6 +1,5 @@
 import React, { useRef } from 'react'
 import {
-  Alert,
   AlertDialog,
   Button,
   ButtonGroup,
@@ -14,7 +13,6 @@ import {
 import MapExplainerAccordion from '@/app/[locale]/incident/add/components/questions/MapExplainerAccordion'
 import { AddressCombobox } from '@/components/ui/AddressCombobox'
 import {
-  IconChevronDown,
   IconCurrentLocation,
   IconMinus,
   IconPlus,
@@ -111,28 +109,6 @@ const MapDialogContent = ({
             />
           </div>
 
-          <div className="block md:hidden">
-            <Alert>
-              <div className="flex flex-row items-center">
-                <Paragraph>{t('scroll_for_map')}</Paragraph>
-                <IconButton
-                  appearance="secondary-action-button"
-                  label={t('scroll_to_map_button')}
-                  onClick={() =>
-                    mapContainerRef.current?.scrollIntoView({
-                      behavior: 'smooth',
-                      block: 'center',
-                    })
-                  }
-                  className="ml-2"
-                >
-                  <Icon>
-                    <IconChevronDown />
-                  </Icon>
-                </IconButton>
-              </div>
-            </Alert>
-          </div>
           {isAssetSelect && dialogMap && config && field ? (
             <div className="flex flex-col gap-4 pt-2 flex-grow">
               {dialogMap.getZoom() < config.base.map.minimal_zoom && (

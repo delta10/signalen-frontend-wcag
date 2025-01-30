@@ -9,7 +9,6 @@ import {
   IconButton,
   AlertDialog,
   Paragraph,
-  Alert,
   Button,
   MapMarker,
   SpotlightSection,
@@ -87,10 +86,7 @@ const MapDialogMobileContent = ({
   return (
     <>
       <AlertDialog type="error" ref={dialogRef}>
-        <form
-          method="dialog"
-          className="map-alert-dialog__content md:!min-w-[400px] md:!max-w-[400px]"
-        >
+        <form method="dialog" className="map-alert-dialog__content">
           {error}
           <ButtonGroup>
             <Button
@@ -103,9 +99,9 @@ const MapDialogMobileContent = ({
           </ButtonGroup>
         </form>
       </AlertDialog>
-      {/*min-h-[100vh] max-h-[100vh]*/}
-      <div className="col-span-1 flex flex-col md:max-h-screen gap-4">
-        <div className="flex flex-col overflow-y-auto gap-1 md:gap-4 py-3 px-2">
+
+      <div className="flex flex-col">
+        <div className="flex flex-col overflow-y-auto gap-1 py-3 px-2">
           <div className="flex justify-between items-center">
             <Heading level={1} className="!text-xl">
               {field?.meta.language.title
@@ -159,7 +155,7 @@ const MapDialogMobileContent = ({
           ) : null}
         </div>
       </div>
-      {/*min-h-[100vh] max-h-[50vh]*/}
+
       {showList && field && (
         <div className="px-3">
           <Heading level={3}>{assetSelectFeatureLabel}</Heading>

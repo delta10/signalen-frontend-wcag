@@ -43,7 +43,6 @@
       "max_number_of_assets_error": "U kunt maximaal {max, plural, one {# object} other {# objecten}} selecteren.",
       "go_further_without_selected_object": "Ga verder zonder {object}",
       "zoom_for_object": "Zoom in op de kaart om de {objects} te zien",
-      "scroll_for_map": "Scroll naar onder om de kaart te weergeven",
       "scroll_to_map_button": "Naar beneden",
       "map_zoom-in_button_label": "Zoom in op de kaart",
       "map_zoom-out_button_label": "Zoom uit op de kaart",
