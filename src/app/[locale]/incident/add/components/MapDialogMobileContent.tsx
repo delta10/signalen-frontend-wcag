@@ -17,6 +17,7 @@ import {
 import {
   IconArrowsDiagonal,
   IconArrowsDiagonalMinimize2,
+  IconChevronLeft,
   IconCurrentLocation,
   IconMinus,
   IconPlus,
@@ -77,6 +78,11 @@ const MapDialogMobileContent = ({
     setError,
     handleFeatureMarkerClick,
   } = useMapDialog(onMapReady, field, features, isAssetSelect)
+
+  const toggleList = () => {
+    setShowList(true)
+    setFullscreenMap(false)
+  }
 
   return (
     <>
@@ -272,7 +278,7 @@ const MapDialogMobileContent = ({
           </div>
           <div className="map-list-group">
             <Button
-              onClick={() => setShowList(true)}
+              onClick={() => toggleList()}
               className="utrecht-button--subtle map-icon-button !text-lg !px-2 !py-2"
             >
               Lijst
@@ -303,16 +309,18 @@ const MapDialogMobileContent = ({
 
       {/*todo ff kijken naar padding met lijst geen lijst vol scherm etc*/}
 
-      <div className={clsx('flex justify-center my-3 px-3 self-end')}>
-        {showList && (
-          <Button
-            onClick={() => setShowList(false)}
-            className="utrecht-button--subtle map-icon-button !text-lg !px-2 !py-2 mt-2 ml-3"
-          >
-            Kaart
-          </Button>
-        )}
-        {!fullscreenMap && (
+      {!fullscreenMap && (
+        <div className={clsx('flex flex-col my-3 px-3 self-end')}>
+          {showList && (
+            <Button
+              onClick={() => setShowList(false)}
+              className="mobile utrecht-button--subtle !pl-0 !justify-start !w-full !text-lg"
+            >
+              <IconChevronLeft />
+              {t('back_to_map')}
+            </Button>
+          )}
+
           <Dialog.Close asChild onClick={() => closeMapDialog()}>
             <Button
               appearance="primary-action-button"
@@ -341,8 +349,8 @@ const MapDialogMobileContent = ({
                 : t('choose_this_location')}
             </Button>
           </Dialog.Close>
-        )}
-      </div>
+        </div>
+      )}
     </>
   )
 }

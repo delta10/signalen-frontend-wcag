@@ -58,7 +58,8 @@
       "search_address_label": "Zoek op adres of postcode",
       "object": "object",
       "objects": "objecten",
-      "pinned_location": "De locatie is gepind op de kaart"
+      "pinned_location": "De locatie is gepind op de kaart",
+      "back_to_map": "Terug naar de kaart"
     },
     "explainer": {
       "label": "Hoe gebruik ik de kaart?",
