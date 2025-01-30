@@ -4,9 +4,8 @@
 
 .utrecht-textbox.mobile {
   padding: var(--basis-space-text-xs) !important;
-  font-size: var(--basis-typography-font-size-6) !important;
+  font-size: 1.125rem !important;
 }
-
 
 .utrecht-alert__content-closable {
   display: flex;
@@ -40,6 +39,16 @@
   align-items: center;
 }
 
+.utrecht-accordion.mobile > .utrecht-accordion__section > .utrecht-accordion__header > button {
+  max-inline-size: 100%;
+  padding: var(--basis-space-text-md) !important;
+}
+
+/* todo erplaats 1.25 ergens anderes heen*/
+.utrecht-accordion.mobile > .utrecht-accordion__section > .utrecht-accordion__header > button > span {
+  font-size: 1.125rem !important;
+}
+
 .utrecht-page-footer__content {
   --utrecht-link-color: currentColor;
   --utrecht-link-hover-color: currentColor;
@@ -68,6 +77,11 @@
 .utrecht-button.mobile {
   width: 100% !important;
   max-inline-size: 100%;
+}
+
+.utrecht-button--subtle.map-icon-button {
+  background-color: var(--basis-color-gray-50);
+  border: 1px solid var(--basis-color-primary-fill-1);
 }
 
 .utrecht-alert-dialog {

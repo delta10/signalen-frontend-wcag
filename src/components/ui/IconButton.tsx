@@ -6,11 +6,11 @@ import React, {
   ReactNode,
 } from 'react'
 import { Button, ButtonProps, Icon } from '@/components/index'
-import clsx from 'clsx'
-import { useMediaQuery } from '@uidotdev/usehooks'
+import { cn } from '@/lib/utils/style'
 
 export interface IconButtonProps extends ButtonProps {
   label: ReactNode
+  mobileView?: boolean
 }
 
 export const IconButton = forwardRef(
@@ -21,22 +21,18 @@ export const IconButton = forwardRef(
       children,
       type,
       className,
+      mobileView = false,
       ...restProps
     }: PropsWithChildren<IconButtonProps>,
     ref: ForwardedRef<HTMLButtonElement>
   ) => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const labelId = id ? `${id}-label` : useId()
-    const isMobile = useMediaQuery('only screen and (max-width : 768px)')
 
     return (
       <Button
         aria-labelledby={labelId}
-        className={clsx(
-          'signalen-icon-button',
-          className,
-          isMobile ? '!p-3' : ''
-        )}
+        className={cn(className, { mobile: mobileView })}
         ref={ref}
         {...restProps}
       >

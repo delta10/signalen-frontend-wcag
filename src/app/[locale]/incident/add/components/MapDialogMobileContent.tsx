@@ -35,6 +35,7 @@ import { MapDialogContentProps } from '@/app/[locale]/incident/add/components/Ma
 import * as Dialog from '@radix-ui/react-dialog'
 import { useFormStore } from '@/store/form_store'
 import clsx from 'clsx'
+import MapExplainerAccordion from '@/app/[locale]/incident/add/components/questions/MapExplainerAccordion'
 
 const MapDialogMobileContent = ({
   onMapReady,
@@ -106,7 +107,8 @@ const MapDialogMobileContent = ({
             </Heading>
             <Dialog.Close asChild>
               <IconButton
-                className="map-button !mr-0 !ml-auto"
+                mobileView={true}
+                className="utrecht-button--subtle map-icon-button !mr-0 !ml-auto"
                 label={t('map_close_button_label')}
               >
                 <IconX />
@@ -114,15 +116,15 @@ const MapDialogMobileContent = ({
             </Dialog.Close>
           </div>
 
-          {/*<MapExplainerAccordion />*/}
-
           <div
             className={clsx(
-              'flex flex-col md:py-2',
+              'flex flex-col mt-2',
               fullscreenMap ? 'hidden' : ''
             )}
           >
-            <label htmlFor="address" className="!text-lg">
+            <MapExplainerAccordion mobileView={true} />
+
+            <label htmlFor="address" className="!text-lg mt-2">
               {t('search_address_label')}
             </label>
             <AddressCombobox
@@ -152,7 +154,7 @@ const MapDialogMobileContent = ({
           <Heading level={3}>{assetSelectFeatureLabel}</Heading>
           {featureList.length > 0 && (
             <ul
-              className="flex-1 overflow-y-auto my-3 max-h-[calc(100vh-17em)]"
+              className="flex-1 overflow-y-auto my-3 max-h-[calc(100vh-20em)]"
               aria-labelledby="object-list-label"
             >
               {featureList.map((feature: any) => (
@@ -168,14 +170,6 @@ const MapDialogMobileContent = ({
               ))}
             </ul>
           )}
-          <div className="mb-0 mt-auto">
-            <Button
-              onClick={() => setShowList(false)}
-              className="!text-lg !px-4 !py-3"
-            >
-              Kaart
-            </Button>
-          </div>
         </div>
       )}
       {config && (
@@ -251,17 +245,18 @@ const MapDialogMobileContent = ({
           <div className="map-location-group">
             <Button
               onClick={() => setCurrentLocation()}
-              className="!text-lg !px-4 !py-3"
+              className="utrecht-button--subtle map-icon-button !text-lg !px-2 !py-2"
             >
               <IconCurrentLocation />
               {t('current_location')}
             </Button>
           </div>
-
           <div className="map-fullscreen-group">
             <IconButton
               onClick={() => setFullscreenMap(!fullscreenMap)}
               label="fullscreen todo"
+              mobileView={true}
+              className="utrecht-button--subtle map-icon-button"
             >
               {fullscreenMap ? (
                 <IconArrowsDiagonalMinimize2 />
@@ -270,27 +265,27 @@ const MapDialogMobileContent = ({
               )}
             </IconButton>
           </div>
-
           <div className="map-list-group">
             <Button
               onClick={() => setShowList(true)}
-              className="!text-lg !px-4 !py-3"
+              className="utrecht-button--subtle map-icon-button !text-lg !px-2 !py-2"
             >
               Lijst
             </Button>
           </div>
-
           {dialogMap && (
             <ButtonGroup direction="column" className="map-zoom-button-group">
               <IconButton
-                className="map-button !p-3"
+                mobileView={true}
+                className="utrecht-button--subtle map-icon-button"
                 onClick={() => dialogMap.zoomIn()}
                 label={t('map_zoom-in_button_label')}
               >
                 <IconPlus />
               </IconButton>
               <IconButton
-                className="map-button !p-3"
+                mobileView={true}
+                className="utrecht-button--subtle map-icon-button"
                 onClick={() => dialogMap.zoomOut()}
                 label={t('map_zoom-out_button_label')}
               >
@@ -301,40 +296,55 @@ const MapDialogMobileContent = ({
         </div>
       )}
 
-      <div
-        className={clsx(
-          'flex justify-center py-3 px-3',
-          fullscreenMap ? 'hidden' : ''
-        )}
-      >
-        <Dialog.Close asChild onClick={() => closeMapDialog()}>
+      {/*{showList && (*/}
+      {/*  <Button*/}
+      {/*    onClick={() => setShowList(false)}*/}
+      {/*    className="utrecht-button--subtle map-icon-button !text-lg !px-2 !py-2 mt-2 ml-3"*/}
+      {/*  >*/}
+      {/*    Kaart*/}
+      {/*  </Button>*/}
+      {/*)}*/}
+      {/*todo ff kijken naar padding met lijst geen lijst vol scherm etc*/}
+
+      <div className={clsx('flex justify-center mt-2 pb-3 px-3')}>
+        {showList && (
           <Button
-            appearance="primary-action-button"
-            className="mobile !text-lg !w-max "
-            type="button"
+            onClick={() => setShowList(false)}
+            className="utrecht-button--subtle map-icon-button !text-lg !px-2 !py-2 mt-2 ml-3"
           >
-            {isAssetSelect
-              ? formState.selectedFeatures.length === 0
-                ? formState.address
-                  ? t('choose_this_location_no_asset_but_address', {
-                      object: objectDisplayName.singular,
-                    })
-                  : t('go_further_without_selected_object', {
-                      object: objectDisplayName.singular,
-                    })
-                : formState.selectedFeatures.length === 1
-                  ? field?.meta.language.submit ||
-                    t('go_further_without_selected_object', {
-                      object: objectDisplayName.singular,
-                    })
-                  : field?.meta.language.submitPlural ||
-                    field?.meta.language.submit ||
-                    t('go_further_without_selected_object', {
-                      object: objectDisplayName.singular,
-                    })
-              : t('choose_this_location')}
+            Kaart
           </Button>
-        </Dialog.Close>
+        )}
+        {!fullscreenMap && (
+          <Dialog.Close asChild onClick={() => closeMapDialog()}>
+            <Button
+              appearance="primary-action-button"
+              className="mobile !text-lg !w-max"
+              type="button"
+            >
+              {isAssetSelect
+                ? formState.selectedFeatures.length === 0
+                  ? formState.address
+                    ? t('choose_this_location_no_asset_but_address', {
+                        object: objectDisplayName.singular,
+                      })
+                    : t('go_further_without_selected_object', {
+                        object: objectDisplayName.singular,
+                      })
+                  : formState.selectedFeatures.length === 1
+                    ? field?.meta.language.submit ||
+                      t('go_further_without_selected_object', {
+                        object: objectDisplayName.singular,
+                      })
+                    : field?.meta.language.submitPlural ||
+                      field?.meta.language.submit ||
+                      t('go_further_without_selected_object', {
+                        object: objectDisplayName.singular,
+                      })
+                : t('choose_this_location')}
+            </Button>
+          </Dialog.Close>
+        )}
       </div>
     </>
   )

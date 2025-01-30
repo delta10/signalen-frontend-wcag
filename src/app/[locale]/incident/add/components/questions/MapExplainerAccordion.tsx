@@ -8,9 +8,13 @@ import {
   UnorderedListItem,
 } from '@utrecht/component-library-react'
 import { IconChevronDown } from '@tabler/icons-react'
-import { useMediaQuery } from '@uidotdev/usehooks'
+import { cn } from '@/lib/utils/style'
 
-const MapExplainerAccordion = () => {
+const MapExplainerAccordion = ({
+  mobileView = false,
+}: {
+  mobileView?: boolean
+}) => {
   const t = useTranslations('describe_add.explainer')
   const accordionRef = useRef<HTMLDivElement>(null)
   const [openAcc, setOpenAcc] = useState<boolean>(false)
@@ -54,7 +58,12 @@ const MapExplainerAccordion = () => {
     ],
   }
   return (
-    <Accordion ref={accordionRef}>
+    <Accordion
+      ref={accordionRef}
+      className={cn('utrecht-accordion', {
+        mobile: mobileView,
+      })}
+    >
       <AccordionSection
         icon={<IconChevronDown />}
         headingLevel={3}

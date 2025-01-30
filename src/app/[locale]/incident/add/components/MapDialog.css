@@ -39,6 +39,22 @@ todo: aanpassen voor volledig scherm
   align-items: center;
 }
 
+.map-icon-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.map-icon-button.mobile {
+  padding: var(--basis-space-text-md) ;
+  max-inline-size: fit-content;
+}
+
+
+.map-icon-button.mobile > .utrecht-icon  {
+  inset-block: 0 !important;
+}
+
 .map-close-button {
   position: absolute;
   right: 1em;
@@ -50,7 +66,7 @@ todo: aanpassen voor volledig scherm
   position: absolute;
   right: 0.5em;
   bottom: 0.5em;
-  gap: 0.5rem !important;
+  gap: 0.33rem !important;
   display: flex;
   flex-direction: column;
 }
