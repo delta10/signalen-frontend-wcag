@@ -281,7 +281,7 @@ const MapDialogMobileContent = ({
               onClick={() => toggleList()}
               className="utrecht-button--subtle map-icon-button !text-lg !px-2 !py-2"
             >
-              Lijst
+              {t('show_list', { name: objectDisplayName.plural })}
             </Button>
           </div>
           {dialogMap && (
@@ -306,8 +306,6 @@ const MapDialogMobileContent = ({
           )}
         </div>
       )}
-
-      {/*todo ff kijken naar padding met lijst geen lijst vol scherm etc*/}
 
       {!fullscreenMap && (
         <div className={clsx('flex flex-col my-3 px-3 self-end')}>

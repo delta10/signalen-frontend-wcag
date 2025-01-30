@@ -59,7 +59,8 @@
       "object": "object",
       "objects": "objecten",
       "pinned_location": "De locatie is gepind op de kaart",
-      "back_to_map": "Terug naar de kaart"
+      "back_to_map": "Terug naar de kaart",
+      "show_list": "Toon {name} lijst"
     },
     "explainer": {
       "label": "Hoe gebruik ik de kaart?",
