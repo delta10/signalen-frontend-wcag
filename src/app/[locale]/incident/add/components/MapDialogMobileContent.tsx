@@ -265,7 +265,7 @@ const MapDialogMobileContent = ({
           <div className="map-fullscreen-group">
             <IconButton
               onClick={() => setFullscreenMap(!fullscreenMap)}
-              label="fullscreen todo"
+              label={t('toggle_fullscreen')}
               mobileView={true}
               className="utrecht-button--subtle map-icon-button"
             >

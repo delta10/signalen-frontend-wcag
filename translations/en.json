@@ -58,7 +58,8 @@
       "search_address_label": "Search by address or postal code",
       "pinned_location": "The location is pinned on the map",
       "back_to_map": "Back to the map",
-      "show_list": "Show {name} list"
+      "show_list": "Show {name} list",
+      "toggle_fullscreen": "Show the map on fullscreen"
     },
     "explainer": {
       "label": "How do I use the map?",
