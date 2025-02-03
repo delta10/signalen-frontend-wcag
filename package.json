@@ -74,7 +74,7 @@
     "@utrecht/select-combobox-react": "1.0.6",
     "@vitejs/plugin-react": "4.3.4",
     "autoprefixer": "10.4.20",
-    "axios": "1.7.8",
+    "axios": "1.7.9",
     "eslint": "9",
     "eslint-config-next": "15.1.6",
     "eslint-config-prettier": "9.1.0",
