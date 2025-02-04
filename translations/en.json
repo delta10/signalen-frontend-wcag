@@ -58,7 +58,8 @@
       "pinned_location": "The location is pinned on the map",
       "back_to_map": "Back to the map",
       "show_list": "Show {name} list",
-      "toggle_fullscreen": "Show the map on fullscreen"
+      "toggle_fullscreen_on": "Show the map on fullscreen",
+      "toggle_fullscreen_off": "close fullscreen view of the map"
     },
     "explainer": {
       "label": "How do I use the map?",

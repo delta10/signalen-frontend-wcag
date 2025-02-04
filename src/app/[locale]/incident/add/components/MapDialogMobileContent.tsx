@@ -262,7 +262,11 @@ const MapDialogMobileContent = ({
           <div className="map-fullscreen-group">
             <IconButton
               onClick={() => setFullscreenMap(!fullscreenMap)}
-              label={t('toggle_fullscreen')}
+              label={
+                fullscreenMap
+                  ? t('toggle_fullscreen_off')
+                  : t('toggle_fullscreen_on')
+              }
               mobileView={true}
               className="utrecht-button--subtle map-icon-button"
             >

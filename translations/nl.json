@@ -60,7 +60,8 @@
       "pinned_location": "De locatie is gepind op de kaart",
       "back_to_map": "Terug naar de kaart",
       "show_list": "Toon {name} lijst",
-      "toggle_fullscreen": "Open de kaart op volledig scherm"
+      "toggle_fullscreen_on": "Open de kaart op volledig scherm",
+      "toggle_fullscreen_off": "Sluit volledig schermweergave van de kaart"
     },
     "explainer": {
       "label": "Hoe gebruik ik de kaart?",
