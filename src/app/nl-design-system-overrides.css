@@ -3,8 +3,8 @@
 }
 
 .utrecht-textbox.mobile {
+  @apply text-lg;
   padding: var(--basis-space-text-xs) !important;
-  font-size: 1.125rem !important;
 }
 
 .utrecht-alert__content-closable {
@@ -44,18 +44,16 @@
   padding: var(--basis-space-text-md) !important;
 }
 
-/* todo erplaats 1.25 ergens anderes heen*/
 .utrecht-accordion.mobile > .utrecht-accordion__section > .utrecht-accordion__header > button > span {
-  font-size: 1rem;
+  @apply text-lg;
 }
 
-/* todo erplaats 1.25 ergens anderes heen*/
 .utrecht-accordion.mobile .utrecht-paragraph, .utrecht-unordered-list {
-  font-size: 1.125rem !important;
+  @apply text-lg;
 }
 
 .utrecht-accordion.mobile .utrecht-heading-4, .utrecht-heading-5 {
-  font-size: 1.2rem !important;
+  @apply text-lg;
 }
 
 .utrecht-page-footer__content {
@@ -84,6 +82,7 @@
 }
 
 .utrecht-button.mobile {
+  @apply text-lg;
   width: 100% !important;
   max-inline-size: 100%;
 }
@@ -91,6 +90,10 @@
 .utrecht-button--subtle.map-icon-button {
   background-color: var(--basis-color-gray-50);
   border: 1px solid var(--basis-color-primary-fill-1);
+}
+
+.utrecht-button--subtle.mobile {
+  @apply text-base;
 }
 
 .utrecht-alert-dialog {

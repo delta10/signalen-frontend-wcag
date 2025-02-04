@@ -250,9 +250,10 @@ const MapDialogMobileContent = ({
               })}
           </Map>
           <div className="map-location-group">
+            {/*!text-lg !px-2 !py-2*/}
             <Button
               onClick={() => setCurrentLocation()}
-              className="utrecht-button--subtle map-icon-button !text-lg !px-2 !py-2"
+              className="utrecht-button--subtle map-icon-button mobile"
             >
               <IconCurrentLocation />
               {t('current_location')}
@@ -275,7 +276,7 @@ const MapDialogMobileContent = ({
           <div className="map-list-group">
             <Button
               onClick={() => toggleList()}
-              className="utrecht-button--subtle map-icon-button !text-lg !px-2 !py-2"
+              className="utrecht-button--subtle map-icon-button mobile"
             >
               {t('show_list', { name: objectDisplayName.plural })}
             </Button>
@@ -318,7 +319,7 @@ const MapDialogMobileContent = ({
           <Dialog.Close asChild onClick={() => closeMapDialog()}>
             <Button
               appearance="primary-action-button"
-              className="mobile !text-lg !w-max "
+              className="mobile"
               type="button"
             >
               {isAssetSelect
