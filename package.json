@@ -21,7 +21,7 @@
     "@hookform/resolvers": "3.9.0",
     "@radix-ui/react-dialog": "1.1.2",
     "@radix-ui/react-visually-hidden": "1.1.1",
-    "@tabler/icons-react": "3.26.0",
+    "@tabler/icons-react": "3.30.0",
     "@types/lodash": "4.17.15",
     "axios-retry": "4.5.0",
     "class-variance-authority": "0.7.1",
