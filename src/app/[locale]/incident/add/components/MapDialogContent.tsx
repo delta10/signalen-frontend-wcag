@@ -245,7 +245,10 @@ const MapDialogContent = ({
               })}
           </Map>
           <div className="map-location-group">
-            <Button onClick={() => setCurrentLocation()}>
+            <Button
+              appearance="secondary-action-button"
+              onClick={() => setCurrentLocation()}
+            >
               <IconCurrentLocation />
               {t('current_location')}
             </Button>
@@ -253,6 +256,7 @@ const MapDialogContent = ({
 
           <Dialog.Close asChild>
             <IconButton
+              appearance="secondary-action-button"
               className="map-button map-close-button"
               label={t('map_close_button_label')}
             >
@@ -263,6 +267,7 @@ const MapDialogContent = ({
           {dialogMap && (
             <ButtonGroup direction="column" className="map-zoom-button-group">
               <IconButton
+                appearance="secondary-action-button"
                 className="map-button map-zoom-button"
                 onClick={() => dialogMap.zoomIn()}
                 label={t('map_zoom-in_button_label')}
@@ -270,6 +275,7 @@ const MapDialogContent = ({
                 <IconPlus />
               </IconButton>
               <IconButton
+                appearance="secondary-action-button"
                 className="map-button map-zoom-button"
                 onClick={() => dialogMap.zoomOut()}
                 label={t('map_zoom-out_button_label')}

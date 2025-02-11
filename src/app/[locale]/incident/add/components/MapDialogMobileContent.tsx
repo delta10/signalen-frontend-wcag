@@ -161,7 +161,7 @@ const MapDialogMobileContent = ({
           <Heading level={3}>{assetSelectFeatureLabel}</Heading>
           {featureList.length > 0 && (
             <ul
-              className="flex-1 overflow-y-auto my-3 min-h-60 max-h-[calc(100vh-20em)]"
+              className="flex-1 overflow-y-auto mt-3 min-h-60 max-h-[calc(100vh-19em)]"
               aria-labelledby="object-list-label"
             >
               {featureList.map((feature: any) => (
@@ -277,14 +277,16 @@ const MapDialogMobileContent = ({
               )}
             </IconButton>
           </div>
-          <div className="map-list-group">
-            <Button
-              onClick={() => toggleList()}
-              className="utrecht-button--subtle map-icon-button mobile"
-            >
-              {t('show_list', { name: objectDisplayName.plural })}
-            </Button>
-          </div>
+          {isAssetSelect && (
+            <div className="map-list-group">
+              <Button
+                onClick={() => toggleList()}
+                className="utrecht-button--subtle map-icon-button mobile"
+              >
+                {t('show_list', { name: objectDisplayName.plural })}
+              </Button>
+            </div>
+          )}
           {dialogMap && (
             <ButtonGroup direction="column" className="map-zoom-button-group">
               <IconButton
@@ -309,11 +311,11 @@ const MapDialogMobileContent = ({
       )}
 
       {!fullscreenMap && (
-        <div className={clsx('flex flex-col my-3 px-3 self-end')}>
+        <div className={clsx('flex flex-col my-2 px-3 self-end')}>
           {showList && (
             <Button
               onClick={() => setShowList(false)}
-              className="mobile utrecht-button--subtle !pl-0 !justify-start !w-full !text-lg"
+              className="mobile utrecht-button--subtle !pt-0 !pl-0 !justify-start !w-full !text-lg"
             >
               <IconChevronLeft />
               {t('back_to_map')}
