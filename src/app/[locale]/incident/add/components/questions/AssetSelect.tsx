@@ -75,12 +75,13 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
 
         setFeatures(geojson)
       }
-      setLoadingAssets(false)
     }
 
     if (dialogMap) {
       dialogMap.on('load', setNewFeatures)
-
+      dialogMap.on('moveend', () => {
+        setLoadingAssets(false)
+      })
       dialogMap.on('move', setNewFeatures)
     }
 
