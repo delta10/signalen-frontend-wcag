@@ -30,7 +30,7 @@
       "map_heading": "Kies uw locatie",
       "map_label": "Waar is het?",
       "choose_this_location": "Gebruik deze locatie",
-      "choose_this_location_no_asset_but_address": "Ga verder zonder {object} maar met locatie",
+      "choose_this_location_no_asset_but_address": "Verder zonder {object} maar met locatie",
       "dialog_title": "Locatie kiezen",
       "dialog_description": "Kies een locatie op de kaart voor de locatie van uw melding.",
       "current_location": "Mijn locatie",
@@ -41,9 +41,8 @@
       "close_alert_notification": "Sluit melding",
       "address_search_label": "Zoek op adres",
       "max_number_of_assets_error": "U kunt maximaal {max, plural, one {# object} other {# objecten}} selecteren.",
-      "go_further_without_selected_object": "Ga verder zonder {object}",
+      "go_further_without_selected_object": "Verder zonder {object}",
       "zoom_for_object": "Zoom in op de kaart om de {objects} te zien",
-      "scroll_for_map": "Scroll naar onder om de kaart te weergeven",
       "scroll_to_map_button": "Naar beneden",
       "map_zoom-in_button_label": "Zoom in op de kaart",
       "map_zoom-out_button_label": "Zoom uit op de kaart",
@@ -58,7 +57,11 @@
       "search_address_label": "Zoek op adres of postcode",
       "object": "object",
       "objects": "objecten",
-      "pinned_location": "De locatie is gepind op de kaart"
+      "pinned_location": "De locatie is gepind op de kaart",
+      "back_to_map": "Terug naar de kaart",
+      "show_list": "Toon {name} lijst",
+      "toggle_fullscreen_on": "Open de kaart op volledig scherm",
+      "toggle_fullscreen_off": "Sluit volledig schermweergave van de kaart"
     },
     "explainer": {
       "label": "Hoe gebruik ik de kaart?",

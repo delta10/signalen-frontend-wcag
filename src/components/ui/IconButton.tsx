@@ -6,10 +6,11 @@ import React, {
   ReactNode,
 } from 'react'
 import { Button, ButtonProps, Icon } from '@/components/index'
-import clsx from 'clsx'
+import { cn } from '@/lib/utils/style'
 
 export interface IconButtonProps extends ButtonProps {
   label: ReactNode
+  mobileView?: boolean
 }
 
 export const IconButton = forwardRef(
@@ -20,6 +21,7 @@ export const IconButton = forwardRef(
       children,
       type,
       className,
+      mobileView = false,
       ...restProps
     }: PropsWithChildren<IconButtonProps>,
     ref: ForwardedRef<HTMLButtonElement>
@@ -30,7 +32,7 @@ export const IconButton = forwardRef(
     return (
       <Button
         aria-labelledby={labelId}
-        className={clsx('signalen-icon-button', className)}
+        className={cn(className, { mobile: mobileView })}
         ref={ref}
         {...restProps}
       >
