@@ -20,7 +20,6 @@ import '@utrecht/select-combobox-react/dist/css'
 import { useFormStore } from '@/store/form_store'
 import { Address } from '@/types/form'
 import { useTranslations } from 'next-intl'
-import { useMediaQuery } from '@uidotdev/usehooks'
 import { cn } from '@/lib/utils/style'
 
 type AddressComboboxProps = {

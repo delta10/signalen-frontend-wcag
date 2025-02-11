@@ -9,8 +9,8 @@ import { PublicQuestion } from '@/types/form'
 
 import './MapDialog.css'
 import MapDialogContent from '@/app/[locale]/incident/add/components/MapDialogContent'
-import { useMediaQuery } from '@uidotdev/usehooks'
 import MapDialogMobileContent from '@/app/[locale]/incident/add/components/MapDialogMobileContent'
+import { useMediaQuery } from 'usehooks-ts'
 
 export type MapDialogProps = {
   trigger: React.ReactElement
