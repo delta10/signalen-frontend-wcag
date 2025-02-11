@@ -74,8 +74,8 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
         const geojson = await getGeoJsonFeatures(endpoint)
 
         setFeatures(geojson)
-        setLoadingAssets(false)
       }
+      setLoadingAssets(false)
     }
 
     if (dialogMap) {
