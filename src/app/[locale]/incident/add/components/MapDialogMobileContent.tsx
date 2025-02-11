@@ -42,6 +42,7 @@ const MapDialogMobileContent = ({
   features,
   field,
   isAssetSelect = false,
+  loadingAssets = false,
 }: MapDialogContentProps) => {
   const mapContainerRef = useRef<HTMLDivElement>(null)
   const { formState } = useFormStore()
@@ -142,15 +143,16 @@ const MapDialogMobileContent = ({
           </div>
           {isAssetSelect && dialogMap && config && field ? (
             <div>
-              {dialogMap.getZoom() < config.base.map.minimal_zoom && (
-                <SpotlightSection type="info" className="!p-2 !mt-2">
-                  <Paragraph className="!text-base">
-                    {t('zoom_for_object', {
-                      objects: objectDisplayName?.plural,
-                    })}
-                  </Paragraph>
-                </SpotlightSection>
-              )}
+              {!loadingAssets &&
+                dialogMap.getZoom() < config.base.map.minimal_zoom && (
+                  <SpotlightSection type="info" className="!p-2 !mt-2">
+                    <Paragraph className="!text-base">
+                      {t('zoom_for_object', {
+                        objects: objectDisplayName?.plural,
+                      })}
+                    </Paragraph>
+                  </SpotlightSection>
+                )}
             </div>
           ) : null}
         </div>

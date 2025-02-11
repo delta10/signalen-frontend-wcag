@@ -33,6 +33,7 @@ export type MapDialogContentProps = {
   field?: PublicQuestion
   features?: FeatureCollection | null
   isAssetSelect?: boolean
+  loadingAssets?: boolean
 } & React.HTMLAttributes<HTMLDivElement>
 
 const MapDialogContent = ({
@@ -40,6 +41,7 @@ const MapDialogContent = ({
   field,
   features,
   isAssetSelect = false,
+  loadingAssets = false,
 }: MapDialogContentProps) => {
   const mapContainerRef = useRef<HTMLDivElement>(null)
   const { formState } = useFormStore()
@@ -111,15 +113,16 @@ const MapDialogContent = ({
 
           {isAssetSelect && dialogMap && config && field ? (
             <div className="flex flex-col gap-4 pt-2 flex-grow">
-              {dialogMap.getZoom() < config.base.map.minimal_zoom && (
-                <SpotlightSection type="info">
-                  <Paragraph>
-                    {t('zoom_for_object', {
-                      objects: objectDisplayName?.plural,
-                    })}
-                  </Paragraph>
-                </SpotlightSection>
-              )}
+              {!loadingAssets &&
+                dialogMap.getZoom() < config.base.map.minimal_zoom && (
+                  <SpotlightSection type="info">
+                    <Paragraph>
+                      {t('zoom_for_object', {
+                        objects: objectDisplayName?.plural,
+                      })}
+                    </Paragraph>
+                  </SpotlightSection>
+                )}
               {featureList.length > 0 && (
                 <>
                   <Heading level={3}>{assetSelectFeatureLabel}</Heading>
