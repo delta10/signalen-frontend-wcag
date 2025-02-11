@@ -27,10 +27,7 @@ export default function LocaleLayout({
   if (!getAllAvailableLocales().includes(locale as any)) notFound()
 
   return (
-    <Root
-      lang={locale}
-      className={`${font.variable} purmerend-theme purmerend-theme--media-query`}
-    >
+    <Root lang={locale} className={`utrecht-theme`}>
       <Body>
         <AppProvider>
           <PageLayout>

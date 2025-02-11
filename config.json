@@ -1,7 +1,7 @@
 {
   "base": {
     "municipality": "meierijstad",
-    "municipality_display_name": "Purmerend",
+    "municipality_display_name": "Utrecht",
     "assets_url": "https://meldingen.demo.meierijstad.delta10.cloud",
     "supportedLanguages": [
       {
@@ -10,12 +10,12 @@
         "name": "Nederlands"
       }
     ],
-    "naam": "gemeente Purmerend",
+    "naam": "gemeente Utrecht",
     "header": {
       "logo": {
-        "alt": "Gemeente Purmerend logo, naar de homepagina",
-        "url": "purmerend-logo-design-tokens.svg",
-        "caption": "Purmerend"
+        "alt": "Gemeente Utrecht logo, naar de homepagina",
+        "url": "utrecht-logo.svg",
+        "caption": "Utrecht"
       }
     },
     "contact": {
