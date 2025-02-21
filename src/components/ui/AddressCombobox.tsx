@@ -11,7 +11,7 @@ import React, {
   useEffect,
   useState,
 } from 'react'
-import { useConfig } from '@/hooks/useConfig'
+import { useConfig } from '@/contexts/ConfigContext'
 import { getSuggestedAddresses } from '@/services/location/address'
 import { Listbox, ListboxOption, StatusText, Textbox } from '@/components/index'
 // Import the Select Combobox component for the side-effects of injecting CSS
@@ -31,7 +31,7 @@ export const AddressCombobox = ({
   setIsMapSelected,
 }: AddressComboboxProps) => {
   const [query, setQuery] = useState('')
-  const { config } = useConfig()
+  const config = useConfig()
   const [addressOptions, setAddressOptions] = useState<any[]>([])
   const [loading, setLoading] = useState<boolean>(false)
   const { formState, updateForm } = useFormStore()

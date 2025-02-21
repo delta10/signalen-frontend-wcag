@@ -4,11 +4,13 @@ import { getAllAvailableLocales } from '@/lib/utils/locale'
 import { Root, PageLayout, Body, PageBody, Article } from '@/components'
 import { Header } from '@/app/[locale]/components/Header'
 import localFont from 'next/font/local'
-import AppProvider from '@/components/providers/AppProvider'
 import { NextIntlClientProvider, useMessages } from 'next-intl'
 import { Footer } from '@/app/[locale]/components/Footer'
 import pick from 'lodash/pick'
 import type { PropsWithChildren } from 'react'
+import { getServerConfig } from '@/services/config/config'
+import { AppConfig } from '@/types/config'
+import { ConfigProvider } from '@/contexts/ConfigContext'
 
 const font = localFont({
   src: '../../../public/fonts/open-sans.woff2',
@@ -16,12 +18,14 @@ const font = localFont({
   variable: '--custom-font',
 })
 
-export default function LocaleLayout({
+const LocaleLayout = ({
   children,
+  config,
   params: { locale },
 }: PropsWithChildren<{
+  config: AppConfig
   params: { locale: any }
-}>) {
+}>) => {
   const messages = useMessages()
 
   if (!getAllAvailableLocales().includes(locale as any)) notFound()
@@ -31,8 +35,8 @@ export default function LocaleLayout({
       lang={locale}
       className={`${font.variable} purmerend-theme purmerend-theme--media-query`}
     >
-      <Body>
-        <AppProvider>
+      <ConfigProvider config={config}>
+        <Body>
           <PageLayout>
             <NextIntlClientProvider
               messages={pick(messages, 'current_organisation')}
@@ -49,8 +53,23 @@ export default function LocaleLayout({
               <Footer />
             </NextIntlClientProvider>
           </PageLayout>
-        </AppProvider>
-      </Body>
+        </Body>
+      </ConfigProvider>
     </Root>
+  )
+}
+
+export default async function WrappedLocaleLayout({
+  children,
+  params: { locale },
+}: PropsWithChildren<{
+  params: { locale: any }
+}>) {
+  const config: AppConfig = await getServerConfig()
+
+  return (
+    <LocaleLayout config={config} params={{ locale }}>
+      {children}
+    </LocaleLayout>
   )
 }
