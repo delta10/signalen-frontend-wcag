@@ -8,7 +8,6 @@ import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentF
 import { usePathname, useRouter } from '@/routing/navigation'
 import React, { useEffect, useId } from 'react'
 import { getCategoryForDescription } from '@/services/classification'
-import { debounce } from 'lodash'
 import { useFormStore } from '@/store/form_store'
 import {
   ACCEPTED_IMAGE_TYPES,
@@ -27,6 +26,7 @@ import {
 import { getCurrentStep, getNextStepPath } from '@/lib/utils/stepper'
 import { getAttachments } from '@/lib/utils/attachments'
 import { clsx } from 'clsx'
+import useDebounce from '@/hooks/useDebounce'
 
 export const IncidentDescriptionForm = () => {
   const t = useTranslations('describe_report.form')
@@ -71,26 +71,26 @@ export const IncidentDescriptionForm = () => {
   const { register } = form
 
   const { description } = form.watch()
+  const debouncedDescription = useDebounce(description, 100)
 
   useEffect(() => {
-    const debouncedWatch = debounce(async (value) => {
-      if (value) {
-        const { main, sub } = await getCategoryForDescription(value)
-
-        updateForm({
-          ...formState,
-          main_category: main,
-          sub_category: sub,
-        })
-      }
-    }, 500)
-
-    debouncedWatch(description)
-
-    return () => {
-      debouncedWatch.cancel()
+    if (!description) {
+      return
     }
-  }, [description])
+
+    async function fetchCategory() {
+      const { main, sub } =
+        await getCategoryForDescription(debouncedDescription)
+
+      updateForm({
+        ...formState,
+        main_category: main,
+        sub_category: sub,
+      })
+    }
+
+    fetchCategory()
+  }, [debouncedDescription])
 
   const onSubmit = (values: z.infer<typeof incidentDescriptionFormSchema>) => {
     updateForm({
