@@ -8,12 +8,14 @@ const deepMerge = <T extends AnyObject, U extends AnyObject>(
   source: U
 ): T & U => {
   for (const key in source) {
+    if (!source.hasOwnProperty(key)) continue;
+    if (key === "__proto__" || key === "constructor") continue;
     if (
       source[key] &&
       typeof source[key] === 'object' &&
       !Array.isArray(source[key])
     ) {
-      if (!target[key] || typeof target[key] !== 'object') {
+      if (!target.hasOwnProperty(key) || typeof target[key] !== 'object') {
         target[key] = {} as any
       }
       deepMerge(target[key], source[key])
