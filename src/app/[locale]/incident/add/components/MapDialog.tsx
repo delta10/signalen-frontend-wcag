@@ -24,7 +24,7 @@ import {
   MapMarker,
   SpotlightSection,
 } from '@/components'
-import { useConfig } from '@/hooks/useConfig'
+import { useConfig } from '@/contexts/ConfigContext'
 import {
   IconChevronDown,
   IconCurrentLocation,
@@ -76,7 +76,7 @@ const MapDialog = ({
   const [focusedItemId, setFocusedItemId] = useState<number | null>(null)
   const { formState, updateForm } = useFormStore()
   const { dialogMap } = useMap()
-  const { loading, config } = useConfig()
+  const config = useConfig()
   const dialogRef = useRef<HTMLDialogElement>(null)
   const mapContainerRef = useRef<HTMLDivElement>(null)
   const [isMapSelected, setIsMapSelected] = useState<boolean | null>(null)
@@ -93,21 +93,7 @@ const MapDialog = ({
     [field?.meta.language, t]
   )
 
-  const [viewState, setViewState] = useState<ViewState>({
-    latitude: 0,
-    longitude: 0,
-    zoom: config?.base.map.default_zoom || 12,
-    bearing: 0,
-    padding: {
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-    },
-    pitch: 0,
-  })
-
-  const getInitiaalZoomLevel = () => {
+  const getInitialZoomLevel = () => {
     // Check if there is either an address selecter or point on the map.
     if (
       formState.address ||
@@ -119,23 +105,25 @@ const MapDialog = ({
     return config?.base.map.default_zoom || 12
   }
 
-  // Set viewState coordinates to configured ones
-  useEffect(() => {
-    if (!loading && config && dialogMap) {
-      setViewState((currentState) => ({
-        ...currentState,
-        latitude:
-          formState.coordinates[0] === 0
-            ? config.base.map.center[0]
-            : formState.coordinates[0],
-        longitude:
-          formState.coordinates[1] === 0
-            ? config.base.map.center[1]
-            : formState.coordinates[1],
-        zoom: getInitiaalZoomLevel(),
-      }))
-    }
-  }, [loading, config, formState.coordinates, dialogMap])
+  const [viewState, setViewState] = useState<ViewState>({
+    latitude:
+      formState.coordinates[0] === 0
+        ? config.base.map.center[0]
+        : formState.coordinates[0],
+    longitude:
+      formState.coordinates[1] === 0
+        ? config.base.map.center[1]
+        : formState.coordinates[1],
+    zoom: getInitialZoomLevel(),
+    bearing: 0,
+    padding: {
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+    },
+    pitch: 0,
+  })
 
   // Change marker position on formState.coordinates change
   useEffect(() => {
@@ -172,7 +160,7 @@ const MapDialog = ({
 
   // memoize list of features to show in left sidebar
   const featureList = useMemo(() => {
-    if (config && dialogMap) {
+    if (dialogMap) {
       const mapFeaturesToShow = mapFeatures ? mapFeatures.features : []
 
       const features =
@@ -184,7 +172,7 @@ const MapDialog = ({
     }
 
     return []
-  }, [config, dialogMap, formState, mapFeatures])
+  }, [dialogMap, formState, mapFeatures])
 
   // Update position, flyTo position, after this set the marker position
   const updatePosition = (lat: number, lng: number) => {

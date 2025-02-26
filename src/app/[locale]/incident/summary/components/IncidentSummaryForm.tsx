@@ -17,7 +17,7 @@ import { FormStep } from '@/types/form'
 import { LocationMap } from '@/components/ui/LocationMap'
 import { getCurrentStep } from '@/lib/utils/stepper'
 import { getAttachments } from '@/lib/utils/attachments'
-import { useConfig } from '@/hooks/useConfig'
+import { useConfig } from '@/contexts/ConfigContext'
 import { ParagraphOrList } from '@/components/ui/ParagraphOrList'
 import {
   coords2degreeMinuteSecondsFlat,
@@ -43,7 +43,7 @@ const IncidentSummaryForm = () => {
   const [files, setFiles] = useState<File[]>([])
   const pathname = usePathname()
   const step = getCurrentStep(pathname)
-  const { config } = useConfig()
+  const config = useConfig()
   const locale = useLocale()
 
   useEffect(() => {

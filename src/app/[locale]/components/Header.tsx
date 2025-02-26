@@ -2,14 +2,13 @@
 
 import { LanguageSwitch } from '@/app/[locale]/components/LanguageSwitch'
 import { Link, Logo, PageHeader } from '@/components/index'
-import Image from 'next/image'
-import { useConfig } from '@/hooks/useConfig'
+import { useConfig } from '@/contexts/ConfigContext'
 import { useDarkMode } from '@/hooks/useDarkMode'
 import { useTranslations } from 'next-intl'
 import { NextSvgImage } from '@/components/ui/NextSvgImage'
 
 const Header = () => {
-  const { config } = useConfig()
+  const config = useConfig()
   const { isDarkMode } = useDarkMode()
   const t = useTranslations('current_organisation')
 

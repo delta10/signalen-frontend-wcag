@@ -6,7 +6,7 @@ import { Heading, HeadingGroup, PreHeading } from '@/components'
 import { SpotlightSection } from '@/components'
 import { IncidentDescriptionForm } from '@/app/[locale]/incident/components/IncidentDescriptionForm'
 import FormProgress from '@/app/[locale]/components/FormProgress'
-import { useConfig } from '@/hooks/useConfig'
+import { useConfig } from '@/contexts/ConfigContext'
 import { RenderMarkdown } from '@/components/ui/RenderMarkdown'
 
 const currentStep = 1
@@ -15,7 +15,7 @@ const maxStep = 4
 export const IncidentDescriptionPage = () => {
   const t = useTranslations('describe_report')
   const { loaded } = useFormStore()
-  const { config } = useConfig()
+  const config = useConfig()
   const tGeneral = useTranslations('general.form')
 
   if (loaded) {
