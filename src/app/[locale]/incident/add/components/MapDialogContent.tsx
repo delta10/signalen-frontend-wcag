@@ -113,16 +113,15 @@ const MapDialogContent = ({
 
           {isAssetSelect && dialogMap && config && field ? (
             <div className="flex flex-col gap-4 pt-2 flex-grow">
-              {!loadingAssets &&
-                dialogMap.getZoom() < config.base.map.minimal_zoom && (
-                  <SpotlightSection type="info">
-                    <Paragraph>
-                      {t('zoom_for_object', {
-                        objects: objectDisplayName?.plural,
-                      })}
-                    </Paragraph>
-                  </SpotlightSection>
-                )}
+              {dialogMap.getZoom() < config.base.map.minimal_zoom && (
+                <SpotlightSection type="info">
+                  <Paragraph>
+                    {t('zoom_for_object', {
+                      objects: objectDisplayName?.plural,
+                    })}
+                  </Paragraph>
+                </SpotlightSection>
+              )}
               {featureList.length > 0 && (
                 <>
                   <Heading level={3}>{assetSelectFeatureLabel}</Heading>
