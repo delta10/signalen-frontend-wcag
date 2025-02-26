@@ -42,6 +42,7 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
   const tGeneral = useTranslations('general')
   const [dialogMap, setDialogMap] = useState<MapRef | null>(null)
   const [features, setFeatures] = useState<FeatureCollection | null>(null)
+  const [loadingAssets, setLoadingAssets] = useState<boolean>(false)
 
   const onMapReady = (map: MapRef) => {
     setDialogMap(map)
@@ -50,6 +51,7 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
   // Set new features on map move or zoom
   useEffect(() => {
     const setNewFeatures = async () => {
+      setLoadingAssets(true)
       const bounds = dialogMap?.getBounds()
       const zoom = dialogMap?.getZoom()
 
@@ -77,7 +79,9 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
 
     if (dialogMap) {
       dialogMap.on('load', setNewFeatures)
-
+      dialogMap.on('moveend', () => {
+        setLoadingAssets(false)
+      })
       dialogMap.on('move', setNewFeatures)
     }
 
@@ -163,6 +167,7 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
             features={features}
             field={field}
             isAssetSelect
+            loadingAssets={loadingAssets}
             trigger={
               isCoordinates(formStoreState.coordinates) &&
               formStoreState.coordinates[0] === 0 &&

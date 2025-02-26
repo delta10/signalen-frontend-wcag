@@ -20,15 +20,18 @@ import '@utrecht/select-combobox-react/dist/css'
 import { useFormStore } from '@/store/form_store'
 import { Address } from '@/types/form'
 import { useTranslations } from 'next-intl'
+import { cn } from '@/lib/utils/style'
 
 type AddressComboboxProps = {
   updatePosition?: (lat: number, lng: number, flyTo?: boolean) => void
   setIsMapSelected?: Dispatch<SetStateAction<boolean | null>>
+  mobileView?: boolean
 }
 
 export const AddressCombobox = ({
   updatePosition,
   setIsMapSelected,
+  mobileView = false,
 }: AddressComboboxProps) => {
   const [query, setQuery] = useState('')
   const config = useConfig()
@@ -118,6 +121,9 @@ export const AddressCombobox = ({
         name="address"
         onChange={(event) => setQuery(event.target.value)}
         autoComplete="off"
+        className={cn({
+          mobile: mobileView,
+        })}
       />
       {!loading && (
         <ComboboxOptions as={Listbox} anchor="bottom" className="z-[9999]">
