@@ -6,7 +6,6 @@ import {
   useMap,
   ViewState,
 } from 'react-map-gl/maplibre'
-import { useConfig } from '@/hooks/useConfig'
 import { useTranslations } from 'next-intl'
 import { PublicQuestion } from '@/types/form'
 import { debounce, uniqBy } from 'lodash'
@@ -27,6 +26,7 @@ import {
 } from '@/lib/utils/address'
 import { useDarkMode } from '@/hooks/useDarkMode'
 import { useWindowSize } from 'usehooks-ts'
+import { useConfig } from '@/contexts/ConfigContext'
 
 function useMapDialog(
   onMapReady: ((map: MapRef) => void) | undefined,
@@ -35,7 +35,7 @@ function useMapDialog(
   isAssetSelect?: boolean | undefined
 ) {
   const { dialogMap } = useMap()
-  const { loading, config } = useConfig()
+  const config = useConfig()
   const { formState, updateForm } = useFormStore()
   const { setValue } = useFormContext()
   const { isDarkMode } = useDarkMode()
@@ -50,10 +50,28 @@ function useMapDialog(
 
   const t = useTranslations('describe_add.map')
 
+  const getInitialZoomLevel = () => {
+    // Check if there is either an address selecter or point on the map.
+    if (
+      formState.address ||
+      (formState.coordinates[0] !== 0 && formState.coordinates[1] !== 0)
+    ) {
+      return config.base.map.minimal_zoom || 17
+    }
+
+    return config.base.map.default_zoom || 12
+  }
+
   const [viewState, setViewState] = useState<ViewState>({
-    latitude: 0,
-    longitude: 0,
-    zoom: config?.base.map.default_zoom || 12,
+    latitude:
+      formState.coordinates[0] === 0
+        ? config.base.map.center[0]
+        : formState.coordinates[0],
+    longitude:
+      formState.coordinates[1] === 0
+        ? config.base.map.center[1]
+        : formState.coordinates[1],
+    zoom: getInitialZoomLevel(),
     bearing: 0,
     padding: {
       top: 0,
@@ -63,36 +81,6 @@ function useMapDialog(
     },
     pitch: 0,
   })
-
-  const getInitiaalZoomLevel = () => {
-    // Check if there is either an address selecter or point on the map.
-    if (
-      formState.address ||
-      (formState.coordinates[0] !== 0 && formState.coordinates[1] !== 0)
-    ) {
-      return config?.base.map.minimal_zoom || 17
-    }
-
-    return config?.base.map.default_zoom || 12
-  }
-
-  // Set viewState coordinates to configured ones
-  useEffect(() => {
-    if (!loading && config && dialogMap) {
-      setViewState((currentState) => ({
-        ...currentState,
-        latitude:
-          formState.coordinates[0] === 0
-            ? config.base.map.center[0]
-            : formState.coordinates[0],
-        longitude:
-          formState.coordinates[1] === 0
-            ? config.base.map.center[1]
-            : formState.coordinates[1],
-        zoom: getInitiaalZoomLevel(),
-      }))
-    }
-  }, [loading, config, formState.coordinates, dialogMap])
 
   // Change marker position on formState.coordinates change
   useEffect(() => {
@@ -170,10 +158,7 @@ function useMapDialog(
     if (dialogMap) {
       dialogMap.flyTo({
         center: [lng, lat],
-        zoom: Math.max(
-          config?.base.map.minimal_zoom || 17,
-          dialogMap.getZoom()
-        ),
+        zoom: Math.max(config.base.map.minimal_zoom || 17, dialogMap.getZoom()),
       })
     }
 
@@ -190,7 +175,7 @@ function useMapDialog(
 
   // memoize list of features to show in left sidebar
   const featureList = useMemo(() => {
-    if (config && dialogMap) {
+    if (dialogMap) {
       const mapFeaturesToShow = mapFeatures ? mapFeatures.features : []
 
       const features =
@@ -202,7 +187,7 @@ function useMapDialog(
     }
 
     return []
-  }, [config, dialogMap, formState, mapFeatures])
+  }, [dialogMap, formState, mapFeatures])
 
   // Handle click on feature marker, set selectedFeatures and show error if maxNumberOfAssets is reached
   const handleFeatureMarkerClick = async (
@@ -366,7 +351,6 @@ function useMapDialog(
   return {
     dialogMap,
     dialogRef,
-    loading,
     config,
     viewState,
     setViewState,
