@@ -21,7 +21,7 @@ import {
   Paragraph,
 } from '@/components/index'
 import { getCurrentStep, getNextStepPath } from '@/lib/utils/stepper'
-import { useConfig } from '@/hooks/useConfig'
+import { useConfig } from '@/contexts/ConfigContext'
 
 const IncidentContactForm = () => {
   const t = useTranslations('describe_contact.form')
@@ -31,7 +31,7 @@ const IncidentContactForm = () => {
   const pathname = usePathname()
   const step = getCurrentStep(pathname)
   const MAX_LENGTH_PHONE_NUMBER = 17
-  const { config } = useConfig()
+  const config = useConfig()
 
   useEffect(() => {
     router.prefetch('/incident/summary')

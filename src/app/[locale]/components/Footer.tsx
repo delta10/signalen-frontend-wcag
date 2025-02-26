@@ -2,7 +2,7 @@
 
 import { IconChevronRight } from '@tabler/icons-react'
 import { useEffect, useState } from 'react'
-import { useConfig } from '@/hooks/useConfig'
+import { useConfig } from '@/contexts/ConfigContext'
 import { useTranslations } from 'next-intl'
 import { Icon, LinkList, PageFooter } from '@/components'
 
@@ -13,32 +13,30 @@ type footerLink = {
 
 const Footer = () => {
   const [links, setLinks] = useState<footerLink[]>([])
-  const { config, loading } = useConfig()
+  const config = useConfig()
   const t = useTranslations('footer')
 
   useEffect(() => {
-    if (!loading && config) {
-      const newLinks: footerLink[] = []
+    const newLinks: footerLink[] = []
 
-      // Note: for now we only choose to show the 3 links below (about, privacy, accessibility).
-      if (config.base.links['about']) {
-        newLinks.push({ label: t('about'), href: config.base.links['about'] })
-      }
-      if (config.base.links['privacy']) {
-        newLinks.push({
-          label: t('privacy'),
-          href: config.base.links['privacy'],
-        })
-      }
-      if (config.base.links['accessibility']) {
-        newLinks.push({
-          label: t('accessibility'),
-          href: config.base.links['accessibility'],
-        })
-      }
-      setLinks(newLinks)
+    // Note: for now we only choose to show the 3 links below (about, privacy, accessibility).
+    if (config.base.links['about']) {
+      newLinks.push({ label: t('about'), href: config.base.links['about'] })
     }
-  }, [config, loading])
+    if (config.base.links['privacy']) {
+      newLinks.push({
+        label: t('privacy'),
+        href: config.base.links['privacy'],
+      })
+    }
+    if (config.base.links['accessibility']) {
+      newLinks.push({
+        label: t('accessibility'),
+        href: config.base.links['accessibility'],
+      })
+    }
+    setLinks(newLinks)
+  }, [config, t])
 
   return (
     <PageFooter>

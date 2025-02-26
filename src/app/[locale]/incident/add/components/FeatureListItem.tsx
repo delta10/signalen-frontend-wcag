@@ -8,7 +8,7 @@ import { useTranslations } from 'next-intl'
 import { FeatureWithDescription } from '@/types/map'
 import { useFormStore } from '@/store/form_store'
 import { getFirstFeatureOrCurrentAddress } from '@/lib/utils/address'
-import { useConfig } from '@/hooks/useConfig'
+import { useConfig } from '@/contexts/ConfigContext'
 
 type FeatureListItemProps = {
   feature: FeatureWithDescription
@@ -29,7 +29,7 @@ export const FeatureListItem = ({
 }: FeatureListItemProps) => {
   const t = useTranslations('describe_add.map')
   const { formState, updateForm } = useFormStore()
-  const { config } = useConfig()
+  const config = useConfig()
 
   const featureId = feature.id
   const featureDescription = feature.description

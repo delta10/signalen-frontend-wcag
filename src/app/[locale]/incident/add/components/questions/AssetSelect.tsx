@@ -12,7 +12,7 @@ import {
   FormFieldDescription,
 } from '@/components/index'
 import { useFormStore } from '@/store/form_store'
-import { useConfig } from '@/hooks/useConfig'
+import { useConfig } from '@/contexts/ConfigContext'
 import { formatAddressToSignalenInput, isCoordinates } from '@/lib/utils/map'
 import { useTranslations } from 'next-intl'
 import { FormFieldErrorMessage } from '@/components'
@@ -37,7 +37,7 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
   } = useFormContext()
   const errorMessage = errors['location']?.message as string
   const { formState: formStoreState } = useFormStore()
-  const { config } = useConfig()
+  const config = useConfig()
   const t = useTranslations('describe_add.map')
   const tGeneral = useTranslations('general')
   const [dialogMap, setDialogMap] = useState<MapRef | null>(null)
