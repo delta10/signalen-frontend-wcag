@@ -24,27 +24,9 @@ const IncidentMap = ({}: IncidentMapProps) => {
   return (
     <>
       <MapProvider>
-        <Dialog.Root>
-          <Dialog.Trigger asChild>
-            <Button>klik</Button>
-          </Dialog.Trigger>
-          <Dialog.Portal>
-            <Dialog.Overlay />
-            <Dialog.Content
-              className="grid grid-rows-[auto_1fr_auto] md:grid-cols-3 overflow-y-auto signalen-modal-dialog signalen-modal-dialog--cover-viewport"
-              id="headlessui-portal-root"
-            >
-              <VisuallyHidden.Root>
-                <Dialog.Title>title</Dialog.Title>
-                <Dialog.Description>
-                  {t('dialog_description')}
-                </Dialog.Description>
-              </VisuallyHidden.Root>
-
-              <IncidentMapContent />
-            </Dialog.Content>
-          </Dialog.Portal>
-        </Dialog.Root>
+        <div className="grid grid-rows-[auto_1fr_auto] md:grid-cols-3 overflow-y-auto">
+          <IncidentMapContent />
+        </div>
       </MapProvider>
     </>
   )

@@ -127,3 +127,7 @@
 .utrecht-checkbox--custom.utrecht-checkbox--html-input:focus:not(:checked) {
   background-image: none !important;
 }
+
+.utrecht-page-body.incident-map > .utrecht-page-body__content {
+  padding: 0;
+}

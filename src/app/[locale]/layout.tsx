@@ -11,6 +11,8 @@ import type { PropsWithChildren } from 'react'
 import { getServerConfig } from '@/services/config/config'
 import { AppConfig } from '@/types/config'
 import { ConfigProvider } from '@/contexts/ConfigContext'
+import { headers } from 'next/headers'
+import clsx from 'clsx'
 
 const font = localFont({
   src: '../../../public/fonts/open-sans.woff2',
@@ -27,6 +29,9 @@ const LocaleLayout = ({
   params: { locale: any }
 }>) => {
   const messages = useMessages()
+  const headersList = headers()
+  const referer = headersList.get('referer') || ''
+  const isFromIncidentMap = referer.includes('incident-map')
 
   if (!getAllAvailableLocales().includes(locale as any)) notFound()
 
@@ -44,14 +49,20 @@ const LocaleLayout = ({
               <Header />
             </NextIntlClientProvider>
 
-            <PageBody>
-              <Article className="max-w-3xl mx-auto px-4 lg:px-0">
-                {children}
-              </Article>
+            <PageBody className={clsx(isFromIncidentMap ? 'incident-map' : '')}>
+              {!isFromIncidentMap ? (
+                <Article className="max-w-3xl mx-auto px-4 lg:px-0">
+                  {children}
+                </Article>
+              ) : (
+                <>{children}</>
+              )}
             </PageBody>
-            <NextIntlClientProvider messages={pick(messages, 'footer')}>
-              <Footer />
-            </NextIntlClientProvider>
+            {!isFromIncidentMap && (
+              <NextIntlClientProvider messages={pick(messages, 'footer')}>
+                <Footer />
+              </NextIntlClientProvider>
+            )}
           </PageLayout>
         </Body>
       </ConfigProvider>

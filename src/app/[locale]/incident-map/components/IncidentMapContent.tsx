@@ -105,9 +105,9 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
 
   return (
     <>
-      <div className="col-span-1 flex flex-col min-h-[100vh] max-h-[100vh] md:max-h-screen gap-4">
-        <div className="flex flex-col overflow-y-auto gap-4 px-4 pt-4">
-          <Heading level={1}>heading</Heading>
+      <div className="col-span-1 flex flex-col md:max-h-screen gap-4 min-h-[calc(100vh-8em)]">
+        <div className="p-4">
+          <Heading level={1}>Meldingenkaart</Heading>
 
           {/*<div className="flex flex-col py-2">*/}
           {/*  <label htmlFor="address">{t('search_address_label')}</label>*/}
@@ -117,19 +117,19 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
           {/*  />*/}
           {/*</div>*/}
         </div>
-        <Dialog.Close className="flex items-end" asChild>
-          <Button
-            appearance="primary-action-button"
-            className="ml-4 mr-4 mb-4"
-            type="button"
-          >
-            sluitknops
-          </Button>
-        </Dialog.Close>
+        {/*<Dialog.Close className="flex items-end" asChild>*/}
+        {/*  <Button*/}
+        {/*    appearance="primary-action-button"*/}
+        {/*    className="ml-4 mr-4 mb-4"*/}
+        {/*    type="button"*/}
+        {/*  >*/}
+        {/*    sluitknops*/}
+        {/*  </Button>*/}
+        {/*</Dialog.Close>*/}
       </div>
       {config && (
         <div
-          className="col-span-1 md:col-span-2 min-h-[100vh] max-h-[50vh] md:max-h-screen relative"
+          className="col-span-1 md:col-span-2 md:max-h-screen relative min-h-[calc(100vh-8em)]"
           ref={mapContainerRef}
         >
           <Map
@@ -170,15 +170,15 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
           {/*  </Button>*/}
           {/*</div>*/}
 
-          <Dialog.Close asChild>
-            <IconButton
-              appearance="secondary-action-button"
-              className="map-button map-close-button"
-              label={t('map_close_button_label')}
-            >
-              <IconX />
-            </IconButton>
-          </Dialog.Close>
+          {/*<Dialog.Close asChild>*/}
+          {/*  <IconButton*/}
+          {/*    appearance="secondary-action-button"*/}
+          {/*    className="map-button map-close-button"*/}
+          {/*    label={t('map_close_button_label')}*/}
+          {/*  >*/}
+          {/*    <IconX />*/}
+          {/*  </IconButton>*/}
+          {/*</Dialog.Close>*/}
 
           {dialogMap && (
             <ButtonGroup direction="column" className="map-zoom-button-group">
