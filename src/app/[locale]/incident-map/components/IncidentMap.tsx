@@ -20,15 +20,6 @@ export type IncidentMapProps = {
 const IncidentMap = ({}: IncidentMapProps) => {
   // nieuwe toevoegen
   const t = useTranslations('describe_add.map')
-  const [dialogMap, setDialogMap] = useState<MapRef | null>(null)
-
-  // const features = []
-  //          features={features}
-  //field={field}
-
-  const onMapReady = (map: MapRef) => {
-    setDialogMap(map)
-  }
 
   return (
     <>

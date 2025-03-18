@@ -1,7 +1,13 @@
 'use client'
 
-import React, { useRef, useState } from 'react'
-import { MapProvider, MapRef, Marker, ViewState } from 'react-map-gl/maplibre'
+import React, { useEffect, useRef, useState } from 'react'
+import {
+  MapProvider,
+  MapRef,
+  Marker,
+  useMap,
+  ViewState,
+} from 'react-map-gl/maplibre'
 import { useTranslations } from 'next-intl'
 
 import '../../incident/add/components/MapDialog.css'
@@ -32,6 +38,11 @@ import {
 } from '@tabler/icons-react'
 import { useDarkMode } from '@/hooks/useDarkMode'
 import { useWindowSize } from 'usehooks-ts'
+import { getGeoJsonFeatures } from '@/services/location/features'
+import { Feature, FeatureCollection } from 'geojson'
+import { signalsClient } from '@/services/client/api-client'
+import { _NestedLocationModel } from '@/services/client'
+import { postAttachments } from '@/services/attachment/attachments'
 
 export type IncidentMapProps = {
   prop?: string
@@ -40,7 +51,9 @@ export type IncidentMapProps = {
 const IncidentMapContent = ({}: IncidentMapProps) => {
   // nieuwe toevoegen
   const t = useTranslations('describe_add.map')
-  const [dialogMap, setDialogMap] = useState<MapRef | null>(null)
+  const { dialogMap } = useMap()
+  const [features, setFeatures] = useState<FeatureCollection | null>(null)
+
   const config = useConfig()
   const { isDarkMode } = useDarkMode()
   const { width = 0 } = useWindowSize()
@@ -61,17 +74,57 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
 
   const mapContainerRef = useRef<HTMLDivElement>(null)
 
-  // const features = []
-  //          features={features}
-  //field={field}
+  // Set new features on map move or zoom
+  useEffect(() => {
+    console.log('use')
+    const setNewFeatures = async () => {
+      // loading state
+
+      const bounds = dialogMap?.getBounds()
+
+      // Extract the bounding box in [minLon, minLat, maxLon, maxLat] format
+      const bbox = [
+        bounds?.getWest(), // minLon (left)
+        bounds?.getSouth(), // minLat (bottom)
+        bounds?.getEast(), // maxLon (right)
+        bounds?.getNorth(), // maxLat (top)
+      ].join(',')
+
+      try {
+        const res =
+          await signalsClient.v1.v1PublicSignalsGeographyRetrieve(bbox)
+        if (res && res.features) {
+          // Wrap response in a FeatureCollection
+          const featureCollection: FeatureCollection = {
+            type: 'FeatureCollection',
+            // @ts-ignore
+            features: res.features, // API returns an array of features
+          }
+          // console.log(f)
+          setFeatures(featureCollection)
+        }
+      } catch (e) {}
+    }
+
+    if (dialogMap) {
+      dialogMap.on('load', setNewFeatures)
+      dialogMap.on('moveend', () => {
+        // setLoadingAssets(false)
+      })
+      dialogMap.on('move', setNewFeatures)
+    }
+
+    return () => {
+      if (dialogMap) {
+        dialogMap.off('load', setNewFeatures)
+        dialogMap.off('move', setNewFeatures)
+      }
+    }
+  }, [config, dialogMap])
 
   const mapStyle = isDarkMode
     ? `${process.env.NEXT_PUBLIC_MAPTILER_MAP_DARK_MODE}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`
     : `${process.env.NEXT_PUBLIC_MAPTILER_MAP}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`
-
-  const onMapReady = (map: MapRef) => {
-    setDialogMap(map)
-  }
 
   return (
     <>
@@ -113,7 +166,30 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
             maxBounds={
               config.base.map.maxBounds as [[number, number], [number, number]]
             }
-          ></Map>
+          >
+            {features?.features.map((feature: Feature, index) => {
+              return (
+                <Marker
+                  key={index}
+                  // @ts-ignore
+                  longitude={feature.geometry?.coordinates[0]}
+                  // @ts-ignore
+                  latitude={feature.geometry?.coordinates[1]}
+                  // @ts-ignore
+                  onClick={(e) => handleFeatureMarkerClick(e, feature)}
+                >
+                  <Icon>
+                    <img
+                      src={
+                        config.base.assets_url +
+                        '/assets/images/icon-incident-marker.svg'
+                      }
+                    />
+                  </Icon>
+                </Marker>
+              )
+            })}
+          </Map>
           {/*<div className="map-location-group">*/}
           {/*  <Button*/}
           {/*    appearance="secondary-action-button"*/}
