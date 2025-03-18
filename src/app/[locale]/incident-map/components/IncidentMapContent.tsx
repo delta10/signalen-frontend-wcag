@@ -1,13 +1,7 @@
 'use client'
 
 import React, { useEffect, useRef, useState } from 'react'
-import {
-  MapProvider,
-  MapRef,
-  Marker,
-  useMap,
-  ViewState,
-} from 'react-map-gl/maplibre'
+import { Marker, useMap, ViewState } from 'react-map-gl/maplibre'
 import { useTranslations } from 'next-intl'
 
 import '../../incident/add/components/MapDialog.css'
@@ -15,34 +9,17 @@ import {
   Button,
   ButtonGroup,
   Heading,
-  Icon,
   IconButton,
   MapMarker,
-  Paragraph,
-  SpotlightSection,
 } from '@/components'
 import * as Dialog from '@radix-ui/react-dialog'
-import * as VisuallyHidden from '@radix-ui/react-visually-hidden'
-import MapDialogContent from '@/app/[locale]/incident/add/components/MapDialogContent'
-import MapDialogMobileContent from '@/app/[locale]/incident/add/components/MapDialogMobileContent'
-import MapExplainerAccordion from '@/app/[locale]/incident/add/components/questions/MapExplainerAccordion'
-import { AddressCombobox } from '@/components/ui/AddressCombobox'
-import { FeatureListItem } from '@/app/[locale]/incident/add/components/FeatureListItem'
 import { useConfig } from '@/contexts/ConfigContext'
 import { Map } from '@/components/ui/Map'
-import {
-  IconCurrentLocation,
-  IconMinus,
-  IconPlus,
-  IconX,
-} from '@tabler/icons-react'
+import { IconMinus, IconPlus, IconX } from '@tabler/icons-react'
 import { useDarkMode } from '@/hooks/useDarkMode'
 import { useWindowSize } from 'usehooks-ts'
-import { getGeoJsonFeatures } from '@/services/location/features'
 import { Feature, FeatureCollection } from 'geojson'
 import { signalsClient } from '@/services/client/api-client'
-import { _NestedLocationModel } from '@/services/client'
-import { postAttachments } from '@/services/attachment/attachments'
 
 export type IncidentMapProps = {
   prop?: string
@@ -76,18 +53,18 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
 
   // Set new features on map move or zoom
   useEffect(() => {
-    console.log('use')
     const setNewFeatures = async () => {
-      // loading state
+      // todo: loading state
+      // todo: kijken hoe minder vaak aanroepen
 
       const bounds = dialogMap?.getBounds()
 
       // Extract the bounding box in [minLon, minLat, maxLon, maxLat] format
       const bbox = [
-        bounds?.getWest(), // minLon (left)
-        bounds?.getSouth(), // minLat (bottom)
-        bounds?.getEast(), // maxLon (right)
-        bounds?.getNorth(), // maxLat (top)
+        bounds?.getWest(),
+        bounds?.getSouth(),
+        bounds?.getEast(),
+        bounds?.getNorth(),
       ].join(',')
 
       try {
@@ -97,10 +74,10 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
           // Wrap response in a FeatureCollection
           const featureCollection: FeatureCollection = {
             type: 'FeatureCollection',
+            // todo: ts-ignore weg?
             // @ts-ignore
             features: res.features, // API returns an array of features
           }
-          // console.log(f)
           setFeatures(featureCollection)
         }
       } catch (e) {}
@@ -120,7 +97,7 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
         dialogMap.off('move', setNewFeatures)
       }
     }
-  }, [config, dialogMap])
+  }, [dialogMap])
 
   const mapStyle = isDarkMode
     ? `${process.env.NEXT_PUBLIC_MAPTILER_MAP_DARK_MODE}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`
@@ -178,14 +155,7 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
                   // @ts-ignore
                   onClick={(e) => handleFeatureMarkerClick(e, feature)}
                 >
-                  <Icon>
-                    <img
-                      src={
-                        config.base.assets_url +
-                        '/assets/images/icon-incident-marker.svg'
-                      }
-                    />
-                  </Icon>
+                  <MapMarker />
                 </Marker>
               )
             })}
