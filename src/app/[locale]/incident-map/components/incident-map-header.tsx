@@ -33,8 +33,8 @@ const IncidentMapHeader = () => {
   return (
     <>
       <PageHeader className="incident-map-header">
-        <div className="flex md:items-center justify-between">
-          <div className="flex items-center gap-12">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-12">
             {homepageHref ? (
               <Link
                 boxContent

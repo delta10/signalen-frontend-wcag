@@ -134,6 +134,8 @@
 
 .utrecht-page-header.incident-map-header .utrecht-page-header__content {
   justify-self: flex-start;
-  padding-block-end: 12px;
-  padding-block-start: 12px;
+  padding-block-end: var(--basis-space-inline-min-x-large);
+  padding-block-start: var(--basis-space-inline-min-x-large);
+  padding-inline: var(--basis-space-inline-min-x-large);
+  max-inline-size: 100%;
 }
