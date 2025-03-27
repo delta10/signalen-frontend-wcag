@@ -17,6 +17,6 @@ export const ParagraphOrList = ({ entries }: ParagraphOrListProps) => {
       </UnorderedList>
     )
   } else if (entries.length === 1) {
-    return <Paragraph>{entries[0][1]}</Paragraph>
+    return <>{entries[0][1]}</>
   }
 }

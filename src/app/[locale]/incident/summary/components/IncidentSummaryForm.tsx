@@ -183,10 +183,11 @@ const IncidentSummaryForm = () => {
               tStepAdd('map.pinned_location')
             )}
           >
+            {/* Set inert explicitly to true otherwise we get a error in the console, this seems to do the same. */}
             <div
               className="signalen-map-img"
               role="img"
-              inert
+              inert="true"
               data-lat={formState.coordinates && formState.coordinates[0]}
               data-lon={formState.coordinates && formState.coordinates[1]}
               aria-label={
