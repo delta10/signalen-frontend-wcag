@@ -192,5 +192,8 @@
     "about": "About",
     "privacy": "Privacy",
     "accessibility": "Accessibility"
+  },
+  "incident_map": {
+    "heading": "Incident map"
   }
 }

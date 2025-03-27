@@ -20,6 +20,7 @@ import { useDarkMode } from '@/hooks/useDarkMode'
 import { useWindowSize } from 'usehooks-ts'
 import { Feature, FeatureCollection } from 'geojson'
 import { signalsClient } from '@/services/client/api-client'
+import { Category } from '@/services/client'
 
 export type IncidentMapProps = {
   prop?: string
@@ -30,6 +31,7 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
   const t = useTranslations('describe_add.map')
   const { dialogMap } = useMap()
   const [features, setFeatures] = useState<FeatureCollection | null>(null)
+  const [categories, setCategories] = useState<Category[] | null>(null)
 
   const config = useConfig()
   const { isDarkMode } = useDarkMode()
@@ -99,6 +101,23 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
     }
   }, [dialogMap])
 
+  useEffect(() => {
+    const getCategories = async () => {
+      try {
+        const res = await signalsClient.v1.v1PublicTermsCategoriesList()
+        if (res?.results) {
+          // Wrap response in a FeatureCollection
+          const categories: Category[] = res.results
+          setCategories(categories)
+        }
+      } catch (e) {
+        console.error(e)
+      }
+    }
+
+    getCategories()
+  }, [])
+
   const mapStyle = isDarkMode
     ? `${process.env.NEXT_PUBLIC_MAPTILER_MAP_DARK_MODE}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`
     : `${process.env.NEXT_PUBLIC_MAPTILER_MAP}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`
@@ -107,8 +126,13 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
     <>
       <div className="col-span-1 flex flex-col md:max-h-screen gap-4 min-h-[calc(100vh-8em)]">
         <div className="p-4">
-          <Heading level={1}>Meldingenkaart</Heading>
-
+          {categories && categories.length > 0 && (
+            <ul>
+              {categories.map((category) => (
+                <li key={category.slug}>{category.name}</li>
+              ))}
+            </ul>
+          )}
           {/*<div className="flex flex-col py-2">*/}
           {/*  <label htmlFor="address">{t('search_address_label')}</label>*/}
           {/*  <AddressCombobox*/}

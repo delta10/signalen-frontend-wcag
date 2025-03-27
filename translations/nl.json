@@ -191,5 +191,8 @@
     "about": "Over deze site",
     "privacy": "Privacy",
     "accessibility": "Toegankelijkheid"
+  },
+  "incident_map": {
+    "heading": "Meldingenkaart"
   }
 }
