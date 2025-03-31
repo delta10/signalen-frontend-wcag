@@ -1,6 +1,6 @@
 import { Layout } from '@/types/layout'
 import { NextIntlClientProvider, useMessages } from 'next-intl'
-import { IncidentMapHeader } from '@/app/[locale]/incident-map/components/incident-map-header'
+import { IncidentMapHeader } from '@/app/[locale]/incident-map/components/IncidentMapHeader'
 
 export default function IncidentLayout({ children }: Layout) {
   const messages = useMessages()

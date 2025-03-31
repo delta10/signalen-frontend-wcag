@@ -103,11 +103,22 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
 
   useEffect(() => {
     const getCategories = async () => {
+      /*
+       * "is_public_accessible": true,
+       *            "configuration": {
+                "show_children_in_filter": false
+            }
+       * */
+
       try {
         const res = await signalsClient.v1.v1PublicTermsCategoriesList()
         if (res?.results) {
-          // Wrap response in a FeatureCollection
-          const categories: Category[] = res.results
+          let categories: Category[] = res.results
+          categories = categories.filter((category) => {
+            if (category.is_public_accessible) {
+              return category
+            }
+          })
           setCategories(categories)
         }
       } catch (e) {
@@ -126,13 +137,6 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
     <>
       <div className="col-span-1 flex flex-col md:max-h-screen gap-4 min-h-[calc(100vh-8em)]">
         <div className="p-4">
-          {categories && categories.length > 0 && (
-            <ul>
-              {categories.map((category) => (
-                <li key={category.slug}>{category.name}</li>
-              ))}
-            </ul>
-          )}
           {/*<div className="flex flex-col py-2">*/}
           {/*  <label htmlFor="address">{t('search_address_label')}</label>*/}
           {/*  <AddressCombobox*/}
@@ -140,6 +144,14 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
           {/*    setIsMapSelected={setIsMapSelected}*/}
           {/*  />*/}
           {/*</div>*/}
+
+          {categories && categories.length > 0 && (
+            <ul>
+              {categories.map((category) => (
+                <li key={category.slug}>{category.name}</li>
+              ))}
+            </ul>
+          )}
         </div>
       </div>
       {config && (
