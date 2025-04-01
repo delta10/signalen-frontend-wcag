@@ -5,11 +5,17 @@ import { IconChevronDown } from '@tabler/icons-react'
 
 type NestedCategoryCheckboxListProps = {
   categories: ParentCategory[]
+  setSelectedParentCategories: React.Dispatch<React.SetStateAction<string[]>>
+  selectedSubCategories: string[]
+  setSelectedSubCategories: React.Dispatch<React.SetStateAction<string[]>>
   onChange?: (checkedItems: Record<string, boolean>) => void
 }
 
 const NestedCheckboxList = ({
   categories,
+  setSelectedParentCategories,
+  selectedSubCategories,
+  setSelectedSubCategories,
   onChange,
 }: NestedCategoryCheckboxListProps) => {
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({})
@@ -43,6 +49,79 @@ const NestedCheckboxList = ({
     setExpanded((prev) => ({ ...prev, [groupSlug]: !prev[groupSlug] }))
   }
 
+  // Get all subcategories for a parent category
+  const getSubcategorySlugs = (parentCategory: ParentCategory): string[] => {
+    return parentCategory.sub_categories?.map((sub) => sub.slug) || []
+  }
+
+  // Toggle subcategory selection
+  const toggleSubCategory = (slug: string) => {
+    console.log(slug)
+    setSelectedSubCategories((prev) => {
+      if (prev.includes(slug)) {
+        return prev.filter((item) => item !== slug)
+      } else {
+        return [...prev, slug]
+      }
+    })
+    console.log(selectedSubCategories)
+  }
+  // Toggle parent category (selects/deselects all subcategories)
+  const toggleParentCategory = (parentCategory: ParentCategory) => {
+    const subcategorySlugs = getSubcategorySlugs(parentCategory)
+
+    // Check if all subcategories are already selected
+    const allSelected = subcategorySlugs.every((slug) =>
+      selectedSubCategories?.includes(slug)
+    )
+
+    console.log(parentCategory, allSelected)
+    if (allSelected) {
+      // Deselect all subcategories of this parent
+      setSelectedSubCategories((prev) =>
+        prev.filter((slug) => !subcategorySlugs.includes(slug))
+      )
+    } else {
+      // Select all subcategories of this parent
+      setSelectedSubCategories((prev) => {
+        const newSelection = [...prev]
+        subcategorySlugs.forEach((slug) => {
+          if (!newSelection.includes(slug)) {
+            newSelection.push(slug)
+          }
+        })
+        return newSelection
+      })
+      console.log(selectedSubCategories)
+    }
+  }
+
+  // Check if a parent category is fully selected
+  const isParentCategorySelected = (
+    parentCategory: ParentCategory
+  ): boolean => {
+    const subcategorySlugs = getSubcategorySlugs(parentCategory)
+    // console.log('parentCategory', parentCategory)
+    // console.log('subcategorySlugs', subcategorySlugs)
+    // console.log('selectedSubCategories', selectedSubCategories)
+    return (
+      subcategorySlugs.length > 0 &&
+      subcategorySlugs.every((slug) => selectedSubCategories?.includes(slug))
+    )
+  }
+
+  // Check if a parent category is partially selected
+  const isParentCategoryIndeterminate = (
+    parentCategory: ParentCategory
+  ): boolean => {
+    const subcategorySlugs = getSubcategorySlugs(parentCategory)
+    const selectedCount = subcategorySlugs.filter((slug) =>
+      selectedSubCategories?.includes(slug)
+    ).length
+
+    return selectedCount > 0 && selectedCount < subcategorySlugs.length
+  }
+
   return (
     <div>
       {categories.map((category: ParentCategory) => {
@@ -64,9 +143,10 @@ const NestedCheckboxList = ({
 
               */}
               <FormFieldCheckbox
-                checked={false}
+                checked={isParentCategorySelected(category)}
+                indeterminate={isParentCategoryIndeterminate(category)}
                 label={category.name}
-                onChange={() => handleGroupChange(category)}
+                onChange={() => toggleParentCategory(category)}
               />
 
               {category.configuration?.show_children_in_filter &&
@@ -95,10 +175,11 @@ const NestedCheckboxList = ({
                     >
                       {/* Replacing the simple <Checkbox /> with FormFieldCheckbox */}
                       <FormFieldCheckbox
-                        checked={checkedItems[subCategory.slug] || false}
-                        value={subCategory.slug}
+                        checked={selectedSubCategories?.includes(
+                          subCategory.slug
+                        )}
                         label={subCategory.name}
-                        onChange={() => handleChildChange(subCategory.slug)}
+                        onChange={() => toggleSubCategory(subCategory.slug)}
                       />
                     </div>
                   ))}

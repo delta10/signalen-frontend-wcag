@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { Marker, useMap, ViewState } from 'react-map-gl/maplibre'
 import { useTranslations } from 'next-intl'
 
@@ -22,11 +22,16 @@ export type IncidentMapProps = {
 } & React.HTMLAttributes<HTMLDivElement>
 
 const IncidentMapContent = ({}: IncidentMapProps) => {
-  // nieuwe toevoegen
   const t = useTranslations('describe_add.map')
   const { dialogMap } = useMap()
   const [features, setFeatures] = useState<FeatureCollection | null>(null)
   const [categories, setCategories] = useState<Category[] | null>(null)
+  const [selectedParentCategories, setSelectedParentCategories] = useState<
+    string[]
+  >([])
+  const [selectedSubCategories, setSelectedSubCategories] = useState<string[]>(
+    []
+  )
 
   const config = useConfig()
   const { isDarkMode } = useDarkMode()
@@ -73,8 +78,9 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
             type: 'FeatureCollection',
             // todo: ts-ignore weg?
             // @ts-ignore
-            features: res.features, // API returns an array of features
+            features: res.features,
           }
+          console.log(featureCollection)
           setFeatures(featureCollection)
         }
       } catch (e) {}
@@ -95,6 +101,33 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
       }
     }
   }, [dialogMap])
+
+  // Filter features based on selected categories
+  const filteredFeatures = useMemo(() => {
+    // If no filters are selected, show all features
+    if (
+      selectedParentCategories.length === 0 &&
+      selectedSubCategories.length === 0
+    ) {
+      return features?.features
+    }
+
+    return features?.features.filter((feature) => {
+      const featureCategory = feature.properties?.category
+      if (!featureCategory) return false
+
+      // Check if subcategory is directly selected
+      if (selectedSubCategories.includes(featureCategory.slug)) {
+        return true
+      }
+
+      // Check if parent category is selected
+      return (
+        featureCategory.parent &&
+        selectedParentCategories.includes(featureCategory.parent.slug)
+      )
+    })
+  }, [features, selectedParentCategories, selectedSubCategories])
 
   useEffect(() => {
     const getCategories = async () => {
@@ -140,7 +173,12 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
           {/*</div>*/}
 
           {categories && categories.length > 0 && (
-            <NestedCategoryCheckboxList categories={categories} />
+            <NestedCategoryCheckboxList
+              categories={categories}
+              setSelectedParentCategories={setSelectedParentCategories}
+              selectedSubCategories={selectedSubCategories}
+              setSelectedSubCategories={setSelectedSubCategories}
+            />
           )}
         </div>
       </div>
@@ -161,21 +199,22 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
               config.base.map.maxBounds as [[number, number], [number, number]]
             }
           >
-            {features?.features.map((feature: Feature, index) => {
-              return (
-                <Marker
-                  key={index}
-                  // @ts-ignore
-                  longitude={feature.geometry?.coordinates[0]}
-                  // @ts-ignore
-                  latitude={feature.geometry?.coordinates[1]}
-                  // @ts-ignore
-                  onClick={(e) => handleFeatureMarkerClick(e, feature)}
-                >
-                  <MapMarker />
-                </Marker>
-              )
-            })}
+            {filteredFeatures &&
+              filteredFeatures.map((feature: Feature, index) => {
+                return (
+                  <Marker
+                    key={index}
+                    // @ts-ignore
+                    longitude={feature.geometry?.coordinates[0]}
+                    // @ts-ignore
+                    latitude={feature.geometry?.coordinates[1]}
+                    // @ts-ignore
+                    onClick={(e) => handleFeatureMarkerClick(e, feature)}
+                  >
+                    <MapMarker />
+                  </Marker>
+                )
+              })}
           </Map>
           {/*<div className="map-location-group">*/}
           {/*  <Button*/}
