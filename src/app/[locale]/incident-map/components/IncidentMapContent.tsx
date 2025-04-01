@@ -1,11 +1,17 @@
 'use client'
 
 import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { Marker, useMap, ViewState } from 'react-map-gl/maplibre'
+import {
+  MapLayerMouseEvent,
+  Marker,
+  MarkerEvent,
+  useMap,
+  ViewState,
+} from 'react-map-gl/maplibre'
 import { useTranslations } from 'next-intl'
 
 import '../../incident/add/components/MapDialog.css'
-import { Button, ButtonGroup, IconButton, MapMarker } from '@/components'
+import { Button, ButtonGroup, Icon, IconButton, MapMarker } from '@/components'
 import { useConfig } from '@/contexts/ConfigContext'
 import { Map } from '@/components/ui/Map'
 import { IconCurrentLocation, IconMinus, IconPlus } from '@tabler/icons-react'
@@ -17,6 +23,9 @@ import NestedCategoryCheckboxList from '@/app/[locale]/incident-map/components/N
 import { Paragraph } from '@amsterdam/design-system-react'
 import { Category, ParentCategory } from '@/types/category'
 import { isCoordinateInsideMaxBound } from '@/lib/utils/map'
+import { AddressCombobox } from '@/components/ui/AddressCombobox'
+import { getNewSelectedAddress } from '@/lib/utils/address'
+import { generateFeatureId } from '@/lib/utils/features'
 
 export type IncidentMapProps = {
   prop?: string
@@ -25,7 +34,8 @@ export type IncidentMapProps = {
 const IncidentMapContent = ({}: IncidentMapProps) => {
   const t = useTranslations('describe_add.map')
   const { dialogMap } = useMap()
-  const [features, setFeatures] = useState<FeatureCollection | null>(null)
+  const [features, setFeatures] = useState<Feature[]>([])
+  const [selectedFeatureId, setSelectedFeatureId] = useState<any>(null)
   const [categories, setCategories] = useState<Category[] | null>(null)
   const [selectedSubCategories, setSelectedSubCategories] = useState<string[]>(
     []
@@ -79,8 +89,15 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
             // @ts-ignore
             features: res.features,
           }
-          console.log(featureCollection)
-          setFeatures(featureCollection)
+
+          const featuresWithIds = featureCollection.features.map(
+            (feature: Feature) => ({
+              ...feature,
+              id: generateFeatureId(feature),
+            })
+          )
+
+          setFeatures(featuresWithIds)
         }
       } catch (e) {}
     }
@@ -105,10 +122,10 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
   const filteredFeatures = useMemo(() => {
     // If no filters are selected, show all features
     if (selectedSubCategories.length === 0) {
-      return features?.features
+      return features
     }
 
-    return features?.features.filter((feature) => {
+    return features.filter((feature: Feature) => {
       const featureCategory = feature.properties?.category
       if (!featureCategory) return false
 
@@ -149,9 +166,24 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
     if (dialogMap) {
       dialogMap.flyTo({
         center: [lng, lat],
-        zoom: Math.max(config.base.map.minimal_zoom || 17, dialogMap.getZoom()),
       })
     }
+  }
+
+  // Handle click on map, setIsMapSelected to true
+  const handleMapClick = async (event: MapLayerMouseEvent) => {
+    updatePosition(event.lngLat.lat, event.lngLat.lng)
+    // setIsMapSelected(true)
+    const address = await getNewSelectedAddress(
+      event.lngLat.lat,
+      event.lngLat.lng,
+      config
+    )
+
+    setSelectedFeatureId(null)
+
+    console.log(address)
+    // get nearest incident
   }
 
   // set current location of user
@@ -191,27 +223,36 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
     )
   }
 
+  // Handle click on feature marker, set selectedFeatures and show error if maxNumberOfAssets is reached
+  const handleFeatureMarkerClick = async (
+    event: MarkerEvent,
+    feature: Feature
+  ) => {
+    // @ts-ignore
+    event.originalEvent?.stopPropagation()
+    setSelectedFeatureId(feature.id)
+    // setSelectedFeatureId(selectedFeatureId !== feature.id ? feature.id : null)
+  }
+
   const mapStyle = isDarkMode
     ? `${process.env.NEXT_PUBLIC_MAPTILER_MAP_DARK_MODE}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`
     : `${process.env.NEXT_PUBLIC_MAPTILER_MAP}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`
 
   return (
     <>
-      <div className="col-span-1 flex flex-col md:max-h-screen gap-4 min-h-[calc(100vh-8em)] p-4">
+      <div className="col-span-1 flex flex-col md:max-h-screen gap-4 min-h-[calc(100vh-102px)] p-4">
         <Paragraph>
           Op deze kaart staan meldingen in de openbare ruimte waarmee we aan het
           werk zijn. Vanwege privacy staat een klein deel van de meldingen niet
           op de kaart.
         </Paragraph>
-        <div>
-          {/*<div className="flex flex-col py-2">*/}
-          {/*  <label htmlFor="address">{t('search_address_label')}</label>*/}
-          {/*  <AddressCombobox*/}
-          {/*    updatePosition={updatePosition}*/}
-          {/*    setIsMapSelected={setIsMapSelected}*/}
-          {/*  />*/}
-          {/*</div>*/}
 
+        <div className="flex flex-col py-2">
+          <label htmlFor="address">{t('search_address_label')}</label>
+          <AddressCombobox updatePosition={updatePosition} />
+        </div>
+
+        <div>
           {categories && categories.length > 0 && (
             <NestedCategoryCheckboxList
               categories={categories}
@@ -229,6 +270,7 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
           <Map
             {...viewState}
             id="dialogMap"
+            onClick={(e) => handleMapClick(e)}
             onMove={(evt) => setViewState(evt.viewState)}
             style={{ blockSize: '100%', inlineSize: '100%' }}
             mapStyle={mapStyle}
@@ -242,7 +284,8 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
               filteredFeatures.map((feature: Feature, index) => {
                 return (
                   <Marker
-                    key={index}
+                    className="hover:cursor-pointer"
+                    key={feature.id}
                     // @ts-ignore
                     longitude={feature.geometry?.coordinates[0]}
                     // @ts-ignore
@@ -250,7 +293,20 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
                     // @ts-ignore
                     onClick={(e) => handleFeatureMarkerClick(e, feature)}
                   >
-                    <MapMarker />
+                    {feature.id === selectedFeatureId ? (
+                      <Icon>
+                        {/* offset the selected feature marker by 30px to prevent shift in position and overlap with possible duplicates. */}
+                        <img
+                          className="mb-[30px]"
+                          src={
+                            config.base.assets_url +
+                            '/assets/images/feature-selected-marker.svg'
+                          }
+                        />
+                      </Icon>
+                    ) : (
+                      <MapMarker />
+                    )}
                   </Marker>
                 )
               })}
