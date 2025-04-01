@@ -139,3 +139,9 @@
   padding-inline: var(--basis-space-inline-min-x-large);
   max-inline-size: 100%;
 }
+
+.utrecht-form-label.utrecht-form-label--checkbox {
+  display: flex !important;
+  flex-direction: row-reverse !important;
+  align-items: center !important;
+}

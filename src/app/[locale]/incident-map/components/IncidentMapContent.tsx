@@ -5,22 +5,17 @@ import { Marker, useMap, ViewState } from 'react-map-gl/maplibre'
 import { useTranslations } from 'next-intl'
 
 import '../../incident/add/components/MapDialog.css'
-import {
-  Button,
-  ButtonGroup,
-  Heading,
-  IconButton,
-  MapMarker,
-} from '@/components'
-import * as Dialog from '@radix-ui/react-dialog'
+import { ButtonGroup, IconButton, MapMarker } from '@/components'
 import { useConfig } from '@/contexts/ConfigContext'
 import { Map } from '@/components/ui/Map'
-import { IconMinus, IconPlus, IconX } from '@tabler/icons-react'
+import { IconMinus, IconPlus } from '@tabler/icons-react'
 import { useDarkMode } from '@/hooks/useDarkMode'
 import { useWindowSize } from 'usehooks-ts'
 import { Feature, FeatureCollection } from 'geojson'
 import { signalsClient } from '@/services/client/api-client'
-import { Category } from '@/services/client'
+import NestedCategoryCheckboxList from '@/app/[locale]/incident-map/components/NestedCategoryCheckboxList'
+import { Paragraph } from '@amsterdam/design-system-react'
+import { Category, ParentCategory } from '@/types/category'
 
 export type IncidentMapProps = {
   prop?: string
@@ -103,22 +98,16 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
 
   useEffect(() => {
     const getCategories = async () => {
-      /*
-       * "is_public_accessible": true,
-       *            "configuration": {
-                "show_children_in_filter": false
-            }
-       * */
-
       try {
         const res = await signalsClient.v1.v1PublicTermsCategoriesList()
         if (res?.results) {
-          let categories: Category[] = res.results
-          categories = categories.filter((category) => {
-            if (category.is_public_accessible) {
-              return category
-            }
-          })
+          // @ts-ignore
+          let categories: ParentCategory[] = res.results as ParentCategory[]
+
+          // Filter out non-public categories
+          categories = categories.filter(
+            (category) => category.is_public_accessible
+          )
           setCategories(categories)
         }
       } catch (e) {
@@ -135,8 +124,13 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
 
   return (
     <>
-      <div className="col-span-1 flex flex-col md:max-h-screen gap-4 min-h-[calc(100vh-8em)]">
-        <div className="p-4">
+      <div className="col-span-1 flex flex-col md:max-h-screen gap-4 min-h-[calc(100vh-8em)] p-4">
+        <Paragraph>
+          Op deze kaart staan meldingen in de openbare ruimte waarmee we aan het
+          werk zijn. Vanwege privacy staat een klein deel van de meldingen niet
+          op de kaart.
+        </Paragraph>
+        <div>
           {/*<div className="flex flex-col py-2">*/}
           {/*  <label htmlFor="address">{t('search_address_label')}</label>*/}
           {/*  <AddressCombobox*/}
@@ -146,11 +140,7 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
           {/*</div>*/}
 
           {categories && categories.length > 0 && (
-            <ul>
-              {categories.map((category) => (
-                <li key={category.slug}>{category.name}</li>
-              ))}
-            </ul>
+            <NestedCategoryCheckboxList categories={categories} />
           )}
         </div>
       </div>
