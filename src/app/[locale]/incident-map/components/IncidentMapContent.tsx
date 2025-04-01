@@ -5,10 +5,10 @@ import { Marker, useMap, ViewState } from 'react-map-gl/maplibre'
 import { useTranslations } from 'next-intl'
 
 import '../../incident/add/components/MapDialog.css'
-import { ButtonGroup, IconButton, MapMarker } from '@/components'
+import { Button, ButtonGroup, IconButton, MapMarker } from '@/components'
 import { useConfig } from '@/contexts/ConfigContext'
 import { Map } from '@/components/ui/Map'
-import { IconMinus, IconPlus } from '@tabler/icons-react'
+import { IconCurrentLocation, IconMinus, IconPlus } from '@tabler/icons-react'
 import { useDarkMode } from '@/hooks/useDarkMode'
 import { useWindowSize } from 'usehooks-ts'
 import { Feature, FeatureCollection } from 'geojson'
@@ -16,6 +16,7 @@ import { signalsClient } from '@/services/client/api-client'
 import NestedCategoryCheckboxList from '@/app/[locale]/incident-map/components/NestedCategoryCheckboxList'
 import { Paragraph } from '@amsterdam/design-system-react'
 import { Category, ParentCategory } from '@/types/category'
+import { isCoordinateInsideMaxBound } from '@/lib/utils/map'
 
 export type IncidentMapProps = {
   prop?: string
@@ -26,12 +27,10 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
   const { dialogMap } = useMap()
   const [features, setFeatures] = useState<FeatureCollection | null>(null)
   const [categories, setCategories] = useState<Category[] | null>(null)
-  const [selectedParentCategories, setSelectedParentCategories] = useState<
-    string[]
-  >([])
   const [selectedSubCategories, setSelectedSubCategories] = useState<string[]>(
     []
   )
+  const [error, setError] = useState<string | null>(null)
 
   const config = useConfig()
   const { isDarkMode } = useDarkMode()
@@ -105,10 +104,7 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
   // Filter features based on selected categories
   const filteredFeatures = useMemo(() => {
     // If no filters are selected, show all features
-    if (
-      selectedParentCategories.length === 0 &&
-      selectedSubCategories.length === 0
-    ) {
+    if (selectedSubCategories.length === 0) {
       return features?.features
     }
 
@@ -122,12 +118,9 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
       }
 
       // Check if parent category is selected
-      return (
-        featureCategory.parent &&
-        selectedParentCategories.includes(featureCategory.parent.slug)
-      )
+      return false
     })
-  }, [features, selectedParentCategories, selectedSubCategories])
+  }, [features, selectedSubCategories])
 
   useEffect(() => {
     const getCategories = async () => {
@@ -150,6 +143,53 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
 
     getCategories()
   }, [])
+
+  // Update position, flyTo position, after this set the marker position
+  const updatePosition = (lat: number, lng: number) => {
+    if (dialogMap) {
+      dialogMap.flyTo({
+        center: [lng, lat],
+        zoom: Math.max(config.base.map.minimal_zoom || 17, dialogMap.getZoom()),
+      })
+    }
+  }
+
+  // set current location of user
+  const setCurrentLocation = () => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const isInsideMaxBound = isCoordinateInsideMaxBound(
+          position.coords.latitude,
+          position.coords.longitude,
+          config
+            ? config.base.map.maxBounds
+            : [
+                [0, 0],
+                [0, 0],
+              ]
+        )
+
+        if (isInsideMaxBound) {
+          updatePosition(position.coords.latitude, position.coords.longitude)
+          setError(null)
+          return
+        }
+
+        setError(t('outside_max_bound_error'))
+      },
+      (locationError) => {
+        // For documentation see: https://developer.mozilla.org/en-US/docs/Web/API/GeolocationPositionError.
+        // We map a custom error message here to the locationError.code
+        const locationErrors: { [key: number]: string } = {
+          1: t('current_location_permission_error'),
+          2: t('current_location_position_error'),
+          3: t('current_location_timeout_error'),
+        }
+
+        setError(locationErrors[locationError.code])
+      }
+    )
+  }
 
   const mapStyle = isDarkMode
     ? `${process.env.NEXT_PUBLIC_MAPTILER_MAP_DARK_MODE}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`
@@ -175,7 +215,6 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
           {categories && categories.length > 0 && (
             <NestedCategoryCheckboxList
               categories={categories}
-              setSelectedParentCategories={setSelectedParentCategories}
               selectedSubCategories={selectedSubCategories}
               setSelectedSubCategories={setSelectedSubCategories}
             />
@@ -216,15 +255,15 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
                 )
               })}
           </Map>
-          {/*<div className="map-location-group">*/}
-          {/*  <Button*/}
-          {/*    appearance="secondary-action-button"*/}
-          {/*    onClick={() => setCurrentLocation()}*/}
-          {/*  >*/}
-          {/*    <IconCurrentLocation />*/}
-          {/*    {t('current_location')}*/}
-          {/*  </Button>*/}
-          {/*</div>*/}
+          <div className="map-location-group">
+            <Button
+              appearance="secondary-action-button"
+              onClick={() => setCurrentLocation()}
+            >
+              <IconCurrentLocation />
+              {t('current_location')}
+            </Button>
+          </div>
 
           {dialogMap && (
             <ButtonGroup direction="column" className="map-zoom-button-group">

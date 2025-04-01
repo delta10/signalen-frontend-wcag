@@ -5,7 +5,6 @@ import { IconChevronDown } from '@tabler/icons-react'
 
 type NestedCategoryCheckboxListProps = {
   categories: ParentCategory[]
-  setSelectedParentCategories: React.Dispatch<React.SetStateAction<string[]>>
   selectedSubCategories: string[]
   setSelectedSubCategories: React.Dispatch<React.SetStateAction<string[]>>
   onChange?: (checkedItems: Record<string, boolean>) => void
@@ -13,7 +12,6 @@ type NestedCategoryCheckboxListProps = {
 
 const NestedCheckboxList = ({
   categories,
-  setSelectedParentCategories,
   selectedSubCategories,
   setSelectedSubCategories,
   onChange,
