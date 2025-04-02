@@ -188,7 +188,7 @@ const IncidentSummaryForm = () => {
             <div
               className="signalen-map-img"
               role="img"
-              inert="true"
+              inert
               data-lat={formState.coordinates && formState.coordinates[0]}
               data-lon={formState.coordinates && formState.coordinates[1]}
               aria-label={
