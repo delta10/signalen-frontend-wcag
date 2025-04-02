@@ -14,7 +14,12 @@ import '../../incident/add/components/MapDialog.css'
 import { Button, ButtonGroup, Icon, IconButton, MapMarker } from '@/components'
 import { useConfig } from '@/contexts/ConfigContext'
 import { Map } from '@/components/ui/Map'
-import { IconCurrentLocation, IconMinus, IconPlus } from '@tabler/icons-react'
+import {
+  IconCurrentLocation,
+  IconMapPinFilled,
+  IconMinus,
+  IconPlus,
+} from '@tabler/icons-react'
 import { useDarkMode } from '@/hooks/useDarkMode'
 import { useWindowSize } from 'usehooks-ts'
 import { Feature, FeatureCollection } from 'geojson'
@@ -27,8 +32,8 @@ import { AddressCombobox } from '@/components/ui/AddressCombobox'
 import { getNewSelectedAddress } from '@/lib/utils/address'
 import { generateFeatureId } from '@/lib/utils/features'
 import SelectedIncidentDetails from '@/app/[locale]/incident-map/components/SelectedIncidentDetails'
-import { getNearestAddressByCoordinate } from '@/services/location/address'
 import { Address } from '@/types/form'
+import { AppConfig } from '@/types/config'
 
 export type IncidentMapProps = {
   prop?: string
@@ -244,6 +249,30 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
     setSelectedFeatureAddress(address)
   }
 
+  const getFeatureCategoryIcon = (feature: Feature): string | null => {
+    const parentCategorySlug = feature.properties?.category.parent.slug
+    const parentCategory = categories?.find(
+      (category) => category.slug === parentCategorySlug
+    )
+    if (parentCategory) {
+      // check if feature category is sub category
+      // @ts-ignore
+      if (parentCategory.configuration?.show_children_in_filter) {
+        // @ts-ignore
+        const subCategory = parentCategory.sub_categories.find(
+          (category: Category) =>
+            category.slug === feature.properties?.category.slug
+        )
+
+        return subCategory?._links?.['sia:icon']?.href || null
+      }
+
+      return parentCategory?._links?.['sia:icon']?.href || null
+    }
+
+    return null
+  }
+
   const mapStyle = isDarkMode
     ? `${process.env.NEXT_PUBLIC_MAPTILER_MAP_DARK_MODE}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`
     : `${process.env.NEXT_PUBLIC_MAPTILER_MAP}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`
@@ -297,7 +326,6 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
           >
             {filteredFeatures &&
               filteredFeatures.map((feature: Feature) => {
-                console.log(feature)
                 return (
                   <Marker
                     className="hover:cursor-pointer"
@@ -309,19 +337,11 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
                     // @ts-ignore
                     onClick={(e) => handleFeatureMarkerClick(e, feature)}
                   >
-                    {feature.id === selectedFeatureId ? (
-                      <Icon>
-                        {/* offset the selected feature marker by 30px to prevent shift in position and overlap with possible duplicates. */}
-                        <img
-                          className="mb-[30px]"
-                          src={
-                            config.base.assets_url +
-                            '/assets/images/feature-selected-marker.svg'
-                          }
-                        />
-                      </Icon>
-                    ) : (
-                      <MapMarker />
+                    {FeatureCategoryIcon(
+                      feature.id,
+                      selectedFeatureId,
+                      getFeatureCategoryIcon(feature),
+                      config
                     )}
                   </Marker>
                 )
@@ -361,6 +381,38 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
       )}
     </>
   )
+}
+
+export const FeatureCategoryIcon = (
+  featureId: string | number | undefined,
+  selectedFeatureId: number,
+  featureIconUrl: string | null,
+  config: AppConfig
+) => {
+  if (featureId === selectedFeatureId) {
+    return (
+      <Icon>
+        {/* offset the selected feature marker by 30px to prevent shift in position and overlap with possible duplicates. */}
+        <img
+          className="mb-[30px]"
+          src={
+            config.base.assets_url +
+            '/assets/images/feature-selected-marker.svg'
+          }
+        />
+      </Icon>
+    )
+  }
+
+  if (featureIconUrl) {
+    return (
+      <Icon className="!w-7 !h-7">
+        <img src={featureIconUrl} alt="Categorie icoon" />
+      </Icon>
+    )
+  }
+
+  return <MapMarker />
 }
 
 export { IncidentMapContent }
