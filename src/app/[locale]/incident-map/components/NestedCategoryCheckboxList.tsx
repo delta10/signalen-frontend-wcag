@@ -54,7 +54,6 @@ const NestedCheckboxList = ({
 
   // Toggle subcategory selection
   const toggleSubCategory = (slug: string) => {
-    console.log(slug)
     setSelectedSubCategories((prev) => {
       if (prev.includes(slug)) {
         return prev.filter((item) => item !== slug)
@@ -62,7 +61,6 @@ const NestedCheckboxList = ({
         return [...prev, slug]
       }
     })
-    console.log(selectedSubCategories)
   }
   // Toggle parent category (selects/deselects all subcategories)
   const toggleParentCategory = (parentCategory: ParentCategory) => {
@@ -73,7 +71,6 @@ const NestedCheckboxList = ({
       selectedSubCategories?.includes(slug)
     )
 
-    console.log(parentCategory, allSelected)
     if (allSelected) {
       // Deselect all subcategories of this parent
       setSelectedSubCategories((prev) =>
@@ -90,7 +87,6 @@ const NestedCheckboxList = ({
         })
         return newSelection
       })
-      console.log(selectedSubCategories)
     }
   }
 

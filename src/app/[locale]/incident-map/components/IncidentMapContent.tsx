@@ -26,6 +26,9 @@ import { isCoordinateInsideMaxBound } from '@/lib/utils/map'
 import { AddressCombobox } from '@/components/ui/AddressCombobox'
 import { getNewSelectedAddress } from '@/lib/utils/address'
 import { generateFeatureId } from '@/lib/utils/features'
+import SelectedIncidentDetails from '@/app/[locale]/incident-map/components/SelectedIncidentDetails'
+import { getNearestAddressByCoordinate } from '@/services/location/address'
+import { Address } from '@/types/form'
 
 export type IncidentMapProps = {
   prop?: string
@@ -36,6 +39,8 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
   const { dialogMap } = useMap()
   const [features, setFeatures] = useState<Feature[]>([])
   const [selectedFeatureId, setSelectedFeatureId] = useState<any>(null)
+  const [selectedFeatureAddress, setSelectedFeatureAddress] =
+    useState<Address | null>(null)
   const [categories, setCategories] = useState<Category[] | null>(null)
   const [selectedSubCategories, setSelectedSubCategories] = useState<string[]>(
     []
@@ -161,6 +166,13 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
     getCategories()
   }, [])
 
+  const selectedFeature = useMemo(() => {
+    if (!selectedFeatureId || !features) {
+      return
+    }
+    return features.find((feature: Feature) => feature.id === selectedFeatureId)
+  }, [selectedFeatureId])
+
   // Update position, flyTo position, after this set the marker position
   const updatePosition = (lat: number, lng: number) => {
     if (dialogMap) {
@@ -168,22 +180,6 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
         center: [lng, lat],
       })
     }
-  }
-
-  // Handle click on map, setIsMapSelected to true
-  const handleMapClick = async (event: MapLayerMouseEvent) => {
-    updatePosition(event.lngLat.lat, event.lngLat.lng)
-    // setIsMapSelected(true)
-    const address = await getNewSelectedAddress(
-      event.lngLat.lat,
-      event.lngLat.lng,
-      config
-    )
-
-    setSelectedFeatureId(null)
-
-    console.log(address)
-    // get nearest incident
   }
 
   // set current location of user
@@ -223,6 +219,13 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
     )
   }
 
+  // Handle click on map, setIsMapSelected to true
+  const handleMapClick = async (event: MapLayerMouseEvent) => {
+    updatePosition(event.lngLat.lat, event.lngLat.lng)
+    setSelectedFeatureId(null)
+    setSelectedFeatureAddress(null)
+  }
+
   // Handle click on feature marker, set selectedFeatures and show error if maxNumberOfAssets is reached
   const handleFeatureMarkerClick = async (
     event: MarkerEvent,
@@ -231,7 +234,14 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
     // @ts-ignore
     event.originalEvent?.stopPropagation()
     setSelectedFeatureId(feature.id)
-    // setSelectedFeatureId(selectedFeatureId !== feature.id ? feature.id : null)
+
+    const address = await getNewSelectedAddress(
+      event.target.getLngLat().lat,
+      event.target.getLngLat().lng,
+      config
+    )
+
+    setSelectedFeatureAddress(address)
   }
 
   const mapStyle = isDarkMode
@@ -240,24 +250,31 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
 
   return (
     <>
-      <div className="col-span-1 flex flex-col md:max-h-screen gap-4 min-h-[calc(100vh-102px)] p-4">
-        <Paragraph>
-          Op deze kaart staan meldingen in de openbare ruimte waarmee we aan het
-          werk zijn. Vanwege privacy staat een klein deel van de meldingen niet
-          op de kaart.
-        </Paragraph>
-
-        <div className="flex flex-col py-2">
-          <label htmlFor="address">{t('search_address_label')}</label>
-          <AddressCombobox updatePosition={updatePosition} />
-        </div>
-
-        {categories && categories.length > 0 && (
-          <NestedCategoryCheckboxList
-            categories={categories}
-            selectedSubCategories={selectedSubCategories}
-            setSelectedSubCategories={setSelectedSubCategories}
+      <div className="col-span-1 flex flex-col md:max-h-screen min-h-[calc(100vh-102px)] p-4">
+        {selectedFeatureId ? (
+          <SelectedIncidentDetails
+            feature={selectedFeature}
+            address={selectedFeatureAddress}
           />
+        ) : (
+          <div className="flex flex-col gap-4">
+            <Paragraph>
+              Op deze kaart staan meldingen in de openbare ruimte waarmee we aan
+              het werk zijn. Vanwege privacy staat een klein deel van de
+              meldingen niet op de kaart.
+            </Paragraph>
+            <div className="flex flex-col py-2">
+              <label htmlFor="address">{t('search_address_label')}</label>
+              <AddressCombobox updatePosition={updatePosition} />
+            </div>
+            {categories && categories.length > 0 && (
+              <NestedCategoryCheckboxList
+                categories={categories}
+                selectedSubCategories={selectedSubCategories}
+                setSelectedSubCategories={setSelectedSubCategories}
+              />
+            )}
+          </div>
         )}
       </div>
       {config && (
