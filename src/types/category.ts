@@ -6,6 +6,8 @@ export interface Links {
   self: {
     href: string
   }
+  // For storing icons under "sia:icon"
+  [key: string]: { href: string }
 }
 
 export interface Department {

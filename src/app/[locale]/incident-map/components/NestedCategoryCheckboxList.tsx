@@ -1,7 +1,8 @@
 import { FormFieldCheckbox, Icon } from '@/components'
 import React, { useState } from 'react'
 import { Category, ParentCategory } from '@/types/category'
-import { IconChevronDown } from '@tabler/icons-react'
+import { IconChevronDown, IconMapPinFilled } from '@tabler/icons-react'
+import { CategoryLabelWithIcon } from '@/app/[locale]/incident-map/components/CategoryIcon'
 
 type NestedCategoryCheckboxListProps = {
   categories: ParentCategory[]
@@ -16,32 +17,7 @@ const NestedCheckboxList = ({
   setSelectedSubCategories,
   onChange,
 }: NestedCategoryCheckboxListProps) => {
-  const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({})
   const [expanded, setExpanded] = useState<Record<string, boolean>>({})
-
-  const updateCheckedItems = (newCheckedItems: Record<string, boolean>) => {
-    setCheckedItems(newCheckedItems)
-    if (onChange) onChange(newCheckedItems)
-  }
-
-  const handleGroupChange = (group: Category) => {
-    const newCheckedItems = { ...checkedItems }
-    // const newValue = !group.sub_categories.every(
-    //   (child) => checkedItems[child.slug]
-    // )
-    //
-    // group.sub_categories.forEach((child) => {
-    //   newCheckedItems[child.slug] = newValue
-    // })
-
-    updateCheckedItems(newCheckedItems)
-  }
-
-  const handleChildChange = (childSlug: string) => {
-    const newCheckedItems = { ...checkedItems }
-    newCheckedItems[childSlug] = !checkedItems[childSlug]
-    updateCheckedItems(newCheckedItems)
-  }
 
   const toggleExpand = (groupSlug: string) => {
     setExpanded((prev) => ({ ...prev, [groupSlug]: !prev[groupSlug] }))
@@ -95,9 +71,7 @@ const NestedCheckboxList = ({
     parentCategory: ParentCategory
   ): boolean => {
     const subcategorySlugs = getSubcategorySlugs(parentCategory)
-    // console.log('parentCategory', parentCategory)
-    // console.log('subcategorySlugs', subcategorySlugs)
-    // console.log('selectedSubCategories', selectedSubCategories)
+
     return (
       subcategorySlugs.length > 0 &&
       subcategorySlugs.every((slug) => selectedSubCategories?.includes(slug))
@@ -119,27 +93,15 @@ const NestedCheckboxList = ({
   return (
     <div>
       {categories.map((category: ParentCategory) => {
-        // const allChecked = category.sub_categories.every(
-        //   (child) => checkedItems[child.slug]
-        // )
-        // const someChecked =
-        //   group.sub_categories.some((child) => checkedItems[child.slug]) &&
-        //   !allChecked
-
         const isExpanded = expanded[category.slug]
 
         return (
           <div key={category.slug} className="mb-3">
             <div className="flex items-center gap-1">
-              {/* 
-                              indeterminate={false}
-                value={group.slug}
-
-              */}
               <FormFieldCheckbox
                 checked={isParentCategorySelected(category)}
                 indeterminate={isParentCategoryIndeterminate(category)}
-                label={category.name}
+                label={CategoryLabelWithIcon(category)}
                 onChange={() => toggleParentCategory(category)}
               />
 
@@ -162,21 +124,22 @@ const NestedCheckboxList = ({
               <div className="ml-6">
                 {category.configuration?.show_children_in_filter &&
                   category.sub_categories?.length &&
-                  category.sub_categories.map((subCategory) => (
-                    <div
-                      key={subCategory.slug}
-                      className="flex items-center mt-1"
-                    >
-                      {/* Replacing the simple <Checkbox /> with FormFieldCheckbox */}
-                      <FormFieldCheckbox
-                        checked={selectedSubCategories?.includes(
-                          subCategory.slug
-                        )}
-                        label={subCategory.name}
-                        onChange={() => toggleSubCategory(subCategory.slug)}
-                      />
-                    </div>
-                  ))}
+                  category.sub_categories.map((subCategory) => {
+                    return (
+                      <div
+                        key={subCategory.slug}
+                        className="flex items-center mt-1 gap-2"
+                      >
+                        <FormFieldCheckbox
+                          checked={selectedSubCategories?.includes(
+                            subCategory.slug
+                          )}
+                          label={CategoryLabelWithIcon(subCategory)}
+                          onChange={() => toggleSubCategory(subCategory.slug)}
+                        />
+                      </div>
+                    )
+                  })}
               </div>
             )}
           </div>

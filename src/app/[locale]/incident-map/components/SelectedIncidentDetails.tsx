@@ -13,6 +13,7 @@ const SelectedIncidentDetails = ({
 }: SelectedIncidentDetailsProps) => {
   return (
     <dl>
+      {/*todo: add close button*/}
       <dt>Melding</dt>
       <h2>{feature?.properties?.category.name}</h2>
       <dt>Datum melding</dt>

@@ -296,7 +296,8 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
             }
           >
             {filteredFeatures &&
-              filteredFeatures.map((feature: Feature, index) => {
+              filteredFeatures.map((feature: Feature) => {
+                console.log(feature)
                 return (
                   <Marker
                     className="hover:cursor-pointer"
