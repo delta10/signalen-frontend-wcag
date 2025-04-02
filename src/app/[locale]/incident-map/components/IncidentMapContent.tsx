@@ -252,15 +252,13 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
           <AddressCombobox updatePosition={updatePosition} />
         </div>
 
-        <div>
-          {categories && categories.length > 0 && (
-            <NestedCategoryCheckboxList
-              categories={categories}
-              selectedSubCategories={selectedSubCategories}
-              setSelectedSubCategories={setSelectedSubCategories}
-            />
-          )}
-        </div>
+        {categories && categories.length > 0 && (
+          <NestedCategoryCheckboxList
+            categories={categories}
+            selectedSubCategories={selectedSubCategories}
+            setSelectedSubCategories={setSelectedSubCategories}
+          />
+        )}
       </div>
       {config && (
         <div

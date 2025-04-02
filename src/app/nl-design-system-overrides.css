@@ -145,3 +145,11 @@
   flex-direction: row-reverse !important;
   align-items: center !important;
 }
+
+.utrecht-page-body.incident-map .utrecht-page-body__content {
+  max-inline-size: 100%;
+  padding-block-end: 0;
+  padding-block-start: 0;
+  padding-inline-end: 0;
+  padding-inline-start: 0;
+}
