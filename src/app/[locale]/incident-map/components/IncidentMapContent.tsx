@@ -223,8 +223,7 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
   // Handle click on map, setIsMapSelected to true
   const handleMapClick = async (event: MapLayerMouseEvent) => {
     updatePosition(event.lngLat.lat, event.lngLat.lng)
-    setSelectedFeatureId(null)
-    setSelectedFeatureAddress(null)
+    resetSelectedIncident()
   }
 
   // Handle click on feature marker, set selectedFeatures and show error if maxNumberOfAssets is reached
@@ -243,6 +242,11 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
     )
 
     setSelectedFeatureAddress(address)
+  }
+
+  const resetSelectedIncident = () => {
+    setSelectedFeatureId(null)
+    setSelectedFeatureAddress(null)
   }
 
   const getFeatureCategoryIcon = (feature: Feature): string | null => {
@@ -280,6 +284,7 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
           <SelectedIncidentDetails
             feature={selectedFeature}
             address={selectedFeatureAddress}
+            onClose={resetSelectedIncident}
           />
         ) : (
           <div className="flex flex-col gap-4">
