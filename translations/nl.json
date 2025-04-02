@@ -193,6 +193,13 @@
     "accessibility": "Toegankelijkheid"
   },
   "incident_map": {
-    "heading": "Meldingenkaart"
+    "heading": "Meldingenkaart",
+    "incident_map": "meldingenkaart",
+    "pre_introduction": "Voordat u een melding doet kunt u op de ",
+    "post_introduction": " zien welke meldingen bekend zijn bij de gemeente.",
+    "description": "Op deze kaart staan meldingen in de openbare ruimte waarmee we aan het werk zijn. Vanwege privacy staat een klein deel van de meldingen niet op de kaart.",
+    "report": "Melding",
+    "report_date": "Datum melding",
+    "address_nearby": "Adres dichtbij"
   }
 }

@@ -14,12 +14,7 @@ import '../../incident/add/components/MapDialog.css'
 import { Button, ButtonGroup, Icon, IconButton, MapMarker } from '@/components'
 import { useConfig } from '@/contexts/ConfigContext'
 import { Map } from '@/components/ui/Map'
-import {
-  IconCurrentLocation,
-  IconMapPinFilled,
-  IconMinus,
-  IconPlus,
-} from '@tabler/icons-react'
+import { IconCurrentLocation, IconMinus, IconPlus } from '@tabler/icons-react'
 import { useDarkMode } from '@/hooks/useDarkMode'
 import { useWindowSize } from 'usehooks-ts'
 import { Feature, FeatureCollection } from 'geojson'
@@ -41,6 +36,7 @@ export type IncidentMapProps = {
 
 const IncidentMapContent = ({}: IncidentMapProps) => {
   const t = useTranslations('describe_add.map')
+  const tIncidentMap = useTranslations('incident_map')
   const { dialogMap } = useMap()
   const [features, setFeatures] = useState<Feature[]>([])
   const [selectedFeatureId, setSelectedFeatureId] = useState<any>(null)
@@ -287,11 +283,7 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
           />
         ) : (
           <div className="flex flex-col gap-4">
-            <Paragraph>
-              Op deze kaart staan meldingen in de openbare ruimte waarmee we aan
-              het werk zijn. Vanwege privacy staat een klein deel van de
-              meldingen niet op de kaart.
-            </Paragraph>
+            <Paragraph>{tIncidentMap('description')}</Paragraph>
             <div className="flex flex-col py-2">
               <label htmlFor="address">{t('search_address_label')}</label>
               <AddressCombobox updatePosition={updatePosition} />

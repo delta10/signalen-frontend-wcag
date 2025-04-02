@@ -194,6 +194,13 @@
     "accessibility": "Accessibility"
   },
   "incident_map": {
-    "heading": "Incident map"
+    "heading": "Incident map",
+    "incident_map": "incident map",
+    "pre_introduction": "Before making a report, you can see on the ",
+    "post_introduction": " which reports are known to the municipality.",
+    "description": "This map shows reports in public space that we are working on. Because of privacy, a small portion of the reports are not on the map.",
+    "report": "Report",
+    "report_date": "Report date",
+    "address_nearby": "Nearest address"
   }
 }

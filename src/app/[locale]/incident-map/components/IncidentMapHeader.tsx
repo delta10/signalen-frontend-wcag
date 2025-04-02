@@ -11,6 +11,7 @@ const IncidentMapHeader = () => {
   const config = useConfig()
   const { isDarkMode } = useDarkMode()
   const t = useTranslations('current_organisation')
+  const tIncidentMap = useTranslations('incident_map')
 
   const homepageHref = config?.base.links.home
   const logo =
@@ -51,10 +52,7 @@ const IncidentMapHeader = () => {
             ) : (
               logoElement
             )}
-            <Heading level={1}>
-              {/*{t('heading')}*/}
-              Meldingenkaart
-            </Heading>
+            <Heading level={1}>{tIncidentMap('heading')}</Heading>
           </div>
 
           {config && config.base.supportedLanguages.length > 1 && (
