@@ -391,7 +391,7 @@ export const FeatureCategoryIcon = (
       <Icon>
         {/* offset the selected feature marker by 30px to prevent shift in position and overlap with possible duplicates. */}
         <img
-          className="mb-[30px]"
+          className={!featureIconUrl ? 'mb-[30px]' : ''}
           src={
             config.base.assets_url +
             '/assets/images/feature-selected-marker.svg'
