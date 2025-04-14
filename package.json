@@ -46,7 +46,7 @@
     "zustand": "5.0.2"
   },
   "devDependencies": {
-    "@amsterdam/design-system-react": "0.13.1",
+    "@amsterdam/design-system-react": "0.15.0",
     "@axe-core/playwright": "4.10.1",
     "@fontsource/cantarell": "5.1.0",
     "@nl-design-system-community/purmerend-design-tokens": "1.2.2",
