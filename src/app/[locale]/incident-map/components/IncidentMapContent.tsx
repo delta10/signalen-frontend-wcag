@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   MapLayerMouseEvent,
   Marker,
@@ -14,9 +14,15 @@ import '../../incident/add/components/MapDialog.css'
 import { Button, ButtonGroup, Icon, IconButton, MapMarker } from '@/components'
 import { useConfig } from '@/contexts/ConfigContext'
 import { Map } from '@/components/ui/Map'
-import { IconCurrentLocation, IconMinus, IconPlus } from '@tabler/icons-react'
+import {
+  IconArrowsDiagonal,
+  IconArrowsDiagonalMinimize2,
+  IconCurrentLocation,
+  IconMinus,
+  IconPlus,
+} from '@tabler/icons-react'
 import { useDarkMode } from '@/hooks/useDarkMode'
-import { useWindowSize } from 'usehooks-ts'
+import { useMediaQuery, useWindowSize } from 'usehooks-ts'
 import { Feature, FeatureCollection } from 'geojson'
 import { signalsClient } from '@/services/client/api-client'
 import NestedCategoryCheckboxList from '@/app/[locale]/incident-map/components/NestedCategoryCheckboxList'
@@ -29,6 +35,8 @@ import { generateFeatureId } from '@/lib/utils/features'
 import SelectedIncidentDetails from '@/app/[locale]/incident-map/components/SelectedIncidentDetails'
 import { Address } from '@/types/form'
 import { AppConfig } from '@/types/config'
+import { clsx } from 'clsx'
+import { debounce, throttle } from 'lodash'
 
 export type IncidentMapProps = {
   prop?: string
@@ -47,10 +55,14 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
     []
   )
   const [error, setError] = useState<string | null>(null)
+  const [fullscreenMap, setFullscreenMap] = useState(false)
 
   const config = useConfig()
   const { isDarkMode } = useDarkMode()
   const { width = 0 } = useWindowSize()
+  const isMobile = useMediaQuery('only screen and (max-width : 768px)')
+  const lastBboxRef = useRef<string | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
 
   const [viewState, setViewState] = useState<ViewState>({
     latitude: config.base.map.center[0],
@@ -68,61 +80,89 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
 
   const mapContainerRef = useRef<HTMLDivElement>(null)
 
-  // Set new features on map move or zoom
-  useEffect(() => {
-    const setNewFeatures = async () => {
-      // todo: loading state
-      // todo: kijken hoe minder vaak aanroepen
+  // Memoize the function with useCallback and include all dependencies
+  const setNewFeatures = useCallback(async () => {
+    if (!dialogMap) return
 
-      const bounds = dialogMap?.getBounds()
+    const bounds = dialogMap.getBounds()
 
-      // Extract the bounding box in [minLon, minLat, maxLon, maxLat] format
-      const bbox = [
-        bounds?.getWest(),
-        bounds?.getSouth(),
-        bounds?.getEast(),
-        bounds?.getNorth(),
-      ].join(',')
+    if (!bounds) return
 
-      try {
-        const res =
-          await signalsClient.v1.v1PublicSignalsGeographyRetrieve(bbox)
-        if (res && res.features) {
-          // Wrap response in a FeatureCollection
-          const featureCollection: FeatureCollection = {
-            type: 'FeatureCollection',
-            // todo: ts-ignore weg?
-            // @ts-ignore
-            features: res.features,
-          }
+    // Extract the bounding box
+    const bbox = [
+      bounds.getWest(),
+      bounds.getSouth(),
+      bounds.getEast(),
+      bounds.getNorth(),
+    ].join(',')
 
-          const featuresWithIds = featureCollection.features.map(
-            (feature: Feature) => ({
-              ...feature,
-              id: generateFeatureId(feature),
-            })
-          )
+    // Skip if the bbox hasn't changed
+    if (bbox === lastBboxRef.current) return
 
-          setFeatures(featuresWithIds)
+    lastBboxRef.current = bbox
+
+    try {
+      const res = await signalsClient.v1.v1PublicSignalsGeographyRetrieve(bbox)
+      if (res && res.features) {
+        // Wrap response in a FeatureCollection
+        const featureCollection: FeatureCollection = {
+          type: 'FeatureCollection',
+          // @ts-ignore
+          features: res.features,
         }
-      } catch (e) {}
+
+        const featuresWithIds = featureCollection.features.map(
+          (feature: Feature) => ({
+            ...feature,
+            id: generateFeatureId(feature),
+          })
+        )
+
+        setFeatures(featuresWithIds)
+      }
+    } catch (e) {
+      console.error('Error fetching features:', e)
+    }
+  }, [dialogMap, setFeatures])
+
+  const debouncedSetNewFeatures = useCallback(
+    debounce(() => {
+      setNewFeatures()
+    }, 50),
+    [setNewFeatures]
+  )
+
+  useEffect(() => {
+    if (!dialogMap) return
+
+    const handleMapLoad = () => {
+      setNewFeatures()
     }
 
-    if (dialogMap) {
-      dialogMap.on('load', setNewFeatures)
-      dialogMap.on('moveend', () => {
-        // setLoadingAssets(false)
-      })
-      dialogMap.on('move', setNewFeatures)
+    const handleMapMove = () => {
+      setIsLoading(true)
+      debouncedSetNewFeatures()
     }
 
+    const handleMapMoveEnd = () => {
+      setIsLoading(false)
+    }
+
+    // Attach event listeners
+    dialogMap.on('load', handleMapLoad)
+    dialogMap.on('move', handleMapMove)
+    dialogMap.on('moveend', handleMapMoveEnd)
+
+    // Cleanup function
     return () => {
       if (dialogMap) {
-        dialogMap.off('load', setNewFeatures)
-        dialogMap.off('move', setNewFeatures)
+        dialogMap.off('load', handleMapLoad)
+        dialogMap.off('move', handleMapMove)
+        dialogMap.off('moveend', handleMapMoveEnd)
+        debouncedSetNewFeatures.cancel() // Cancel any pending debounced calls
       }
     }
-  }, [dialogMap])
+  }, [dialogMap, setNewFeatures, debouncedSetNewFeatures])
 
   // Filter features based on selected categories
   const filteredFeatures = useMemo(() => {
@@ -278,34 +318,65 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
     : `${process.env.NEXT_PUBLIC_MAPTILER_MAP}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`
 
   return (
-    <>
-      <div className="col-span-1 flex flex-col md:max-h-screen min-h-[calc(100vh-102px)] p-4">
-        {selectedFeatureId ? (
-          <SelectedIncidentDetails
-            feature={selectedFeature}
-            address={selectedFeatureAddress}
-            onClose={resetSelectedIncident}
-          />
-        ) : (
-          <div className="flex flex-col gap-4">
-            <Paragraph>{tIncidentMap('description')}</Paragraph>
-            <div className="flex flex-col py-2">
-              <label htmlFor="address">{t('search_address_label')}</label>
-              <AddressCombobox updatePosition={updatePosition} />
+    //
+    <div
+      className={clsx(
+        'grid md:grid-cols-3 overflow-y-auto min-h-[calc(100vh-5.4rem)] md:min-h-[calc(100vh-8em)]',
+        fullscreenMap ? 'grid-rows-[1fr_auto]' : 'grid-rows-[auto_1fr_auto]'
+      )}
+    >
+      {!isMobile && (
+        <div className="col-span-1 flex flex-col max-h-screen min-h-[calc(100vh-102px)] p-4">
+          {selectedFeatureId ? (
+            <SelectedIncidentDetails
+              feature={selectedFeature}
+              address={selectedFeatureAddress}
+              onClose={resetSelectedIncident}
+            />
+          ) : (
+            <div className="flex flex-col gap-4">
+              <Paragraph>{tIncidentMap('description')}</Paragraph>
+              <div className="flex flex-col py-2">
+                <label htmlFor="address">{t('search_address_label')}</label>
+                <AddressCombobox updatePosition={updatePosition} />
+              </div>
+              {categories && categories.length > 0 && (
+                <NestedCategoryCheckboxList
+                  categories={categories}
+                  selectedSubCategories={selectedSubCategories}
+                  setSelectedSubCategories={setSelectedSubCategories}
+                />
+              )}
             </div>
-            {categories && categories.length > 0 && (
-              <NestedCategoryCheckboxList
-                categories={categories}
-                selectedSubCategories={selectedSubCategories}
-                setSelectedSubCategories={setSelectedSubCategories}
-              />
-            )}
+          )}
+        </div>
+      )}
+
+      {isMobile && (
+        <div
+          className={clsx(
+            'flex flex-col gap-1 px-2 pb-2',
+            fullscreenMap ? 'hidden' : ''
+          )}
+        >
+          <Paragraph className="!text-base">
+            {tIncidentMap('description')}
+          </Paragraph>
+          <div className="flex flex-col py-2">
+            <label htmlFor="address" className="!text-lg">
+              {t('search_address_label')}
+            </label>
+            <AddressCombobox
+              updatePosition={updatePosition}
+              mobileView={true}
+            />
           </div>
-        )}
-      </div>
+        </div>
+      )}
+
       {config && (
         <div
-          className="col-span-1 md:col-span-2 md:max-h-screen relative min-h-[calc(100vh-8em)]"
+          className="col-span-1 md:col-span-2 relative min-h-full max-h-full h-full"
           ref={mapContainerRef}
         >
           <Map
@@ -347,6 +418,10 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
           <div className="map-location-group">
             <Button
               appearance="secondary-action-button"
+              className={clsx(
+                'map-zoom-button',
+                isMobile ? 'map-icon-button mobile' : ''
+              )}
               onClick={() => setCurrentLocation()}
             >
               <IconCurrentLocation />
@@ -354,21 +429,50 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
             </Button>
           </div>
 
+          {isMobile && (
+            <div className="map-fullscreen-group">
+              <IconButton
+                onClick={() => setFullscreenMap(!fullscreenMap)}
+                label={
+                  fullscreenMap
+                    ? t('toggle_fullscreen_off')
+                    : t('toggle_fullscreen_on')
+                }
+                mobileView={true}
+                className="utrecht-button--subtle map-icon-button"
+              >
+                {fullscreenMap ? (
+                  <IconArrowsDiagonalMinimize2 />
+                ) : (
+                  <IconArrowsDiagonal />
+                )}
+              </IconButton>
+            </div>
+          )}
+
           {dialogMap && (
             <ButtonGroup direction="column" className="map-zoom-button-group">
               <IconButton
                 appearance="secondary-action-button"
-                className="map-button map-zoom-button"
+                className={clsx(
+                  'map-zoom-button',
+                  isMobile ? 'map-icon-button' : 'map-button'
+                )}
                 onClick={() => dialogMap.zoomIn()}
                 label={t('map_zoom-in_button_label')}
+                mobileView={isMobile}
               >
                 <IconPlus />
               </IconButton>
               <IconButton
                 appearance="secondary-action-button"
-                className="map-button map-zoom-button"
+                className={clsx(
+                  'map-zoom-button',
+                  isMobile ? 'map-icon-button' : 'map-button'
+                )}
                 onClick={() => dialogMap.zoomOut()}
                 label={t('map_zoom-out_button_label')}
+                mobileView={isMobile}
               >
                 <IconMinus />
               </IconButton>
@@ -376,7 +480,7 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
           )}
         </div>
       )}
-    </>
+    </div>
   )
 }
 

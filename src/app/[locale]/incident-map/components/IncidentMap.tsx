@@ -18,9 +18,7 @@ const IncidentMap = ({}: IncidentMapProps) => {
   return (
     <>
       <MapProvider>
-        <div className="grid grid-rows-[auto_1fr_auto] md:grid-cols-3 overflow-y-auto">
-          <IncidentMapContent />
-        </div>
+        <IncidentMapContent />
       </MapProvider>
     </>
   )
