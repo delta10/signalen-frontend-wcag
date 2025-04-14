@@ -153,3 +153,10 @@
   padding-inline-end: 0;
   padding-inline-start: 0;
 }
+
+.utrecht-logo.mobile-header {
+  max-block-size: 192px;
+  max-inline-size: 96px;
+  min-block-size: 50px;
+  min-inline-size: 100px;
+}

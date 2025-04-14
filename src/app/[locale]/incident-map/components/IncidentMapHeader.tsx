@@ -6,12 +6,14 @@ import { useConfig } from '@/contexts/ConfigContext'
 import { useDarkMode } from '@/hooks/useDarkMode'
 import { useTranslations } from 'next-intl'
 import { NextSvgImage } from '@/components/ui/NextSvgImage'
+import { useMediaQuery } from 'usehooks-ts'
 
 const IncidentMapHeader = () => {
   const config = useConfig()
   const { isDarkMode } = useDarkMode()
   const t = useTranslations('current_organisation')
   const tIncidentMap = useTranslations('incident_map')
+  const isMobile = useMediaQuery('only screen and (max-width : 768px)')
 
   const homepageHref = config?.base.links.home
   const logo =
@@ -26,7 +28,10 @@ const IncidentMapHeader = () => {
       })
 
   const logoElement = logo ? (
-    <Logo caption={config ? config.base.header.logo.caption : ''}>
+    <Logo
+      className={isMobile ? 'mobile-header' : ''}
+      caption={config ? config.base.header.logo.caption : ''}
+    >
       <NextSvgImage src={`/assets/${logo}`} alt={logoAltText} priority={true} />
     </Logo>
   ) : null
@@ -35,7 +40,7 @@ const IncidentMapHeader = () => {
     <>
       <PageHeader className="incident-map-header">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-12">
+          <div className="flex flex-row items-center gap-4 md:gap-12">
             {homepageHref ? (
               <Link
                 boxContent
