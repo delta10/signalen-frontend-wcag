@@ -3,7 +3,7 @@ import { Address } from '@/types/form'
 import { Feature } from 'geojson'
 import { useTranslations } from 'next-intl'
 import { Icon } from '@/components'
-import { IconChevronDown, IconX } from '@tabler/icons-react'
+import { IconX } from '@tabler/icons-react'
 
 type SelectedIncidentDetailsProps = {
   feature?: Feature
@@ -35,7 +35,6 @@ const SelectedIncidentDetails = ({
 
   return (
     <dl className="space-y-4">
-      {/*todo: add close button*/}
       <div className="flex justify-between w-full">
         <div>
           <dt>{t('report')}</dt>
