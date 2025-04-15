@@ -20,6 +20,7 @@ import {
   IconCurrentLocation,
   IconMinus,
   IconPlus,
+  IconX,
 } from '@tabler/icons-react'
 import { useDarkMode } from '@/hooks/useDarkMode'
 import { useMediaQuery, useWindowSize } from 'usehooks-ts'
@@ -37,6 +38,7 @@ import { Address } from '@/types/form'
 import { AppConfig } from '@/types/config'
 import { clsx } from 'clsx'
 import { debounce, throttle } from 'lodash'
+import IncidentMapMobileSidebar from '@/app/[locale]/incident-map/components/IncedentMapMobileSidebar'
 
 export type IncidentMapProps = {
   prop?: string
@@ -359,10 +361,10 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
             fullscreenMap ? 'hidden' : ''
           )}
         >
-          <Paragraph className="!text-base">
-            {tIncidentMap('description')}
-          </Paragraph>
-          <div className="flex flex-col py-2">
+          {/*<Paragraph className="!text-base">*/}
+          {/*  {tIncidentMap('description')}*/}
+          {/*</Paragraph>*/}
+          <div className="flex flex-col pb-2">
             <label htmlFor="address" className="!text-lg">
               {t('search_address_label')}
             </label>
@@ -450,6 +452,7 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
             </div>
           )}
 
+          {/* move to separate component*/}
           {dialogMap && (
             <ButtonGroup direction="column" className="map-zoom-button-group">
               <IconButton
@@ -476,9 +479,35 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
               >
                 <IconMinus />
               </IconButton>
+              {/*{isMobile && (*/}
+              {/*  <IconButton*/}
+              {/*    appearance="secondary-action-button"*/}
+              {/*    className={clsx(*/}
+              {/*      'map-zoom-button',*/}
+              {/*      isMobile ? 'map-icon-button' : 'map-button'*/}
+              {/*    )}*/}
+              {/*    onClick={() => setIsSidebarOpen(true)}*/}
+              {/*    label={t('map_zoom-out_button_label')}*/}
+              {/*    mobileView={isMobile}*/}
+              {/*  >*/}
+              {/*    <IconArrowsDiagonal className="w-6 h-6" />*/}
+              {/*  </IconButton>*/}
+              {/*)}*/}
             </ButtonGroup>
           )}
         </div>
+      )}
+
+      {isMobile && (
+        <IncidentMapMobileSidebar
+          selectedFeatureId={selectedFeatureId}
+          selectedFeature={selectedFeature}
+          selectedFeatureAddress={selectedFeatureAddress}
+          categories={categories}
+          selectedSubCategories={selectedSubCategories}
+          setSelectedSubCategories={setSelectedSubCategories}
+          resetSelectedIncident={resetSelectedIncident}
+        />
       )}
     </div>
   )

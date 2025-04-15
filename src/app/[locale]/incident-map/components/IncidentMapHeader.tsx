@@ -26,12 +26,9 @@ const IncidentMapHeader = () => {
     : t('default_logo_label', {
         organization: config?.base.municipality_display_name,
       })
-
+  //       className={isMobile ? 'mobile-header' : ''}
   const logoElement = logo ? (
-    <Logo
-      className={isMobile ? 'mobile-header' : ''}
-      caption={config ? config.base.header.logo.caption : ''}
-    >
+    <Logo caption={config ? config.base.header.logo.caption : ''}>
       <NextSvgImage src={`/assets/${logo}`} alt={logoAltText} priority={true} />
     </Logo>
   ) : null
