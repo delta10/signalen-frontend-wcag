@@ -7,6 +7,7 @@ import { useDarkMode } from '@/hooks/useDarkMode'
 import { useTranslations } from 'next-intl'
 import { NextSvgImage } from '@/components/ui/NextSvgImage'
 import { useMediaQuery } from 'usehooks-ts'
+import { useEffect, useState } from 'react'
 
 const IncidentMapHeader = () => {
   const config = useConfig()
@@ -14,6 +15,11 @@ const IncidentMapHeader = () => {
   const t = useTranslations('current_organisation')
   const tIncidentMap = useTranslations('incident_map')
   const isMobile = useMediaQuery('only screen and (max-width : 768px)')
+  const [hasMounted, setHasMounted] = useState(false)
+
+  useEffect(() => {
+    setHasMounted(true)
+  }, [])
 
   const homepageHref = config?.base.links.home
   const logo =
@@ -27,7 +33,6 @@ const IncidentMapHeader = () => {
         organization: config?.base.municipality_display_name,
       })
 
-  // todo: andere fix voor kleine logo
   const logoElement = logo ? (
     <Logo
       className={isMobile ? 'mobile-header' : ''}
@@ -36,6 +41,11 @@ const IncidentMapHeader = () => {
       <NextSvgImage src={`/assets/${logo}`} alt={logoAltText} priority={true} />
     </Logo>
   ) : null
+
+  if (!hasMounted) {
+    // Prevents rendering anything until on client, this causes hydration errors when openening the page on mobile screens.
+    return null
+  }
 
   return (
     <>

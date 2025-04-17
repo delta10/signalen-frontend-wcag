@@ -5,7 +5,6 @@ import { clsx } from 'clsx'
 import SelectedIncidentDetails from '@/app/[locale]/incident-map/components/SelectedIncidentDetails'
 import NestedCategoryCheckboxList from '@/app/[locale]/incident-map/components/NestedCategoryCheckboxList'
 import { Drawer } from 'vaul'
-import { Paragraph } from '@amsterdam/design-system-react'
 import { useTranslations } from 'next-intl'
 import { Icon } from '@/components'
 import { IconChevronDown } from '@tabler/icons-react'
@@ -60,10 +59,8 @@ const IncidentMapMobileSidebar = ({
               className="mx-auto w-16 h-2 flex-shrink-0 rounded-full bg-gray-300 mb-4"
             />
 
-            <Drawer.Description>
-              <Paragraph className="!text-base">
-                {tIncidentMap('description')}
-              </Paragraph>
+            <Drawer.Description className="!text-base">
+              {tIncidentMap('description')}
             </Drawer.Description>
             <Drawer.Title className="text-2xl my-2 font-medium text-gray-900">
               {selectedFeatureId ? 'Details' : 'Filters'}

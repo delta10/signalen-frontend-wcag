@@ -80,6 +80,12 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
     pitch: 0,
   })
 
+  const [hasMounted, setHasMounted] = useState(false)
+
+  useEffect(() => {
+    setHasMounted(true)
+  }, [])
+
   const mapContainerRef = useRef<HTMLDivElement>(null)
 
   // Memoize the function with useCallback and include all dependencies
@@ -319,6 +325,11 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
     ? `${process.env.NEXT_PUBLIC_MAPTILER_MAP_DARK_MODE}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`
     : `${process.env.NEXT_PUBLIC_MAPTILER_MAP}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`
 
+  if (!hasMounted) {
+    // Prevents rendering anything until on client, this causes hydration errors when openening the page on mobile screens.
+    return null
+  }
+
   return (
     //
     <div
@@ -361,9 +372,6 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
             fullscreenMap ? 'hidden' : ''
           )}
         >
-          {/*<Paragraph className="!text-base">*/}
-          {/*  {tIncidentMap('description')}*/}
-          {/*</Paragraph>*/}
           <div className="flex flex-col pb-2">
             <label htmlFor="address" className="!text-lg">
               {t('search_address_label')}
