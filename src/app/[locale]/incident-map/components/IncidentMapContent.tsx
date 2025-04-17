@@ -14,14 +14,7 @@ import '../../incident/add/components/MapDialog.css'
 import { Button, ButtonGroup, Icon, IconButton, MapMarker } from '@/components'
 import { useConfig } from '@/contexts/ConfigContext'
 import { Map } from '@/components/ui/Map'
-import {
-  IconArrowsDiagonal,
-  IconArrowsDiagonalMinimize2,
-  IconCurrentLocation,
-  IconMinus,
-  IconPlus,
-  IconX,
-} from '@tabler/icons-react'
+import { IconCurrentLocation, IconMinus, IconPlus } from '@tabler/icons-react'
 import { useDarkMode } from '@/hooks/useDarkMode'
 import { useMediaQuery, useWindowSize } from 'usehooks-ts'
 import { Feature, FeatureCollection } from 'geojson'
@@ -37,7 +30,7 @@ import SelectedIncidentDetails from '@/app/[locale]/incident-map/components/Sele
 import { Address } from '@/types/form'
 import { AppConfig } from '@/types/config'
 import { clsx } from 'clsx'
-import { debounce, throttle } from 'lodash'
+import { debounce } from 'lodash'
 import IncidentMapMobileSidebar from '@/app/[locale]/incident-map/components/IncedentMapMobileSidebar'
 
 export type IncidentMapProps = {
@@ -57,14 +50,12 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
     []
   )
   const [error, setError] = useState<string | null>(null)
-  const [fullscreenMap, setFullscreenMap] = useState(false)
 
   const config = useConfig()
   const { isDarkMode } = useDarkMode()
   const { width = 0 } = useWindowSize()
   const isMobile = useMediaQuery('only screen and (max-width : 768px)')
   const lastBboxRef = useRef<string | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
 
   const [viewState, setViewState] = useState<ViewState>({
     latitude: config.base.map.center[0],
@@ -148,25 +139,18 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
     }
 
     const handleMapMove = () => {
-      setIsLoading(true)
       debouncedSetNewFeatures()
-    }
-
-    const handleMapMoveEnd = () => {
-      setIsLoading(false)
     }
 
     // Attach event listeners
     dialogMap.on('load', handleMapLoad)
     dialogMap.on('move', handleMapMove)
-    dialogMap.on('moveend', handleMapMoveEnd)
 
     // Cleanup function
     return () => {
       if (dialogMap) {
         dialogMap.off('load', handleMapLoad)
         dialogMap.off('move', handleMapMove)
-        dialogMap.off('moveend', handleMapMoveEnd)
         debouncedSetNewFeatures.cancel() // Cancel any pending debounced calls
       }
     }
@@ -332,12 +316,7 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
 
   return (
     //
-    <div
-      className={clsx(
-        'grid md:grid-cols-3 overflow-y-auto min-h-[calc(100vh-5.4rem)] md:min-h-[calc(100vh-8em)]',
-        fullscreenMap ? 'grid-rows-[1fr_auto]' : 'grid-rows-[auto_1fr_auto]'
-      )}
-    >
+    <div className="grid md:grid-cols-3 overflow-y-auto min-h-[calc(100vh-5.4rem)] md:min-h-[calc(100vh-8em)] grid-rows-[auto_1fr_auto]">
       {!isMobile && (
         <div className="col-span-1 flex flex-col max-h-screen min-h-[calc(100vh-102px)] p-4">
           {selectedFeatureId ? (
@@ -366,12 +345,7 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
       )}
 
       {isMobile && (
-        <div
-          className={clsx(
-            'flex flex-col gap-1 px-2 pb-2',
-            fullscreenMap ? 'hidden' : ''
-          )}
-        >
+        <div className="flex flex-col gap-1 px-2 pb-2">
           <div className="flex flex-col pb-2">
             <label htmlFor="address" className="!text-lg">
               {t('search_address_label')}
@@ -438,27 +412,6 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
               {t('current_location')}
             </Button>
           </div>
-
-          {isMobile && (
-            <div className="map-fullscreen-group">
-              <IconButton
-                onClick={() => setFullscreenMap(!fullscreenMap)}
-                label={
-                  fullscreenMap
-                    ? t('toggle_fullscreen_off')
-                    : t('toggle_fullscreen_on')
-                }
-                mobileView={true}
-                className="utrecht-button--subtle map-icon-button"
-              >
-                {fullscreenMap ? (
-                  <IconArrowsDiagonalMinimize2 />
-                ) : (
-                  <IconArrowsDiagonal />
-                )}
-              </IconButton>
-            </div>
-          )}
 
           {/* move to separate component*/}
           {dialogMap && (

@@ -6,8 +6,6 @@ import SelectedIncidentDetails from '@/app/[locale]/incident-map/components/Sele
 import NestedCategoryCheckboxList from '@/app/[locale]/incident-map/components/NestedCategoryCheckboxList'
 import { Drawer } from 'vaul'
 import { useTranslations } from 'next-intl'
-import { Icon } from '@/components'
-import { IconChevronDown } from '@tabler/icons-react'
 
 type IncidentMapMobileSidebarProps = {
   selectedFeatureId: number | null
@@ -43,21 +41,19 @@ const IncidentMapMobileSidebar = ({
       autoFocus={true}
     >
       <Drawer.Trigger className="relative flex h-14 flex-shrink-0 items-center justify-center overflow-hidden bg-white px-4 text-base font-medium shadow-sm transition-all hover:bg-[#FAFAFA] dark:bg-[#161615] dark:hover:bg-[#1A1A19]">
-        {selectedFeatureId ? 'Toon details' : 'Toon filters'}
+        <DragHandle />
       </Drawer.Trigger>
       <Drawer.Portal>
-        <Drawer.Content className="fixed flex flex-col bg-white border border-gray-200 border-b-none rounded-t-[10px] bottom-0 left-0 right-0 h-full max-h-[97%] mx-[-1px] dark:bg-[#161615]">
+        <Drawer.Content className="fixed flex flex-col bg-white border border-gray-200 border-b-0 rounded-t-[10px] bottom-0 left-0 right-0 h-full max-h-[97%] mx-[-1px] dark:bg-[#161615]">
           <div
             className={clsx('flex flex-col max-w-md mx-auto w-full p-4 pt-5', {
               'overflow-y-auto': snap === 1,
               'overflow-hidden': snap !== 1,
             })}
           >
-            {/*Drawer handle handle*/}
-            <div
-              aria-hidden
-              className="mx-auto w-16 h-2 flex-shrink-0 rounded-full bg-gray-300 mb-4"
-            />
+            <Drawer.Close>
+              <DragHandle className="mb-4" />
+            </Drawer.Close>
 
             <Drawer.Description className="!text-base">
               {tIncidentMap('description')}
@@ -84,14 +80,6 @@ const IncidentMapMobileSidebar = ({
               </div>
             )}
           </div>
-          <Drawer.Close>
-            <div className="flex gap-2 justify-center my-2 ">
-              Sluit paneel
-              <Icon>
-                <IconChevronDown />
-              </Icon>
-            </div>
-          </Drawer.Close>
         </Drawer.Content>
       </Drawer.Portal>
     </Drawer.Root>
@@ -99,3 +87,13 @@ const IncidentMapMobileSidebar = ({
 }
 
 export default IncidentMapMobileSidebar
+
+const DragHandle = ({ className }: { className?: string }) => (
+  <div
+    aria-hidden
+    className={clsx(
+      'mx-auto w-16 h-2 flex-shrink-0 rounded-full bg-gray-300',
+      className
+    )}
+  />
+)
