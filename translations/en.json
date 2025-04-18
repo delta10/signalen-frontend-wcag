@@ -201,6 +201,10 @@
     "description": "This map shows reports in public space that we are working on. Because of privacy, a small portion of the reports are not on the map.",
     "report": "Report",
     "report_date": "Report date",
-    "address_nearby": "Nearest address"
+    "address_nearby": "Nearest address",
+    "details": "Details",
+    "filters": "Filters",
+    "show_menu": "Show {menu_object}",
+    "close_menu": "Close {menu_object}"
   }
 }

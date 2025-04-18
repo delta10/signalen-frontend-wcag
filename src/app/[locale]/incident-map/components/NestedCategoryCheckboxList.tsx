@@ -1,21 +1,19 @@
 import { FormFieldCheckbox, Icon } from '@/components'
 import React, { useState } from 'react'
-import { Category, ParentCategory } from '@/types/category'
-import { IconChevronDown, IconMapPinFilled } from '@tabler/icons-react'
+import { ParentCategory } from '@/types/category'
+import { IconChevronDown } from '@tabler/icons-react'
 import { CategoryLabelWithIcon } from '@/app/[locale]/incident-map/components/CategoryIcon'
 
 type NestedCategoryCheckboxListProps = {
   categories: ParentCategory[]
-  selectedSubCategories: string[]
+  selectedSubCategories: string[] | null
   setSelectedSubCategories: React.Dispatch<React.SetStateAction<string[]>>
-  onChange?: (checkedItems: Record<string, boolean>) => void
 }
 
 const NestedCheckboxList = ({
   categories,
   selectedSubCategories,
   setSelectedSubCategories,
-  onChange,
 }: NestedCategoryCheckboxListProps) => {
   const [expanded, setExpanded] = useState<Record<string, boolean>>({})
 
@@ -23,12 +21,10 @@ const NestedCheckboxList = ({
     setExpanded((prev) => ({ ...prev, [groupSlug]: !prev[groupSlug] }))
   }
 
-  // Get all subcategories for a parent category
   const getSubcategorySlugs = (parentCategory: ParentCategory): string[] => {
     return parentCategory.sub_categories?.map((sub) => sub.slug) || []
   }
 
-  // Toggle subcategory selection
   const toggleSubCategory = (slug: string) => {
     setSelectedSubCategories((prev) => {
       if (prev.includes(slug)) {
@@ -38,7 +34,7 @@ const NestedCheckboxList = ({
       }
     })
   }
-  // Toggle parent category (selects/deselects all subcategories)
+
   const toggleParentCategory = (parentCategory: ParentCategory) => {
     const subcategorySlugs = getSubcategorySlugs(parentCategory)
 
@@ -66,7 +62,6 @@ const NestedCheckboxList = ({
     }
   }
 
-  // Check if a parent category is fully selected
   const isParentCategorySelected = (
     parentCategory: ParentCategory
   ): boolean => {
@@ -78,7 +73,6 @@ const NestedCheckboxList = ({
     )
   }
 
-  // Check if a parent category is partially selected
   const isParentCategoryIndeterminate = (
     parentCategory: ParentCategory
   ): boolean => {

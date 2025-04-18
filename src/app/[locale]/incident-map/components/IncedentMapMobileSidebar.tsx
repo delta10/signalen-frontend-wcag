@@ -6,14 +6,17 @@ import SelectedIncidentDetails from '@/app/[locale]/incident-map/components/Sele
 import NestedCategoryCheckboxList from '@/app/[locale]/incident-map/components/NestedCategoryCheckboxList'
 import { Drawer } from 'vaul'
 import { useTranslations } from 'next-intl'
+import { Feature } from 'geojson'
+import { Address } from '@/types/form'
+import { Category } from '@/types/category'
 
 type IncidentMapMobileSidebarProps = {
-  selectedFeature: any
-  selectedFeatureAddress: any
-  resetSelectedIncident: any
-  categories: any
-  selectedSubCategories: any
-  setSelectedSubCategories: any
+  selectedFeature: Feature | undefined
+  selectedFeatureAddress: Address | null
+  resetSelectedIncident: () => void
+  categories: Category[] | null
+  selectedSubCategories: string[] | null
+  setSelectedSubCategories: React.Dispatch<React.SetStateAction<string[]>>
 }
 
 const IncidentMapMobileSidebar = ({
@@ -50,7 +53,14 @@ const IncidentMapMobileSidebar = ({
       open={openDrawer}
       onOpenChange={setOpenDrawer}
     >
-      <Drawer.Trigger className="absolute bottom-0 w-full flex h-14 flex-shrink-0 items-center justify-center overflow-hidden bg-white px-4 text-base font-medium shadow-sm transition-all hover:bg-[#FAFAFA] dark:bg-[#161615] dark:hover:bg-[#1A1A19]">
+      <Drawer.Trigger
+        aria-label={tIncidentMap('show_menu', {
+          menu_object: selectedFeature
+            ? tIncidentMap('details')
+            : tIncidentMap('filters'),
+        })}
+        className="absolute bottom-0 w-full flex h-14 flex-shrink-0 items-center justify-center overflow-hidden bg-white px-4 text-base font-medium shadow-sm transition-all hover:bg-[#FAFAFA] dark:bg-[#161615] dark:hover:bg-[#1A1A19]"
+      >
         <DragHandle />
       </Drawer.Trigger>
       <Drawer.Portal>
@@ -61,7 +71,13 @@ const IncidentMapMobileSidebar = ({
               'overflow-hidden': snap !== 1,
             })}
           >
-            <Drawer.Close>
+            <Drawer.Close
+              aria-label={tIncidentMap('close_menu', {
+                menu_object: selectedFeature
+                  ? tIncidentMap('details')
+                  : tIncidentMap('filters'),
+              })}
+            >
               <DragHandle className="mb-4" />
             </Drawer.Close>
 
@@ -69,7 +85,9 @@ const IncidentMapMobileSidebar = ({
               {tIncidentMap('description')}
             </Drawer.Description>
             <Drawer.Title className="text-2xl my-2 font-medium text-gray-900">
-              {selectedFeature ? 'Details' : 'Filters'}
+              {selectedFeature
+                ? tIncidentMap('details')
+                : tIncidentMap('filters')}
             </Drawer.Title>
 
             {selectedFeature ? (
