@@ -11,7 +11,14 @@ import {
 import { useTranslations } from 'next-intl'
 
 import '../../incident/add/components/MapDialog.css'
-import { Button, ButtonGroup, Icon, IconButton, MapMarker } from '@/components'
+import {
+  AlertDialog,
+  Button,
+  ButtonGroup,
+  Icon,
+  IconButton,
+  MapMarker,
+} from '@/components'
 import { useConfig } from '@/contexts/ConfigContext'
 import { Map } from '@/components/ui/Map'
 import { IconCurrentLocation, IconMinus, IconPlus } from '@tabler/icons-react'
@@ -49,6 +56,8 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
   const [selectedSubCategories, setSelectedSubCategories] = useState<string[]>(
     []
   )
+  const dialogRef = useRef<HTMLDialogElement>(null)
+
   const [error, setError] = useState<string | null>(null)
 
   const config = useConfig()
@@ -317,6 +326,23 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
   return (
     //
     <div className="grid md:grid-cols-3 overflow-y-auto min-h-[calc(100svh-5.4rem)] md:min-h-[calc(100vh-8em)] grid-rows-[auto_1fr_auto]">
+      <AlertDialog type="error" ref={dialogRef}>
+        <form
+          method="dialog"
+          className="map-alert-dialog__content md:!min-w-[400px] md:!max-w-[400px]"
+        >
+          {error}
+          <ButtonGroup>
+            <Button
+              appearance="secondary-action-button"
+              hint="danger"
+              onClick={() => dialogRef.current?.close()}
+            >
+              {t('close_alert_notification')}
+            </Button>
+          </ButtonGroup>
+        </form>
+      </AlertDialog>
       {!isMobile && (
         <div className="col-span-1 flex flex-col max-h-screen min-h-[calc(100svh-102px)] p-4">
           {selectedFeatureId ? (
@@ -452,7 +478,6 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
 
       {isMobile && (
         <IncidentMapMobileSidebar
-          selectedFeatureId={selectedFeatureId}
           selectedFeature={selectedFeature}
           selectedFeatureAddress={selectedFeatureAddress}
           categories={categories}
