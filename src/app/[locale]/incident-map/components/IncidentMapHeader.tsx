@@ -8,6 +8,7 @@ import { useTranslations } from 'next-intl'
 import { NextSvgImage } from '@/components/ui/NextSvgImage'
 import { useMediaQuery } from 'usehooks-ts'
 import { useEffect, useState } from 'react'
+import { clsx } from 'clsx'
 
 const IncidentMapHeader = () => {
   const config = useConfig()
@@ -49,9 +50,11 @@ const IncidentMapHeader = () => {
 
   return (
     <>
-      <PageHeader className="incident-map-header">
+      <PageHeader
+        className={clsx('incident-map-header', isMobile ? 'mobile' : '')}
+      >
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="flex flex-row items-center gap-4 md:gap-12">
+          <div className="flex flex-row items-center gap-6 md:gap-12">
             {homepageHref ? (
               <Link
                 boxContent

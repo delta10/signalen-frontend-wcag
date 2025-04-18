@@ -1,5 +1,5 @@
 /* Set min-block-size to 100svh to better accommodate mobile screen sizes. */
-.utrecht-body  {
+.utrecht-body {
   min-block-size: 100svh !important;
 }
 
@@ -145,6 +145,12 @@
   max-inline-size: 100%;
 }
 
+.utrecht-page-header.incident-map-header.mobile .utrecht-page-header__content {
+  padding-block-end: var(--basis-space-inline-min-medium);
+  padding-block-start: var(--basis-space-inline-min-medium);
+  padding-inline: var(--basis-space-inline-min-medium);
+}
+
 .utrecht-form-label.utrecht-form-label--checkbox {
   display: flex !important;
   flex-direction: row-reverse !important;
@@ -160,8 +166,10 @@
 }
 
 .utrecht-logo.mobile-header {
+  display: flex;
+  align-items: center;
   max-block-size: 192px;
-  max-inline-size: 96px;
+  max-inline-size: 70px;
   min-block-size: 50px;
-  min-inline-size: 100px;
+  min-inline-size: 70px;
 }
