@@ -310,15 +310,15 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
     : `${process.env.NEXT_PUBLIC_MAPTILER_MAP}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`
 
   if (!hasMounted) {
-    // Prevents rendering anything until on client, this causes hydration errors when openening the page on mobile screens.
+    // Prevents rendering anything until on client, this causes hydration errors when opening the page on mobile screens.
     return null
   }
 
   return (
     //
-    <div className="grid md:grid-cols-3 overflow-y-auto min-h-[calc(100vh-5.4rem)] md:min-h-[calc(100vh-8em)] grid-rows-[auto_1fr_auto]">
+    <div className="grid md:grid-cols-3 overflow-y-auto min-h-[calc(100svh-5.4rem)] md:min-h-[calc(100vh-8em)] grid-rows-[auto_1fr_auto]">
       {!isMobile && (
-        <div className="col-span-1 flex flex-col max-h-screen min-h-[calc(100vh-102px)] p-4">
+        <div className="col-span-1 flex flex-col max-h-screen min-h-[calc(100svh-102px)] p-4">
           {selectedFeatureId ? (
             <SelectedIncidentDetails
               feature={selectedFeature}

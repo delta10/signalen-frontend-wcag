@@ -40,7 +40,7 @@ const IncidentMapMobileSidebar = ({
       modal={false}
       autoFocus={true}
     >
-      <Drawer.Trigger className="relative flex h-14 flex-shrink-0 items-center justify-center overflow-hidden bg-white px-4 text-base font-medium shadow-sm transition-all hover:bg-[#FAFAFA] dark:bg-[#161615] dark:hover:bg-[#1A1A19]">
+      <Drawer.Trigger className="absolute bottom-0 w-full flex h-14 flex-shrink-0 items-center justify-center overflow-hidden bg-white px-4 text-base font-medium shadow-sm transition-all hover:bg-[#FAFAFA] dark:bg-[#161615] dark:hover:bg-[#1A1A19]">
         <DragHandle />
       </Drawer.Trigger>
       <Drawer.Portal>
