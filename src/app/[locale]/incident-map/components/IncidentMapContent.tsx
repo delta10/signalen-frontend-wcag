@@ -413,7 +413,6 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
             </Button>
           </div>
 
-          {/* move to separate component*/}
           {dialogMap && (
             <ButtonGroup
               direction="column"
@@ -446,20 +445,6 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
               >
                 <IconMinus />
               </IconButton>
-              {/*{isMobile && (*/}
-              {/*  <IconButton*/}
-              {/*    appearance="secondary-action-button"*/}
-              {/*    className={clsx(*/}
-              {/*      'map-zoom-button',*/}
-              {/*      isMobile ? 'map-icon-button' : 'map-button'*/}
-              {/*    )}*/}
-              {/*    onClick={() => setIsSidebarOpen(true)}*/}
-              {/*    label={t('map_zoom-out_button_label')}*/}
-              {/*    mobileView={isMobile}*/}
-              {/*  >*/}
-              {/*    <IconArrowsDiagonal className="w-6 h-6" />*/}
-              {/*  </IconButton>*/}
-              {/*)}*/}
             </ButtonGroup>
           )}
         </div>

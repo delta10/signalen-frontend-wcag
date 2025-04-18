@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { clsx } from 'clsx'
 import SelectedIncidentDetails from '@/app/[locale]/incident-map/components/SelectedIncidentDetails'
 import NestedCategoryCheckboxList from '@/app/[locale]/incident-map/components/NestedCategoryCheckboxList'
@@ -8,7 +8,6 @@ import { Drawer } from 'vaul'
 import { useTranslations } from 'next-intl'
 
 type IncidentMapMobileSidebarProps = {
-  selectedFeatureId: number | null
   selectedFeature: any
   selectedFeatureAddress: any
   resetSelectedIncident: any
@@ -18,7 +17,6 @@ type IncidentMapMobileSidebarProps = {
 }
 
 const IncidentMapMobileSidebar = ({
-  selectedFeatureId,
   selectedFeature,
   selectedFeatureAddress,
   resetSelectedIncident,
@@ -30,15 +28,27 @@ const IncidentMapMobileSidebar = ({
 
   const snapPoints = ['248px', '355px', 1]
   const [snap, setSnap] = useState<number | string | null>(snapPoints[0])
+  const [openDrawer, setOpenDrawer] = useState<boolean>(true)
+  const [disableBackground, setDisableBackground] = useState(false)
+
+  useEffect(() => {
+    if (selectedFeature) {
+      setOpenDrawer(true)
+      // Re-enable background interaction because the drawer internally uses a modal,
+      // which would otherwise block all pointer events on the background.
+      setDisableBackground(false)
+    }
+  }, [selectedFeature])
 
   return (
     <Drawer.Root
       snapPoints={snapPoints}
       activeSnapPoint={snap}
       setActiveSnapPoint={setSnap}
-      defaultOpen={true}
-      modal={false}
+      modal={disableBackground}
       autoFocus={true}
+      open={openDrawer}
+      onOpenChange={setOpenDrawer}
     >
       <Drawer.Trigger className="absolute bottom-0 w-full flex h-14 flex-shrink-0 items-center justify-center overflow-hidden bg-white px-4 text-base font-medium shadow-sm transition-all hover:bg-[#FAFAFA] dark:bg-[#161615] dark:hover:bg-[#1A1A19]">
         <DragHandle />
@@ -59,10 +69,10 @@ const IncidentMapMobileSidebar = ({
               {tIncidentMap('description')}
             </Drawer.Description>
             <Drawer.Title className="text-2xl my-2 font-medium text-gray-900">
-              {selectedFeatureId ? 'Details' : 'Filters'}
+              {selectedFeature ? 'Details' : 'Filters'}
             </Drawer.Title>
 
-            {selectedFeatureId ? (
+            {selectedFeature ? (
               <SelectedIncidentDetails
                 feature={selectedFeature}
                 address={selectedFeatureAddress}
