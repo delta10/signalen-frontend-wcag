@@ -65,6 +65,10 @@
   flex-direction: column;
 }
 
+.map-zoom-button-group.mobile {
+  bottom: 2.4em;
+}
+
 .map-alert-dialog__content {
   display: flex;
   flex-direction: column;

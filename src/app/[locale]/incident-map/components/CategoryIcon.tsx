@@ -7,7 +7,7 @@ export const CategoryIcon = (category: Category) => {
   const categoryIcon = category?._links?.['sia:icon']?.href || null
 
   return (
-    <Icon className="!w-7 !h-7">
+    <Icon className="!min-w-6 !min-h-6 !max-w-6 !max-h-6">
       {categoryIcon ? (
         <img src={categoryIcon} alt="Categorie icoon" />
       ) : (
@@ -23,7 +23,7 @@ export const CategoryLabelWithIcon = (category: Category) => {
   }
 
   return (
-    <span className="flex gap-2">
+    <span className="flex gap-2 items-center">
       {CategoryIcon(category)}
       {category.name}
     </span>

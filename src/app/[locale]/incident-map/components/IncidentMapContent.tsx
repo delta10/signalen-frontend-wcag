@@ -415,7 +415,13 @@ const IncidentMapContent = ({}: IncidentMapProps) => {
 
           {/* move to separate component*/}
           {dialogMap && (
-            <ButtonGroup direction="column" className="map-zoom-button-group">
+            <ButtonGroup
+              direction="column"
+              className={clsx(
+                'map-zoom-button-group',
+                isMobile ? 'mobile' : ''
+              )}
+            >
               <IconButton
                 appearance="secondary-action-button"
                 className={clsx(
