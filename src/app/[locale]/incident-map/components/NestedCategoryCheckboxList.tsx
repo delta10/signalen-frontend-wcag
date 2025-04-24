@@ -2,7 +2,7 @@ import { FormFieldCheckbox, Icon } from '@/components'
 import React, { useState } from 'react'
 import { ParentCategory } from '@/types/category'
 import { IconChevronDown } from '@tabler/icons-react'
-import { CategoryLabelWithIcon } from '@/app/[locale]/incident-map/components/CategoryIcon'
+import { CategoryLabelWithIcon } from '@/app/[locale]/incident-map/components/CategoryLabelWithIcon'
 
 type NestedCategoryCheckboxListProps = {
   categories: ParentCategory[]

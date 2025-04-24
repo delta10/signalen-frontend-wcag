@@ -205,6 +205,7 @@
     "details": "Details",
     "filters": "Filters",
     "show_menu": "Show {menu_object}",
-    "close_menu": "Close {menu_object}"
+    "close_menu": "Close {menu_object}",
+    "category_icon_alt_text": "icon fot category: {category}"
   }
 }
