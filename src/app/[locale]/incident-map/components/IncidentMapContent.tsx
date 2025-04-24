@@ -40,11 +40,7 @@ import { clsx } from 'clsx'
 import { debounce } from 'lodash'
 import IncidentMapMobileSidebar from '@/app/[locale]/incident-map/components/IncidentMapMobileSidebar'
 
-export type IncidentMapProps = {
-  prop?: string
-} & React.HTMLAttributes<HTMLDivElement>
-
-const IncidentMapContent = ({}: IncidentMapProps) => {
+const IncidentMapContent = () => {
   const t = useTranslations('describe_add.map')
   const tIncidentMap = useTranslations('incident_map')
   const { dialogMap } = useMap()

@@ -1,5 +1,5 @@
 import { FormFieldCheckbox, Icon } from '@/components'
-import React, { useState } from 'react'
+import React, { Dispatch, SetStateAction, useState } from 'react'
 import { ParentCategory } from '@/types/category'
 import { IconChevronDown } from '@tabler/icons-react'
 import { CategoryLabelWithIcon } from '@/app/[locale]/incident-map/components/CategoryLabelWithIcon'
@@ -7,7 +7,7 @@ import { CategoryLabelWithIcon } from '@/app/[locale]/incident-map/components/Ca
 type NestedCategoryCheckboxListProps = {
   categories: ParentCategory[]
   selectedSubCategories: string[] | null
-  setSelectedSubCategories: React.Dispatch<React.SetStateAction<string[]>>
+  setSelectedSubCategories: Dispatch<SetStateAction<string[]>>
 }
 
 const NestedCheckboxList = ({
