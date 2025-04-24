@@ -10,6 +10,19 @@ type NestedCategoryCheckboxListProps = {
   setSelectedSubCategories: Dispatch<SetStateAction<string[]>>
 }
 
+/**
+ * `NestedCheckboxList` is a React component that renders a hierarchical list of categories
+ * and subcategories using checkboxes. It's typically used to allow users to filter items
+ * based on category selections.
+ *
+ * - Parent categories are displayed as checkable items.
+ * - If a parent category's `configuration.show_children_in_filter` is `true` and it has subcategories,
+ *   a toggle is shown to expand and collapse the list of subcategories.
+ * - Subcategories are displayed as nested checkboxes beneath their parent, provided they are
+ *   allowed by the `show_children_in_filter` flag.
+ * - The component supports indeterminate and fully-checked states for parent checkboxes
+ *   depending on the selection status of their subcategories.
+ */
 const NestedCheckboxList = ({
   categories,
   selectedSubCategories,
@@ -17,14 +30,24 @@ const NestedCheckboxList = ({
 }: NestedCategoryCheckboxListProps) => {
   const [expanded, setExpanded] = useState<Record<string, boolean>>({})
 
+  /**
+   * Toggles the expanded/collapsed state of a category group by its slug.
+   */
   const toggleExpand = (groupSlug: string) => {
     setExpanded((prev) => ({ ...prev, [groupSlug]: !prev[groupSlug] }))
   }
 
+  /**
+   * Retrieves an array of slugs for all subcategories under a given parent category.
+   */
   const getSubcategorySlugs = (parentCategory: ParentCategory): string[] => {
     return parentCategory.sub_categories?.map((sub) => sub.slug) || []
   }
 
+  /**
+   * Toggles the selection state of a single subcategory.
+   * If it's already selected, it gets removed; otherwise, it's added.
+   */
   const toggleSubCategory = (slug: string) => {
     setSelectedSubCategories((prev) => {
       if (prev.includes(slug)) {
@@ -35,6 +58,11 @@ const NestedCheckboxList = ({
     })
   }
 
+  /**
+   * Toggles the selection state of an entire parent category.
+   * If all its subcategories are selected, it deselects them.
+   * Otherwise, it selects all of its subcategories.
+   */
   const toggleParentCategory = (parentCategory: ParentCategory) => {
     const subcategorySlugs = getSubcategorySlugs(parentCategory)
 
@@ -62,6 +90,9 @@ const NestedCheckboxList = ({
     }
   }
 
+  /**
+   * Determines whether all subcategories under a parent category are selected.
+   */
   const isParentCategorySelected = (
     parentCategory: ParentCategory
   ): boolean => {
@@ -73,6 +104,10 @@ const NestedCheckboxList = ({
     )
   }
 
+  /**
+   * Determines whether some (but not all) subcategories under a parent category are selected.
+   * Useful for showing an indeterminate checkbox state.
+   */
   const isParentCategoryIndeterminate = (
     parentCategory: ParentCategory
   ): boolean => {
