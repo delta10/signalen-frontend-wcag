@@ -17,6 +17,7 @@ import {
   getFeatureDescription,
   getFeatureId,
   getFeatureType,
+  getMapStyleUrl,
   isCoordinateInsideMaxBound,
 } from '@/lib/utils/map'
 import { useFormContext } from 'react-hook-form'
@@ -305,9 +306,7 @@ function useMapDialog(
     })
   }
 
-  const mapStyle = isDarkMode
-    ? `${process.env.NEXT_PUBLIC_MAPTILER_MAP_DARK_MODE}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`
-    : `${process.env.NEXT_PUBLIC_MAPTILER_MAP}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`
+  const mapStyle = getMapStyleUrl(isDarkMode)
 
   return {
     dialogMap,

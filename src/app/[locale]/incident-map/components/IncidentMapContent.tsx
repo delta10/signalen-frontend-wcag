@@ -39,6 +39,7 @@ import { clsx } from 'clsx'
 import { debounce } from 'lodash'
 import IncidentMapMobileSidebar from '@/app/[locale]/incident-map/components/IncidentMapMobileSidebar'
 import { setCurrentLocation } from '@/lib/utils/LocationUtils'
+import { getMapStyleUrl } from '@/lib/utils/map'
 
 const IncidentMapContent = () => {
   const t = useTranslations('describe_add.map')
@@ -273,10 +274,6 @@ const IncidentMapContent = () => {
     return null
   }
 
-  const mapStyle = isDarkMode
-    ? `${process.env.NEXT_PUBLIC_MAPTILER_MAP_DARK_MODE}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`
-    : `${process.env.NEXT_PUBLIC_MAPTILER_MAP}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`
-
   if (!hasMounted) {
     // Prevents rendering anything until on client, this causes hydration errors when opening the page on mobile screens.
     return null
@@ -354,7 +351,7 @@ const IncidentMapContent = () => {
             onClick={(e) => handleMapClick(e)}
             onMove={(evt) => setViewState(evt.viewState)}
             style={{ blockSize: '100%', inlineSize: '100%' }}
-            mapStyle={mapStyle}
+            mapStyle={getMapStyleUrl(isDarkMode)}
             scrollZoom={!(width !== 0 && width < 768)}
             attributionControl={false}
             maxBounds={

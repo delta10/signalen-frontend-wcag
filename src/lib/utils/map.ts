@@ -131,3 +131,19 @@ export const formatAddressToSignalenInput = (
     woonplaats,
   }
 }
+
+// utils/map/getMapStyle.ts
+
+/**
+ * Returns the appropriate MapTiler style URL based on the current theme.
+ *
+ * @param isDarkMode - Boolean flag indicating if dark mode is active.
+ * @returns A full MapTiler style URL with the appropriate theme and API key.
+ */
+export const getMapStyleUrl = (isDarkMode: boolean): string => {
+  const baseUrl = isDarkMode
+    ? process.env.NEXT_PUBLIC_MAPTILER_MAP_DARK_MODE
+    : process.env.NEXT_PUBLIC_MAPTILER_MAP
+
+  return `${baseUrl}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`
+}
