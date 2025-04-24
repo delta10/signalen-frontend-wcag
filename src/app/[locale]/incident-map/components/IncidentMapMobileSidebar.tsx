@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { clsx } from 'clsx'
 import SelectedIncidentDetails from '@/app/[locale]/incident-map/components/SelectedIncidentDetails'
 import NestedCategoryCheckboxList from '@/app/[locale]/incident-map/components/NestedCategoryCheckboxList'
@@ -11,12 +11,12 @@ import { Address } from '@/types/form'
 import { Category } from '@/types/category'
 
 type IncidentMapMobileSidebarProps = {
-  selectedFeature: Feature | undefined
+  selectedFeature?: Feature
   selectedFeatureAddress: Address | null
   resetSelectedIncident: () => void
   categories: Category[] | null
   selectedSubCategories: string[] | null
-  setSelectedSubCategories: React.Dispatch<React.SetStateAction<string[]>>
+  setSelectedSubCategories: Dispatch<SetStateAction<string[]>>
 }
 
 const IncidentMapMobileSidebar = ({
