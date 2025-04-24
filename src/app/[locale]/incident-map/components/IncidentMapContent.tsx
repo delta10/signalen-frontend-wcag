@@ -38,7 +38,7 @@ import { Address } from '@/types/form'
 import { AppConfig } from '@/types/config'
 import { clsx } from 'clsx'
 import { debounce } from 'lodash'
-import IncidentMapMobileSidebar from '@/app/[locale]/incident-map/components/IncedentMapMobileSidebar'
+import IncidentMapMobileSidebar from '@/app/[locale]/incident-map/components/IncidentMapMobileSidebar'
 
 export type IncidentMapProps = {
   prop?: string
