@@ -36,13 +36,13 @@ import * as Dialog from '@radix-ui/react-dialog'
 import { useFormStore } from '@/store/form_store'
 import clsx from 'clsx'
 import MapExplainerAccordion from '@/app/[locale]/incident/add/components/questions/MapExplainerAccordion'
+import { setCurrentLocation } from '@/lib/utils/LocationUtils'
 
 const MapDialogMobileContent = ({
   onMapReady,
   features,
   field,
   isAssetSelect = false,
-  loadingAssets = false,
 }: MapDialogContentProps) => {
   const mapContainerRef = useRef<HTMLDivElement>(null)
   const { formState } = useFormStore()
@@ -73,7 +73,6 @@ const MapDialogMobileContent = ({
     mapStyle,
     width,
     mapFeatures,
-    setCurrentLocation,
     error,
     setError,
     handleFeatureMarkerClick,
@@ -253,7 +252,15 @@ const MapDialogMobileContent = ({
           <div className="map-location-group">
             {/*!text-lg !px-2 !py-2*/}
             <Button
-              onClick={() => setCurrentLocation()}
+              onClick={() =>
+                setCurrentLocation(
+                  config,
+                  updatePosition,
+                  setError,
+                  dialogRef,
+                  t
+                )
+              }
               className="utrecht-button--subtle map-icon-button mobile"
             >
               <IconCurrentLocation />

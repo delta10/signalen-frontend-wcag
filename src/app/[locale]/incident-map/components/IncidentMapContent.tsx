@@ -29,7 +29,6 @@ import { signalsClient } from '@/services/client/api-client'
 import NestedCategoryCheckboxList from '@/app/[locale]/incident-map/components/NestedCategoryCheckboxList'
 import { Paragraph } from '@amsterdam/design-system-react'
 import { Category, ParentCategory } from '@/types/category'
-import { isCoordinateInsideMaxBound } from '@/lib/utils/map'
 import { AddressCombobox } from '@/components/ui/AddressCombobox'
 import { getNewSelectedAddress } from '@/lib/utils/address'
 import { generateFeatureId } from '@/lib/utils/features'
@@ -39,6 +38,7 @@ import { AppConfig } from '@/types/config'
 import { clsx } from 'clsx'
 import { debounce } from 'lodash'
 import IncidentMapMobileSidebar from '@/app/[locale]/incident-map/components/IncidentMapMobileSidebar'
+import { setCurrentLocation } from '@/lib/utils/LocationUtils'
 
 const IncidentMapContent = () => {
   const t = useTranslations('describe_add.map')
@@ -220,43 +220,6 @@ const IncidentMapContent = () => {
     }
   }
 
-  // set current location of user
-  const setCurrentLocation = () => {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const isInsideMaxBound = isCoordinateInsideMaxBound(
-          position.coords.latitude,
-          position.coords.longitude,
-          config
-            ? config.base.map.maxBounds
-            : [
-                [0, 0],
-                [0, 0],
-              ]
-        )
-
-        if (isInsideMaxBound) {
-          updatePosition(position.coords.latitude, position.coords.longitude)
-          setError(null)
-          return
-        }
-
-        setError(t('outside_max_bound_error'))
-      },
-      (locationError) => {
-        // For documentation see: https://developer.mozilla.org/en-US/docs/Web/API/GeolocationPositionError.
-        // We map a custom error message here to the locationError.code
-        const locationErrors: { [key: number]: string } = {
-          1: t('current_location_permission_error'),
-          2: t('current_location_position_error'),
-          3: t('current_location_timeout_error'),
-        }
-
-        setError(locationErrors[locationError.code])
-      }
-    )
-  }
-
   // Handle click on map, setIsMapSelected to true
   const handleMapClick = async (event: MapLayerMouseEvent) => {
     updatePosition(event.lngLat.lat, event.lngLat.lng)
@@ -428,7 +391,15 @@ const IncidentMapContent = () => {
                 'map-zoom-button',
                 isMobile ? 'map-icon-button mobile' : ''
               )}
-              onClick={() => setCurrentLocation()}
+              onClick={() =>
+                setCurrentLocation(
+                  config,
+                  updatePosition,
+                  setError,
+                  dialogRef,
+                  t
+                )
+              }
             >
               <IconCurrentLocation />
               {t('current_location')}

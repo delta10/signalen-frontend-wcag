@@ -27,6 +27,7 @@ import useMapDialog from '@/hooks/useMapDialog'
 import { useFormStore } from '@/store/form_store'
 import { FeatureCollection } from 'geojson'
 import { PublicQuestion } from '@/types/form'
+import { setCurrentLocation } from '@/lib/utils/LocationUtils'
 
 export type MapDialogContentProps = {
   onMapReady?: (map: MapRef) => void
@@ -68,7 +69,6 @@ const MapDialogContent = ({
     mapStyle,
     width,
     mapFeatures,
-    setCurrentLocation,
     error,
     setError,
     handleFeatureMarkerClick,
@@ -249,7 +249,15 @@ const MapDialogContent = ({
           <div className="map-location-group">
             <Button
               appearance="secondary-action-button"
-              onClick={() => setCurrentLocation()}
+              onClick={() =>
+                setCurrentLocation(
+                  config,
+                  updatePosition,
+                  setError,
+                  dialogRef,
+                  t
+                )
+              }
             >
               <IconCurrentLocation />
               {t('current_location')}

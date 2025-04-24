@@ -305,45 +305,6 @@ function useMapDialog(
     })
   }
 
-  // set current location of user
-  const setCurrentLocation = () => {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const isInsideMaxBound = isCoordinateInsideMaxBound(
-          position.coords.latitude,
-          position.coords.longitude,
-          config
-            ? config.base.map.maxBounds
-            : [
-                [0, 0],
-                [0, 0],
-              ]
-        )
-
-        if (isInsideMaxBound) {
-          updatePosition(position.coords.latitude, position.coords.longitude)
-          setError(null)
-          return
-        }
-
-        setError(t('outside_max_bound_error'))
-        dialogRef.current?.showModal()
-      },
-      (locationError) => {
-        // For documentation see: https://developer.mozilla.org/en-US/docs/Web/API/GeolocationPositionError.
-        // We map a custom error message here to the locationError.code
-        const locationErrors: { [key: number]: string } = {
-          1: t('current_location_permission_error'),
-          2: t('current_location_position_error'),
-          3: t('current_location_timeout_error'),
-        }
-
-        setError(locationErrors[locationError.code])
-        dialogRef.current?.showModal()
-      }
-    )
-  }
-
   const mapStyle = isDarkMode
     ? `${process.env.NEXT_PUBLIC_MAPTILER_MAP_DARK_MODE}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`
     : `${process.env.NEXT_PUBLIC_MAPTILER_MAP}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`
@@ -369,7 +330,6 @@ function useMapDialog(
     width,
     mapFeatures,
     setMapFeatures,
-    setCurrentLocation,
     error,
     setError,
     handleFeatureMarkerClick,
