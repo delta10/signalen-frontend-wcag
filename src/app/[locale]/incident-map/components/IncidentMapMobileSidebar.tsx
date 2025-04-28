@@ -29,7 +29,7 @@ const IncidentMapMobileSidebar = ({
 }: IncidentMapMobileSidebarProps) => {
   const tIncidentMap = useTranslations('incident_map')
 
-  const snapPoints = ['248px', '355px', 1]
+  const snapPoints = ['355px', 1]
   const [snap, setSnap] = useState<number | string | null>(snapPoints[0])
   const [openDrawer, setOpenDrawer] = useState<boolean>(true)
   const [disableBackground, setDisableBackground] = useState(false)
