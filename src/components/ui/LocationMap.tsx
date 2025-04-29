@@ -6,6 +6,7 @@ import { useFormStore } from '@/store/form_store'
 import { useConfig } from '@/contexts/ConfigContext'
 import { MapMarker } from './MapMarker'
 import { useDarkMode } from '@/hooks/useDarkMode'
+import { getMapStyleUrl } from '@/lib/utils/map'
 
 const LocationMap = () => {
   const { formState } = useFormStore()
@@ -48,10 +49,6 @@ const LocationMap = () => {
     }))
   }, [marker])
 
-  const mapStyle = isDarkMode
-    ? `${process.env.NEXT_PUBLIC_MAPTILER_MAP_DARK_MODE}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`
-    : `${process.env.NEXT_PUBLIC_MAPTILER_MAP}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`
-
   return (
     <Map
       {...viewState}
@@ -62,7 +59,7 @@ const LocationMap = () => {
       keyboard={false}
       onMove={(evt) => setViewState(evt.viewState)}
       style={{ width: '100%', height: 200 }}
-      mapStyle={mapStyle}
+      mapStyle={getMapStyleUrl(isDarkMode)}
       attributionControl={false}
       onLoad={() => {
         const mapCanvas = document.getElementsByClassName(

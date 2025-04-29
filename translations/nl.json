@@ -191,5 +191,20 @@
     "about": "Over deze site",
     "privacy": "Privacy",
     "accessibility": "Toegankelijkheid"
+  },
+  "incident_map": {
+    "heading": "Meldingenkaart",
+    "incident_map": "meldingenkaart",
+    "pre_introduction": "Voordat u een melding doet kunt u op de ",
+    "post_introduction": " zien welke meldingen bekend zijn bij de gemeente.",
+    "description": "Op deze kaart staan meldingen in de openbare ruimte waarmee we aan het werk zijn. Vanwege privacy staat een klein deel van de meldingen niet op de kaart.",
+    "report": "Melding",
+    "report_date": "Datum melding",
+    "address_nearby": "Adres dichtbij",
+    "details": "Details",
+    "filters": "Filters",
+    "show_menu": "Toon {menu_object}",
+    "close_menu": "Sluit {menu_object}",
+    "category_icon_alt_text": "Icoon voor categorie: {category}"
   }
 }

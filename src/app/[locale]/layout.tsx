@@ -1,12 +1,8 @@
 import { notFound } from 'next/navigation'
 import React from 'react'
 import { getAllAvailableLocales } from '@/lib/utils/locale'
-import { Root, PageLayout, Body, PageBody, Article } from '@/components'
-import { Header } from '@/app/[locale]/components/Header'
+import { Root, Body } from '@/components'
 import localFont from 'next/font/local'
-import { NextIntlClientProvider, useMessages } from 'next-intl'
-import { Footer } from '@/app/[locale]/components/Footer'
-import pick from 'lodash/pick'
 import type { PropsWithChildren } from 'react'
 import { getServerConfig } from '@/services/config/config'
 import { AppConfig } from '@/types/config'
@@ -26,8 +22,6 @@ const LocaleLayout = ({
   config: AppConfig
   params: { locale: any }
 }>) => {
-  const messages = useMessages()
-
   if (!getAllAvailableLocales().includes(locale as any)) notFound()
 
   return (
@@ -36,24 +30,7 @@ const LocaleLayout = ({
       className={`${font.variable} purmerend-theme purmerend-theme--media-query`}
     >
       <ConfigProvider config={config}>
-        <Body>
-          <PageLayout>
-            <NextIntlClientProvider
-              messages={pick(messages, 'current_organisation')}
-            >
-              <Header />
-            </NextIntlClientProvider>
-
-            <PageBody>
-              <Article className="max-w-3xl mx-auto px-4 lg:px-0">
-                {children}
-              </Article>
-            </PageBody>
-            <NextIntlClientProvider messages={pick(messages, 'footer')}>
-              <Footer />
-            </NextIntlClientProvider>
-          </PageLayout>
-        </Body>
+        <Body>{children}</Body>
       </ConfigProvider>
     </Root>
   )

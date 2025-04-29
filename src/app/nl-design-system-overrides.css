@@ -1,3 +1,8 @@
+/* Set min-block-size to 100svh to better accommodate mobile screen sizes. */
+.utrecht-body {
+  min-block-size: 100svh !important;
+}
+
 .utrecht-textbox {
   --utrecht-form-control-placeholder-font-style: italic;
 }
@@ -126,4 +131,45 @@
 
 .utrecht-checkbox--custom.utrecht-checkbox--html-input:focus:not(:checked) {
   background-image: none !important;
+}
+
+.utrecht-page-body.incident-map > .utrecht-page-body__content {
+  padding: 0;
+}
+
+.utrecht-page-header.incident-map-header .utrecht-page-header__content {
+  justify-self: flex-start;
+  padding-block-end: var(--basis-space-inline-min-x-large);
+  padding-block-start: var(--basis-space-inline-min-x-large);
+  padding-inline: var(--basis-space-inline-min-x-large);
+  max-inline-size: 100%;
+}
+
+.utrecht-page-header.incident-map-header.mobile .utrecht-page-header__content {
+  padding-block-end: var(--basis-space-inline-min-medium);
+  padding-block-start: var(--basis-space-inline-min-medium);
+  padding-inline: var(--basis-space-inline-min-medium);
+}
+
+.utrecht-form-label.utrecht-form-label--checkbox {
+  display: flex !important;
+  flex-direction: row-reverse !important;
+  align-items: center !important;
+}
+
+.utrecht-page-body.incident-map .utrecht-page-body__content {
+  max-inline-size: 100%;
+  padding-block-end: 0;
+  padding-block-start: 0;
+  padding-inline-end: 0;
+  padding-inline-start: 0;
+}
+
+.utrecht-logo.mobile-header {
+  display: flex;
+  align-items: center;
+  max-block-size: 192px;
+  max-inline-size: 70px;
+  min-block-size: 50px;
+  min-inline-size: 70px;
 }
