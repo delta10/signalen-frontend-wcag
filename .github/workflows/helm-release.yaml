@@ -2,8 +2,14 @@ name: Release Charts
 
 on:
   push:
-    # branches:
-    #   - main
+    branches:
+      - main
+
+env:
+  # Use docker.io for Docker Hub if empty
+  REGISTRY: ghcr.io
+  # github.repository as <account>/<repo>
+  IMAGE_PREFIX: ${{ github.repository }}
 
 jobs:
   release:
@@ -21,10 +27,17 @@ jobs:
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}
+
       - name: Add dependency chart repos
         run: |
           helm repo add bitnami https://charts.bitnami.com/bitnami
           helm repo add elastic https://helm.elastic.co
+
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.1.0
         with:
