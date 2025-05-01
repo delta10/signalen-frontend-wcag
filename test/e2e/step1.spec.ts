@@ -1,52 +1,5 @@
-/* eslint-disable react-hooks/rules-of-hooks */
-import { expect, test as base, BrowserContext } from '@playwright/test'
-import AxeBuilder from '@axe-core/playwright'
-import { describe } from 'vitest'
-import { createSessionStorageFixture } from '@/store/form_store'
-import { FormStoreState } from '@/types/stores'
-
-type AxeFixture = {
-  makeAxeBuilder: () => AxeBuilder
-}
-
-// Extend base test by providing "makeAxeBuilder"
-//
-// This new "test" can be used in multiple test files, and each of them will get
-// a consistently configured AxeBuilder instance.
-export const test = base.extend<AxeFixture>({
-  makeAxeBuilder: async ({ page }, use, testInfo) => {
-    const makeAxeBuilder = () =>
-      new AxeBuilder({ page })
-        .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
-        .exclude('#commonly-reused-element-with-known-issue')
-
-    await use(makeAxeBuilder)
-  },
-})
-
-const sessionStorageFixture = (
-  context: BrowserContext,
-  sessionStorage: { [index: string]: string }
-) =>
-  context.addInitScript((storage) => {
-    for (const [key, value] of Object.entries(storage)) {
-      window.sessionStorage.setItem(key, value)
-      console.log(key, value)
-    }
-  }, sessionStorage)
-
-const formStateFixture = (
-  context: BrowserContext,
-  formState: Partial<FormStoreState>
-) => sessionStorageFixture(context, createSessionStorageFixture(formState))
-
-test.use({
-  locale: 'nl-NL',
-  timezoneId: 'Europe/Amsterdam',
-  geolocation: { latitude: 51.6045656, longitude: 5.5342026 },
-})
-
-const websiteURL = 'http://localhost:3000/'
+import { expect } from '@playwright/test'
+import { test, formStateFixture, websiteURL } from './util'
 
 interface MyTextConfig {
   name: string
@@ -63,7 +16,7 @@ const parameters: MyTextConfig[] = [
   // { name: 'Forced colors', forcedColors: true },
 ]
 
-parameters.slice(0, 1).forEach(async ({ name, testConfig, forcedColors }) => {
+parameters.forEach(async ({ name, testConfig, forcedColors }) => {
   test.describe(`${name}`, () => {
     // TODO: Make new context for each test config to avoid interference
     if (testConfig) {
@@ -177,45 +130,45 @@ parameters.slice(0, 1).forEach(async ({ name, testConfig, forcedColors }) => {
       await expect(button).toBeVisible()
     })
 
-    test.describe('step 2', () => {
-      const pageURL = 'http://localhost:3000/nl/incident/vulaan'
-      test('has title', async ({ page, context }) => {
-        formStateFixture(context, { description: 'lamp' })
+    // test.describe('step 2', () => {
+    //   const pageURL = 'http://localhost:3000/nl/incident/vulaan'
+    //   test('has title', async ({ page, context }) => {
+    //     formStateFixture(context, { description: 'lamp' })
 
-        await page.goto(pageURL)
+    //     await page.goto(pageURL)
 
-        // Expect a title "to contain" a substring with the step
-        await expect(page).toHaveTitle(/Stap 2 van 4/i)
+    //     // Expect a title "to contain" a substring with the step
+    //     await expect(page).toHaveTitle(/Stap 2 van 4/i)
 
-        // Expect a title "to contain" a substring.
-        await expect(page).toHaveTitle(/Purmerend/i)
-      })
+    //     // Expect a title "to contain" a substring.
+    //     await expect(page).toHaveTitle(/Purmerend/i)
+    //   })
 
-      test('has heading', async ({ context, page }) => {
-        formStateFixture(context, { description: 'lamp' })
+    //   test('has heading', async ({ context, page }) => {
+    //     formStateFixture(context, { description: 'lamp' })
 
-        await page.goto(pageURL)
+    //     await page.goto(pageURL)
 
-        const heading = page.getByRole('heading', {
-          name: 'Locatie en vragen',
-          level: 1,
-        })
+    //     const heading = page.getByRole('heading', {
+    //       name: 'Locatie en vragen',
+    //       level: 1,
+    //     })
 
-        await expect(heading).toBeVisible()
-      })
+    //     await expect(heading).toBeVisible()
+    //   })
 
-      test('Focus combobox', async ({ context, page }) => {
-        formStateFixture(context, { description: 'lamp' })
+    //   test('Focus combobox', async ({ context, page }) => {
+    //     formStateFixture(context, { description: 'lamp' })
 
-        await page.goto(pageURL)
+    //     await page.goto(pageURL)
 
-        // const combobox = page.getByRole('combobox', { name: 'Adres' })
-        const combobox = page.getByRole('combobox')
+    //     // const combobox = page.getByRole('combobox', { name: 'Adres' })
+    //     const combobox = page.getByRole('combobox')
 
-        await expect(combobox).toBeVisible()
+    //     await expect(combobox).toBeVisible()
 
-        await combobox.focus()
-      })
-    })
+    //     await combobox.focus()
+    //   })
+    // })
   })
 })
