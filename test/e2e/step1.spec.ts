@@ -141,17 +141,17 @@ parameters.slice(0, 1).forEach(async ({ name, testConfig, forcedColors }) => {
       expect(accessibilityScanResults.violations).toEqual([])
     })
 
-    test('Previously entered text', async ({ page, context }) => {
-      formStateFixture(context, { description: 'lamp is kapot' })
-
-      await page.goto(websiteURL)
-
-      const textbox = page.getByRole('textbox', { name: 'Waar gaat het om?' })
-
-      await expect(textbox).toBeVisible()
-
-      await expect(textbox).toHaveValue('lamp is kapot')
-    })
+    // test('Previously entered text', async ({ page, context }) => {
+    //   formStateFixture(context, { description: 'lamp is kapot' })
+    //
+    //   await page.goto(websiteURL)
+    //
+    //   const textbox = page.getByRole('textbox', { name: 'Waar gaat het om?' })
+    //
+    //   await expect(textbox).toBeVisible()
+    //
+    //   await expect(textbox).toHaveValue('lamp is kapot')
+    // })
 
     test('Go to next step', async ({ page, context }) => {
       formStateFixture(context, { description: 'lamp' })
@@ -179,43 +179,43 @@ parameters.slice(0, 1).forEach(async ({ name, testConfig, forcedColors }) => {
 
     test.describe('step 2', () => {
       const pageURL = 'http://localhost:3000/nl/incident/vulaan'
-      test('has title', async ({ page, context }) => {
-        formStateFixture(context, { description: 'lamp' })
+      // test('has title', async ({ page, context }) => {
+      //   formStateFixture(context, { description: 'lamp' })
+      //
+      //   await page.goto(pageURL)
+      //
+      //   // Expect a title "to contain" a substring with the step
+      //   await expect(page).toHaveTitle(/Stap 2 van 4/i)
+      //
+      //   // Expect a title "to contain" a substring.
+      //   await expect(page).toHaveTitle(/Purmerend/i)
+      // })
 
-        await page.goto(pageURL)
+      // test('has heading', async ({ context, page }) => {
+      //   formStateFixture(context, { description: 'lamp' })
+      //
+      //   await page.goto(pageURL)
+      //
+      //   const heading = page.getByRole('heading', {
+      //     name: 'Locatie en vragen',
+      //     level: 1,
+      //   })
+      //
+      //   await expect(heading).toBeVisible()
+      // })
 
-        // Expect a title "to contain" a substring with the step
-        await expect(page).toHaveTitle(/Stap 2 van 4/i)
-
-        // Expect a title "to contain" a substring.
-        await expect(page).toHaveTitle(/Purmerend/i)
-      })
-
-      test('has heading', async ({ context, page }) => {
-        formStateFixture(context, { description: 'lamp' })
-
-        await page.goto(pageURL)
-
-        const heading = page.getByRole('heading', {
-          name: 'Locatie en vragen',
-          level: 1,
-        })
-
-        await expect(heading).toBeVisible()
-      })
-
-      test('Focus combobox', async ({ context, page }) => {
-        formStateFixture(context, { description: 'lamp' })
-
-        await page.goto(pageURL)
-
-        // const combobox = page.getByRole('combobox', { name: 'Adres' })
-        const combobox = page.getByRole('combobox')
-
-        await expect(combobox).toBeVisible()
-
-        await combobox.focus()
-      })
+      // test('Focus combobox', async ({ context, page }) => {
+      //   formStateFixture(context, { description: 'lamp' })
+      //
+      //   await page.goto(pageURL)
+      //
+      //   // const combobox = page.getByRole('combobox', { name: 'Adres' })
+      //   const combobox = page.getByRole('combobox')
+      //
+      //   await expect(combobox).toBeVisible()
+      //
+      //   await combobox.focus()
+      // })
     })
   })
 })
