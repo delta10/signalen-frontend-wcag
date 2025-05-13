@@ -1,20 +1,23 @@
+/* todo: niet zo de styling zetten*/
 .signalen-progress-bar {
   box-sizing: border-box;
   display: inline-flex;
   background-color: var(
-    --signalen-progress-bar-background-color,
-    var(--basis-color-disabled-fill-1)
+      --signalen-progress-bar-background-color,
+    var(--basis-color-disabled-fill-1, transparent)
   );
   block-size: var(--signalen-progress-bar-block-size, 0.5rem);
   border-radius: var(--signalen-progress-bar-border-radius);
   overflow: hidden;
+  color: var(--utrecht-color-blue-35);
+  border: 1px solid currentColor;
 }
 
 .signalen-progress-bar__complete {
   display: block;
   background-color: var(
     --signalen-progress-bar-complete-background-color,
-    var(--basis-color-primary-fill-1)
+    var(--basis-color-primary-fill-1, currentColor)
   );
 }
 
@@ -25,6 +28,7 @@
     border-color: CanvasText;
     background-color: Canvas;
   }
+
   .signalen-progress-bar__complete {
     background-color: CanvasText;
   }

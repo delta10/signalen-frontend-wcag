@@ -25,10 +25,8 @@ const LocaleLayout = ({
   if (!getAllAvailableLocales().includes(locale as any)) notFound()
 
   return (
-    <Root
-      lang={locale}
-      className={`${font.variable} purmerend-theme purmerend-theme--media-query`}
-    >
+    //  purmerend-theme purmerend-theme--media-query
+    <Root lang={locale} className={`${font.variable} utrecht-theme`}>
       <ConfigProvider config={config}>
         <Body>{children}</Body>
       </ConfigProvider>
