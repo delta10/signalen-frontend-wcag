@@ -7,6 +7,7 @@ import type { PropsWithChildren } from 'react'
 import { getServerConfig } from '@/services/config/config'
 import { AppConfig } from '@/types/config'
 import { ConfigProvider } from '@/contexts/ConfigContext'
+import Head from 'next/head'
 
 const font = localFont({
   src: '../../../public/fonts/open-sans.woff2',
@@ -25,8 +26,13 @@ const LocaleLayout = ({
   if (!getAllAvailableLocales().includes(locale as any)) notFound()
 
   return (
-    //  purmerend-theme purmerend-theme--media-query
-    <Root lang={locale} className={`${font.variable} utrecht-theme`}>
+    <Root
+      lang={locale}
+      className={`${font.variable} purmerend-theme purmerend-theme--media-query`}
+    >
+      <head>
+        <link rel="stylesheet" href="/assets/theme.css" />
+      </head>
       <ConfigProvider config={config}>
         <Body>{children}</Body>
       </ConfigProvider>
