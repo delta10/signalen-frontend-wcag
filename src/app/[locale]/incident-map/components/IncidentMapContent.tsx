@@ -18,16 +18,21 @@ import {
   Icon,
   IconButton,
   MapMarker,
+  SpotlightSection,
 } from '@/components'
 import { useConfig } from '@/contexts/ConfigContext'
 import { Map } from '@/components/ui/Map'
-import { IconCurrentLocation, IconMinus, IconPlus } from '@tabler/icons-react'
+import {
+  IconArrowRight,
+  IconCurrentLocation,
+  IconMinus,
+  IconPlus,
+} from '@tabler/icons-react'
 import { useDarkMode } from '@/hooks/useDarkMode'
 import { useMediaQuery, useWindowSize } from 'usehooks-ts'
 import { Feature, FeatureCollection } from 'geojson'
 import { signalsClient } from '@/services/client/api-client'
 import NestedCategoryCheckboxList from '@/app/[locale]/incident-map/components/NestedCategoryCheckboxList'
-import { Paragraph } from '@amsterdam/design-system-react'
 import { Category, ParentCategory } from '@/types/category'
 import { AddressCombobox } from '@/components/ui/AddressCombobox'
 import { getNewSelectedAddress } from '@/lib/utils/address'
@@ -40,6 +45,7 @@ import { debounce } from 'lodash'
 import IncidentMapMobileSidebar from '@/app/[locale]/incident-map/components/IncidentMapMobileSidebar'
 import { setCurrentLocation } from '@/lib/utils/LocationUtils'
 import { getMapStyleUrl } from '@/lib/utils/map'
+import { ButtonLink } from '@utrecht/component-library-react'
 
 const IncidentMapContent = () => {
   const t = useTranslations('describe_add.map')
@@ -309,7 +315,9 @@ const IncidentMapContent = () => {
             />
           ) : (
             <div className="flex flex-col gap-4">
-              <Paragraph>{tIncidentMap('description')}</Paragraph>
+              <SpotlightSection type="info">
+                {tIncidentMap('description')}
+              </SpotlightSection>
               <div className="flex flex-col py-2">
                 <label htmlFor="address">{t('search_address_label')}</label>
                 <AddressCombobox updatePosition={updatePosition} />
@@ -449,6 +457,17 @@ const IncidentMapContent = () => {
           setSelectedSubCategories={setSelectedSubCategories}
           resetSelectedIncident={resetSelectedIncident}
         />
+      )}
+
+      {isMobile && (
+        <div className="flex items-center justify-center bg-white py-3 z-10 absolute bottom-0 w-full">
+          <ButtonLink href="/" target="_blank">
+            {tIncidentMap('create_incident')}
+            <Icon>
+              <IconArrowRight />
+            </Icon>
+          </ButtonLink>
+        </div>
       )}
     </div>
   )

@@ -7,8 +7,20 @@ import { useDarkMode } from '@/hooks/useDarkMode'
 import { useTranslations } from 'next-intl'
 import { NextSvgImage } from '@/components/ui/NextSvgImage'
 import { useMediaQuery } from 'usehooks-ts'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { clsx } from 'clsx'
+import { Button, Icon } from '@/components'
+import { setCurrentLocation } from '@/lib/utils/LocationUtils'
+import {
+  IconArrowLeft,
+  IconArrowRight,
+  IconChevronLeft,
+  IconCurrentLocation,
+} from '@tabler/icons-react'
+import { NextLinkWrapper } from '@/components/ui/NextLinkWrapper'
+import { stepToPath } from '@/routing/navigation'
+import { FormStep } from '@/types/form'
+import { ButtonLink } from '@utrecht/component-library-react'
 
 const IncidentMapHeader = () => {
   const config = useConfig()
@@ -76,6 +88,14 @@ const IncidentMapHeader = () => {
 
           {config && config.base.supportedLanguages.length > 1 && (
             <LanguageSwitch />
+          )}
+          {!isMobile && (
+            <ButtonLink href="/" target="_blank">
+              {tIncidentMap('create_incident')}
+              <Icon>
+                <IconArrowRight />
+              </Icon>
+            </ButtonLink>
           )}
         </div>
       </PageHeader>

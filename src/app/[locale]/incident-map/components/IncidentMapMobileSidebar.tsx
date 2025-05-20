@@ -9,6 +9,7 @@ import { useTranslations } from 'next-intl'
 import { Feature } from 'geojson'
 import { Address } from '@/types/form'
 import { Category } from '@/types/category'
+import { SpotlightSection } from '@/components'
 
 type IncidentMapMobileSidebarProps = {
   selectedFeature?: Feature
@@ -59,7 +60,7 @@ const IncidentMapMobileSidebar = ({
             ? tIncidentMap('details')
             : tIncidentMap('filters'),
         })}
-        className="absolute bottom-0 w-full flex h-14 flex-shrink-0 items-center justify-center overflow-hidden bg-white px-4 text-base font-medium shadow-sm transition-all hover:bg-[#FAFAFA] dark:bg-[#161615] dark:hover:bg-[#1A1A19]"
+        className="absolute bottom-20 w-full flex h-14 flex-shrink-0 items-center justify-center overflow-hidden bg-white px-4 text-base font-medium shadow-sm transition-all hover:bg-[#FAFAFA] dark:bg-[#161615] dark:hover:bg-[#1A1A19]"
       >
         <DragHandle />
       </Drawer.Trigger>
@@ -82,7 +83,9 @@ const IncidentMapMobileSidebar = ({
             </Drawer.Close>
 
             <Drawer.Description className="!text-base">
-              {tIncidentMap('description')}
+              <SpotlightSection type="info">
+                {tIncidentMap('description')}
+              </SpotlightSection>
             </Drawer.Description>
             <Drawer.Title className="text-2xl my-2 font-medium text-gray-900">
               {selectedFeature
