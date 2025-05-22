@@ -306,7 +306,7 @@ const IncidentMapContent = () => {
         </form>
       </AlertDialog>
       {!isMobile && (
-        <div className="col-span-1 flex flex-col max-h-screen min-h-[calc(100svh-102px)] p-4">
+        <div className="col-span-1 flex flex-col max-h-screen min-h-[calc(100svh-102px)] p-4 shadow-right z-10">
           {selectedFeatureId ? (
             <SelectedIncidentDetails
               feature={selectedFeature}
@@ -335,7 +335,7 @@ const IncidentMapContent = () => {
       )}
 
       {isMobile && (
-        <div className="flex flex-col gap-1 px-2 pb-2">
+        <div className="flex flex-col gap-1 px-2 pb-2 shadow-bottom z-10">
           <div className="flex flex-col pb-2">
             <label htmlFor="address" className="!text-lg">
               {t('search_address_label')}
