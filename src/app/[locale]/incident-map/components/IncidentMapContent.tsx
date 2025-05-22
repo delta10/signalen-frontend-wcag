@@ -306,29 +306,33 @@ const IncidentMapContent = () => {
         </form>
       </AlertDialog>
       {!isMobile && (
-        <div className="col-span-1 flex flex-col max-h-screen min-h-[calc(100svh-102px)] p-4 shadow-right z-10">
+        <div className="col-span-1 flex flex-col max-h-screen min-h-[calc(100svh-102px)] shadow-right z-10">
           {selectedFeatureId ? (
-            <SelectedIncidentDetails
-              feature={selectedFeature}
-              address={selectedFeatureAddress}
-              onClose={resetSelectedIncident}
-            />
+            <div className="p-4">
+              <SelectedIncidentDetails
+                feature={selectedFeature}
+                address={selectedFeatureAddress}
+                onClose={resetSelectedIncident}
+              />
+            </div>
           ) : (
             <div className="flex flex-col gap-4">
               <SpotlightSection type="info">
                 {tIncidentMap('description')}
               </SpotlightSection>
-              <div className="flex flex-col py-2">
-                <label htmlFor="address">{t('search_address_label')}</label>
-                <AddressCombobox updatePosition={updatePosition} />
+              <div className="p-4">
+                <div className="flex flex-col py-2 ">
+                  <label htmlFor="address">{t('search_address_label')}</label>
+                  <AddressCombobox updatePosition={updatePosition} />
+                </div>
+                {categories && categories.length > 0 && (
+                  <NestedCategoryCheckboxList
+                    categories={categories}
+                    selectedSubCategories={selectedSubCategories}
+                    setSelectedSubCategories={setSelectedSubCategories}
+                  />
+                )}
               </div>
-              {categories && categories.length > 0 && (
-                <NestedCategoryCheckboxList
-                  categories={categories}
-                  selectedSubCategories={selectedSubCategories}
-                  setSelectedSubCategories={setSelectedSubCategories}
-                />
-              )}
             </div>
           )}
         </div>
