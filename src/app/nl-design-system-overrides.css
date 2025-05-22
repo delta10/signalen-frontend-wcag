@@ -173,3 +173,14 @@
   min-block-size: 50px;
   min-inline-size: 70px;
 }
+
+.utrecht-button-link.mobile {
+  @apply text-lg;
+  line-height: 0.75em;
+}
+
+.utrecht-button-link.mobile.full-width {
+  max-inline-size: 100%;
+  min-block-size: 100%;
+  min-inline-size: 100%;
+}

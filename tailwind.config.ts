@@ -16,6 +16,12 @@ const config: Config = {
         bottom: '0 4px 10px -2px rgba(0, 0, 0, 0.1)',
         top: '0 -4px 10px -2px rgba(0, 0, 0, 0.1)',
       },
+      textColor: {
+        primary: 'var(--basis-color-text-text-1)',
+      },
+      backgroundColor: {
+        primary: 'var(--basis-color-text-text-1)', // or use another var like --basis-color-background-1
+      },
     },
   },
   plugins: [],

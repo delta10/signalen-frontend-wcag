@@ -460,8 +460,8 @@ const IncidentMapContent = () => {
       )}
 
       {isMobile && (
-        <div className="flex items-center justify-center bg-white py-3 z-10 absolute bottom-0 w-full">
-          <ButtonLink href="/" target="_blank">
+        <div className="flex items-center justify-center bg-white py-3 z-30 absolute bottom-0 w-full p-4">
+          <ButtonLink href="/" target="_blank" className="mobile full-width">
             {tIncidentMap('create_incident')}
             <Icon>
               <IconArrowRight />
