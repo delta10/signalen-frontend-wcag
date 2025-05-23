@@ -20,7 +20,8 @@ const config: Config = {
         primary: 'var(--basis-color-text-text-1)',
       },
       backgroundColor: {
-        primary: 'var(--basis-color-text-text-1)', // or use another var like --basis-color-background-1
+        base: 'var(--basis-color-text-bg-1)',
+        primary: 'var(--basis-color-text-text-1)',
       },
     },
   },

@@ -10,6 +10,7 @@ import { Feature } from 'geojson'
 import { Address } from '@/types/form'
 import { Category } from '@/types/category'
 import { SpotlightSection } from '@/components'
+import { Paragraph } from '@utrecht/component-library-react/dist/css-module'
 
 type IncidentMapMobileSidebarProps = {
   selectedFeature?: Feature
@@ -85,12 +86,14 @@ const IncidentMapMobileSidebar = ({
             {!selectedFeature && (
               <Drawer.Description className="!text-base">
                 <SpotlightSection type="info">
-                  {tIncidentMap('description')}
+                  <Paragraph className="!text-lg">
+                    {tIncidentMap('description')}
+                  </Paragraph>
                 </SpotlightSection>
               </Drawer.Description>
             )}
 
-            <div className="px-4">
+            <div className="px-4 pb-20">
               <Drawer.Title className="text-xl my-2 font-medium text-gray-900">
                 {selectedFeature
                   ? tIncidentMap('details')

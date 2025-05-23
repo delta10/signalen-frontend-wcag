@@ -46,6 +46,7 @@ import IncidentMapMobileSidebar from '@/app/[locale]/incident-map/components/Inc
 import { setCurrentLocation } from '@/lib/utils/LocationUtils'
 import { getMapStyleUrl } from '@/lib/utils/map'
 import { ButtonLink } from '@utrecht/component-library-react'
+import { Paragraph } from '@utrecht/component-library-react/dist/css-module'
 
 const IncidentMapContent = () => {
   const t = useTranslations('describe_add.map')
@@ -318,7 +319,7 @@ const IncidentMapContent = () => {
           ) : (
             <div className="flex flex-col gap-4">
               <SpotlightSection type="info">
-                {tIncidentMap('description')}
+                <Paragraph> {tIncidentMap('description')}</Paragraph>
               </SpotlightSection>
               <div className="p-4 h-full">
                 <div className="flex flex-col py-2 ">
@@ -464,7 +465,7 @@ const IncidentMapContent = () => {
       )}
 
       {isMobile && (
-        <div className="flex items-center justify-center bg-white py-3 z-30 absolute bottom-0 w-full p-4">
+        <div className="flex items-center justify-center py-3 z-30 absolute bottom-0 w-full p-4 bg-base">
           <ButtonLink href="/" target="_blank" className="mobile full-width">
             {tIncidentMap('create_incident')}
             <Icon>
