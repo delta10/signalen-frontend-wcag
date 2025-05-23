@@ -286,8 +286,7 @@ const IncidentMapContent = () => {
   }
 
   return (
-    //
-    <div className="grid md:grid-cols-3 overflow-y-auto min-h-[calc(100svh-5.4rem)] md:min-h-[calc(100vh-8em)] grid-rows-[auto_1fr_auto]">
+    <div className="grid md:grid-cols-3 min-h-[calc(100svh-5.4rem)] md:min-h-[calc(100vh-102px)] overflow-y-hidden grid-rows-[auto_1fr_auto] md:grid-rows-[auto]">
       <AlertDialog type="error" ref={dialogRef}>
         <form
           method="dialog"
@@ -305,8 +304,9 @@ const IncidentMapContent = () => {
           </ButtonGroup>
         </form>
       </AlertDialog>
+      {/*min-h-[calc(100svh-102px)]*/}
       {!isMobile && (
-        <div className="col-span-1 flex flex-col max-h-screen min-h-[calc(100svh-102px)] shadow-right z-10">
+        <div className="col-span-1 flex flex-col shadow-right z-10 md:max-h-[calc(100vh-102px)] overflow-y-auto">
           {selectedFeatureId ? (
             <div className="p-4">
               <SelectedIncidentDetails
@@ -320,7 +320,7 @@ const IncidentMapContent = () => {
               <SpotlightSection type="info">
                 {tIncidentMap('description')}
               </SpotlightSection>
-              <div className="p-4">
+              <div className="p-4 h-full">
                 <div className="flex flex-col py-2 ">
                   <label htmlFor="address">{t('search_address_label')}</label>
                   <AddressCombobox updatePosition={updatePosition} />
