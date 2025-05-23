@@ -11,6 +11,18 @@ const config: Config = {
       fontFamily: {
         sans: ['var(--custom-font)'],
       },
+      boxShadow: {
+        right: '4px 0 10px -2px rgba(0, 0, 0, 0.1)',
+        bottom: '0 4px 10px -2px rgba(0, 0, 0, 0.1)',
+        top: '0 -4px 10px -2px rgba(0, 0, 0, 0.1)',
+      },
+      textColor: {
+        primary: 'var(--basis-color-text-text-1)',
+      },
+      backgroundColor: {
+        base: 'var(--basis-color-text-bg-1)',
+        primary: 'var(--basis-color-text-text-1)',
+      },
     },
   },
   plugins: [],

@@ -100,7 +100,12 @@ const MapDialogMobileContent = ({
         </form>
       </AlertDialog>
 
-      <div className="flex flex-col">
+      <div
+        className={clsx(
+          'flex flex-col  z-10',
+          !showList ? 'shadow-bottom' : ''
+        )}
+      >
         <div className="flex flex-col overflow-y-auto gap-1 py-3 px-2">
           <div className="flex justify-between items-center">
             <Heading level={1} className="!text-xl">
@@ -182,8 +187,8 @@ const MapDialogMobileContent = ({
       {config && !isAccordionOpen && (
         <div
           className={clsx(
-            'col-span-1 min-h-60 relative',
-            showList ? 'hidden' : ''
+            'col-span-1 min-h-60 relative z-10',
+            showList ? 'hidden' : 'shadow-top'
           )}
           ref={mapContainerRef}
         >

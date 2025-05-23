@@ -18,16 +18,21 @@ import {
   Icon,
   IconButton,
   MapMarker,
+  SpotlightSection,
 } from '@/components'
 import { useConfig } from '@/contexts/ConfigContext'
 import { Map } from '@/components/ui/Map'
-import { IconCurrentLocation, IconMinus, IconPlus } from '@tabler/icons-react'
+import {
+  IconArrowRight,
+  IconCurrentLocation,
+  IconMinus,
+  IconPlus,
+} from '@tabler/icons-react'
 import { useDarkMode } from '@/hooks/useDarkMode'
 import { useMediaQuery, useWindowSize } from 'usehooks-ts'
 import { Feature, FeatureCollection } from 'geojson'
 import { signalsClient } from '@/services/client/api-client'
 import NestedCategoryCheckboxList from '@/app/[locale]/incident-map/components/NestedCategoryCheckboxList'
-import { Paragraph } from '@amsterdam/design-system-react'
 import { Category, ParentCategory } from '@/types/category'
 import { AddressCombobox } from '@/components/ui/AddressCombobox'
 import { getNewSelectedAddress } from '@/lib/utils/address'
@@ -40,6 +45,8 @@ import { debounce } from 'lodash'
 import IncidentMapMobileSidebar from '@/app/[locale]/incident-map/components/IncidentMapMobileSidebar'
 import { setCurrentLocation } from '@/lib/utils/LocationUtils'
 import { getMapStyleUrl } from '@/lib/utils/map'
+import { ButtonLink } from '@utrecht/component-library-react'
+import { Paragraph } from '@utrecht/component-library-react/dist/css-module'
 
 const IncidentMapContent = () => {
   const t = useTranslations('describe_add.map')
@@ -280,8 +287,7 @@ const IncidentMapContent = () => {
   }
 
   return (
-    //
-    <div className="grid md:grid-cols-3 overflow-y-auto min-h-[calc(100svh-5.4rem)] md:min-h-[calc(100vh-8em)] grid-rows-[auto_1fr_auto]">
+    <div className="grid md:grid-cols-3 min-h-[calc(100svh-5.4rem)] md:min-h-[calc(100vh-102px)] overflow-y-hidden grid-rows-[auto_1fr_auto] md:grid-rows-[auto]">
       <AlertDialog type="error" ref={dialogRef}>
         <form
           method="dialog"
@@ -299,35 +305,42 @@ const IncidentMapContent = () => {
           </ButtonGroup>
         </form>
       </AlertDialog>
+      {/*min-h-[calc(100svh-102px)]*/}
       {!isMobile && (
-        <div className="col-span-1 flex flex-col max-h-screen min-h-[calc(100svh-102px)] p-4">
+        <div className="col-span-1 flex flex-col shadow-right z-10 md:max-h-[calc(100vh-102px)] overflow-y-auto">
           {selectedFeatureId ? (
-            <SelectedIncidentDetails
-              feature={selectedFeature}
-              address={selectedFeatureAddress}
-              onClose={resetSelectedIncident}
-            />
+            <div className="p-4">
+              <SelectedIncidentDetails
+                feature={selectedFeature}
+                address={selectedFeatureAddress}
+                onClose={resetSelectedIncident}
+              />
+            </div>
           ) : (
             <div className="flex flex-col gap-4">
-              <Paragraph>{tIncidentMap('description')}</Paragraph>
-              <div className="flex flex-col py-2">
-                <label htmlFor="address">{t('search_address_label')}</label>
-                <AddressCombobox updatePosition={updatePosition} />
+              <SpotlightSection type="info">
+                <Paragraph> {tIncidentMap('description')}</Paragraph>
+              </SpotlightSection>
+              <div className="p-4 h-full">
+                <div className="flex flex-col py-2 ">
+                  <label htmlFor="address">{t('search_address_label')}</label>
+                  <AddressCombobox updatePosition={updatePosition} />
+                </div>
+                {categories && categories.length > 0 && (
+                  <NestedCategoryCheckboxList
+                    categories={categories}
+                    selectedSubCategories={selectedSubCategories}
+                    setSelectedSubCategories={setSelectedSubCategories}
+                  />
+                )}
               </div>
-              {categories && categories.length > 0 && (
-                <NestedCategoryCheckboxList
-                  categories={categories}
-                  selectedSubCategories={selectedSubCategories}
-                  setSelectedSubCategories={setSelectedSubCategories}
-                />
-              )}
             </div>
           )}
         </div>
       )}
 
       {isMobile && (
-        <div className="flex flex-col gap-1 px-2 pb-2">
+        <div className="flex flex-col gap-1 px-2 pb-2 shadow-bottom z-10">
           <div className="flex flex-col pb-2">
             <label htmlFor="address" className="!text-lg">
               {t('search_address_label')}
@@ -449,6 +462,17 @@ const IncidentMapContent = () => {
           setSelectedSubCategories={setSelectedSubCategories}
           resetSelectedIncident={resetSelectedIncident}
         />
+      )}
+
+      {isMobile && (
+        <div className="flex items-center justify-center py-3 z-30 absolute bottom-0 w-full p-4 bg-base">
+          <ButtonLink href="/" target="_blank" className="mobile full-width">
+            {tIncidentMap('create_incident')}
+            <Icon>
+              <IconArrowRight />
+            </Icon>
+          </ButtonLink>
+        </div>
       )}
     </div>
   )
