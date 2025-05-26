@@ -3,11 +3,13 @@ import React, { Dispatch, SetStateAction, useState } from 'react'
 import { ParentCategory } from '@/types/category'
 import { IconChevronDown } from '@tabler/icons-react'
 import { CategoryLabelWithIcon } from '@/app/[locale]/incident-map/components/CategoryLabelWithIcon'
+import { clsx } from 'clsx'
 
 type NestedCategoryCheckboxListProps = {
   categories: ParentCategory[]
   selectedSubCategories: string[] | null
   setSelectedSubCategories: Dispatch<SetStateAction<string[]>>
+  mobile?: boolean
 }
 
 /**
@@ -27,6 +29,7 @@ const NestedCheckboxList = ({
   categories,
   selectedSubCategories,
   setSelectedSubCategories,
+  mobile = false,
 }: NestedCategoryCheckboxListProps) => {
   const [expanded, setExpanded] = useState<Record<string, boolean>>({})
 
@@ -126,7 +129,12 @@ const NestedCheckboxList = ({
 
         return (
           <div key={category.slug} className="mb-3">
-            <div className="flex items-center gap-1">
+            <div
+              className={clsx(
+                'flex items-center gap-1',
+                mobile ? 'text-lg' : ''
+              )}
+            >
               <FormFieldCheckbox
                 checked={isParentCategorySelected(category)}
                 indeterminate={isParentCategoryIndeterminate(category)}
@@ -157,7 +165,10 @@ const NestedCheckboxList = ({
                     return (
                       <div
                         key={subCategory.slug}
-                        className="flex items-center mt-1 gap-2"
+                        className={clsx(
+                          'flex items-center mt-1 gap-2',
+                          mobile ? 'text-lg' : ''
+                        )}
                       >
                         <FormFieldCheckbox
                           checked={selectedSubCategories?.includes(
