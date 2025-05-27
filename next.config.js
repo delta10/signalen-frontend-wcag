@@ -4,9 +4,11 @@ const withNextIntl = require('next-intl/plugin')()
 // Define Content Security Policy
 const ContentSecurityPolicy = `
   default-src 'self';
-  script-src 'self' ${process.env.NODE_ENV === 'development' ? "'unsafe-eval' 'unsafe-inline'" : ''};
+  script-src 'self' 'unsafe-inline' ${
+    process.env.NODE_ENV === 'development' ? 'unsafe-eval' : ''
+  };
   worker-src 'self' blob:;
-  style-src 'self' ${process.env.NODE_ENV === 'development' ? "'unsafe-inline'" : ''};
+  style-src 'self' 'unsafe-inline';
   font-src 'self' https://fonts.gstatic.com data:;
   img-src 'self' data: blob: https:;
   connect-src 'self' https: wss: ws:;

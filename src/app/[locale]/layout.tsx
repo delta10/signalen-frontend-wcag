@@ -7,8 +7,8 @@ import type { PropsWithChildren } from 'react'
 import { getServerConfig } from '@/services/config/config'
 import { AppConfig } from '@/types/config'
 import { ConfigProvider } from '@/contexts/ConfigContext'
-import '../../../public/assets/theme.css'
-// import '../../../public/assets/utrecht-temp-theme.css'
+// import '../../../public/assets/theme.css'
+import '../../../public/assets/utrecht-temp-theme.css'
 
 const font = localFont({
   src: '../../../public/fonts/open-sans.woff2',
