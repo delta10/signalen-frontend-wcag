@@ -4,7 +4,7 @@
 
 /* colors */
 .disabled-border-1 {
-  border-color: var(--basis-color-disabled-fill-1);
+  border-color: var(--basis-color-disabled-fill-1, GrayText);
 }
 
 .maplibregl-canvas:focus-visible,
