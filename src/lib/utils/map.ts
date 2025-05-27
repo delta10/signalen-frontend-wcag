@@ -37,11 +37,13 @@ export const getFeatureType = (
   featureType: FeatureType[],
   properties: GeoJsonProperties
 ): FeatureType | null => {
+  // todo: hier goeie feature type ophalen
   if (properties) {
     const featureTypes = featureType.filter((feature: FeatureType) =>
       properties.hasOwnProperty(feature.idField)
     )
-
+    console.log('featureTypes', featureTypes)
+    console.log('properties', properties)
     if (featureTypes.length) return featureTypes[0]
   }
 
@@ -57,7 +59,11 @@ export const getFeatureDescription = (
   properties: GeoJsonProperties
 ): string | null => {
   if (properties && featureType) {
-    const match = featureType.description.match(/{{(.*?)}}/)
+    // console.log(featureType)
+    if (!featureType.description) {
+      return featureType.label
+    }
+    const match = featureType.description?.match(/{{(.*?)}}/)
 
     const propertyToReplace = match ? match[0] : null
     const propertyInProperties = match ? match[1] : null

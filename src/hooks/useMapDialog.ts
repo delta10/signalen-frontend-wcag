@@ -18,7 +18,6 @@ import {
   getFeatureId,
   getFeatureType,
   getMapStyleUrl,
-  isCoordinateInsideMaxBound,
 } from '@/lib/utils/map'
 import { useFormContext } from 'react-hook-form'
 import {
