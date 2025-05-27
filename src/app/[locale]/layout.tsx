@@ -7,7 +7,7 @@ import type { PropsWithChildren } from 'react'
 import { getServerConfig } from '@/services/config/config'
 import { AppConfig } from '@/types/config'
 import { ConfigProvider } from '@/contexts/ConfigContext'
-import '../../../public/assets/theme.css'
+// import '../../../public/assets/theme.css'
 
 const font = localFont({
   src: '../../../public/fonts/open-sans.woff2',
@@ -30,6 +30,9 @@ const LocaleLayout = ({
       lang={locale}
       className={`${font.variable} organization-theme organization-theme--media-query`}
     >
+      <head>
+        <link rel="stylesheet" href="/assets/theme.css" />
+      </head>
       <ConfigProvider config={config}>
         <Body>{children}</Body>
       </ConfigProvider>
