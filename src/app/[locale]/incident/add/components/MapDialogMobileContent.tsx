@@ -37,6 +37,7 @@ import { useFormStore } from '@/store/form_store'
 import clsx from 'clsx'
 import MapExplainerAccordion from '@/app/[locale]/incident/add/components/questions/MapExplainerAccordion'
 import { setCurrentLocation } from '@/lib/utils/LocationUtils'
+import { MapMarkerIcon } from '@/app/[locale]/incident/add/components/MapMarkerIcon'
 
 const MapDialogMobileContent = ({
   onMapReady,
@@ -217,7 +218,10 @@ const MapDialogMobileContent = ({
               dialogMap.getZoom() >= config.base.map.minimal_zoom &&
               mapFeatures?.features.map((feature) => {
                 const id = feature.id as number
-
+                const isSelected = formState.selectedFeatures.some(
+                  (featureItem) => featureItem.id === id
+                )
+                const isFocused = focusedItemId === id
                 return (
                   <Marker
                     key={id}
@@ -228,28 +232,11 @@ const MapDialogMobileContent = ({
                     // @ts-ignore
                     onClick={(e) => handleFeatureMarkerClick(e, feature)}
                   >
-                    {!formState.selectedFeatures.some(
-                      (featureItem) => featureItem.id === id
-                    ) ? (
-                      focusedItemId === id ? (
-                        <Icon>
-                          <div className="focused-map-marker"></div>
-                        </Icon>
-                      ) : (
-                        <Icon>
-                          <img src={field?.meta.featureTypes[0].icon.iconUrl} />
-                        </Icon>
-                      )
-                    ) : (
-                      <Icon>
-                        <img
-                          src={
-                            config.base.assets_url +
-                            '/assets/images/feature-selected-marker.svg'
-                          }
-                        />
-                      </Icon>
-                    )}
+                    <MapMarkerIcon
+                      isSelected={isSelected}
+                      isFocused={isFocused}
+                      iconUrl={feature.properties?.iconUrl}
+                    />
                   </Marker>
                 )
               })}

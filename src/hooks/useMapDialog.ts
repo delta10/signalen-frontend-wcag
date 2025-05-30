@@ -15,6 +15,7 @@ import { getNearestAddressByCoordinate } from '@/services/location/address'
 import {
   formatAddressToSignalenInput,
   getFeatureDescription,
+  getFeatureIconUrl,
   getFeatureId,
   getFeatureType,
   getMapStyleUrl,
@@ -108,9 +109,15 @@ function useMapDialog(
           // @ts-ignore
           id: getFeatureId(featureType, feature.properties),
           description: getFeatureDescription(featureType, feature.properties),
+          properties: {
+            ...feature.properties,
+            iconUrl: getFeatureIconUrl(
+              field.meta.featureTypes,
+              feature.properties
+            ),
+          },
         }
       })
-
       setMapFeatures({ ...features, features: featuresWithId })
     }
   }, [features, field])

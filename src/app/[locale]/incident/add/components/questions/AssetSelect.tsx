@@ -72,7 +72,6 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
           .replace('{east}', bounds.getEast())
 
         const geojson = await getGeoJsonFeatures(endpoint)
-        console.log(geojson)
         setFeatures(geojson)
       }
     }

@@ -28,6 +28,7 @@ import { useFormStore } from '@/store/form_store'
 import { FeatureCollection } from 'geojson'
 import { PublicQuestion } from '@/types/form'
 import { setCurrentLocation } from '@/lib/utils/LocationUtils'
+import { MapMarkerIcon } from '@/app/[locale]/incident/add/components/MapMarkerIcon'
 
 export type MapDialogContentProps = {
   onMapReady?: (map: MapRef) => void
@@ -209,7 +210,10 @@ const MapDialogContent = ({
               dialogMap.getZoom() >= config.base.map.minimal_zoom &&
               mapFeatures?.features.map((feature) => {
                 const id = feature.id as number
-
+                const isSelected = formState.selectedFeatures.some(
+                  (featureItem) => featureItem.id === id
+                )
+                const isFocused = focusedItemId === id
                 return (
                   <Marker
                     key={id}
@@ -220,28 +224,11 @@ const MapDialogContent = ({
                     // @ts-ignore
                     onClick={(e) => handleFeatureMarkerClick(e, feature)}
                   >
-                    {!formState.selectedFeatures.some(
-                      (featureItem) => featureItem.id === id
-                    ) ? (
-                      focusedItemId === id ? (
-                        <Icon>
-                          <div className="focused-map-marker"></div>
-                        </Icon>
-                      ) : (
-                        <Icon>
-                          <img src={field?.meta.featureTypes[0].icon.iconUrl} />
-                        </Icon>
-                      )
-                    ) : (
-                      <Icon>
-                        <img
-                          src={
-                            config.base.assets_url +
-                            '/assets/images/feature-selected-marker.svg'
-                          }
-                        />
-                      </Icon>
-                    )}
+                    <MapMarkerIcon
+                      isSelected={isSelected}
+                      isFocused={isFocused}
+                      iconUrl={feature.properties?.iconUrl}
+                    />
                   </Marker>
                 )
               })}
