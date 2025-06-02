@@ -91,7 +91,8 @@ export const processFeature = (
 
   // Filter feature types that have the required idField in properties
   const validFeatureTypes = featureTypes.filter((feature: FeatureType) =>
-    properties.hasOwnProperty(feature.idField)
+    // properties.hasOwnProperty(feature.idField)
+    Object.hasOwn(properties, feature.idField)
   )
 
   if (validFeatureTypes.length === 0) {
