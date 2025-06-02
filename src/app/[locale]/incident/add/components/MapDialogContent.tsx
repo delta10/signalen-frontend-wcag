@@ -27,7 +27,7 @@ import { useFormStore } from '@/store/form_store'
 import { FeatureCollection } from 'geojson'
 import { PublicQuestion } from '@/types/form'
 import { setCurrentLocation } from '@/lib/utils/LocationUtils'
-import { MapMarkerIcon } from '@/app/[locale]/incident/add/components/MapMarkerIcon'
+import { FeatureTypeIcon } from '@/app/[locale]/incident/add/components/FeatureTypeIcon'
 
 export type MapDialogContentProps = {
   onMapReady?: (map: MapRef) => void
@@ -222,7 +222,7 @@ const MapDialogContent = ({
                     // @ts-ignore
                     onClick={(e) => handleFeatureMarkerClick(e, feature)}
                   >
-                    <MapMarkerIcon
+                    <FeatureTypeIcon
                       isSelected={isSelected}
                       isFocused={isFocused}
                       iconUrl={feature.properties?.iconUrl}

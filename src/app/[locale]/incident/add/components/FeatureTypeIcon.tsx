@@ -3,14 +3,14 @@ import { Icon } from '@/components'
 import { useConfig } from '@/contexts/ConfigContext'
 
 interface FeatureIconProps {
-  isSelected: boolean
-  isFocused: boolean
+  isSelected?: boolean
+  isFocused?: boolean
   iconUrl?: string
 }
 
-export const MapMarkerIcon: React.FC<FeatureIconProps> = ({
-  isSelected,
-  isFocused,
+export const FeatureTypeIcon: React.FC<FeatureIconProps> = ({
+  isSelected = false,
+  isFocused = false,
   iconUrl,
 }) => {
   const config = useConfig()
@@ -33,6 +33,19 @@ export const MapMarkerIcon: React.FC<FeatureIconProps> = ({
     return (
       <Icon>
         <div className="focused-map-marker"></div>
+      </Icon>
+    )
+  }
+
+  if (!iconUrl) {
+    return (
+      <Icon>
+        <img
+          src={
+            config.base.assets_url + '/assets/images/feature-default-marker.svg'
+          }
+          alt="Feature marker"
+        />
       </Icon>
     )
   }

@@ -6,6 +6,7 @@ import { FeatureWithDescription } from '@/types/map'
 import { useFormStore } from '@/store/form_store'
 import { getFirstFeatureOrCurrentAddress } from '@/lib/utils/address'
 import { useConfig } from '@/contexts/ConfigContext'
+import { FeatureTypeIcon } from '@/app/[locale]/incident/add/components/FeatureTypeIcon'
 
 type FeatureListItemProps = {
   feature: FeatureWithDescription
@@ -21,7 +22,6 @@ export const FeatureListItem = ({
   field,
   setError,
   dialogRef,
-  configUrl,
   setFocusedItemId,
 }: FeatureListItemProps) => {
   const t = useTranslations('describe_add.map')
@@ -92,19 +92,7 @@ export const FeatureListItem = ({
           }, 0)
         }}
       >
-        {!formState.selectedFeatures.some(
-          (featureItem) => featureItem.id === featureId
-        ) ? (
-          <Icon>
-            <img src={feature.properties?.iconUrl} />
-          </Icon>
-        ) : (
-          <Icon>
-            <img
-              src={configUrl + '/assets/images/feature-selected-marker.svg'}
-            />
-          </Icon>
-        )}
+        <FeatureTypeIcon iconUrl={feature.properties?.iconUrl} />
         <FormFieldCheckbox
           label={featureDescription}
           className="!mt-1"

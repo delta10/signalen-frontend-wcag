@@ -37,7 +37,7 @@ import { useFormStore } from '@/store/form_store'
 import clsx from 'clsx'
 import MapExplainerAccordion from '@/app/[locale]/incident/add/components/questions/MapExplainerAccordion'
 import { setCurrentLocation } from '@/lib/utils/LocationUtils'
-import { MapMarkerIcon } from '@/app/[locale]/incident/add/components/MapMarkerIcon'
+import { FeatureTypeIcon } from '@/app/[locale]/incident/add/components/FeatureTypeIcon'
 
 const MapDialogMobileContent = ({
   onMapReady,
@@ -232,7 +232,7 @@ const MapDialogMobileContent = ({
                     // @ts-ignore
                     onClick={(e) => handleFeatureMarkerClick(e, feature)}
                   >
-                    <MapMarkerIcon
+                    <FeatureTypeIcon
                       isSelected={isSelected}
                       isFocused={isFocused}
                       iconUrl={feature.properties?.iconUrl}
