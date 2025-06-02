@@ -4,7 +4,6 @@ import {
   Button,
   ButtonGroup,
   Heading,
-  Icon,
   IconButton,
   MapMarker,
   Paragraph,
@@ -43,7 +42,6 @@ const MapDialogContent = ({
   field,
   features,
   isAssetSelect = false,
-  loadingAssets = false,
 }: MapDialogContentProps) => {
   const mapContainerRef = useRef<HTMLDivElement>(null)
   const { formState } = useFormStore()

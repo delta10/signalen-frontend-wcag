@@ -1,8 +1,5 @@
-import React, { Dispatch, RefObject, SetStateAction, useMemo } from 'react'
-import { getFeatureType } from '@/lib/utils/map'
-import { Feature, FeatureCollection } from 'geojson'
+import React, { Dispatch, RefObject, SetStateAction } from 'react'
 import { PublicQuestion } from '@/types/form'
-import { MapRef } from 'react-map-gl/maplibre'
 import { FormField, FormFieldCheckbox, Icon } from '@/components/index'
 import { useTranslations } from 'next-intl'
 import { FeatureWithDescription } from '@/types/map'
@@ -38,11 +35,6 @@ export const FeatureListItem = ({
       ? field.meta.maxNumberOfAssets
       : 1
     : 1
-
-  // Get feature type of asset
-  const featureType = useMemo(() => {
-    return getFeatureType(field.meta.featureTypes, feature.properties)
-  }, [field.meta.featureTypes, feature.properties])
 
   // Add or remove feature to / from the newSelectedFeature state declared in DialogMap
   const addOrRemoveFeature = async (checked: boolean) => {
@@ -104,7 +96,7 @@ export const FeatureListItem = ({
           (featureItem) => featureItem.id === featureId
         ) ? (
           <Icon>
-            <img src={featureType?.icon.iconUrl} />
+            <img src={feature.properties?.iconUrl} />
           </Icon>
         ) : (
           <Icon>

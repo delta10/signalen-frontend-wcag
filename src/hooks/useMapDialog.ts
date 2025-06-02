@@ -14,11 +14,8 @@ import { Feature, FeatureCollection } from 'geojson'
 import { getNearestAddressByCoordinate } from '@/services/location/address'
 import {
   formatAddressToSignalenInput,
-  getFeatureDescription,
-  getFeatureIconUrl,
-  getFeatureId,
-  getFeatureType,
   getMapStyleUrl,
+  processFeature,
 } from '@/lib/utils/map'
 import { useFormContext } from 'react-hook-form'
 import {
@@ -99,7 +96,7 @@ function useMapDialog(
   useEffect(() => {
     if (features && field) {
       const featuresWithId = features.features.map((feature) => {
-        const featureType = getFeatureType(
+        const preprocessFeature = processFeature(
           field.meta.featureTypes,
           feature.properties
         )
@@ -107,14 +104,11 @@ function useMapDialog(
         return {
           ...feature,
           // @ts-ignore
-          id: getFeatureId(featureType, feature.properties),
-          description: getFeatureDescription(featureType, feature.properties),
+          id: preprocessFeature.id,
+          description: preprocessFeature.description,
           properties: {
             ...feature.properties,
-            iconUrl: getFeatureIconUrl(
-              field.meta.featureTypes,
-              feature.properties
-            ),
+            iconUrl: preprocessFeature.iconUrl,
           },
         }
       })

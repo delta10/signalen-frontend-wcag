@@ -29,107 +29,123 @@ export const isCoordinateInsideMaxBound = (
   return lat >= minLat && lat <= maxLat && lng >= minLng && lng <= maxLng
 }
 
-// todo kijk of dit slimmer kan, denk dat we alles wel in een keer kunnen ophalen
-// Matches a GeoJSON feature with its corresponding feature type
-// @param {FeatureType[]} featureType - Array of possible feature types
-// @param {GeoJsonProperties} properties - Properties of the GeoJSON feature
-// @returns {FeatureType | null} - Matching feature type or null
-export const getFeatureType = (
-  featureType: FeatureType[],
+/**
+ * Processes a GeoJSON feature and returns all relevant metadata in a single pass.
+ *
+ * This function optimizes performance by doing all feature type matching, filtering,
+ * and data extraction in one operation instead of multiple separate calls.
+ *
+ * @param featureTypes - Array of available feature type definitions
+ * @param properties - GeoJSON properties object from the feature
+ *
+ * @returns Object containing:
+ *   - featureType: The matched FeatureType or fallback type, null if no valid types found
+ *   - iconUrl: URL of the icon for this feature type, null if no type found
+ *   - description: Processed description with template variables replaced, null if no type found
+ *   - id: The feature's ID extracted from the properties using the featureType's idField
+ *
+ * @example
+ * ```typescript
+ * const result = processFeature(
+ *   [
+ *     {
+ *       idField: "container_nummer",
+ *       typeField: "soort",
+ *       typeValue: "Glas",
+ *       label: "Glass Container",
+ *       icon: { iconUrl: "/glass.svg" },
+ *       description: "Container {{locatie_omschrijving}}"
+ *     }
+ *   ],
+ *   {
+ *     container_nummer: "GS12D",
+ *     soort: "Glas",
+ *     locatie_omschrijving: "Hoofdstraat"
+ *   }
+ * );
+ * // Returns: {
+ * //   featureType: { ... },
+ * //   iconUrl: "/glass.svg",
+ * //   description: "Glasbak",
+ * //   id: "GS12D"
+ * // }
+ * ```
+ */
+export const processFeature = (
+  featureTypes: FeatureType[],
   properties: GeoJsonProperties
-): FeatureType | null => {
-  if (properties) {
-    const featureTypes = featureType.filter((feature: FeatureType) =>
-      properties.hasOwnProperty(feature.idField)
-    )
-    const matchedType = featureTypes.find(
-      (featureType) =>
-        featureType.typeField &&
-        properties[featureType.typeField] === featureType.typeValue
-    )
-    // If no match found, return the last element (fallback)
-    return matchedType || featureTypes[featureTypes.length - 1]
-  }
-
-  return null
-}
-
-// todo: invullen
-// @param {FeatureType[]} featureType - Array of possible feature types
-// @param {GeoJsonProperties} properties - Properties of the GeoJSON feature
-// @returns {FeatureType | null} - Matching feature type or null
-export const getFeatureIconUrl = (
-  featureType: FeatureType[],
-  properties: GeoJsonProperties
-): string | null => {
-  if (properties) {
-    const featureTypes = featureType.filter((feature: FeatureType) =>
-      properties.hasOwnProperty(feature.idField)
-    )
-    const matchedType = featureTypes.find(
-      (featureType) =>
-        featureType.typeField &&
-        properties[featureType.typeField] === featureType.typeValue
-    )
-    const feature = matchedType || featureTypes[featureTypes.length - 1]
-    return feature.icon.iconUrl
-  }
-
-  return null
-}
-
-// Generates a human-readable description for a geographic feature
-// @param {FeatureType | null} featureType - Feature type definition
-// @param {GeoJsonProperties} properties - Feature properties
-// @returns {string | null} - Formatted feature description
-export const getFeatureDescription = (
-  featureType: FeatureType | null,
-  properties: GeoJsonProperties
-): string | null => {
-  if (properties && featureType) {
-    // If there is no description, use the label and the feature ID
-    if (!featureType.description) {
-      return `${featureType.label} - ${getFeatureId(featureType, properties)}`
+): {
+  featureType: FeatureType | null
+  iconUrl: string | null
+  description: string | null
+  id: string | number | undefined
+} => {
+  if (!properties) {
+    return {
+      featureType: null,
+      iconUrl: null,
+      description: null,
+      id: undefined,
     }
-
-    const match = featureType.description?.match(/{{(.*?)}}/)
-
-    const propertyToReplace = match ? match[0] : null
-    const propertyInProperties = match ? match[1] : null
-
-    if (propertyToReplace && propertyInProperties) {
-      const string: string = properties[propertyInProperties.trim()]
-
-      return string
-        ? featureType.description.replace(propertyToReplace, string)
-        : `${featureType.description} - ${getFeatureId(featureType, properties)}`
-    }
-
-    return `${featureType.description} - ${getFeatureId(featureType, properties)}`
   }
 
-  return null
-}
+  // Filter feature types that have the required idField in properties
+  const validFeatureTypes = featureTypes.filter((feature: FeatureType) =>
+    properties.hasOwnProperty(feature.idField)
+  )
 
-// Extracts the unique identifier for a geographic feature
-// @param {FeatureType | null} featureType - Feature type definition
-// @param {GeoJsonProperties} properties - Feature properties
-// @returns {number | undefined} - Feature ID or undefined
-export const getFeatureId = (
-  featureType: FeatureType | null,
-  properties: GeoJsonProperties
-): number | undefined => {
-  if (featureType) {
-    const idField = featureType.idField || null
-
-    if (idField && properties && properties[idField]) {
-      return properties[idField]
+  if (validFeatureTypes.length === 0) {
+    return {
+      featureType: null,
+      iconUrl: null,
+      description: null,
+      id: undefined,
     }
-
-    return undefined
   }
 
-  return undefined
+  // Find matching type or use fallback
+  const matchedType = validFeatureTypes.find(
+    (featureType) =>
+      featureType.typeField &&
+      properties[featureType.typeField] === featureType.typeValue
+  )
+
+  const selectedFeatureType =
+    matchedType || validFeatureTypes[validFeatureTypes.length - 1]
+
+  // Get feature ID
+  const featureId = properties[selectedFeatureType.idField] || null
+
+  // Get description
+  let description: string | null = null
+  if (selectedFeatureType) {
+    if (!selectedFeatureType.description) {
+      description = `${selectedFeatureType.label} - ${featureId}`
+    } else {
+      const match = selectedFeatureType.description.match(/{{(.*?)}}/)
+      const propertyToReplace = match ? match[0] : null
+      const propertyInProperties = match ? match[1] : null
+
+      if (propertyToReplace && propertyInProperties) {
+        const replacementValue: string = properties[propertyInProperties.trim()]
+        description = replacementValue
+          ? selectedFeatureType.description.replace(
+              propertyToReplace,
+              replacementValue
+            )
+          : `${selectedFeatureType.description} - ${featureId}`
+      } else {
+        description = `${selectedFeatureType.description} - ${featureId}`
+      }
+    }
+  }
+
+  return {
+    featureType: selectedFeatureType,
+    iconUrl: selectedFeatureType?.icon.iconUrl || null,
+    description,
+    id: featureId,
+  }
 }
 
 // Parses a PDOK address format into separate components
@@ -166,8 +182,6 @@ export const formatAddressToSignalenInput = (
     woonplaats,
   }
 }
-
-// utils/map/getMapStyle.ts
 
 /**
  * Returns the appropriate MapTiler style URL based on the current theme.
