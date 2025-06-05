@@ -57,6 +57,9 @@ export const FeatureListItem = ({
       )
 
       newSelectedFeatureArray.splice(index, 1) // Remove the feature at the found index
+      setTimeout(() => {
+        setFocusedItemId(null)
+      }, 10)
     }
 
     const address = await getFirstFeatureOrCurrentAddress(
