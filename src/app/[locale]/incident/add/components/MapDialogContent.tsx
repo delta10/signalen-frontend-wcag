@@ -28,6 +28,7 @@ import { FeatureCollection } from 'geojson'
 import { PublicQuestion } from '@/types/form'
 import { setCurrentLocation } from '@/lib/utils/LocationUtils'
 import { FeatureTypeIcon } from '@/app/[locale]/incident/add/components/FeatureTypeIcon'
+import { ExtendedFeature } from '@/types/map'
 
 export type MapDialogContentProps = {
   onMapReady?: (map: MapRef) => void
@@ -132,7 +133,7 @@ const MapDialogContent = ({
                       <FeatureListItem
                         configUrl={config?.base.assets_url}
                         feature={feature}
-                        key={feature.id}
+                        key={feature.internal_id}
                         field={field}
                         setError={setError}
                         dialogRef={dialogRef}
@@ -207,9 +208,10 @@ const MapDialogContent = ({
               dialogMap &&
               dialogMap.getZoom() >= config.base.map.minimal_zoom &&
               mapFeatures?.features.map((feature) => {
-                const id = feature.id as number
+                const extendedFeature = feature as ExtendedFeature
+                const id = extendedFeature.internal_id as number
                 const isSelected = formState.selectedFeatures.some(
-                  (featureItem) => featureItem.id === id
+                  (featureItem) => featureItem.internal_id === id
                 )
                 const isFocused = focusedItemId === id
                 return (
@@ -219,8 +221,10 @@ const MapDialogContent = ({
                     longitude={feature.geometry?.coordinates[0]}
                     // @ts-ignore
                     latitude={feature.geometry?.coordinates[1]}
-                    // @ts-ignore
-                    onClick={(e) => handleFeatureMarkerClick(e, feature)}
+                    onClick={(e) =>
+                      // @ts-ignore
+                      handleFeatureMarkerClick(e, extendedFeature)
+                    }
                   >
                     <FeatureTypeIcon
                       isSelected={isSelected}

@@ -1,5 +1,9 @@
 import { FeatureType } from '@/types/form'
 import { GeoJsonProperties } from 'geojson'
+import {
+  isTemplateString,
+  parseTemplateString,
+} from '@/lib/utils/parseTemplateString'
 
 // Validates if the argument is a coordinate pair [longitude, latitude]
 // @param {unknown} arg - Input to validate
@@ -78,6 +82,7 @@ export const processFeature = (
   featureType: FeatureType | null
   iconUrl: string | null
   description: string | null
+  label: string | null
   id: string | number | undefined
 } => {
   if (!properties) {
@@ -85,13 +90,13 @@ export const processFeature = (
       featureType: null,
       iconUrl: null,
       description: null,
+      label: null,
       id: undefined,
     }
   }
 
   // Filter feature types that have the required idField in properties
   const validFeatureTypes = featureTypes.filter((feature: FeatureType) =>
-    // properties.hasOwnProperty(feature.idField)
     Object.hasOwn(properties, feature.idField)
   )
 
@@ -100,6 +105,7 @@ export const processFeature = (
       featureType: null,
       iconUrl: null,
       description: null,
+      label: null,
       id: undefined,
     }
   }
@@ -116,27 +122,32 @@ export const processFeature = (
 
   // Get feature ID
   const featureId = properties[selectedFeatureType.idField] || null
-
-  // Get description
+  // Get description and label
   let description: string | null = null
+  let label: string | null = null
+  let replacementValue: string | null = null
   if (selectedFeatureType) {
     if (!selectedFeatureType.description) {
-      description = `${selectedFeatureType.label} - ${featureId}`
+      description = `${selectedFeatureType.label}`
+      label = `${description} - ${featureId}`
     } else {
       const match = selectedFeatureType.description.match(/{{(.*?)}}/)
       const propertyToReplace = match ? match[0] : null
       const propertyInProperties = match ? match[1] : null
 
       if (propertyToReplace && propertyInProperties) {
-        const replacementValue: string = properties[propertyInProperties.trim()]
-        description = replacementValue
-          ? selectedFeatureType.description.replace(
-              propertyToReplace,
-              replacementValue
-            )
+        replacementValue = properties[propertyInProperties.trim()]
+
+        description = isTemplateString(selectedFeatureType.description)
+          ? selectedFeatureType.description?.split('-')[0].trim()
+          : description
+
+        label = isTemplateString(selectedFeatureType.description)
+          ? parseTemplateString(selectedFeatureType.description, properties)
           : `${selectedFeatureType.description} - ${featureId}`
       } else {
-        description = `${selectedFeatureType.description} - ${featureId}`
+        description = `${selectedFeatureType.description}`
+        label = `${selectedFeatureType.description} - ${featureId}`
       }
     }
   }
@@ -144,8 +155,9 @@ export const processFeature = (
   return {
     featureType: selectedFeatureType,
     iconUrl: selectedFeatureType?.icon.iconUrl || null,
-    description,
-    id: featureId,
+    description: description,
+    label: label,
+    id: replacementValue ? replacementValue : featureId,
   }
 }
 

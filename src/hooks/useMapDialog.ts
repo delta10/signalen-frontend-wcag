@@ -25,6 +25,8 @@ import {
 import { useDarkMode } from '@/hooks/useDarkMode'
 import { useWindowSize } from 'usehooks-ts'
 import { useConfig } from '@/contexts/ConfigContext'
+import { generateFeatureId } from '@/lib/utils/features'
+import { ExtendedFeature } from '@/types/map'
 
 function useMapDialog(
   onMapReady: ((map: MapRef) => void) | undefined,
@@ -106,12 +108,15 @@ function useMapDialog(
           // @ts-ignore
           id: preprocessFeature.id,
           description: preprocessFeature.description,
+          label: preprocessFeature.label,
+          internal_id: generateFeatureId(feature),
           properties: {
             ...feature.properties,
             iconUrl: preprocessFeature.iconUrl,
           },
         }
       })
+
       setMapFeatures({ ...features, features: featuresWithId })
     }
   }, [features, field])
@@ -184,7 +189,7 @@ function useMapDialog(
           ? mapFeaturesToShow
           : []
 
-      return uniqBy([...features, ...formState.selectedFeatures], 'id')
+      return uniqBy([...features, ...formState.selectedFeatures], 'internal_id')
     }
 
     return []
@@ -193,12 +198,12 @@ function useMapDialog(
   // Handle click on feature marker, set selectedFeatures and show error if maxNumberOfAssets is reached
   const handleFeatureMarkerClick = async (
     event: MarkerEvent,
-    feature: Feature
+    feature: ExtendedFeature
   ) => {
     // @ts-ignore
     event.originalEvent?.stopPropagation()
     // @ts-ignore
-    const featureId = feature.id as number
+    const featureId = feature.internal_id as number
     const maxNumberOfAssets = field?.meta.maxNumberOfAssets || 1
 
     if (dialogMap && featureId) {
@@ -207,7 +212,7 @@ function useMapDialog(
       )
 
       const index = newSelectedFeatureArray.findIndex(
-        (feature) => feature.id === featureId
+        (feature: ExtendedFeature) => feature.internal_id === featureId
       )
 
       if (index !== -1) {
@@ -281,7 +286,7 @@ function useMapDialog(
             // @ts-ignore
             description: feature.description,
             // @ts-ignore
-            label: feature.description,
+            label: feature.label,
             type: 'Feature',
           }
         })

@@ -38,6 +38,7 @@ import clsx from 'clsx'
 import MapExplainerAccordion from '@/app/[locale]/incident/add/components/questions/MapExplainerAccordion'
 import { setCurrentLocation } from '@/lib/utils/LocationUtils'
 import { FeatureTypeIcon } from '@/app/[locale]/incident/add/components/FeatureTypeIcon'
+import { ExtendedFeature } from '@/types/map'
 
 const MapDialogMobileContent = ({
   onMapReady,
@@ -217,9 +218,10 @@ const MapDialogMobileContent = ({
               dialogMap &&
               dialogMap.getZoom() >= config.base.map.minimal_zoom &&
               mapFeatures?.features.map((feature) => {
-                const id = feature.id as number
+                const extendedFeature = feature as ExtendedFeature
+                const id = extendedFeature.internal_id as number
                 const isSelected = formState.selectedFeatures.some(
-                  (featureItem) => featureItem.id === id
+                  (featureItem) => featureItem.internal_id === id
                 )
                 const isFocused = focusedItemId === id
                 return (

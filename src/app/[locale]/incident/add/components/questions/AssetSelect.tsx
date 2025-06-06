@@ -122,7 +122,7 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
               // @ts-ignore
               description: feature.description,
               // @ts-ignore
-              label: feature.description,
+              label: feature.label,
               type: 'Feature',
             }
           })
@@ -192,12 +192,12 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
                         ? t('chosen_location_address_and_points', {
                             location: formStoreState.address.weergave_naam,
                             points: formStoreState.selectedFeatures
-                              .map((feature: any) => feature.description)
+                              .map((feature: any) => feature.label)
                               .join(', '),
                           })
                         : t('chosen_location_points', {
                             points: formStoreState.selectedFeatures
-                              .map((feature: any) => feature.description)
+                              .map((feature: any) => feature.label)
                               .join(', '),
                           })
                       : t('edit_location')
@@ -217,7 +217,7 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
         <ParagraphOrList
           entries={formStoreState.selectedFeatures.map((feature: any) => [
             feature.id,
-            feature.description,
+            feature.label,
           ])}
         />
       </div>
