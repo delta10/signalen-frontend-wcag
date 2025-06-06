@@ -18,6 +18,7 @@ import {
   IconArrowsDiagonalMinimize2,
   IconChevronLeft,
   IconCurrentLocation,
+  IconInfoCircle,
   IconMinus,
   IconPlus,
   IconX,
@@ -39,6 +40,7 @@ import MapExplainerAccordion from '@/app/[locale]/incident/add/components/questi
 import { setCurrentLocation } from '@/lib/utils/LocationUtils'
 import { FeatureTypeIcon } from '@/app/[locale]/incident/add/components/FeatureTypeIcon'
 import { ExtendedFeature } from '@/types/map'
+import FeatureTypeLegend from '@/app/[locale]/incident/add/components/FeatureTypeLegend'
 
 const MapDialogMobileContent = ({
   onMapReady,
@@ -78,6 +80,8 @@ const MapDialogMobileContent = ({
     error,
     setError,
     handleFeatureMarkerClick,
+    openLegend,
+    setOpenLegend,
   } = useMapDialog(onMapReady, field, features, isAssetSelect)
 
   const toggleList = () => {
@@ -101,7 +105,12 @@ const MapDialogMobileContent = ({
           </ButtonGroup>
         </form>
       </AlertDialog>
-
+      <FeatureTypeLegend
+        featureTypes={field?.meta.featureTypes}
+        openLegend={openLegend}
+        setOpenLegend={setOpenLegend}
+        mobile={true}
+      />
       <div
         className={clsx(
           'flex flex-col  z-10',
@@ -286,6 +295,20 @@ const MapDialogMobileContent = ({
                 className="utrecht-button--subtle map-icon-button mobile"
               >
                 {t('show_list', { name: objectDisplayName.plural })}
+              </Button>
+            </div>
+          )}
+          {isAssetSelect && (
+            <div className="map-legend-group">
+              <Button
+                className="utrecht-button--subtle map-icon-button mobile"
+                appearance="secondary-action-button"
+                onClick={() => {
+                  setOpenLegend(!openLegend)
+                }}
+              >
+                <IconInfoCircle />
+                {t('legend')}
               </Button>
             </div>
           )}

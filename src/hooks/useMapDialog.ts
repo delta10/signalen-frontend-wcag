@@ -10,7 +10,7 @@ import { useTranslations } from 'next-intl'
 import { PublicQuestion } from '@/types/form'
 import { debounce, uniqBy } from 'lodash'
 import { useFormStore } from '@/store/form_store'
-import { Feature, FeatureCollection } from 'geojson'
+import { FeatureCollection } from 'geojson'
 import { getNearestAddressByCoordinate } from '@/services/location/address'
 import {
   formatAddressToSignalenInput,
@@ -47,6 +47,7 @@ function useMapDialog(
   const [mapFeatures, setMapFeatures] = useState<FeatureCollection | null>()
   const [focusedItemId, setFocusedItemId] = useState<number | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [openLegend, setOpenLegend] = useState<boolean>(false)
 
   const t = useTranslations('describe_add.map')
 
@@ -344,6 +345,8 @@ function useMapDialog(
     error,
     setError,
     handleFeatureMarkerClick,
+    openLegend,
+    setOpenLegend,
   }
 }
 

@@ -13,6 +13,7 @@ import MapExplainerAccordion from '@/app/[locale]/incident/add/components/questi
 import { AddressCombobox } from '@/components/ui/AddressCombobox'
 import {
   IconCurrentLocation,
+  IconInfoCircle,
   IconMinus,
   IconPlus,
   IconX,
@@ -29,6 +30,7 @@ import { PublicQuestion } from '@/types/form'
 import { setCurrentLocation } from '@/lib/utils/LocationUtils'
 import { FeatureTypeIcon } from '@/app/[locale]/incident/add/components/FeatureTypeIcon'
 import { ExtendedFeature } from '@/types/map'
+import FeatureTypeLegend from '@/app/[locale]/incident/add/components/FeatureTypeLegend'
 
 export type MapDialogContentProps = {
   onMapReady?: (map: MapRef) => void
@@ -72,6 +74,8 @@ const MapDialogContent = ({
     error,
     setError,
     handleFeatureMarkerClick,
+    openLegend,
+    setOpenLegend,
   } = useMapDialog(onMapReady, field, features, isAssetSelect)
 
   return (
@@ -93,6 +97,11 @@ const MapDialogContent = ({
           </ButtonGroup>
         </form>
       </AlertDialog>
+      <FeatureTypeLegend
+        featureTypes={field?.meta.featureTypes}
+        openLegend={openLegend}
+        setOpenLegend={setOpenLegend}
+      />
       <div className="col-span-1 flex flex-col min-h-[100vh] max-h-[100vh] md:max-h-screen gap-4 shadow-right z-10">
         <div className="flex flex-col overflow-y-auto gap-4 px-4 pt-4">
           <Heading level={1}>
@@ -283,6 +292,18 @@ const MapDialogContent = ({
               </IconButton>
             </ButtonGroup>
           )}
+
+          <div className="map-legend-group">
+            <Button
+              appearance="secondary-action-button"
+              onClick={() => {
+                setOpenLegend(!openLegend)
+              }}
+            >
+              <IconInfoCircle />
+              {t('legend')}
+            </Button>
+          </div>
         </div>
       )}
     </>
