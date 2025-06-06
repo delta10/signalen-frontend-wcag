@@ -84,41 +84,16 @@ export const processFeature = (
   description: string | null
   label: string | null
   id: string | number | undefined
-} => {
+} | null => {
   if (!properties) {
-    return {
-      featureType: null,
-      iconUrl: null,
-      description: null,
-      label: null,
-      id: undefined,
-    }
+    return null
   }
 
-  // Filter feature types that have the required idField in properties
-  const validFeatureTypes = featureTypes.filter((feature: FeatureType) =>
-    Object.hasOwn(properties, feature.idField)
-  )
+  const selectedFeatureType = getFeatureType(properties, featureTypes)
 
-  if (validFeatureTypes.length === 0) {
-    return {
-      featureType: null,
-      iconUrl: null,
-      description: null,
-      label: null,
-      id: undefined,
-    }
+  if (!selectedFeatureType) {
+    return null
   }
-
-  // Find matching type or use fallback
-  const matchedType = validFeatureTypes.find(
-    (featureType) =>
-      featureType.typeField &&
-      properties[featureType.typeField] === featureType.typeValue
-  )
-
-  const selectedFeatureType =
-    matchedType || validFeatureTypes[validFeatureTypes.length - 1]
 
   // Get feature ID
   const featureId = properties[selectedFeatureType.idField] || null
@@ -209,3 +184,11 @@ export const getMapStyleUrl = (isDarkMode: boolean): string => {
 
   return `${baseUrl}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`
 }
+
+const getFeatureType = (
+  properties: GeoJsonProperties,
+  featureTypes: FeatureType[]
+) =>
+  featureTypes.find(({ typeField, typeValue }) => {
+    return properties?.[typeField] === typeValue
+  })

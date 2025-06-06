@@ -126,7 +126,10 @@ const IncidentMapContent = () => {
         const featuresWithIds = featureCollection.features.map(
           (feature: Feature) => ({
             ...feature,
-            id: generateFeatureId(feature),
+            internal_id: generateFeatureId(feature),
+            properties: {
+              ...feature.properties,
+            },
           })
         )
 
@@ -216,6 +219,7 @@ const IncidentMapContent = () => {
     if (!selectedFeatureId || !features) {
       return
     }
+    // todo: check of dit goed gaat met id
     return features.find((feature: Feature) => feature.id === selectedFeatureId)
   }, [selectedFeatureId])
 

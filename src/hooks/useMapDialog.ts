@@ -97,26 +97,33 @@ function useMapDialog(
   // Set new map features with ID
   useEffect(() => {
     if (features && field) {
-      const featuresWithId = features.features.map((feature) => {
-        const preprocessFeature = processFeature(
-          field.meta.featureTypes,
-          feature.properties
-        )
+      const featuresWithId = features.features
+        .map((feature) => {
+          const preprocessFeature = processFeature(
+            field.meta.featureTypes,
+            feature.properties
+          )
 
-        return {
-          ...feature,
-          // @ts-ignore
-          id: preprocessFeature.id,
-          description: preprocessFeature.description,
-          label: preprocessFeature.label,
-          internal_id: generateFeatureId(feature),
-          properties: {
-            ...feature.properties,
-            iconUrl: preprocessFeature.iconUrl,
-          },
-        }
-      })
+          if (!preprocessFeature) {
+            return null
+          }
 
+          return {
+            ...feature,
+            // @ts-ignore
+            id: preprocessFeature.id,
+            description: preprocessFeature.description,
+            label: preprocessFeature.label,
+            internal_id: generateFeatureId(feature),
+            properties: {
+              ...feature.properties,
+              iconUrl: preprocessFeature.iconUrl,
+            },
+          }
+        })
+        .filter(Boolean)
+
+      // @ts-ignore
       setMapFeatures({ ...features, features: featuresWithId })
     }
   }, [features, field])
