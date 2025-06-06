@@ -1,5 +1,6 @@
 import { Feature } from 'geojson'
 import { Address, FormStep } from '@/types/form'
+import { ExtendedFeature } from '@/types/map'
 
 type FormStoreState = {
   description: string
@@ -9,7 +10,7 @@ type FormStoreState = {
   coordinates: number[]
   email?: string | null
   phone?: string | null
-  selectedFeatures: Feature[]
+  selectedFeatures: ExtendedFeature[]
   sharing_allowed?: boolean
   extra_properties: Array<{
     answer:

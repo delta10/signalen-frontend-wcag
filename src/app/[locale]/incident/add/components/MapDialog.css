@@ -5,6 +5,12 @@
   top: 0.5em;
 }
 
+.map-legend-group {
+  position: absolute;
+  left: 0.5em;
+  bottom: 0.5em;
+}
+
 .map-fullscreen-group {
   position: absolute;
   right: 0.5em;
@@ -14,7 +20,7 @@
 .map-list-group {
   position: absolute;
   left: 0.5em;
-  bottom: 0.5em;
+  bottom: 3em;
 }
 
 .map-location-alert {
