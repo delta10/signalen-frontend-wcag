@@ -47,12 +47,13 @@ import { setCurrentLocation } from '@/lib/utils/LocationUtils'
 import { getMapStyleUrl } from '@/lib/utils/map'
 import { ButtonLink } from '@utrecht/component-library-react'
 import { Paragraph } from '@utrecht/component-library-react/dist/css-module'
+import { ExtendedFeature } from '@/types/map'
 
 const IncidentMapContent = () => {
   const t = useTranslations('describe_add.map')
   const tIncidentMap = useTranslations('incident_map')
   const { dialogMap } = useMap()
-  const [features, setFeatures] = useState<Feature[]>([])
+  const [features, setFeatures] = useState<ExtendedFeature[]>([])
   const [selectedFeatureId, setSelectedFeatureId] = useState<any>(null)
   const [selectedFeatureAddress, setSelectedFeatureAddress] =
     useState<Address | null>(null)
@@ -133,6 +134,7 @@ const IncidentMapContent = () => {
           })
         )
 
+        // @ts-ignore
         setFeatures(featuresWithIds)
       }
     } catch (e) {
@@ -179,7 +181,7 @@ const IncidentMapContent = () => {
       return features
     }
 
-    return features.filter((feature: Feature) => {
+    return features.filter((feature: ExtendedFeature) => {
       const featureCategory = feature.properties?.category
       if (!featureCategory) return false
 
@@ -220,7 +222,9 @@ const IncidentMapContent = () => {
       return
     }
     // todo: check of dit goed gaat met id
-    return features.find((feature: Feature) => feature.id === selectedFeatureId)
+    return features.find(
+      (feature: ExtendedFeature) => feature.internal_id === selectedFeatureId
+    )
   }, [selectedFeatureId])
 
   // Update position, flyTo position, after this set the marker position
@@ -241,11 +245,11 @@ const IncidentMapContent = () => {
   // Handle click on feature marker, set selectedFeatures and show error if maxNumberOfAssets is reached
   const handleFeatureMarkerClick = async (
     event: MarkerEvent,
-    feature: Feature
+    feature: ExtendedFeature
   ) => {
     // @ts-ignore
     event.originalEvent?.stopPropagation()
-    setSelectedFeatureId(feature.id)
+    setSelectedFeatureId(feature.internal_id)
 
     const address = await getNewSelectedAddress(
       event.target.getLngLat().lat,
@@ -376,11 +380,11 @@ const IncidentMapContent = () => {
             }
           >
             {filteredFeatures &&
-              filteredFeatures.map((feature: Feature) => {
+              filteredFeatures.map((feature: ExtendedFeature) => {
                 return (
                   <Marker
                     className="hover:cursor-pointer"
-                    key={feature.id}
+                    key={feature.internal_id}
                     // @ts-ignore
                     longitude={feature.geometry?.coordinates[0]}
                     // @ts-ignore
@@ -389,7 +393,7 @@ const IncidentMapContent = () => {
                     onClick={(e) => handleFeatureMarkerClick(e, feature)}
                   >
                     {FeatureCategoryIcon(
-                      feature.id,
+                      feature.internal_id,
                       selectedFeatureId,
                       getFeatureCategoryIcon(feature),
                       config
