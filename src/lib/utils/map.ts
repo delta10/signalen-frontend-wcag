@@ -132,6 +132,7 @@ export const processFeature = (
     iconUrl: selectedFeatureType?.icon.iconUrl || null,
     description: description,
     label: label,
+    // Overwrite the id with the replacement value, when this is available it contains the attribute number of the feature which is more relevant than then given id.
     id: replacementValue ? replacementValue : featureId,
   }
 }
