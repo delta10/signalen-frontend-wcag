@@ -10,15 +10,12 @@ import { useTranslations } from 'next-intl'
 import { PublicQuestion } from '@/types/form'
 import { debounce, uniqBy } from 'lodash'
 import { useFormStore } from '@/store/form_store'
-import { Feature, FeatureCollection } from 'geojson'
+import { FeatureCollection } from 'geojson'
 import { getNearestAddressByCoordinate } from '@/services/location/address'
 import {
   formatAddressToSignalenInput,
-  getFeatureDescription,
-  getFeatureId,
-  getFeatureType,
   getMapStyleUrl,
-  isCoordinateInsideMaxBound,
+  processFeature,
 } from '@/lib/utils/map'
 import { useFormContext } from 'react-hook-form'
 import {
@@ -28,6 +25,8 @@ import {
 import { useDarkMode } from '@/hooks/useDarkMode'
 import { useWindowSize } from 'usehooks-ts'
 import { useConfig } from '@/contexts/ConfigContext'
+import { generateFeatureId } from '@/lib/utils/features'
+import { ExtendedFeature } from '@/types/map'
 
 function useMapDialog(
   onMapReady: ((map: MapRef) => void) | undefined,
@@ -48,6 +47,7 @@ function useMapDialog(
   const [mapFeatures, setMapFeatures] = useState<FeatureCollection | null>()
   const [focusedItemId, setFocusedItemId] = useState<number | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [openLegend, setOpenLegend] = useState<boolean>(false)
 
   const t = useTranslations('describe_add.map')
 
@@ -97,22 +97,39 @@ function useMapDialog(
 
   // Set new map features with ID
   useEffect(() => {
+    const start = performance.now()
+
     if (features && field) {
-      const featuresWithId = features.features.map((feature) => {
-        const featureType = getFeatureType(
-          field.meta.featureTypes,
-          feature.properties
-        )
+      const featuresWithId = features.features
+        .map((feature) => {
+          const preprocessFeature = processFeature(
+            field.meta.featureTypes,
+            feature.properties
+          )
 
-        return {
-          ...feature,
-          // @ts-ignore
-          id: getFeatureId(featureType, feature.properties),
-          description: getFeatureDescription(featureType, feature.properties),
-        }
-      })
+          if (!preprocessFeature) {
+            return null
+          }
 
+          return {
+            ...feature,
+            // @ts-ignore
+            id: preprocessFeature.id,
+            description: preprocessFeature.description,
+            label: preprocessFeature.label,
+            internal_id: generateFeatureId(feature),
+            properties: {
+              ...feature.properties,
+              iconUrl: preprocessFeature.iconUrl,
+            },
+          }
+        })
+        .filter(Boolean)
+
+      // @ts-ignore
       setMapFeatures({ ...features, features: featuresWithId })
+      const end = performance.now()
+      console.log(`usemapdialog took ${end - start} milliseconds`)
     }
   }, [features, field])
 
@@ -184,7 +201,7 @@ function useMapDialog(
           ? mapFeaturesToShow
           : []
 
-      return uniqBy([...features, ...formState.selectedFeatures], 'id')
+      return uniqBy([...features, ...formState.selectedFeatures], 'internal_id')
     }
 
     return []
@@ -193,12 +210,12 @@ function useMapDialog(
   // Handle click on feature marker, set selectedFeatures and show error if maxNumberOfAssets is reached
   const handleFeatureMarkerClick = async (
     event: MarkerEvent,
-    feature: Feature
+    feature: ExtendedFeature
   ) => {
     // @ts-ignore
     event.originalEvent?.stopPropagation()
     // @ts-ignore
-    const featureId = feature.id as number
+    const featureId = feature.internal_id as number
     const maxNumberOfAssets = field?.meta.maxNumberOfAssets || 1
 
     if (dialogMap && featureId) {
@@ -207,7 +224,7 @@ function useMapDialog(
       )
 
       const index = newSelectedFeatureArray.findIndex(
-        (feature) => feature.id === featureId
+        (feature: ExtendedFeature) => feature.internal_id === featureId
       )
 
       if (index !== -1) {
@@ -281,7 +298,7 @@ function useMapDialog(
             // @ts-ignore
             description: feature.description,
             // @ts-ignore
-            label: feature.description,
+            label: feature.label,
             type: 'Feature',
           }
         })
@@ -332,6 +349,8 @@ function useMapDialog(
     error,
     setError,
     handleFeatureMarkerClick,
+    openLegend,
+    setOpenLegend,
   }
 }
 

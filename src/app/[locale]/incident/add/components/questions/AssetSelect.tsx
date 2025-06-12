@@ -42,6 +42,7 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
   const tGeneral = useTranslations('general')
   const [dialogMap, setDialogMap] = useState<MapRef | null>(null)
   const [features, setFeatures] = useState<FeatureCollection | null>(null)
+  // loading assets wordt wel geset maar niet gebruikt
   const [loadingAssets, setLoadingAssets] = useState<boolean>(false)
 
   const onMapReady = (map: MapRef) => {
@@ -50,7 +51,11 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
 
   // Set new features on map move or zoom
   useEffect(() => {
+    let moveTimeout: NodeJS.Timeout | null = null
+
     const setNewFeatures = async () => {
+      const start = performance.now()
+
       setLoadingAssets(true)
       const bounds = dialogMap?.getBounds()
       const zoom = dialogMap?.getZoom()
@@ -72,23 +77,33 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
           .replace('{east}', bounds.getEast())
 
         const geojson = await getGeoJsonFeatures(endpoint)
-
         setFeatures(geojson)
+        const end = performance.now()
+        console.log(`assetselect took ${end - start} milliseconds`)
       }
+    }
+
+    const debouncedSetNewFeatures = () => {
+      if (moveTimeout) {
+        clearTimeout(moveTimeout)
+      }
+      moveTimeout = setTimeout(setNewFeatures, 20)
     }
 
     if (dialogMap) {
       dialogMap.on('load', setNewFeatures)
-      dialogMap.on('moveend', () => {
-        setLoadingAssets(false)
-      })
-      dialogMap.on('move', setNewFeatures)
+      dialogMap.on('moveend', setNewFeatures)
+      // dialogMap.on('moveend', () => {
+      //   setLoadingAssets(false)
+      // })
+      // dialogMap.on('move', debouncedSetNewFeatures)
     }
 
     return () => {
       if (dialogMap) {
         dialogMap.off('load', setNewFeatures)
-        dialogMap.off('move', setNewFeatures)
+        dialogMap.off('moveend', setNewFeatures)
+        // dialogMap.off('move', debouncedSetNewFeatures)
       }
     }
   }, [config, dialogMap, field])
@@ -123,7 +138,7 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
               // @ts-ignore
               description: feature.description,
               // @ts-ignore
-              label: feature.description,
+              label: feature.label,
               type: 'Feature',
             }
           })
@@ -193,12 +208,12 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
                         ? t('chosen_location_address_and_points', {
                             location: formStoreState.address.weergave_naam,
                             points: formStoreState.selectedFeatures
-                              .map((feature: any) => feature.description)
+                              .map((feature: any) => feature.label)
                               .join(', '),
                           })
                         : t('chosen_location_points', {
                             points: formStoreState.selectedFeatures
-                              .map((feature: any) => feature.description)
+                              .map((feature: any) => feature.label)
                               .join(', '),
                           })
                       : t('edit_location')
@@ -218,7 +233,7 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
         <ParagraphOrList
           entries={formStoreState.selectedFeatures.map((feature: any) => [
             feature.id,
-            feature.description,
+            feature.label,
           ])}
         />
       </div>

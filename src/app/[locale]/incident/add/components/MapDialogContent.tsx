@@ -4,7 +4,6 @@ import {
   Button,
   ButtonGroup,
   Heading,
-  Icon,
   IconButton,
   MapMarker,
   Paragraph,
@@ -14,6 +13,7 @@ import MapExplainerAccordion from '@/app/[locale]/incident/add/components/questi
 import { AddressCombobox } from '@/components/ui/AddressCombobox'
 import {
   IconCurrentLocation,
+  IconInfoCircle,
   IconMinus,
   IconPlus,
   IconX,
@@ -28,6 +28,9 @@ import { useFormStore } from '@/store/form_store'
 import { FeatureCollection } from 'geojson'
 import { PublicQuestion } from '@/types/form'
 import { setCurrentLocation } from '@/lib/utils/LocationUtils'
+import { FeatureTypeIcon } from '@/app/[locale]/incident/add/components/FeatureTypeIcon'
+import { ExtendedFeature } from '@/types/map'
+import FeatureTypeLegend from '@/app/[locale]/incident/add/components/FeatureTypeLegend'
 
 export type MapDialogContentProps = {
   onMapReady?: (map: MapRef) => void
@@ -42,7 +45,6 @@ const MapDialogContent = ({
   field,
   features,
   isAssetSelect = false,
-  loadingAssets = false,
 }: MapDialogContentProps) => {
   const mapContainerRef = useRef<HTMLDivElement>(null)
   const { formState } = useFormStore()
@@ -72,6 +74,8 @@ const MapDialogContent = ({
     error,
     setError,
     handleFeatureMarkerClick,
+    openLegend,
+    setOpenLegend,
   } = useMapDialog(onMapReady, field, features, isAssetSelect)
 
   return (
@@ -93,6 +97,11 @@ const MapDialogContent = ({
           </ButtonGroup>
         </form>
       </AlertDialog>
+      <FeatureTypeLegend
+        featureTypes={field?.meta.featureTypes}
+        openLegend={openLegend}
+        setOpenLegend={setOpenLegend}
+      />
       <div className="col-span-1 flex flex-col min-h-[100vh] max-h-[100vh] md:max-h-screen gap-4 shadow-right z-10">
         <div className="flex flex-col overflow-y-auto gap-4 px-4 pt-4">
           <Heading level={1}>
@@ -133,7 +142,7 @@ const MapDialogContent = ({
                       <FeatureListItem
                         configUrl={config?.base.assets_url}
                         feature={feature}
-                        key={feature.id}
+                        key={feature.internal_id}
                         field={field}
                         setError={setError}
                         dialogRef={dialogRef}
@@ -208,8 +217,12 @@ const MapDialogContent = ({
               dialogMap &&
               dialogMap.getZoom() >= config.base.map.minimal_zoom &&
               mapFeatures?.features.map((feature) => {
-                const id = feature.id as number
-
+                const extendedFeature = feature as ExtendedFeature
+                const id = extendedFeature.internal_id
+                const isSelected = formState.selectedFeatures.some(
+                  (featureItem) => featureItem.internal_id === id
+                )
+                const isFocused = focusedItemId === id
                 return (
                   <Marker
                     key={id}
@@ -217,31 +230,16 @@ const MapDialogContent = ({
                     longitude={feature.geometry?.coordinates[0]}
                     // @ts-ignore
                     latitude={feature.geometry?.coordinates[1]}
-                    // @ts-ignore
-                    onClick={(e) => handleFeatureMarkerClick(e, feature)}
+                    onClick={(e) =>
+                      // @ts-ignore
+                      handleFeatureMarkerClick(e, extendedFeature)
+                    }
                   >
-                    {!formState.selectedFeatures.some(
-                      (featureItem) => featureItem.id === id
-                    ) ? (
-                      focusedItemId === id ? (
-                        <Icon>
-                          <div className="focused-map-marker"></div>
-                        </Icon>
-                      ) : (
-                        <Icon>
-                          <img src={field?.meta.featureTypes[0].icon.iconUrl} />
-                        </Icon>
-                      )
-                    ) : (
-                      <Icon>
-                        <img
-                          src={
-                            config.base.assets_url +
-                            '/assets/images/feature-selected-marker.svg'
-                          }
-                        />
-                      </Icon>
-                    )}
+                    <FeatureTypeIcon
+                      isSelected={isSelected}
+                      isFocused={isFocused}
+                      iconUrl={feature.properties?.iconUrl}
+                    />
                   </Marker>
                 )
               })}
@@ -294,6 +292,18 @@ const MapDialogContent = ({
               </IconButton>
             </ButtonGroup>
           )}
+
+          <div className="map-legend-group">
+            <Button
+              appearance="secondary-action-button"
+              onClick={() => {
+                setOpenLegend(!openLegend)
+              }}
+            >
+              <IconInfoCircle />
+              {t('legend')}
+            </Button>
+          </div>
         </div>
       )}
     </>

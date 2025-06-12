@@ -51,7 +51,6 @@ const IncidentMapMobileSidebar = ({
       activeSnapPoint={snap}
       setActiveSnapPoint={setSnap}
       modal={disableBackground}
-      autoFocus={true}
       open={openDrawer}
       onOpenChange={setOpenDrawer}
     >

@@ -26,6 +26,8 @@ export type FeatureType = {
   label: string
   idField: string
   description: string
+  typeField: string
+  typeValue: string
 }
 
 export enum FormStep {
