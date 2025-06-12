@@ -218,7 +218,7 @@ const MapDialogContent = ({
               dialogMap.getZoom() >= config.base.map.minimal_zoom &&
               mapFeatures?.features.map((feature) => {
                 const extendedFeature = feature as ExtendedFeature
-                const id = extendedFeature.internal_id as number
+                const id = extendedFeature.internal_id
                 const isSelected = formState.selectedFeatures.some(
                   (featureItem) => featureItem.internal_id === id
                 )

@@ -221,7 +221,7 @@ const IncidentMapContent = () => {
     if (!selectedFeatureId || !features) {
       return
     }
-    // todo: check of dit goed gaat met id
+
     return features.find(
       (feature: ExtendedFeature) => feature.internal_id === selectedFeatureId
     )
