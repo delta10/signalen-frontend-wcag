@@ -50,6 +50,8 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
 
   // Set new features on map move or zoom
   useEffect(() => {
+    let moveTimeout: NodeJS.Timeout | null = null
+
     const setNewFeatures = async () => {
       setLoadingAssets(true)
       const bounds = dialogMap?.getBounds()
@@ -76,18 +78,25 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
       }
     }
 
+    const debouncedSetNewFeatures = () => {
+      if (moveTimeout) {
+        clearTimeout(moveTimeout)
+      }
+      moveTimeout = setTimeout(setNewFeatures, 100) // 500ms delay
+    }
+
     if (dialogMap) {
       dialogMap.on('load', setNewFeatures)
       dialogMap.on('moveend', () => {
         setLoadingAssets(false)
       })
-      dialogMap.on('move', setNewFeatures)
+      dialogMap.on('move', debouncedSetNewFeatures)
     }
 
     return () => {
       if (dialogMap) {
         dialogMap.off('load', setNewFeatures)
-        dialogMap.off('move', setNewFeatures)
+        dialogMap.off('move', debouncedSetNewFeatures)
       }
     }
   }, [config, dialogMap, field])
