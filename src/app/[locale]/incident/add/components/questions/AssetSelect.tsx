@@ -42,6 +42,7 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
   const tGeneral = useTranslations('general')
   const [dialogMap, setDialogMap] = useState<MapRef | null>(null)
   const [features, setFeatures] = useState<FeatureCollection | null>(null)
+  // loading assets wordt wel geset maar niet gebruikt
   const [loadingAssets, setLoadingAssets] = useState<boolean>(false)
 
   const onMapReady = (map: MapRef) => {
@@ -82,21 +83,23 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
       if (moveTimeout) {
         clearTimeout(moveTimeout)
       }
-      moveTimeout = setTimeout(setNewFeatures, 100) // 500ms delay
+      moveTimeout = setTimeout(setNewFeatures, 20)
     }
 
     if (dialogMap) {
       dialogMap.on('load', setNewFeatures)
-      dialogMap.on('moveend', () => {
-        setLoadingAssets(false)
-      })
-      dialogMap.on('move', debouncedSetNewFeatures)
+      dialogMap.on('moveend', setNewFeatures)
+      // dialogMap.on('moveend', () => {
+      //   setLoadingAssets(false)
+      // })
+      // dialogMap.on('move', debouncedSetNewFeatures)
     }
 
     return () => {
       if (dialogMap) {
         dialogMap.off('load', setNewFeatures)
-        dialogMap.off('move', debouncedSetNewFeatures)
+        dialogMap.off('moveend', setNewFeatures)
+        // dialogMap.off('move', debouncedSetNewFeatures)
       }
     }
   }, [config, dialogMap, field])
