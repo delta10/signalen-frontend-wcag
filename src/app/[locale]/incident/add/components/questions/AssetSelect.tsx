@@ -54,6 +54,8 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
     let moveTimeout: NodeJS.Timeout | null = null
 
     const setNewFeatures = async () => {
+      const start = performance.now()
+
       setLoadingAssets(true)
       const bounds = dialogMap?.getBounds()
       const zoom = dialogMap?.getZoom()
@@ -76,6 +78,8 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
 
         const geojson = await getGeoJsonFeatures(endpoint)
         setFeatures(geojson)
+        const end = performance.now()
+        console.log(`assetselect took ${end - start} milliseconds`)
       }
     }
 

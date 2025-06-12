@@ -97,6 +97,8 @@ function useMapDialog(
 
   // Set new map features with ID
   useEffect(() => {
+    const start = performance.now()
+
     if (features && field) {
       const featuresWithId = features.features
         .map((feature) => {
@@ -126,6 +128,8 @@ function useMapDialog(
 
       // @ts-ignore
       setMapFeatures({ ...features, features: featuresWithId })
+      const end = performance.now()
+      console.log(`usemapdialog took ${end - start} milliseconds`)
     }
   }, [features, field])
 
