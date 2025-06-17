@@ -42,6 +42,7 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
   const tGeneral = useTranslations('general')
   const [dialogMap, setDialogMap] = useState<MapRef | null>(null)
   const [features, setFeatures] = useState<FeatureCollection | null>(null)
+  // loading assets wordt wel geset maar niet gebruikt
   const [loadingAssets, setLoadingAssets] = useState<boolean>(false)
 
   const onMapReady = (map: MapRef) => {
@@ -72,23 +73,19 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
           .replace('{east}', bounds.getEast())
 
         const geojson = await getGeoJsonFeatures(endpoint)
-
         setFeatures(geojson)
       }
     }
 
     if (dialogMap) {
       dialogMap.on('load', setNewFeatures)
-      dialogMap.on('moveend', () => {
-        setLoadingAssets(false)
-      })
-      dialogMap.on('move', setNewFeatures)
+      dialogMap.on('moveend', setNewFeatures)
     }
 
     return () => {
       if (dialogMap) {
         dialogMap.off('load', setNewFeatures)
-        dialogMap.off('move', setNewFeatures)
+        dialogMap.off('moveend', setNewFeatures)
       }
     }
   }, [config, dialogMap, field])
@@ -123,7 +120,7 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
               // @ts-ignore
               description: feature.description,
               // @ts-ignore
-              label: feature.description,
+              label: feature.label,
               type: 'Feature',
             }
           })
@@ -193,12 +190,12 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
                         ? t('chosen_location_address_and_points', {
                             location: formStoreState.address.weergave_naam,
                             points: formStoreState.selectedFeatures
-                              .map((feature: any) => feature.description)
+                              .map((feature: any) => feature.label)
                               .join(', '),
                           })
                         : t('chosen_location_points', {
                             points: formStoreState.selectedFeatures
-                              .map((feature: any) => feature.description)
+                              .map((feature: any) => feature.label)
                               .join(', '),
                           })
                       : t('edit_location')
@@ -218,7 +215,7 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
         <ParagraphOrList
           entries={formStoreState.selectedFeatures.map((feature: any) => [
             feature.id,
-            feature.description,
+            feature.label,
           ])}
         />
       </div>

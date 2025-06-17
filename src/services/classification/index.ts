@@ -7,7 +7,6 @@ const SUB_SLUG_REGEX =
 
 export const getCategoryForDescription = async (description: string) => {
   const axios = axiosInstance(process.env.NEXT_PUBLIC_BASE_URL_API)
-
   let prediction = {
     main: 'overig',
     sub: 'overig',

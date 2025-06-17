@@ -18,6 +18,7 @@ import {
   IconArrowsDiagonalMinimize2,
   IconChevronLeft,
   IconCurrentLocation,
+  IconInfoCircle,
   IconMinus,
   IconPlus,
   IconX,
@@ -37,6 +38,9 @@ import { useFormStore } from '@/store/form_store'
 import clsx from 'clsx'
 import MapExplainerAccordion from '@/app/[locale]/incident/add/components/questions/MapExplainerAccordion'
 import { setCurrentLocation } from '@/lib/utils/LocationUtils'
+import { FeatureTypeIcon } from '@/app/[locale]/incident/add/components/FeatureTypeIcon'
+import { ExtendedFeature } from '@/types/map'
+import FeatureTypeLegend from '@/app/[locale]/incident/add/components/FeatureTypeLegend'
 
 const MapDialogMobileContent = ({
   onMapReady,
@@ -76,6 +80,8 @@ const MapDialogMobileContent = ({
     error,
     setError,
     handleFeatureMarkerClick,
+    openLegend,
+    setOpenLegend,
   } = useMapDialog(onMapReady, field, features, isAssetSelect)
 
   const toggleList = () => {
@@ -99,7 +105,12 @@ const MapDialogMobileContent = ({
           </ButtonGroup>
         </form>
       </AlertDialog>
-
+      <FeatureTypeLegend
+        featureTypes={field?.meta.featureTypes}
+        openLegend={openLegend}
+        setOpenLegend={setOpenLegend}
+        mobile={true}
+      />
       <div
         className={clsx(
           'flex flex-col  z-10',
@@ -216,8 +227,12 @@ const MapDialogMobileContent = ({
               dialogMap &&
               dialogMap.getZoom() >= config.base.map.minimal_zoom &&
               mapFeatures?.features.map((feature) => {
-                const id = feature.id as number
-
+                const extendedFeature = feature as ExtendedFeature
+                const id = extendedFeature.internal_id
+                const isSelected = formState.selectedFeatures.some(
+                  (featureItem) => featureItem.internal_id === id
+                )
+                const isFocused = focusedItemId === id
                 return (
                   <Marker
                     key={id}
@@ -228,28 +243,11 @@ const MapDialogMobileContent = ({
                     // @ts-ignore
                     onClick={(e) => handleFeatureMarkerClick(e, feature)}
                   >
-                    {!formState.selectedFeatures.some(
-                      (featureItem) => featureItem.id === id
-                    ) ? (
-                      focusedItemId === id ? (
-                        <Icon>
-                          <div className="focused-map-marker"></div>
-                        </Icon>
-                      ) : (
-                        <Icon>
-                          <img src={field?.meta.featureTypes[0].icon.iconUrl} />
-                        </Icon>
-                      )
-                    ) : (
-                      <Icon>
-                        <img
-                          src={
-                            config.base.assets_url +
-                            '/assets/images/feature-selected-marker.svg'
-                          }
-                        />
-                      </Icon>
-                    )}
+                    <FeatureTypeIcon
+                      isSelected={isSelected}
+                      isFocused={isFocused}
+                      iconUrl={feature.properties?.iconUrl}
+                    />
                   </Marker>
                 )
               })}
@@ -297,6 +295,20 @@ const MapDialogMobileContent = ({
                 className="utrecht-button--subtle map-icon-button mobile"
               >
                 {t('show_list', { name: objectDisplayName.plural })}
+              </Button>
+            </div>
+          )}
+          {isAssetSelect && (
+            <div className="map-legend-group">
+              <Button
+                className="utrecht-button--subtle map-icon-button mobile"
+                appearance="secondary-action-button"
+                onClick={() => {
+                  setOpenLegend(!openLegend)
+                }}
+              >
+                <IconInfoCircle />
+                {t('legend')}
               </Button>
             </div>
           )}

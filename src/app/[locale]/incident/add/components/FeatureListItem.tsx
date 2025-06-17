@@ -1,17 +1,15 @@
-import React, { Dispatch, RefObject, SetStateAction, useMemo } from 'react'
-import { getFeatureType } from '@/lib/utils/map'
-import { Feature, FeatureCollection } from 'geojson'
+import React, { Dispatch, RefObject, SetStateAction } from 'react'
 import { PublicQuestion } from '@/types/form'
-import { MapRef } from 'react-map-gl/maplibre'
 import { FormField, FormFieldCheckbox, Icon } from '@/components/index'
 import { useTranslations } from 'next-intl'
-import { FeatureWithDescription } from '@/types/map'
+import { ExtendedFeature } from '@/types/map'
 import { useFormStore } from '@/store/form_store'
 import { getFirstFeatureOrCurrentAddress } from '@/lib/utils/address'
 import { useConfig } from '@/contexts/ConfigContext'
+import { FeatureTypeIcon } from '@/app/[locale]/incident/add/components/FeatureTypeIcon'
 
 type FeatureListItemProps = {
-  feature: FeatureWithDescription
+  feature: ExtendedFeature
   field: PublicQuestion
   setError: Dispatch<SetStateAction<string | null>>
   dialogRef: RefObject<HTMLDialogElement>
@@ -24,25 +22,20 @@ export const FeatureListItem = ({
   field,
   setError,
   dialogRef,
-  configUrl,
   setFocusedItemId,
 }: FeatureListItemProps) => {
   const t = useTranslations('describe_add.map')
   const { formState, updateForm } = useFormStore()
   const config = useConfig()
 
-  const featureId = feature.id
-  const featureDescription = feature.description
+  // @ts-ignore
+  const featureId = feature.internal_id
+  const featureLabel = `${feature.label}`
   const maxNumberOfAssets = field
     ? field.meta.maxNumberOfAssets
       ? field.meta.maxNumberOfAssets
       : 1
     : 1
-
-  // Get feature type of asset
-  const featureType = useMemo(() => {
-    return getFeatureType(field.meta.featureTypes, feature.properties)
-  }, [field.meta.featureTypes, feature.properties])
 
   // Add or remove feature to / from the newSelectedFeature state declared in DialogMap
   const addOrRemoveFeature = async (checked: boolean) => {
@@ -61,10 +54,13 @@ export const FeatureListItem = ({
       newSelectedFeatureArray.push(feature)
     } else {
       const index = newSelectedFeatureArray.findIndex(
-        (feature) => feature.id === featureId
+        (feature) => feature.internal_id === featureId
       )
 
       newSelectedFeatureArray.splice(index, 1) // Remove the feature at the found index
+      setTimeout(() => {
+        setFocusedItemId(null)
+      }, 10)
     }
 
     const address = await getFirstFeatureOrCurrentAddress(
@@ -85,7 +81,8 @@ export const FeatureListItem = ({
   }
 
   // TODO: iets van een label toevoegen zodat voor een SR duidelijk wordt om welke lantaarnpaal, adres etc het gaat?
-  return featureDescription ? (
+  // @ts-ignore
+  return featureLabel ? (
     <li className="py-4 border-t disabled-border-1">
       <FormField
         className="flex flex-row items-center gap-2"
@@ -100,24 +97,13 @@ export const FeatureListItem = ({
           }, 0)
         }}
       >
-        {!formState.selectedFeatures.some(
-          (featureItem) => featureItem.id === featureId
-        ) ? (
-          <Icon>
-            <img src={featureType?.icon.iconUrl} />
-          </Icon>
-        ) : (
-          <Icon>
-            <img
-              src={configUrl + '/assets/images/feature-selected-marker.svg'}
-            />
-          </Icon>
-        )}
+        <FeatureTypeIcon iconUrl={feature.properties?.iconUrl} />
         <FormFieldCheckbox
-          label={featureDescription}
+          label={featureLabel}
           className="!mt-1"
+          // @ts-ignore
           checked={formState.selectedFeatures.some(
-            (featureItem) => featureItem.id === featureId
+            (featureItem) => featureItem.internal_id === featureId
           )}
           id={featureId.toString()}
           // @ts-ignore
