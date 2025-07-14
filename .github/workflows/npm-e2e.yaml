@@ -26,10 +26,6 @@ jobs:
       - name: Install dependencies
         run: npm ci && npm run install-test-browsers
 
-      - name: Create .env.local
-        run: |
-          echo "NEXT_PUBLIC_BYPASS_API=true" > .env.local
-
       - name: Build project
         run: npm run build
 
