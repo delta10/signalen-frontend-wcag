@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "clean": "rimraf .next/ tmp/",
-    "dev": "next dev",
+    "dev": "next dev -p 3000",
     "build": "next build",
     "install-test-browsers": "playwright install --with-deps",
     "start": "next start",
