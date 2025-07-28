@@ -1,7 +1,7 @@
 .file-upload-box {
   width: 100px;
   height: 100px;
-  border: 1px dashed var(--basis-document-subtle-color);
+  border: 1px dashed var(--basis-document-subtle-color, currentColor);
 }
 
 .file-upload-box > label {
