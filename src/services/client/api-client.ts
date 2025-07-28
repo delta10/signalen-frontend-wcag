@@ -7,7 +7,7 @@ import { ApiRequestOptions } from '@/services/client/core/ApiRequestOptions'
 
 export const axiosInstance = (baseUrl?: string): AxiosInstance => {
   const instance = axios.create({
-    baseURL: baseUrl ? baseUrl : process.env.NEXT_PUBLIC_BASE_URL_API,
+    baseURL: config?.baseUrlApi ? config?.baseUrlApi : process.env.NEXT_PUBLIC_BASE_URL_API,
   })
 
   axiosRetry(instance)

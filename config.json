@@ -1,4 +1,10 @@
 {
+  "baseUrlApi": "https://wtf.delta10.cloud",
+  "pdokUrlApi": "https://geodata.nationaalgeoregister.nl/locatieserver/v3",
+  "frontendUrl": "https://signalen.demo.meierijstad.delta10.cloud",
+  "maptilerApiKey": "https://tiles.demo.meierijstad.delta10.cloud",
+  "maptilerMap": "https://api.maptiler.com/maps/nl-cartiqo-topo",
+  "maptilerMapDarkMode": "https://api.maptiler.com/maps/streets-v2-dark",
   "base": {
     "municipality": "meierijstad",
     "municipality_display_name": "Purmerend",
