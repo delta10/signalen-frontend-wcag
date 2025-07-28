@@ -1,5 +1,5 @@
 {
-  "baseUrlApi": "https://wtf.delta10.cloud",
+  "baseUrlApi": "https://lala.delta10.cloud",
   "pdokUrlApi": "https://geodata.nationaalgeoregister.nl/locatieserver/v3",
   "frontendUrl": "https://signalen.demo.meierijstad.delta10.cloud",
   "maptilerApiKey": "https://tiles.demo.meierijstad.delta10.cloud",

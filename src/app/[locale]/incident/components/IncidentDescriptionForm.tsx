@@ -27,6 +27,7 @@ import { getCurrentStep, getNextStepPath } from '@/lib/utils/stepper'
 import { getAttachments } from '@/lib/utils/attachments'
 import { clsx } from 'clsx'
 import useDebounce from '@/hooks/useDebounce'
+import { useConfig } from '@/contexts/ConfigContext'
 
 export const IncidentDescriptionForm = () => {
   const t = useTranslations('describe_report.form')
@@ -37,6 +38,7 @@ export const IncidentDescriptionForm = () => {
   const step = getCurrentStep(pathname)
   const descriptionId = useId()
   const errorMessageId = useId()
+  const config = useConfig()
 
   useEffect(() => {
     router.prefetch('/incident/add')
@@ -80,7 +82,7 @@ export const IncidentDescriptionForm = () => {
 
     async function fetchCategory() {
       const { main, sub } =
-        await getCategoryForDescription(debouncedDescription)
+        await getCategoryForDescription(debouncedDescription, config?.baseUrlApi)
 
       updateForm({
         ...formState,

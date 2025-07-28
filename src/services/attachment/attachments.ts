@@ -5,10 +5,10 @@ import { useConfig } from '@/contexts/ConfigContext'
 
 export const postAttachments = async (
   uuid: string,
-  formData: FormData
+  formData: FormData,
+  baseUrl?: string
 ): Promise<PublicSignalAttachment> => {
-  const config = useConfig()
-  const axios = await axiosInstance(config?.baseUrlApi)
+  const axios = axiosInstance(baseUrl)
 
   try {
     const response: AxiosResponse<PublicSignalAttachment> = await axios.post(

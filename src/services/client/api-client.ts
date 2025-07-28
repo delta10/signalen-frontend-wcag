@@ -4,12 +4,10 @@ import { request as __request } from '@/services/client/core/request'
 import type { OpenAPIConfig } from '../client'
 import { BaseHttpRequest, CancelablePromise, SignalsClient } from '../client'
 import { ApiRequestOptions } from '@/services/client/core/ApiRequestOptions'
-import { getServerConfig } from '../config/config'
 
-export const axiosInstance = async (baseUrl?: string): Promise<AxiosInstance> => {
-  const config = await getServerConfig()
+export const axiosInstance = (baseUrl?: string): AxiosInstance => {
   const instance = axios.create({
-    baseURL: config?.baseUrlApi ? config?.baseUrlApi : process.env.NEXT_PUBLIC_BASE_URL_API,
+    baseURL: baseUrl ? baseUrl : process.env.NEXT_PUBLIC_BASE_URL_API,
   })
 
   axiosRetry(instance)
@@ -18,19 +16,14 @@ export const axiosInstance = async (baseUrl?: string): Promise<AxiosInstance> =>
 }
 
 class AxiosHttpRequestWithRetry extends BaseHttpRequest {
-  axiosInstance: AxiosInstance | undefined
+  axiosInstance: AxiosInstance
 
   constructor(config: OpenAPIConfig) {
     super(config)
-    axiosInstance().then(instance => {
-      this.axiosInstance = instance
-    })
+    this.axiosInstance = axiosInstance()
   }
 
   public override request<T>(options: ApiRequestOptions): CancelablePromise<T> {
-    if (!this.axiosInstance) {
-      throw new Error('Axios instance not initialized yet')
-    }
     return __request(this.config, options, this.axiosInstance)
   }
 }

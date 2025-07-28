@@ -111,7 +111,7 @@ const IncidentSummaryForm = () => {
                 const formData = new FormData()
                 formData.append('signal_id', signalId)
                 formData.append('file', attachment)
-                return postAttachments(signalId, formData)
+                return postAttachments(signalId, formData, config?.baseUrlApi)
               })
             )
           } catch (e) {

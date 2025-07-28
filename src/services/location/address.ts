@@ -12,10 +12,10 @@ import { useConfig } from '@/contexts/ConfigContext'
 // @throws {Error} - Throws an error if the request fails
 export const getSuggestedAddresses = async (
   searchQuery: string,
-  municipality: string
+  municipality: string,
+  baseUrl: string
 ): Promise<AddressSuggestResponse> => {
-  const config = useConfig()
-  const axios = await axiosInstance(config?.pdokUrlApi)
+  const axios = axiosInstance(baseUrl)
 
   try {
     const response: AxiosResponse<AddressSuggestResponse> = await axios.get(
@@ -39,7 +39,7 @@ export const getNearestAddressByCoordinate = async (
   lng: number,
   distance: number
 ) => {
-  const axios = await axiosInstance(process.env.NEXT_PUBLIC_PDOK_URL_API)
+  const axios = axiosInstance(process.env.NEXT_PUBLIC_PDOK_URL_API)
 
   try {
     const response: AxiosResponse<AddressCoordinateResponse> = await axios.get(
