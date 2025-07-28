@@ -8,7 +8,7 @@ export const postAttachments = async (
   formData: FormData
 ): Promise<PublicSignalAttachment> => {
   const config = useConfig()
-  const axios = axiosInstance(config?.baseUrlApi)
+  const axios = await axiosInstance(config?.baseUrlApi)
 
   try {
     const response: AxiosResponse<PublicSignalAttachment> = await axios.post(

@@ -9,7 +9,7 @@ import { FeatureCollection } from 'geojson'
 export const getGeoJsonFeatures = async (
   url: string
 ): Promise<FeatureCollection> => {
-  const axios = axiosInstance(url)
+  const axios = await axiosInstance(url)
 
   try {
     const response: AxiosResponse<FeatureCollection> = await axios.get('')

@@ -2,6 +2,8 @@ import { axiosInstance } from '@/services/client/api-client'
 import { AxiosResponse } from 'axios'
 import { AddressCoordinateResponse, AddressSuggestResponse } from '@/types/pdok'
 import { FormStoreState } from '@/types/stores'
+import { useConfig } from '@/contexts/ConfigContext'
+
 
 // Fetches suggested addresses from PDOK API based on search query and municipality
 // @param {string} searchQuery - Text to search for addresses
@@ -12,7 +14,8 @@ export const getSuggestedAddresses = async (
   searchQuery: string,
   municipality: string
 ): Promise<AddressSuggestResponse> => {
-  const axios = axiosInstance(process.env.NEXT_PUBLIC_PDOK_URL_API)
+  const config = useConfig()
+  const axios = await axiosInstance(config?.pdokUrlApi)
 
   try {
     const response: AxiosResponse<AddressSuggestResponse> = await axios.get(
@@ -36,7 +39,7 @@ export const getNearestAddressByCoordinate = async (
   lng: number,
   distance: number
 ) => {
-  const axios = axiosInstance(process.env.NEXT_PUBLIC_PDOK_URL_API)
+  const axios = await axiosInstance(process.env.NEXT_PUBLIC_PDOK_URL_API)
 
   try {
     const response: AxiosResponse<AddressCoordinateResponse> = await axios.get(

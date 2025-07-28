@@ -4,7 +4,7 @@ import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentF
 import { useLocale, useTranslations } from 'next-intl'
 import { Divider } from '@/components/ui/Divider'
 import React, { ReactNode, useEffect, useState } from 'react'
-import { useSignalsClient } from '@/hooks/useSignalsClient'
+import { signalsClient } from '@/services/client/api-client'
 import { stepToPath, usePathname, useRouter } from '@/routing/navigation'
 import { postAttachments } from '@/services/attachment/attachments'
 import { useFormStore } from '@/store/form_store'
@@ -43,9 +43,8 @@ const IncidentSummaryForm = () => {
   const [files, setFiles] = useState<File[]>([])
   const pathname = usePathname()
   const step = getCurrentStep(pathname)
-  const config = useConfig()
   const locale = useLocale()
-  const signalsClient = useSignalsClient()
+  const config = useConfig()
 
   useEffect(() => {
     router.prefetch('/incident/thankyou')
