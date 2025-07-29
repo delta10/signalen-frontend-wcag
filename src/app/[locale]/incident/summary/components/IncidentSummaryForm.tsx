@@ -43,8 +43,8 @@ const IncidentSummaryForm = () => {
   const [files, setFiles] = useState<File[]>([])
   const pathname = usePathname()
   const step = getCurrentStep(pathname)
-  const locale = useLocale()
   const config = useConfig()
+  const locale = useLocale()
 
   useEffect(() => {
     router.prefetch('/incident/thankyou')

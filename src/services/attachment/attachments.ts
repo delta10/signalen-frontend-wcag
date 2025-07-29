@@ -1,7 +1,6 @@
 import { axiosInstance } from '@/services/client/api-client'
 import { AxiosResponse } from 'axios'
 import type { PublicSignalAttachment } from '@/services/client'
-import { useConfig } from '@/contexts/ConfigContext'
 
 export const postAttachments = async (
   uuid: string,
