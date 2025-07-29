@@ -1,5 +1,5 @@
 {
-  "baseUrlApi": "https://lala.delta10.cloud",
+  "baseUrlApi": "https://api.meldingen.demo.meierijstad.delta10.cloud/",
   "pdokUrlApi": "https://api.pdok.nl/bzk/locatieserver/",
   "frontendUrl": "https://signalen.demo.meierijstad.delta10.cloud",
   "maptilerApiKey": "x0IfDO01xuLQQKYlSzuz",
