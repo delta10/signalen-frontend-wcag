@@ -39,7 +39,8 @@ export const getNearestAddressByCoordinate = async (
   lng: number,
   distance: number
 ) => {
-  const axios = axiosInstance(process.env.NEXT_PUBLIC_PDOK_URL_API)
+  const config = useConfig()
+  const axios = axiosInstance(config?.pdokUrlApi)
 
   try {
     const response: AxiosResponse<AddressCoordinateResponse> = await axios.get(

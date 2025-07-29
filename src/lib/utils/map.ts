@@ -4,6 +4,7 @@ import {
   isTemplateString,
   parseTemplateString,
 } from '@/lib/utils/parseTemplateString'
+import { useConfig } from '@/contexts/ConfigContext'
 
 // Validates if the argument is a coordinate pair [longitude, latitude]
 // @param {unknown} arg - Input to validate
@@ -179,11 +180,12 @@ export const formatAddressToSignalenInput = (
  * @returns A full MapTiler style URL with the appropriate theme and API key.
  */
 export const getMapStyleUrl = (isDarkMode: boolean): string => {
+  const config = useConfig()
   const baseUrl = isDarkMode
-    ? process.env.NEXT_PUBLIC_MAPTILER_MAP_DARK_MODE
-    : process.env.NEXT_PUBLIC_MAPTILER_MAP
+    ? config?.maptilerMapDarkMode
+    : config?.maptilerMap
 
-  return `${baseUrl}/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`
+  return `${baseUrl}/style.json?key=${config?.maptilerApiKey}`
 }
 
 const getFeatureType = (
