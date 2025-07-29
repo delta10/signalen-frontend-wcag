@@ -1,10 +1,10 @@
 export type AppConfig = {
   maptilerApiKey: string
-  maptilerMap: string,
-  maptilerMapDarkMode: string,
-  pdokUrlApi: string,
-  frontendUrl: string,
-  baseUrlApi: string,
+  maptilerMap: string
+  maptilerMapDarkMode: string
+  pdokUrlApi: string
+  frontendUrl: string
+  baseUrlApi: string
   base: {
     municipality: string
     municipality_display_name: string

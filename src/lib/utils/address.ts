@@ -11,7 +11,8 @@ export const getNewSelectedAddress = async (
   const address = await getNearestAddressByCoordinate(
     lat,
     lng,
-    config ? config.base.map.find_address_in_distance : 30
+    config ? config.base.map.find_address_in_distance : 30,
+    config?.baseUrlApi
   )
 
   return address

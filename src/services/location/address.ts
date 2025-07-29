@@ -2,8 +2,6 @@ import { axiosInstance } from '@/services/client/api-client'
 import { AxiosResponse } from 'axios'
 import { AddressCoordinateResponse, AddressSuggestResponse } from '@/types/pdok'
 import { FormStoreState } from '@/types/stores'
-import { useConfig } from '@/contexts/ConfigContext'
-
 
 // Fetches suggested addresses from PDOK API based on search query and municipality
 // @param {string} searchQuery - Text to search for addresses
@@ -13,8 +11,12 @@ import { useConfig } from '@/contexts/ConfigContext'
 export const getSuggestedAddresses = async (
   searchQuery: string,
   municipality: string,
-  baseUrl: string
+  baseUrl: string | undefined
 ): Promise<AddressSuggestResponse> => {
+  if (!baseUrl) {
+    console.error('Base URL is required to fetch suggested addresses.')
+    throw new Error('Base URL is required to fetch suggested addresses.')
+  }
   const axios = axiosInstance(baseUrl)
 
   try {
@@ -37,10 +39,14 @@ export const getSuggestedAddresses = async (
 export const getNearestAddressByCoordinate = async (
   lat: number,
   lng: number,
-  distance: number
+  distance: number,
+  baseUrl: string | undefined
 ) => {
-  const config = useConfig()
-  const axios = axiosInstance(config?.pdokUrlApi)
+  if (!baseUrl) {
+    console.error('Base URL is required to fetch nearest address.')
+    throw new Error('Base URL is required to fetch nearest address.')
+  }
+  const axios = axiosInstance(baseUrl)
 
   try {
     const response: AxiosResponse<AddressCoordinateResponse> = await axios.get(
