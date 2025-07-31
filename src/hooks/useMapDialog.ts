@@ -129,7 +129,6 @@ function useMapDialog(
       // @ts-ignore
       setMapFeatures({ ...features, features: featuresWithId })
       const end = performance.now()
-      console.log(`usemapdialog took ${end - start} milliseconds`)
     }
   }, [features, field])
 
@@ -280,7 +279,8 @@ function useMapDialog(
             feature.geometry.coordinates[1],
             // @ts-ignore
             feature.geometry.coordinates[0],
-            config ? config.base.map.find_address_in_distance : 30
+            config ? config.base.map.find_address_in_distance : 30,
+            config?.pdokUrlApi
           )
           return {
             address: {

@@ -101,7 +101,8 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
               feature.geometry.coordinates[1],
               // @ts-ignore
               feature.geometry.coordinates[0],
-              config ? config.base.map.find_address_in_distance : 30
+              config ? config.base.map.find_address_in_distance : 30,
+              config?.pdokUrlApi
             )
 
             return {

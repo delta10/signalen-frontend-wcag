@@ -4,9 +4,14 @@ import type { PublicSignalAttachment } from '@/services/client'
 
 export const postAttachments = async (
   uuid: string,
-  formData: FormData
+  formData: FormData,
+  baseUrl: string | undefined
 ): Promise<PublicSignalAttachment> => {
-  const axios = axiosInstance(process.env.NEXT_PUBLIC_BASE_URL_API)
+  if (!baseUrl) {
+    console.error('Base URL is required to post attachments.')
+    throw new Error('Base URL is required to post attachments.')
+  }
+  const axios = axiosInstance(baseUrl)
 
   try {
     const response: AxiosResponse<PublicSignalAttachment> = await axios.post(

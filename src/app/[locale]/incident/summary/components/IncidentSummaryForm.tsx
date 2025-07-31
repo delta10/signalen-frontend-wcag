@@ -81,8 +81,7 @@ const IncidentSummaryForm = () => {
         // @ts-ignore
         category: {
           sub_category:
-            process.env.NEXT_PUBLIC_BASE_URL_API +
-            `/signals/v1/public/terms/categories/${formState.main_category}/sub_categories/${formState.sub_category}`,
+            `${config?.baseUrlApi}signals/v1/public/terms/categories/${formState.main_category}/sub_categories/${formState.sub_category}`,
         },
         /* TODO: check if allows_contact needs to be set */
         reporter: {
@@ -111,7 +110,7 @@ const IncidentSummaryForm = () => {
                 const formData = new FormData()
                 formData.append('signal_id', signalId)
                 formData.append('file', attachment)
-                return postAttachments(signalId, formData)
+                return postAttachments(signalId, formData, config?.baseUrlApi)
               })
             )
           } catch (e) {

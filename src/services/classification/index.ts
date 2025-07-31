@@ -1,12 +1,15 @@
 import { axiosInstance } from '@/services/client/api-client'
-
 const CERTAINTY_THRESHOLD = 0.41
 const MAIN_SLUG_REGEX = /\/terms\/categories\/([a-z0-9\-]+)/
 const SUB_SLUG_REGEX =
   /\/terms\/categories\/[a-z0-9\-]+\/sub_categories\/([a-z0-9\-]+)/
 
-export const getCategoryForDescription = async (description: string) => {
-  const axios = axiosInstance(process.env.NEXT_PUBLIC_BASE_URL_API)
+export const getCategoryForDescription = async (description: string, baseUrl: string | undefined) => {
+  if (!baseUrl) {
+    console.error('Base URL is required to fetch category prediction.')
+    throw new Error('Base URL is required to fetch category prediction.')
+  }
+  const axios = axiosInstance(baseUrl)
   let prediction = {
     main: 'overig',
     sub: 'overig',

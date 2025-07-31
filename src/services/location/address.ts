@@ -10,9 +10,14 @@ import { FormStoreState } from '@/types/stores'
 // @throws {Error} - Throws an error if the request fails
 export const getSuggestedAddresses = async (
   searchQuery: string,
-  municipality: string
+  municipality: string,
+  pdokBaseUrl: string | undefined
 ): Promise<AddressSuggestResponse> => {
-  const axios = axiosInstance(process.env.NEXT_PUBLIC_PDOK_URL_API)
+  if (!pdokBaseUrl) {
+    console.error('Pdok Base URL is required to fetch suggested addresses.')
+    throw new Error('Pdok Base URL is required to fetch suggested addresses.')
+  }
+  const axios = axiosInstance(pdokBaseUrl)
 
   try {
     const response: AxiosResponse<AddressSuggestResponse> = await axios.get(
@@ -34,9 +39,14 @@ export const getSuggestedAddresses = async (
 export const getNearestAddressByCoordinate = async (
   lat: number,
   lng: number,
-  distance: number
+  distance: number,
+  pdokBaseUrl: string | undefined
 ) => {
-  const axios = axiosInstance(process.env.NEXT_PUBLIC_PDOK_URL_API)
+  if (!pdokBaseUrl) {
+    console.error('pdok Base Url is required to fetch nearest address.')
+    throw new Error('pdok Base Url is required to fetch nearest address.')
+  }
+  const axios = axiosInstance(pdokBaseUrl)
 
   try {
     const response: AxiosResponse<AddressCoordinateResponse> = await axios.get(
