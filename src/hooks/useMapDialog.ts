@@ -129,7 +129,6 @@ function useMapDialog(
       // @ts-ignore
       setMapFeatures({ ...features, features: featuresWithId })
       const end = performance.now()
-      console.log(`usemapdialog took ${end - start} milliseconds`)
     }
   }, [features, field])
 
