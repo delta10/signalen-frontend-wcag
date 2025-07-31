@@ -81,7 +81,7 @@ const IncidentSummaryForm = () => {
         // @ts-ignore
         category: {
           sub_category:
-            `${config?.baseUrlApi}/signals/v1/public/terms/categories/${formState.main_category}/sub_categories/${formState.sub_category}`,
+            `${config?.baseUrlApi}signals/v1/public/terms/categories/${formState.main_category}/sub_categories/${formState.sub_category}`,
         },
         /* TODO: check if allows_contact needs to be set */
         reporter: {
