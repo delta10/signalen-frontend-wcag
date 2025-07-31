@@ -12,7 +12,7 @@ export const getNewSelectedAddress = async (
     lat,
     lng,
     config ? config.base.map.find_address_in_distance : 30,
-    config?.baseUrlApi
+    config?.pdokUrlApi
   )
 
   return address

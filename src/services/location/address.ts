@@ -11,13 +11,13 @@ import { FormStoreState } from '@/types/stores'
 export const getSuggestedAddresses = async (
   searchQuery: string,
   municipality: string,
-  baseUrl: string | undefined
+  pdokBaseUrl: string | undefined
 ): Promise<AddressSuggestResponse> => {
-  if (!baseUrl) {
-    console.error('Base URL is required to fetch suggested addresses.')
-    throw new Error('Base URL is required to fetch suggested addresses.')
+  if (!pdokBaseUrl) {
+    console.error('Pdok Base URL is required to fetch suggested addresses.')
+    throw new Error('Pdok Base URL is required to fetch suggested addresses.')
   }
-  const axios = axiosInstance(baseUrl)
+  const axios = axiosInstance(pdokBaseUrl)
 
   try {
     const response: AxiosResponse<AddressSuggestResponse> = await axios.get(
@@ -40,13 +40,13 @@ export const getNearestAddressByCoordinate = async (
   lat: number,
   lng: number,
   distance: number,
-  baseUrl: string | undefined
+  pdokBaseUrl: string | undefined
 ) => {
-  if (!baseUrl) {
-    console.error('Base URL is required to fetch nearest address.')
-    throw new Error('Base URL is required to fetch nearest address.')
+  if (!pdokBaseUrl) {
+    console.error('pdok Base Url is required to fetch nearest address.')
+    throw new Error('pdok Base Url is required to fetch nearest address.')
   }
-  const axios = axiosInstance(baseUrl)
+  const axios = axiosInstance(pdokBaseUrl)
 
   try {
     const response: AxiosResponse<AddressCoordinateResponse> = await axios.get(

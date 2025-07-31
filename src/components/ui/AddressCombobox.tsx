@@ -60,7 +60,7 @@ export const AddressCombobox = ({
         const apiCall = await getSuggestedAddresses(
           normalizedQuery,
           municipality,
-          config?.baseUrlApi
+          config?.pdokUrlApi
         )
 
         const options = apiCall.response.docs.map((item) => ({
