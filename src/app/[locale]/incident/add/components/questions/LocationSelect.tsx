@@ -53,7 +53,7 @@ export const LocationSelect = ({ field }: LocationSelectProps) => {
       </div>
 
       <FormFieldDescription>{t('use_map_description')}</FormFieldDescription>
-      <div className="relative w-full">
+      <div className="relative w-full mb-3">
         <div style={{ minHeight: 200, height: 200 }} role="img" aria-label="">
           <LocationMap />
         </div>

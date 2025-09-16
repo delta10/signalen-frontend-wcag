@@ -9,8 +9,6 @@ import FormProgress from '@/app/[locale]/components/FormProgress'
 import { useConfig } from '@/contexts/ConfigContext'
 import { RenderMarkdown } from '@/components/ui/RenderMarkdown'
 import { NextLinkWrapper } from '@/components/ui/NextLinkWrapper'
-import { stepToPath } from '@/routing/navigation'
-import { FormStep } from '@/types/form'
 import React from 'react'
 
 const currentStep = 1
@@ -25,7 +23,7 @@ export const IncidentDescriptionPage = () => {
 
   if (loaded) {
     return (
-      <main className="flex flex-col gap-12">
+      <main className="flex flex-col gap-6 md:gap-12">
         <FormProgress>
           <HeadingGroup>
             <Heading level={1}>{t('heading')}</Heading>

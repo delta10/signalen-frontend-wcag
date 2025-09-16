@@ -30,7 +30,7 @@ export const IncidentSummaryPage = () => {
 
   if (loaded) {
     return (
-      <main className="flex flex-col gap-12">
+      <main className="flex flex-col gap-6 md:gap-12">
         <FormProgress>
           <HeadingGroup>
             <Heading level={1}>{t('heading')}</Heading>

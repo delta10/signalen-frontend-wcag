@@ -110,7 +110,7 @@ export const FileUpload = React.forwardRef<HTMLLabelElement, FileUploadProps>(
     }
 
     return (
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-6 mt-3">
         <div className="flex gap-4 flex-wrap">
           {files.length > 0 &&
             files

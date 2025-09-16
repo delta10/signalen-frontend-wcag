@@ -96,13 +96,11 @@ const IncidentContactForm = () => {
       <Alert className="sr-only">
         <Paragraph>{`${t('alert_no_required_fields')} `}</Paragraph>
       </Alert>
-      <div className="mt-8">
         <Heading level={2}>{t('heading')}</Heading>
         <Paragraph className="contact-paragraph">{t('description')}</Paragraph>
-      </div>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-8 items-start mt-4"
+        className="flex flex-col gap-8 items-start mt-6 md:mt-8"
       >
         <FormFieldTextbox
           label={`${t('describe_phone_input_heading')} (${tGeneral('form.not_required_short')})`}
@@ -110,6 +108,7 @@ const IncidentContactForm = () => {
           errorMessage={form.formState.errors.phone?.message}
           invalid={Boolean(form.formState.errors.phone?.message)}
           required={false}
+          className="w-full"
           {...form.register('phone')}
         />
         <FormFieldTextbox
@@ -118,19 +117,20 @@ const IncidentContactForm = () => {
           errorMessage={form.formState.errors.email?.message}
           invalid={Boolean(form.formState.errors.email?.message)}
           required={false}
+          className="w-full"
           {...form.register('email')}
         />
-        <Fieldset aria-describedby="todo-id">
+        <Fieldset aria-describedby="sharing-allowed-description">
           <FieldsetLegend>
             <Heading level={2}>
               {t('send_to_other_instance_heading')} (
               {tGeneral('form.not_required_short')})
             </Heading>
-            <FormFieldDescription id="todo-id">
-              {t('send_to_other_instance_description')}
-            </FormFieldDescription>
           </FieldsetLegend>
-          <div className="flex flex-col">
+          <FormFieldDescription id="sharing-allowed-description">
+            {t('send_to_other_instance_description')}
+          </FormFieldDescription>
+          <div className="flex flex-col mt-3">
             <div className="w-full">
               <FormFieldCheckbox
                 label={t('describe_checkbox_input_description', {
