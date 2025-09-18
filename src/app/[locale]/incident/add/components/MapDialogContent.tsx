@@ -113,10 +113,11 @@ const MapDialogContent = ({
           <MapExplainerAccordion />
 
           <div className="flex flex-col py-2">
-            <label htmlFor="address">{t('search_address_label')}</label>
+            <label htmlFor="address-combobox">{t('search_address_label')}</label>
             <AddressCombobox
               updatePosition={updatePosition}
               setIsMapSelected={setIsMapSelected}
+              id="address-combobox"
             />
           </div>
 

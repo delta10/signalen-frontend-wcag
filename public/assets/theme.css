@@ -4299,3 +4299,11 @@
     --purmerend-logo-color-3: rgba(0 0 0 / 0.5);
   }
 }
+
+.utrecht-form-fieldset__legend.utrecht-form-fieldset__legend--html-legend {
+  font-weight: var(--basis-typography-font-weight-bold);
+}
+
+.utrecht-form-field__label  {
+  padding-bottom: var(--basis-space-block-medium);
+}

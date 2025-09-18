@@ -8,7 +8,6 @@ import FormProgress from '@/app/[locale]/components/FormProgress'
 import { getLastPath } from '@/lib/utils/stepper'
 import { useEffect } from 'react'
 import { redirect } from 'next/navigation'
-import { FormStep } from '@/types/form'
 
 const currentStep = 2
 const maxStep = 4
@@ -32,7 +31,7 @@ export const AdditionalInformationPage = () => {
 
   if (loaded) {
     return (
-      <main className="flex flex-col gap-12">
+      <main className="flex flex-col gap-6 md:gap-12">
         <FormProgress>
           <HeadingGroup>
             <Heading level={1}>{t('heading')}</Heading>

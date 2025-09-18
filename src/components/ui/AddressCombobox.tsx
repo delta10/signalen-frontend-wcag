@@ -26,12 +26,14 @@ type AddressComboboxProps = {
   updatePosition?: (lat: number, lng: number, flyTo?: boolean) => void
   setIsMapSelected?: Dispatch<SetStateAction<boolean | null>>
   mobileView?: boolean
+  id?: string
 }
 
 export const AddressCombobox = ({
   updatePosition,
   setIsMapSelected,
   mobileView = false,
+  id,
 }: AddressComboboxProps) => {
   const [query, setQuery] = useState('')
   const config = useConfig()
@@ -122,6 +124,7 @@ export const AddressCombobox = ({
         name="address"
         onChange={(event) => setQuery(event.target.value)}
         autoComplete="off"
+        id={id}
         className={cn({
           mobile: mobileView,
         })}

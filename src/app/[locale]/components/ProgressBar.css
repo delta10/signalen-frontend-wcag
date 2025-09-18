@@ -1,11 +1,7 @@
-/* todo: niet zo de styling zetten*/
 .signalen-progress-bar {
   box-sizing: border-box;
   display: inline-flex;
-  background-color: var(
-      --signalen-progress-bar-background-color,
-    var(--basis-color-disabled-fill-1, transparent)
-  );
+  background-color: var(--basis-color-white, transparent);
   block-size: var(--signalen-progress-bar-block-size, 0.5rem);
   border-radius: var(--signalen-progress-bar-border-radius);
   overflow: hidden;

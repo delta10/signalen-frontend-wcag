@@ -154,7 +154,6 @@
 .utrecht-form-label.utrecht-form-label--checkbox {
   display: flex !important;
   flex-direction: row-reverse !important;
-  align-items: center !important;
 }
 
 .utrecht-page-body.incident-map .utrecht-page-body__content {
@@ -183,4 +182,20 @@
   max-inline-size: 100%;
   min-block-size: 100%;
   min-inline-size: 100%;
+}
+
+.utrecht-form-field-description{
+  @apply pb-2;
+}
+
+.utrecht-form-field--checkbox .utrecht-form-field__label .utrecht-form-field__input {
+  @apply mt-1;
+}
+
+.sr-only {
+  padding: 0 !important;
+}
+
+h2.utrecht-heading-2 {
+  @apply pb-2;
 }
