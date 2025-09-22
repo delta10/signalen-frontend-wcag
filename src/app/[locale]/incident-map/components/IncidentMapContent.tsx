@@ -295,7 +295,7 @@ const IncidentMapContent = () => {
   }
 
   return (
-    <div className="grid md:grid-cols-3 min-h-[calc(100svh-5.4rem)] md:min-h-[calc(100vh-102px)] overflow-y-hidden grid-rows-[auto_1fr_auto] md:grid-rows-[auto]">
+    <div className="grid md:grid-cols-[max-content_1fr] min-h-[calc(100svh-5.4rem)] md:min-h-[calc(100vh-102px)] overflow-y-hidden grid-rows-[auto_1fr_auto] md:grid-rows-[auto]">
       <AlertDialog type="error" ref={dialogRef}>
         <form
           method="dialog"
@@ -315,7 +315,7 @@ const IncidentMapContent = () => {
       </AlertDialog>
       {/*min-h-[calc(100svh-102px)]*/}
       {!isMobile && (
-        <div className="col-span-1 flex flex-col shadow-right z-10 md:max-h-[calc(100vh-102px)] overflow-y-auto">
+        <div className="col-span-1 flex flex-col shadow-right z-10 md:max-h-[calc(100vh-102px)] md:max-w-[500px] overflow-y-auto">
           {selectedFeatureId ? (
             <div className="p-4">
               <SelectedIncidentDetails
@@ -363,7 +363,7 @@ const IncidentMapContent = () => {
 
       {config && (
         <div
-          className="col-span-1 md:col-span-2 relative min-h-full max-h-full h-full"
+          className="col-span-1 relative min-h-full max-h-full h-full"
           ref={mapContainerRef}
         >
           <Map
