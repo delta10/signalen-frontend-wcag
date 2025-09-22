@@ -131,7 +131,7 @@ const NestedCheckboxList = ({
           <div key={category.slug} className="mb-3">
             <div
               className={clsx(
-                'flex items-center gap-1',
+                'flex items-start gap-1',
                 mobile ? 'text-lg' : ''
               )}
             >
@@ -145,11 +145,12 @@ const NestedCheckboxList = ({
               {category.configuration?.show_children_in_filter &&
                 category.sub_categories?.length && (
                   <button
-                    className="mr-2 p-1 text-gray-600 hover:text-black"
+                    className="flex-1 flex justify-end items-start p-1 text-gray-600 hover:text-black"
+                    style={{ alignSelf: 'flex-start' }}
                     onClick={() => toggleExpand(category.slug)}
                   >
                     <Icon
-                      className={`transition-transform duration-300 ${isExpanded ? 'rotate-180' : 'rotate-0'}`}
+                      className={`transition-transform w-5 h-5 max-w-5 max-h-5 duration-300 ${isExpanded ? 'rotate-180' : 'rotate-0'}`}
                     >
                       <IconChevronDown />
                     </Icon>
