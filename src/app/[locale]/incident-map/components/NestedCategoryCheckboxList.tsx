@@ -148,6 +148,10 @@ const NestedCheckboxList = ({
                     className="flex-1 flex justify-end items-start p-1 text-gray-600 hover:text-black"
                     style={{ alignSelf: 'flex-start' }}
                     onClick={() => toggleExpand(category.slug)}
+                    type="button"
+                    aria-expanded={isExpanded}
+                    aria-controls={`subcat-group-${category.slug}`}
+                    aria-label={`Subcategorieën ${isExpanded ? 'inklappen' : 'uitklappen'} voor ${category.name} `}
                   >
                     <Icon
                       className={`transition-transform w-5 h-5 max-w-5 max-h-5 duration-300 ${isExpanded ? 'rotate-180' : 'rotate-0'}`}
