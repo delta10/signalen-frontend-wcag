@@ -6,7 +6,6 @@ import { usePathname, useRouter } from '@/routing/navigation'
 import * as z from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import validator from 'validator'
 import { useFormStore } from '@/store/form_store'
 import { useEffect } from 'react'
 import {
@@ -57,7 +56,7 @@ const IncidentContactForm = () => {
       .string()
       .trim()
       .refine(
-        (value) => value == '' || validator.isEmail(value),
+        (value) => value === '' || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
         t('errors.email_not_valid')
       )
       .nullable()

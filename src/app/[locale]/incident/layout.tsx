@@ -1,7 +1,6 @@
 import { Layout } from '@/types/layout'
 import { NextIntlClientProvider, useMessages } from 'next-intl'
 import { Article, PageBody, PageLayout } from '@/components'
-import pick from 'lodash/pick'
 import { Header } from '@/app/[locale]/components/Header'
 import { Footer } from '@/app/[locale]/components/Footer'
 import React from 'react'
@@ -13,7 +12,7 @@ export default function IncidentLayout({ children }: Layout) {
     <>
       <PageLayout>
         <NextIntlClientProvider
-          messages={pick(messages, 'current_organisation')}
+          messages={{ current_organisation: messages.current_organisation }}
         >
           <Header />
         </NextIntlClientProvider>
@@ -26,7 +25,7 @@ export default function IncidentLayout({ children }: Layout) {
           </NextIntlClientProvider>
         </PageBody>
 
-        <NextIntlClientProvider messages={pick(messages, 'footer')}>
+        <NextIntlClientProvider messages={{ footer: messages.footer }}>
           <Footer />
         </NextIntlClientProvider>
       </PageLayout>

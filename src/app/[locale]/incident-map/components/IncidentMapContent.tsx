@@ -41,7 +41,6 @@ import SelectedIncidentDetails from '@/app/[locale]/incident-map/components/Sele
 import { Address } from '@/types/form'
 import { AppConfig } from '@/types/config'
 import { clsx } from 'clsx'
-import { debounce } from 'lodash'
 import IncidentMapMobileSidebar from '@/app/[locale]/incident-map/components/IncidentMapMobileSidebar'
 import { setCurrentLocation } from '@/lib/utils/LocationUtils'
 import { getMapStyleUrl } from '@/lib/utils/map'
@@ -142,12 +141,16 @@ const IncidentMapContent = () => {
     }
   }, [dialogMap, setFeatures])
 
-  const debouncedSetNewFeatures = useCallback(
-    debounce(() => {
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+
+  const debouncedSetNewFeatures = useCallback(() => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current)
+    }
+    timeoutRef.current = setTimeout(() => {
       setNewFeatures()
-    }, 50),
-    [setNewFeatures]
-  )
+    }, 50)
+  }, [setNewFeatures])
 
   useEffect(() => {
     if (!dialogMap) return
@@ -169,7 +172,9 @@ const IncidentMapContent = () => {
       if (dialogMap) {
         dialogMap.off('load', handleMapLoad)
         dialogMap.off('move', handleMapMove)
-        debouncedSetNewFeatures.cancel() // Cancel any pending debounced calls
+        if (timeoutRef.current) {
+          clearTimeout(timeoutRef.current)
+        }
       }
     }
   }, [dialogMap, setNewFeatures, debouncedSetNewFeatures])

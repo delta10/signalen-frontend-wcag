@@ -3,7 +3,39 @@ import { createJSONStorage, persist } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
 import { FormStore, FormStoreState } from '@/types/stores'
 import { FormStep, hasValidCoordinates } from '@/types/form'
-import merge from 'lodash/merge'
+
+const deepMerge = <T extends Record<string, any>>(
+  target: T,
+  ...sources: Partial<T>[]
+): T => {
+  if (!sources.length) return target
+  const source = sources.shift()
+
+  if (source) {
+    for (const key in source) {
+      const sourceValue = source[key]
+      const targetValue = target[key]
+
+      if (
+        sourceValue &&
+        typeof sourceValue === 'object' &&
+        !Array.isArray(sourceValue) &&
+        targetValue &&
+        typeof targetValue === 'object' &&
+        !Array.isArray(targetValue)
+      ) {
+        target[key] = deepMerge(
+          { ...targetValue },
+          sourceValue as any
+        ) as any
+      } else {
+        target[key] = sourceValue as any
+      }
+    }
+  }
+
+  return deepMerge(target, ...sources)
+}
 
 const initialFormState: FormStoreState = {
   description: '',
@@ -24,7 +56,7 @@ const initialFormState: FormStoreState = {
 
 export const createFormState = (
   data: Partial<FormStoreState>
-): FormStoreState => merge({}, initialFormState, data)
+): FormStoreState => deepMerge({ ...initialFormState }, data)
 
 export const useFormStore = create<FormStore>()(
   persist(

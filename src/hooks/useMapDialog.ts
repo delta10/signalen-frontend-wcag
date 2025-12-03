@@ -8,7 +8,6 @@ import {
 } from 'react-map-gl/maplibre'
 import { useTranslations } from 'next-intl'
 import { PublicQuestion } from '@/types/form'
-import { debounce, uniqBy } from 'lodash'
 import { useFormStore } from '@/store/form_store'
 import { FeatureCollection } from 'geojson'
 import { getNearestAddressByCoordinate } from '@/services/location/address'
@@ -41,6 +40,7 @@ function useMapDialog(
   const { isDarkMode } = useDarkMode()
   const { width = 0 } = useWindowSize()
   const dialogRef = useRef<HTMLDialogElement>(null)
+  const keyDownTimeoutRef = useRef<number | null>(null)
 
   const [marker, setMarker] = useState<[number, number] | []>([])
   const [isMapSelected, setIsMapSelected] = useState<boolean | null>(null)
@@ -155,10 +155,15 @@ function useMapDialog(
   useEffect(() => {
     const element = document.getElementsByClassName('maplibregl-canvas')
     const canvas = element[1]
-    const debouncedHandler = debounce(keyDownHandler, 500)
 
-    // Create a reference to the wrapped handler function
-    const eventHandler = (e: KeyboardEvent) => debouncedHandler(e)
+    const eventHandler = (e: KeyboardEvent) => {
+      if (keyDownTimeoutRef.current) {
+        clearTimeout(keyDownTimeoutRef.current)
+      }
+      keyDownTimeoutRef.current = setTimeout(() => {
+        keyDownHandler(e)
+      }, 500)
+    }
 
     // @ts-ignore
     canvas?.addEventListener('keydown', eventHandler)
@@ -167,6 +172,9 @@ function useMapDialog(
     return () => {
       // @ts-ignore
       canvas?.removeEventListener('keydown', eventHandler)
+      if (keyDownTimeoutRef.current) {
+        clearTimeout(keyDownTimeoutRef.current)
+      }
     }
   }, [dialogMap, keyDownHandler, onMapReady])
 
@@ -200,7 +208,17 @@ function useMapDialog(
           ? mapFeaturesToShow
           : []
 
-      return uniqBy([...features, ...formState.selectedFeatures], 'internal_id')
+      // Native uniqBy implementation using Map
+      const combined = [...features, ...formState.selectedFeatures]
+      const uniqueMap = new Map()
+      combined.forEach((item) => {
+        // @ts-ignore
+        if (!uniqueMap.has(item.internal_id)) {
+          // @ts-ignore
+          uniqueMap.set(item.internal_id, item)
+        }
+      })
+      return Array.from(uniqueMap.values())
     }
 
     return []
