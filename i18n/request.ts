@@ -29,6 +29,11 @@ const deepMerge = <T extends AnyObject, U extends AnyObject>(
 export default getRequestConfig(async ({ requestLocale }) => {
   let locale = await requestLocale
 
+  // Fallback to default locale if undefined
+  if (!locale) {
+    locale = 'nl' // or your default locale
+  }
+
   const defaultMessages = (await import(`../translations/${locale}.json`))
     .default
 
