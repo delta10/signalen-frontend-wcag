@@ -50,10 +50,9 @@ export const IncidentQuestionsLocationForm = () => {
         }
       }
 
-      return {
-        values,
-        errors,
-      }
+      return Object.keys(errors).length > 0
+        ? { values: {}, errors }
+        : { values, errors: {} }
     },
   })
   const t = useTranslations('general.errors')
