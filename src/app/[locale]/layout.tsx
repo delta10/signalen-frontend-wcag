@@ -21,9 +21,9 @@ const LocaleLayout = ({
   params: { locale },
 }: PropsWithChildren<{
   config: AppConfig
-  params: { locale: any }
+  params: { locale: string }
 }>) => {
-  if (!getAllAvailableLocales().includes(locale as any)) notFound()
+  if (!getAllAvailableLocales().includes(locale)) notFound()
 
   return (
     <Root
@@ -40,12 +40,21 @@ const LocaleLayout = ({
   )
 }
 
-export default async function WrappedLocaleLayout({
-  children,
-  params: { locale },
-}: PropsWithChildren<{
-  params: { locale: any }
-}>) {
+export default async function WrappedLocaleLayout(
+  props: PropsWithChildren<{
+    params: Promise<{ locale: string }>
+  }>
+) {
+  const params = await props.params;
+
+  const {
+    locale
+  } = params;
+
+  const {
+    children
+  } = props;
+
   const config: AppConfig = await getServerConfig()
 
   return (

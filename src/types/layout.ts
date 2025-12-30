@@ -1,5 +1,5 @@
 import React from 'react'
 
 export type Layout = {
-  children: React.ReactElement
+  children: React.ReactNode
 }
