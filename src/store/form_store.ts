@@ -3,7 +3,7 @@ import { createJSONStorage, persist } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
 import { FormStore, FormStoreState } from '@/types/stores'
 import { FormStep, hasValidCoordinates } from '@/types/form'
-import merge from 'lodash/merge'
+import { merge } from '@/lib/utils/utils'
 
 const initialFormState: FormStoreState = {
   description: '',

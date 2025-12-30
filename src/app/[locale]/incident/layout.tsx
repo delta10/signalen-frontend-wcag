@@ -1,7 +1,7 @@
 import { Layout } from '@/types/layout'
 import { NextIntlClientProvider, useMessages } from 'next-intl'
 import { Article, PageBody, PageLayout } from '@/components'
-import pick from 'lodash/pick'
+import { pick } from '@/lib/utils/utils'
 import { Header } from '@/app/[locale]/components/Header'
 import { Footer } from '@/app/[locale]/components/Footer'
 import React from 'react'

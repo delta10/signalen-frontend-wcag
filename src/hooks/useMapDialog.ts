@@ -8,7 +8,7 @@ import {
 } from 'react-map-gl/maplibre'
 import { useTranslations } from 'next-intl'
 import { PublicQuestion } from '@/types/form'
-import { debounce, uniqBy } from 'lodash'
+import { debounce, uniqBy } from '@/lib/utils/utils'
 import { useFormStore } from '@/store/form_store'
 import { FeatureCollection } from 'geojson'
 import { getNearestAddressByCoordinate } from '@/services/location/address'

@@ -41,7 +41,7 @@ import SelectedIncidentDetails from '@/app/[locale]/incident-map/components/Sele
 import { Address } from '@/types/form'
 import { AppConfig } from '@/types/config'
 import { clsx } from 'clsx'
-import { debounce } from 'lodash'
+import { debounce } from '@/lib/utils/utils'
 import IncidentMapMobileSidebar from '@/app/[locale]/incident-map/components/IncidentMapMobileSidebar'
 import { setCurrentLocation } from '@/lib/utils/LocationUtils'
 import { getMapStyleUrl } from '@/lib/utils/map'
