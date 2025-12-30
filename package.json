@@ -74,7 +74,7 @@
     "@utrecht/radio-group-react": "1.0.10",
     "@utrecht/root-react": "1.0.6",
     "@utrecht/select-combobox-react": "1.0.10",
-    "@vitejs/plugin-react": "4.3.4",
+    "@vitejs/plugin-react": "5.1.1",
     "autoprefixer": "10.4.20",
     "axios": "1.10.0",
     "eslint": "9",
