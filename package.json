@@ -24,7 +24,7 @@
     "@radix-ui/react-visually-hidden": "1.1.1",
     "@tabler/icons-react": "3.30.0",
     "@utrecht/body-react": "0.0.6",
-    "@utrecht/checkbox-group-react": "1.0.10",
+    "@utrecht/checkbox-group-react": "1.0.14",
     "@utrecht/component-library-css": "7.2.0",
     "@utrecht/component-library-react": "10.2.2",
     "@utrecht/design-tokens": "3.4.1",
