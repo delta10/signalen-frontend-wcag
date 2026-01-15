@@ -91,6 +91,22 @@ const IncidentMapContent = () => {
 
   const mapContainerRef = useRef<HTMLDivElement>(null)
 
+  const ButtonWithAsChild = Button as unknown as (
+    props: React.ComponentProps<typeof Button> & { asChild?: boolean }
+  ) => JSX.Element
+  const createIncidentButton = (
+    <ButtonWithAsChild
+      purpose="primary"
+      className="mobile full-width"
+      iconEnd={<IconArrowRight />}
+      asChild
+    >
+      <a href="/" target="_blank" rel="noopener">
+        {tIncidentMap('create_incident')}
+      </a>
+    </ButtonWithAsChild>
+  )
+
   // Memoize the function with useCallback and include all dependencies
   const setNewFeatures = useCallback(async () => {
     if (!dialogMap) return
@@ -468,15 +484,7 @@ const IncidentMapContent = () => {
 
       {isMobile && (
         <div className="flex items-center justify-center py-3 z-30 absolute bottom-0 w-full p-4 bg-base">
-          <Button
-            purpose="primary"
-            className="mobile full-width"
-            iconEnd={<IconArrowRight />}
-            onClick={() => window.open('/', '_blank', 'noopener')}
-            type="button"
-          >
-            {tIncidentMap('create_incident')}
-          </Button>
+          {createIncidentButton}
         </div>
       )}
     </div>

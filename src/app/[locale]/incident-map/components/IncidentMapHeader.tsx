@@ -59,12 +59,23 @@ const IncidentMapHeader = () => {
     return null
   }
 
+  const ButtonWithAsChild = Button as unknown as (
+    props: React.ComponentProps<typeof Button> & { asChild?: boolean }
+  ) => JSX.Element
+  const createIncidentButton = (
+    <ButtonWithAsChild purpose="primary" iconEnd={<IconArrowRight />} asChild>
+      <a href="/" target="_blank" rel="noopener">
+        {tIncidentMap('create_incident')}
+      </a>
+    </ButtonWithAsChild>
+  )
+
   return (
     <>
       <PageHeader
         className={clsx('incident-map-header', isMobile ? 'mobile' : '')}
       >
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 px-4">
           <div className="flex flex-row items-center gap-6 md:gap-12">
             {homepageHref ? (
               <Link
@@ -88,16 +99,7 @@ const IncidentMapHeader = () => {
           {config && config.base.supportedLanguages.length > 1 && (
             <LanguageSwitch />
           )}
-          {!isMobile && (
-            <Button
-              purpose="primary"
-              iconEnd={<IconArrowRight />}
-              onClick={() => window.open('/', '_blank', 'noopener')}
-              type="button"
-            >
-              {tIncidentMap('create_incident')}
-            </Button>
-          )}
+          {!isMobile && createIncidentButton}
         </div>
       </PageHeader>
     </>
