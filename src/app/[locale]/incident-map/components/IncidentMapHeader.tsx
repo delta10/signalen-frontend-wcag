@@ -20,7 +20,6 @@ import {
 import { NextLinkWrapper } from '@/components/ui/NextLinkWrapper'
 import { stepToPath } from '@/routing/navigation'
 import { FormStep } from '@/types/form'
-import { ButtonLink } from '@utrecht/component-library-react'
 
 const IncidentMapHeader = () => {
   const config = useConfig()
@@ -90,12 +89,14 @@ const IncidentMapHeader = () => {
             <LanguageSwitch />
           )}
           {!isMobile && (
-            <ButtonLink href="/" target="_blank">
+            <Button
+              purpose="primary"
+              iconEnd={<IconArrowRight />}
+              onClick={() => window.open('/', '_blank', 'noopener')}
+              type="button"
+            >
               {tIncidentMap('create_incident')}
-              <Icon>
-                <IconArrowRight />
-              </Icon>
-            </ButtonLink>
+            </Button>
           )}
         </div>
       </PageHeader>

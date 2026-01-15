@@ -44,7 +44,6 @@ import { debounce } from '@/lib/utils/utils'
 import IncidentMapMobileSidebar from '@/app/[locale]/incident-map/components/IncidentMapMobileSidebar'
 import { setCurrentLocation } from '@/lib/utils/LocationUtils'
 import { getMapStyleUrl } from '@/lib/utils/map'
-import { ButtonLink } from '@utrecht/component-library-react'
 import { Paragraph } from '@utrecht/component-library-react/dist/css-module'
 import { ExtendedFeature } from '@/types/map'
 
@@ -469,12 +468,15 @@ const IncidentMapContent = () => {
 
       {isMobile && (
         <div className="flex items-center justify-center py-3 z-30 absolute bottom-0 w-full p-4 bg-base">
-          <ButtonLink href="/" target="_blank" className="mobile full-width">
+          <Button
+            purpose="primary"
+            className="mobile full-width"
+            iconEnd={<IconArrowRight />}
+            onClick={() => window.open('/', '_blank', 'noopener')}
+            type="button"
+          >
             {tIncidentMap('create_incident')}
-            <Icon>
-              <IconArrowRight />
-            </Icon>
-          </ButtonLink>
+          </Button>
         </div>
       )}
     </div>
