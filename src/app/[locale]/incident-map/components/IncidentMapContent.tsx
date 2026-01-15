@@ -304,8 +304,8 @@ const IncidentMapContent = () => {
           {error}
           <ButtonGroup>
             <Button
-              appearance="secondary-action-button"
-              hint="danger"
+              purpose="secondary"
+              hint="negative"
               onClick={() => dialogRef.current?.close()}
             >
               {t('close_alert_notification')}
@@ -404,7 +404,7 @@ const IncidentMapContent = () => {
           </Map>
           <div className="map-location-group">
             <Button
-              appearance="secondary-action-button"
+              purpose="secondary"
               className={clsx(
                 'map-zoom-button',
                 isMobile ? 'map-icon-button mobile' : ''
@@ -418,8 +418,8 @@ const IncidentMapContent = () => {
                   t
                 )
               }
+              iconStart={<IconCurrentLocation />}
             >
-              <IconCurrentLocation />
               {t('current_location')}
             </Button>
           </div>

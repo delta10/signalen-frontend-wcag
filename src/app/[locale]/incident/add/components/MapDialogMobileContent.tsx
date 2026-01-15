@@ -1,11 +1,10 @@
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { Marker } from 'react-map-gl/maplibre'
 import { Map } from '@/components/ui/Map'
 import { useTranslations } from 'next-intl'
 
 import {
   Heading,
-  Icon,
   IconButton,
   AlertDialog,
   Paragraph,
@@ -96,8 +95,8 @@ const MapDialogMobileContent = ({
           {error}
           <ButtonGroup>
             <Button
-              appearance="secondary-action-button"
-              hint="danger"
+              purpose="secondary"
+              hint="negative"
               onClick={() => dialogRef.current?.close()}
             >
               {t('close_alert_notification')}
@@ -302,12 +301,12 @@ const MapDialogMobileContent = ({
             <div className="map-legend-group">
               <Button
                 className="utrecht-button--subtle map-icon-button mobile"
-                appearance="secondary-action-button"
+                purpose="secondary"
                 onClick={() => {
                   setOpenLegend(!openLegend)
                 }}
+                iconStart={<IconInfoCircle />}
               >
-                <IconInfoCircle />
                 {t('legend')}
               </Button>
             </div>
@@ -348,11 +347,7 @@ const MapDialogMobileContent = ({
           )}
 
           <Dialog.Close asChild onClick={() => closeMapDialog()}>
-            <Button
-              appearance="primary-action-button"
-              className="mobile"
-              type="button"
-            >
+            <Button purpose="primary" className="mobile" type="button">
               {isAssetSelect
                 ? formState.selectedFeatures.length === 0
                   ? formState.address
