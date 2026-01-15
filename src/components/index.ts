@@ -3,8 +3,10 @@ import { Container } from '@/components/layout'
 
 export { Container }
 
-export { IconButton } from '@/components/ui/IconButton'
 export { StatusText, AlertText } from '@/components/ui/LiveText'
+
+// NL Design System candidate button
+export { Button } from '@nl-design-system-candidate/button-react'
 
 export {
   Alert,
@@ -17,7 +19,6 @@ export {
   FormFieldTextbox,
   FormFieldTextarea,
   FormLabel,
-  Button,
   ButtonGroup,
   Heading,
   HeadingGroup,

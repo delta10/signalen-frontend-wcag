@@ -16,7 +16,6 @@ import {
   Button,
   ButtonGroup,
   Icon,
-  IconButton,
   MapMarker,
   SpotlightSection,
 } from '@/components'
@@ -45,9 +44,10 @@ import { debounce } from '@/lib/utils/utils'
 import IncidentMapMobileSidebar from '@/app/[locale]/incident-map/components/IncidentMapMobileSidebar'
 import { setCurrentLocation } from '@/lib/utils/LocationUtils'
 import { getMapStyleUrl } from '@/lib/utils/map'
-import { ButtonLink } from '@utrecht/component-library-react'
 import { Paragraph } from '@utrecht/component-library-react/dist/css-module'
 import { ExtendedFeature } from '@/types/map'
+import { Link as LocaleLink, stepToPath } from '@/routing/navigation'
+import { FormStep } from '@/types/form'
 
 const IncidentMapContent = () => {
   const t = useTranslations('describe_add.map')
@@ -92,6 +92,27 @@ const IncidentMapContent = () => {
   }, [])
 
   const mapContainerRef = useRef<HTMLDivElement>(null)
+
+  const ButtonWithAsChild = Button as unknown as (
+    props: React.ComponentProps<typeof Button> & { asChild?: boolean }
+  ) => JSX.Element
+  const createIncidentHref = stepToPath[FormStep.STEP_1_DESCRIPTION]
+  const createIncidentButton = (
+    <ButtonWithAsChild
+      purpose="primary"
+      className="mobile full-width"
+      iconEnd={<IconArrowRight />}
+      asChild
+    >
+      <LocaleLink
+        href={createIncidentHref}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {tIncidentMap('create_incident')}
+      </LocaleLink>
+    </ButtonWithAsChild>
+  )
 
   // Memoize the function with useCallback and include all dependencies
   const setNewFeatures = useCallback(async () => {
@@ -304,8 +325,8 @@ const IncidentMapContent = () => {
           {error}
           <ButtonGroup>
             <Button
-              appearance="secondary-action-button"
-              hint="danger"
+              purpose="secondary"
+              hint="negative"
               onClick={() => dialogRef.current?.close()}
             >
               {t('close_alert_notification')}
@@ -404,7 +425,7 @@ const IncidentMapContent = () => {
           </Map>
           <div className="map-location-group">
             <Button
-              appearance="secondary-action-button"
+              purpose="secondary"
               className={clsx(
                 'map-zoom-button',
                 isMobile ? 'map-icon-button mobile' : ''
@@ -418,8 +439,8 @@ const IncidentMapContent = () => {
                   t
                 )
               }
+              iconStart={<IconCurrentLocation />}
             >
-              <IconCurrentLocation />
               {t('current_location')}
             </Button>
           </div>
@@ -432,30 +453,26 @@ const IncidentMapContent = () => {
                 isMobile ? 'mobile' : ''
               )}
             >
-              <IconButton
-                appearance="secondary-action-button"
+              <Button
                 className={clsx(
                   'map-zoom-button',
                   isMobile ? 'map-icon-button' : 'map-button'
                 )}
                 onClick={() => dialogMap.zoomIn()}
+                iconOnly
+                iconStart={<IconPlus />}
                 label={t('map_zoom-in_button_label')}
-                mobileView={isMobile}
-              >
-                <IconPlus />
-              </IconButton>
-              <IconButton
-                appearance="secondary-action-button"
+              />
+              <Button
                 className={clsx(
                   'map-zoom-button',
                   isMobile ? 'map-icon-button' : 'map-button'
                 )}
                 onClick={() => dialogMap.zoomOut()}
+                iconOnly
+                iconStart={<IconMinus />}
                 label={t('map_zoom-out_button_label')}
-                mobileView={isMobile}
-              >
-                <IconMinus />
-              </IconButton>
+              />
             </ButtonGroup>
           )}
         </div>
@@ -474,12 +491,7 @@ const IncidentMapContent = () => {
 
       {isMobile && (
         <div className="flex items-center justify-center py-3 z-30 absolute bottom-0 w-full p-4 bg-base">
-          <ButtonLink href="/" target="_blank" className="mobile full-width">
-            {tIncidentMap('create_incident')}
-            <Icon>
-              <IconArrowRight />
-            </Icon>
-          </ButtonLink>
+          {createIncidentButton}
         </div>
       )}
     </div>

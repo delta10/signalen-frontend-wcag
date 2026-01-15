@@ -9,18 +9,11 @@ import { NextSvgImage } from '@/components/ui/NextSvgImage'
 import { useMediaQuery } from 'usehooks-ts'
 import React, { useEffect, useState } from 'react'
 import { clsx } from 'clsx'
-import { Button, Icon } from '@/components'
-import { setCurrentLocation } from '@/lib/utils/LocationUtils'
-import {
-  IconArrowLeft,
-  IconArrowRight,
-  IconChevronLeft,
-  IconCurrentLocation,
-} from '@tabler/icons-react'
-import { NextLinkWrapper } from '@/components/ui/NextLinkWrapper'
-import { stepToPath } from '@/routing/navigation'
+import { Button } from '@/components'
+
+import { IconArrowRight } from '@tabler/icons-react'
+import { Link as LocaleLink, stepToPath } from '@/routing/navigation'
 import { FormStep } from '@/types/form'
-import { ButtonLink } from '@utrecht/component-library-react'
 
 const IncidentMapHeader = () => {
   const config = useConfig()
@@ -60,12 +53,28 @@ const IncidentMapHeader = () => {
     return null
   }
 
+  const ButtonWithAsChild = Button as unknown as (
+    props: React.ComponentProps<typeof Button> & { asChild?: boolean }
+  ) => JSX.Element
+  const createIncidentHref = stepToPath[FormStep.STEP_1_DESCRIPTION]
+  const createIncidentButton = (
+    <ButtonWithAsChild purpose="primary" iconEnd={<IconArrowRight />} asChild>
+      <LocaleLink
+        href={createIncidentHref}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {tIncidentMap('create_incident')}
+      </LocaleLink>
+    </ButtonWithAsChild>
+  )
+
   return (
     <>
       <PageHeader
         className={clsx('incident-map-header', isMobile ? 'mobile' : '')}
       >
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 px-4">
           <div className="flex flex-row items-center gap-6 md:gap-12">
             {homepageHref ? (
               <Link
@@ -89,14 +98,7 @@ const IncidentMapHeader = () => {
           {config && config.base.supportedLanguages.length > 1 && (
             <LanguageSwitch />
           )}
-          {!isMobile && (
-            <ButtonLink href="/" target="_blank">
-              {tIncidentMap('create_incident')}
-              <Icon>
-                <IconArrowRight />
-              </Icon>
-            </ButtonLink>
-          )}
+          {!isMobile && createIncidentButton}
         </div>
       </PageHeader>
     </>

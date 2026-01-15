@@ -1,12 +1,10 @@
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { Marker } from 'react-map-gl/maplibre'
 import { Map } from '@/components/ui/Map'
 import { useTranslations } from 'next-intl'
 
 import {
   Heading,
-  Icon,
-  IconButton,
   AlertDialog,
   Paragraph,
   Button,
@@ -96,8 +94,8 @@ const MapDialogMobileContent = ({
           {error}
           <ButtonGroup>
             <Button
-              appearance="secondary-action-button"
-              hint="danger"
+              purpose="secondary"
+              hint="negative"
               onClick={() => dialogRef.current?.close()}
             >
               {t('close_alert_notification')}
@@ -125,13 +123,12 @@ const MapDialogMobileContent = ({
                 : t('map_heading')}
             </Heading>
             <Dialog.Close asChild>
-              <IconButton
-                mobileView={true}
+              <Button
                 className="utrecht-button--subtle map-icon-button !mr-0 !ml-auto"
+                iconOnly
+                iconStart={<IconX />}
                 label={t('map_close_button_label')}
-              >
-                <IconX />
-              </IconButton>
+              />
             </Dialog.Close>
           </div>
 
@@ -271,22 +268,23 @@ const MapDialogMobileContent = ({
             </Button>
           </div>
           <div className="map-fullscreen-group">
-            <IconButton
+            <Button
               onClick={() => setFullscreenMap(!fullscreenMap)}
+              iconOnly
+              iconStart={
+                fullscreenMap ? (
+                  <IconArrowsDiagonalMinimize2 />
+                ) : (
+                  <IconArrowsDiagonal />
+                )
+              }
               label={
                 fullscreenMap
                   ? t('toggle_fullscreen_off')
                   : t('toggle_fullscreen_on')
               }
-              mobileView={true}
               className="utrecht-button--subtle map-icon-button"
-            >
-              {fullscreenMap ? (
-                <IconArrowsDiagonalMinimize2 />
-              ) : (
-                <IconArrowsDiagonal />
-              )}
-            </IconButton>
+            />
           </div>
           {isAssetSelect && (
             <div className="map-list-group">
@@ -302,34 +300,32 @@ const MapDialogMobileContent = ({
             <div className="map-legend-group">
               <Button
                 className="utrecht-button--subtle map-icon-button mobile"
-                appearance="secondary-action-button"
+                purpose="secondary"
                 onClick={() => {
                   setOpenLegend(!openLegend)
                 }}
+                iconStart={<IconInfoCircle />}
               >
-                <IconInfoCircle />
                 {t('legend')}
               </Button>
             </div>
           )}
           {dialogMap && (
             <ButtonGroup direction="column" className="map-zoom-button-group">
-              <IconButton
-                mobileView={true}
+              <Button
                 className="utrecht-button--subtle map-icon-button"
                 onClick={() => dialogMap.zoomIn()}
+                iconOnly
+                iconStart={<IconPlus />}
                 label={t('map_zoom-in_button_label')}
-              >
-                <IconPlus />
-              </IconButton>
-              <IconButton
-                mobileView={true}
+              />
+              <Button
                 className="utrecht-button--subtle map-icon-button"
                 onClick={() => dialogMap.zoomOut()}
+                iconOnly
+                iconStart={<IconMinus />}
                 label={t('map_zoom-out_button_label')}
-              >
-                <IconMinus />
-              </IconButton>
+              />
             </ButtonGroup>
           )}
         </div>
@@ -348,11 +344,7 @@ const MapDialogMobileContent = ({
           )}
 
           <Dialog.Close asChild onClick={() => closeMapDialog()}>
-            <Button
-              appearance="primary-action-button"
-              className="mobile"
-              type="button"
-            >
+            <Button purpose="primary" className="mobile" type="button">
               {isAssetSelect
                 ? formState.selectedFeatures.length === 0
                   ? formState.address
