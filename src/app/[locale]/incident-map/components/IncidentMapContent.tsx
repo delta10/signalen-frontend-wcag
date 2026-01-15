@@ -46,6 +46,8 @@ import { setCurrentLocation } from '@/lib/utils/LocationUtils'
 import { getMapStyleUrl } from '@/lib/utils/map'
 import { Paragraph } from '@utrecht/component-library-react/dist/css-module'
 import { ExtendedFeature } from '@/types/map'
+import { Link as LocaleLink, stepToPath } from '@/routing/navigation'
+import { FormStep } from '@/types/form'
 
 const IncidentMapContent = () => {
   const t = useTranslations('describe_add.map')
@@ -94,6 +96,7 @@ const IncidentMapContent = () => {
   const ButtonWithAsChild = Button as unknown as (
     props: React.ComponentProps<typeof Button> & { asChild?: boolean }
   ) => JSX.Element
+  const createIncidentHref = stepToPath[FormStep.STEP_1_DESCRIPTION]
   const createIncidentButton = (
     <ButtonWithAsChild
       purpose="primary"
@@ -101,9 +104,13 @@ const IncidentMapContent = () => {
       iconEnd={<IconArrowRight />}
       asChild
     >
-      <a href="/" target="_blank" rel="noopener">
+      <LocaleLink
+        href={createIncidentHref}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         {tIncidentMap('create_incident')}
-      </a>
+      </LocaleLink>
     </ButtonWithAsChild>
   )
 

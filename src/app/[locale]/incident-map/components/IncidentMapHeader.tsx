@@ -9,16 +9,10 @@ import { NextSvgImage } from '@/components/ui/NextSvgImage'
 import { useMediaQuery } from 'usehooks-ts'
 import React, { useEffect, useState } from 'react'
 import { clsx } from 'clsx'
-import { Button, Icon } from '@/components'
-import { setCurrentLocation } from '@/lib/utils/LocationUtils'
-import {
-  IconArrowLeft,
-  IconArrowRight,
-  IconChevronLeft,
-  IconCurrentLocation,
-} from '@tabler/icons-react'
-import { NextLinkWrapper } from '@/components/ui/NextLinkWrapper'
-import { stepToPath } from '@/routing/navigation'
+import { Button } from '@/components'
+
+import { IconArrowRight } from '@tabler/icons-react'
+import { Link as LocaleLink, stepToPath } from '@/routing/navigation'
 import { FormStep } from '@/types/form'
 
 const IncidentMapHeader = () => {
@@ -62,11 +56,16 @@ const IncidentMapHeader = () => {
   const ButtonWithAsChild = Button as unknown as (
     props: React.ComponentProps<typeof Button> & { asChild?: boolean }
   ) => JSX.Element
+  const createIncidentHref = stepToPath[FormStep.STEP_1_DESCRIPTION]
   const createIncidentButton = (
     <ButtonWithAsChild purpose="primary" iconEnd={<IconArrowRight />} asChild>
-      <a href="/" target="_blank" rel="noopener">
+      <LocaleLink
+        href={createIncidentHref}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         {tIncidentMap('create_incident')}
-      </a>
+      </LocaleLink>
     </ButtonWithAsChild>
   )
 
