@@ -4,7 +4,6 @@ import {
   Button,
   ButtonGroup,
   Heading,
-  IconButton,
   MapMarker,
   Paragraph,
   SpotlightSection,
@@ -262,33 +261,30 @@ const MapDialogContent = ({
           </div>
 
           <Dialog.Close asChild>
-            <IconButton
-              appearance="secondary-action-button"
+            <Button
               className="map-button map-close-button"
+              iconOnly
+              iconStart={<IconX />}
               label={t('map_close_button_label')}
-            >
-              <IconX />
-            </IconButton>
+            />
           </Dialog.Close>
 
           {dialogMap && (
             <ButtonGroup direction="column" className="map-zoom-button-group">
-              <IconButton
-                appearance="secondary-action-button"
+              <Button
                 className="map-button map-zoom-button"
-                onClick={() => dialogMap.zoomIn()}
+                iconOnly
+                iconStart={<IconPlus />}
                 label={t('map_zoom-in_button_label')}
-              >
-                <IconPlus />
-              </IconButton>
-              <IconButton
-                appearance="secondary-action-button"
+                onClick={() => dialogMap.zoomIn()}
+              />
+              <Button
                 className="map-button map-zoom-button"
-                onClick={() => dialogMap.zoomOut()}
+                iconOnly
+                iconStart={<IconMinus />}
                 label={t('map_zoom-out_button_label')}
-              >
-                <IconMinus />
-              </IconButton>
+                onClick={() => dialogMap.zoomOut()}
+              />
             </ButtonGroup>
           )}
 

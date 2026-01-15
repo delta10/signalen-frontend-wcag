@@ -5,7 +5,6 @@ import { useTranslations } from 'next-intl'
 
 import {
   Heading,
-  IconButton,
   AlertDialog,
   Paragraph,
   Button,
@@ -124,13 +123,12 @@ const MapDialogMobileContent = ({
                 : t('map_heading')}
             </Heading>
             <Dialog.Close asChild>
-              <IconButton
-                mobileView={true}
+              <Button
                 className="utrecht-button--subtle map-icon-button !mr-0 !ml-auto"
+                iconOnly
+                iconStart={<IconX />}
                 label={t('map_close_button_label')}
-              >
-                <IconX />
-              </IconButton>
+              />
             </Dialog.Close>
           </div>
 
@@ -270,22 +268,23 @@ const MapDialogMobileContent = ({
             </Button>
           </div>
           <div className="map-fullscreen-group">
-            <IconButton
+            <Button
               onClick={() => setFullscreenMap(!fullscreenMap)}
+              iconOnly
+              iconStart={
+                fullscreenMap ? (
+                  <IconArrowsDiagonalMinimize2 />
+                ) : (
+                  <IconArrowsDiagonal />
+                )
+              }
               label={
                 fullscreenMap
                   ? t('toggle_fullscreen_off')
                   : t('toggle_fullscreen_on')
               }
-              mobileView={true}
               className="utrecht-button--subtle map-icon-button"
-            >
-              {fullscreenMap ? (
-                <IconArrowsDiagonalMinimize2 />
-              ) : (
-                <IconArrowsDiagonal />
-              )}
-            </IconButton>
+            />
           </div>
           {isAssetSelect && (
             <div className="map-list-group">
@@ -313,22 +312,20 @@ const MapDialogMobileContent = ({
           )}
           {dialogMap && (
             <ButtonGroup direction="column" className="map-zoom-button-group">
-              <IconButton
-                mobileView={true}
+              <Button
                 className="utrecht-button--subtle map-icon-button"
                 onClick={() => dialogMap.zoomIn()}
+                iconOnly
+                iconStart={<IconPlus />}
                 label={t('map_zoom-in_button_label')}
-              >
-                <IconPlus />
-              </IconButton>
-              <IconButton
-                mobileView={true}
+              />
+              <Button
                 className="utrecht-button--subtle map-icon-button"
                 onClick={() => dialogMap.zoomOut()}
+                iconOnly
+                iconStart={<IconMinus />}
                 label={t('map_zoom-out_button_label')}
-              >
-                <IconMinus />
-              </IconButton>
+              />
             </ButtonGroup>
           )}
         </div>

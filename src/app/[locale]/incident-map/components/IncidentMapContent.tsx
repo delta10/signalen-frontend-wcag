@@ -16,7 +16,6 @@ import {
   Button,
   ButtonGroup,
   Icon,
-  IconButton,
   MapMarker,
   SpotlightSection,
 } from '@/components'
@@ -432,30 +431,26 @@ const IncidentMapContent = () => {
                 isMobile ? 'mobile' : ''
               )}
             >
-              <IconButton
-                appearance="secondary-action-button"
+              <Button
                 className={clsx(
                   'map-zoom-button',
                   isMobile ? 'map-icon-button' : 'map-button'
                 )}
                 onClick={() => dialogMap.zoomIn()}
+                iconOnly
+                iconStart={<IconPlus />}
                 label={t('map_zoom-in_button_label')}
-                mobileView={isMobile}
-              >
-                <IconPlus />
-              </IconButton>
-              <IconButton
-                appearance="secondary-action-button"
+              />
+              <Button
                 className={clsx(
                   'map-zoom-button',
                   isMobile ? 'map-icon-button' : 'map-button'
                 )}
                 onClick={() => dialogMap.zoomOut()}
+                iconOnly
+                iconStart={<IconMinus />}
                 label={t('map_zoom-out_button_label')}
-                mobileView={isMobile}
-              >
-                <IconMinus />
-              </IconButton>
+              />
             </ButtonGroup>
           )}
         </div>
