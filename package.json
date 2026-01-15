@@ -20,6 +20,8 @@
   "dependencies": {
     "@headlessui/react": "2.2.4",
     "@hookform/resolvers": "3.9.0",
+    "@nl-design-system-candidate/button-css": "1.0.1",
+    "@nl-design-system-candidate/button-react": "1.0.0",
     "@radix-ui/react-dialog": "1.1.2",
     "@radix-ui/react-visually-hidden": "1.1.1",
     "@tabler/icons-react": "3.30.0",

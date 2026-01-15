@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import '@nl-design-system-candidate/button-css/button.css'
 import './globals.css'
 import './nl-design-system-overrides.css'
 
