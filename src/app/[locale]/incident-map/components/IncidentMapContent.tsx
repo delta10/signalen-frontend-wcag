@@ -15,6 +15,7 @@ import {
   AlertDialog,
   Button,
   ButtonGroup,
+  ButtonLink,
   Icon,
   MapMarker,
   SpotlightSection,
@@ -46,7 +47,7 @@ import { setCurrentLocation } from '@/lib/utils/LocationUtils'
 import { getMapStyleUrl } from '@/lib/utils/map'
 import { Paragraph } from '@utrecht/component-library-react/dist/css-module'
 import { ExtendedFeature } from '@/types/map'
-import { Link as LocaleLink, stepToPath } from '@/routing/navigation'
+import { stepToPath } from '@/routing/navigation'
 import { FormStep } from '@/types/form'
 
 const IncidentMapContent = () => {
@@ -93,25 +94,18 @@ const IncidentMapContent = () => {
 
   const mapContainerRef = useRef<HTMLDivElement>(null)
 
-  const ButtonWithAsChild = Button as unknown as (
-    props: React.ComponentProps<typeof Button> & { asChild?: boolean }
-  ) => JSX.Element
   const createIncidentHref = stepToPath[FormStep.STEP_1_DESCRIPTION]
   const createIncidentButton = (
-    <ButtonWithAsChild
+    <ButtonLink
       purpose="primary"
       className="mobile full-width"
       iconEnd={<IconArrowRight />}
-      asChild
+      href={createIncidentHref}
+      target="_blank"
+      rel="noopener noreferrer"
     >
-      <LocaleLink
-        href={createIncidentHref}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {tIncidentMap('create_incident')}
-      </LocaleLink>
-    </ButtonWithAsChild>
+      {tIncidentMap('create_incident')}
+    </ButtonLink>
   )
 
   // Memoize the function with useCallback and include all dependencies

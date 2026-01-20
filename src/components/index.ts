@@ -7,6 +7,7 @@ export { StatusText, AlertText } from '@/components/ui/LiveText'
 
 // NL Design System candidate button
 export { Button } from '@nl-design-system-candidate/button-react'
+export { ButtonLink } from '@/components/ui/ButtonLink'
 
 export {
   Alert,

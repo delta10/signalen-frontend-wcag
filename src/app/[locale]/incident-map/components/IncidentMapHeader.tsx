@@ -7,12 +7,12 @@ import { useDarkMode } from '@/hooks/useDarkMode'
 import { useTranslations } from 'next-intl'
 import { NextSvgImage } from '@/components/ui/NextSvgImage'
 import { useMediaQuery } from 'usehooks-ts'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { clsx } from 'clsx'
-import { Button } from '@/components'
+import { ButtonLink } from '@/components'
 
 import { IconArrowRight } from '@tabler/icons-react'
-import { Link as LocaleLink, stepToPath } from '@/routing/navigation'
+import { stepToPath } from '@/routing/navigation'
 import { FormStep } from '@/types/form'
 
 const IncidentMapHeader = () => {
@@ -53,20 +53,17 @@ const IncidentMapHeader = () => {
     return null
   }
 
-  const ButtonWithAsChild = Button as unknown as (
-    props: React.ComponentProps<typeof Button> & { asChild?: boolean }
-  ) => JSX.Element
   const createIncidentHref = stepToPath[FormStep.STEP_1_DESCRIPTION]
   const createIncidentButton = (
-    <ButtonWithAsChild purpose="primary" iconEnd={<IconArrowRight />} asChild>
-      <LocaleLink
-        href={createIncidentHref}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {tIncidentMap('create_incident')}
-      </LocaleLink>
-    </ButtonWithAsChild>
+    <ButtonLink
+      purpose="primary"
+      iconEnd={<IconArrowRight />}
+      href={createIncidentHref}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      {tIncidentMap('create_incident')}
+    </ButtonLink>
   )
 
   return (
