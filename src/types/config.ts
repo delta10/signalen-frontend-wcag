@@ -2,6 +2,7 @@ export type AppConfig = {
   maptilerApiKey: string
   maptilerMap: string
   maptilerMapDarkMode: string
+  maptilerRestrictedLocationSelectArea?: string
   pdokUrlApi: string
   frontendUrl: string
   baseUrlApi: string

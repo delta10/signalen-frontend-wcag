@@ -64,7 +64,8 @@
       "back_to_map": "Terug naar de kaart",
       "show_list": "Toon {name} lijst",
       "toggle_fullscreen_on": "Open de kaart op volledig scherm",
-      "toggle_fullscreen_off": "Sluit volledig schermweergave van de kaart"
+      "toggle_fullscreen_off": "Sluit volledig schermweergave van de kaart",
+      "please_choose_a_point_on_a_road": "Deze locatie ligt buiten het toegestane gebied. Kies een punt binnen het gemarkeerde gebied."
     },
     "explainer": {
       "label": "Hoe gebruik ik de kaart?",

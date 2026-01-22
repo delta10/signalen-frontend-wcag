@@ -27,6 +27,9 @@ import { useWindowSize } from 'usehooks-ts'
 import { useConfig } from '@/contexts/ConfigContext'
 import { generateFeatureId } from '@/lib/utils/features'
 import { ExtendedFeature } from '@/types/map'
+import { point as turfPoint } from '@turf/helpers'
+import booleanPointInPolygon from '@turf/boolean-point-in-polygon'
+import type { Feature } from 'geojson'
 
 function useMapDialog(
   onMapReady: ((map: MapRef) => void) | undefined,
@@ -307,15 +310,51 @@ function useMapDialog(
     }
   }
 
+  const isPointInsideRestrictedArea = (lng: number, lat: number) => {
+    if (!dialogMap) return false
+
+    const p = turfPoint([lng, lat])
+
+    const RESTRICTED_SOURCE_LAYER = 'test' // todo verplaatsen naar config
+    const srcFeatures = dialogMap.querySourceFeatures('restricted-areas', {
+      sourceLayer: RESTRICTED_SOURCE_LAYER,
+    })
+
+    for (const f of srcFeatures) {
+      const gj: Feature =
+        typeof (f as any).toJSON === 'function'
+          ? (f as any).toJSON()
+          : ({
+              type: 'Feature',
+              geometry: (f as any).geometry,
+              properties: (f as any).properties ?? {},
+              id: (f as any).id,
+            } as any)
+
+      const t = gj.geometry?.type
+      if (t === 'Polygon' || t === 'MultiPolygon') {
+        if (booleanPointInPolygon(p, gj as any)) return true
+      }
+    }
+
+    return false
+  }
+
   // Handle click on map, setIsMapSelected to true
   const handleMapClick = async (event: MapLayerMouseEvent) => {
-    updatePosition(event.lngLat.lat, event.lngLat.lng)
+    const { lng, lat } = event.lngLat
+
+    // todo: zorgen dat dit alleen gedaan wordt wanneer er een gebied opgegeven is
+    const ok = isPointInsideRestrictedArea(lng, lat)
+    if (!ok) {
+      setError(t('please_choose_a_point_on_a_road'))
+      dialogRef.current?.showModal?.()
+      return
+    }
+
+    updatePosition(lat, lng)
     setIsMapSelected(true)
-    const address = await getNewSelectedAddress(
-      event.lngLat.lat,
-      event.lngLat.lng,
-      config
-    )
+    const address = await getNewSelectedAddress(lat, lng, config)
 
     updateForm({
       ...formState,

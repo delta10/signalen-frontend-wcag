@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import {
   AlertDialog,
   Button,
@@ -31,6 +31,7 @@ import { setCurrentLocation } from '@/lib/utils/LocationUtils'
 import { FeatureTypeIcon } from '@/app/[locale]/incident/add/components/FeatureTypeIcon'
 import { ExtendedFeature } from '@/types/map'
 import FeatureTypeLegend from '@/app/[locale]/incident/add/components/FeatureTypeLegend'
+import { Layer, Source } from 'react-map-gl/maplibre'
 
 export type MapDialogContentProps = {
   onMapReady?: (map: MapRef) => void
@@ -78,6 +79,29 @@ const MapDialogContent = ({
     setOpenLegend,
   } = useMapDialog(onMapReady, field, features, isAssetSelect)
 
+  const restrictedTilesetTileJson =
+    'https://api.maptiler.com/tiles/019b9355-8938-7950-80a4-96585637f25e/tiles.json?key=K3FQAjXPERToZYyHKNPG'
+
+  // IMPORTANT: you must set this to the *actual* source-layer name inside the tileset voor de huidige is dat nu test blijkbaar
+  const RESTRICTED_SOURCE_LAYER = 'test'
+  const ROADS_LAYER_ID = 'restricted-roads'
+
+  const restrictedRoadsLayer: any = {
+    id: ROADS_LAYER_ID,
+    type: 'line',
+    source: 'restricted-areas',
+    'source-layer': RESTRICTED_SOURCE_LAYER,
+    layout: {
+      'line-join': 'round',
+      'line-cap': 'round',
+    },
+    paint: {
+      'line-width': ['interpolate', ['linear'], ['zoom'], 10, 1.5, 16, 4],
+      // choose something readable on gray basemap
+      'line-opacity': 1,
+    },
+  }
+
   return (
     <>
       <AlertDialog type="error" ref={dialogRef}>
@@ -113,7 +137,9 @@ const MapDialogContent = ({
           <MapExplainerAccordion />
 
           <div className="flex flex-col py-2">
-            <label htmlFor="address-combobox">{t('search_address_label')}</label>
+            <label htmlFor="address-combobox">
+              {t('search_address_label')}
+            </label>
             <AddressCombobox
               updatePosition={updatePosition}
               setIsMapSelected={setIsMapSelected}
@@ -206,6 +232,7 @@ const MapDialogContent = ({
             maxBounds={
               config.base.map.maxBounds as [[number, number], [number, number]]
             }
+            interactiveLayerIds={[ROADS_LAYER_ID]} // ONLY this layer is clickable
           >
             {/* Address or selected point on map marker */}
             {marker.length && (isMapSelected === null || isMapSelected) && (
@@ -244,6 +271,13 @@ const MapDialogContent = ({
                   </Marker>
                 )
               })}
+            <Source
+              id="restricted-areas"
+              type="vector"
+              url={restrictedTilesetTileJson}
+            >
+              <Layer {...restrictedRoadsLayer} />
+            </Source>
           </Map>
           <div className="map-location-group">
             <Button
