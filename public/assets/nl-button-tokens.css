@@ -51,6 +51,12 @@
   --nl-button-focus-border-color: var(--utrecht-button-primary-action-focus-border-color);
   --nl-button-focus-color: var(--utrecht-button-primary-action-focus-color);
   
+  /* NL Button - Focus outline */
+  --nl-button-focus-outline-color: var(--utrecht-focus-outline-color, var(--basis-color-black));
+  --nl-button-focus-outline-offset: var(--utrecht-focus-outline-offset, 0);
+  --nl-button-focus-outline-style: var(--utrecht-focus-outline-style, dotted);
+  --nl-button-focus-outline-width: var(--utrecht-focus-outline-width, var(--basis-border-width-lg));
+  
   /* NL Button - Secondary */
   --nl-button-secondary-background-color: var(--utrecht-button-secondary-action-background-color);
   --nl-button-secondary-border-color: var(--utrecht-button-secondary-action-border-color);
