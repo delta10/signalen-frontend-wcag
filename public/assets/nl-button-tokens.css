@@ -1,11 +1,15 @@
-/* NL Design System Button tokens - mapped to Utrecht tokens
- * 
+/*
+ * NL Design System Button tokens - mapped to Utrecht tokens
+ *
  * This file contains the token mappings from Utrecht Design System to
  * NL Design System candidate button tokens. Import this file in your
  * theme CSS files to avoid duplication.
- * 
+ *
  * The tokens reference Utrecht tokens which are overridden in dark mode,
  * so these mappings work for both light and dark themes.
+ *
+ * TODO: We gaan nog overstappen naar de JSON tokens.
+ *       Deze file kan dan verwijderd worden.
  */
 
 :root {
