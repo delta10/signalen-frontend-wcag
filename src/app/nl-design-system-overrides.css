@@ -199,3 +199,11 @@
 h2.utrecht-heading-2 {
   @apply pb-2;
 }
+
+/* NL Button - Focus styling */
+.nl-button:focus-visible {
+  outline-color: var(--nl-button-focus-outline-color, var(--utrecht-focus-outline-color, var(--basis-color-black)));
+  outline-offset: var(--nl-button-focus-outline-offset, var(--utrecht-focus-outline-offset, 0));
+  outline-style: var(--nl-button-focus-outline-style, var(--utrecht-focus-outline-style, dotted));
+  outline-width: var(--nl-button-focus-outline-width, var(--utrecht-focus-outline-width, var(--basis-border-width-lg)));
+}

@@ -2,6 +2,7 @@
 @import url('https://cdn.jsdelivr.net/npm/fontsource-cantarell@4.0.0/700-italic.css');
 @import url('https://cdn.jsdelivr.net/npm/fontsource-cantarell@4.0.0/400.css');
 @import url('https://cdn.jsdelivr.net/npm/fontsource-cantarell@4.0.0/700.css');
+@import url('./nl-button-tokens.css');
 
 .organization-theme {
   --denhaag-sidenav-list-padding-inline-start: 0px;
@@ -1089,6 +1090,7 @@
   --utrecht-button-color: var(--basis-color-primary-inverse-text-1);
   --utrecht-button-border-color: var(--basis-color-primary-inverse-border-1);
   --utrecht-button-background-color: var(--basis-color-primary-inverse-bg-1);
+  
   --utrecht-breadcrumb-nav-font-size: var(--utrecht-document-font-size);
   --utrecht-breadcrumb-nav-separator-icon-size: var(--basis-size-2xs);
   --utrecht-breadcrumb-nav-separator-color: var(--basis-document-subtle-color);
@@ -3213,6 +3215,7 @@
     --utrecht-button-color: var(--basis-color-primary-inverse-text-1);
     --utrecht-button-border-color: var(--basis-color-primary-inverse-border-1);
     --utrecht-button-background-color: var(--basis-color-primary-inverse-bg-1);
+    
     --utrecht-breadcrumb-nav-font-size: var(--utrecht-document-font-size);
     --utrecht-breadcrumb-nav-separator-icon-size: var(--basis-size-2xs);
     --utrecht-breadcrumb-nav-separator-color: var(--basis-document-subtle-color);

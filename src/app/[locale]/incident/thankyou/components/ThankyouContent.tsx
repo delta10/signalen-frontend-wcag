@@ -5,7 +5,6 @@ import { useFormStore } from '@/store/form_store'
 import { stepToPath, useRouter } from '@/routing/navigation'
 import { FormStep } from '@/types/form'
 import { Heading, Paragraph, Button, PreserveData } from '@/components'
-import React from 'react'
 
 export const ThankyouContent = () => {
   const t = useTranslations('describe_thankyou')
@@ -31,7 +30,7 @@ export const ThankyouContent = () => {
         <Heading level={3}>{t('what_do_we_do_heading')}</Heading>
         <Paragraph>{t('what_do_we_do_description')}</Paragraph>
       </div>
-      <Button appearance="primary-action-button" onClick={() => resetState()}>
+      <Button purpose="primary" onClick={() => resetState()}>
         {t('new_notification')}
       </Button>
     </main>

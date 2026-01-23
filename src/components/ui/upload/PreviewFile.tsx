@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useTranslations } from 'next-intl'
-import { IconButton } from '@/components'
+import { Button } from '@/components'
 import { IconTrash } from '@tabler/icons-react'
 import './PreviewFile.css'
 
@@ -30,14 +30,14 @@ const PreviewFile = ({ file, allowDelete = false, onDelete }: Props) => {
       />
       {/*          className="absolute bottom-0 right-0 w-full flex justify-center items-center py-2 file-preview-button-background"*/}
       {allowDelete && (
-        <IconButton
+        <Button
           className="iconbutton-preview-delete"
           onClick={onDelete}
           type="button"
+          iconOnly
+          iconStart={<IconTrash />}
           label={t('button.delete_file', { file: file.name })}
-        >
-          <IconTrash />
-        </IconButton>
+        />
       )}
     </div>
   )
