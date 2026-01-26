@@ -5,6 +5,7 @@
   "maptilerApiKey": "x0IfDO01xuLQQKYlSzuz",
   "maptilerMap": "https://api.maptiler.com/maps/nl-cartiqo-topo",
   "maptilerMapDarkMode": "https://api.maptiler.com/maps/streets-v2-dark",
+  "maptilerRestrictedLocationSelectArea": "https://api.maptiler.com/tiles/019b9355-8938-7950-80a4-96585637f25e/?key=K3FQAjXPERToZYyHKNPG",
   "base": {
     "municipality": "meierijstad",
     "municipality_display_name": "Purmerend",
@@ -30,7 +31,7 @@
     "map": {
       "find_address_in_distance": 30,
       "minimal_zoom": 17,
-      "center": [52.5025, 4.9592],
+      "center": [51.52, 5.112],
       "maxBounds": [
         [3.31497114423, 50.803721015],
         [7.09205325687, 53.5104033474]
