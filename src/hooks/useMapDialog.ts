@@ -310,34 +310,59 @@ function useMapDialog(
     }
   }
 
-  const isPointInsideRestrictedArea = (lng: number, lat: number) => {
+  // Source ids
+  const OUT_OF_BOUNDS_SOURCE_ID = 'out-of-bounds-source'
+  const OUT_OF_BOUNDS_LINE_ID = 'restricted-corridor-line'
+  const OUT_OF_BOUNDS_FILL_ID = 'out-of-bounds-area'
+
+  // Optional: extra line layer (vaak niet nodig, maar kan)
+  const outOfBoundsLineStyle: any = {
+    id: OUT_OF_BOUNDS_LINE_ID,
+    type: 'line',
+    source: OUT_OF_BOUNDS_SOURCE_ID,
+    'source-layer': config.maptilerOutOfBoundsLayerId,
+    layout: { 'line-join': 'round', 'line-cap': 'round' },
+    paint: {
+      'line-width': ['interpolate', ['linear'], ['zoom'], 10, 1.5, 16, 3],
+      'line-opacity': 0.9,
+    },
+  }
+
+  // Mask fill (alles buiten corridor)
+  const outOfBoundsFillStyle: any = {
+    id: OUT_OF_BOUNDS_SOURCE_ID,
+    type: 'fill',
+    source: OUT_OF_BOUNDS_FILL_ID,
+    'source-layer': config.maptilerOutOfBoundsLayerId,
+    paint: {
+      'fill-color': '#858383',
+      'fill-opacity': 0.6,
+    },
+  }
+
+  const isPointInsideRestrictedArea = (lng: number, lat: number): boolean => {
     if (!dialogMap) return false
 
-    const p = turfPoint([lng, lat])
+    const point = turfPoint([lng, lat])
 
-    const RESTRICTED_SOURCE_LAYER = 'test' // todo verplaatsen naar config
-    const srcFeatures = dialogMap.querySourceFeatures('restricted-areas', {
-      sourceLayer: RESTRICTED_SOURCE_LAYER,
-    })
-
-    for (const f of srcFeatures) {
-      const gj: Feature =
-        typeof (f as any).toJSON === 'function'
-          ? (f as any).toJSON()
-          : ({
-              type: 'Feature',
-              geometry: (f as any).geometry,
-              properties: (f as any).properties ?? {},
-              id: (f as any).id,
-            } as any)
-
-      const t = gj.geometry?.type
-      if (t === 'Polygon' || t === 'MultiPolygon') {
-        if (booleanPointInPolygon(p, gj as any)) return true
+    // TODO: Add constant for 'out-of-bounds-area' source
+    const sourceFeatures = dialogMap.querySourceFeatures(
+      OUT_OF_BOUNDS_SOURCE_ID,
+      {
+        sourceLayer: config.maptilerOutOfBoundsLayerId,
       }
-    }
+    )
 
-    return false
+    return sourceFeatures.some((feature) => {
+      if (feature.type !== 'Feature' || !feature.geometry) {
+        return false
+      }
+
+      const { type } = feature.geometry
+      const isPolygonType = type === 'Polygon' || type === 'MultiPolygon'
+
+      return isPolygonType && !booleanPointInPolygon(point, feature as any)
+    })
   }
 
   // Handle click on map, setIsMapSelected to true
@@ -345,8 +370,10 @@ function useMapDialog(
     const { lng, lat } = event.lngLat
 
     // todo: zorgen dat dit alleen gedaan wordt wanneer er een gebied opgegeven is
-    const ok = isPointInsideRestrictedArea(lng, lat)
-    if (!ok) {
+    if (
+      config.restrictSelectionArea &&
+      !isPointInsideRestrictedArea(lng, lat)
+    ) {
       setError(t('please_choose_a_point_on_a_road'))
       dialogRef.current?.showModal?.()
       return
@@ -390,6 +417,9 @@ function useMapDialog(
     handleFeatureMarkerClick,
     openLegend,
     setOpenLegend,
+    outOfBoundsLineStyle,
+    outOfBoundsFillStyle,
+    OUT_OF_BOUNDS_SOURCE_ID,
   }
 }
 

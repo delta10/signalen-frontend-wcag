@@ -146,15 +146,25 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
         <FormFieldErrorMessage>{errorMessage}</FormFieldErrorMessage>
       )}
 
+      {!config.restrictSelectionArea && (
+        <>
+          <FormFieldDescription>
+            {t('choose_address_description')}
+          </FormFieldDescription>
+
+          <div className="mb-4" {...register('location')}>
+            <AddressCombobox />
+          </div>
+        </>
+      )}
+
       <FormFieldDescription>
-        {t('choose_address_description')}
+        {t(
+          config.restrictSelectionArea
+            ? 'use_map_description'
+            : 'or_use_map_description'
+        )}
       </FormFieldDescription>
-
-      <div className="mb-4" {...register('location')}>
-        <AddressCombobox />
-      </div>
-
-      <FormFieldDescription>{t('use_map_description')}</FormFieldDescription>
       <div className="relative w-full">
         <div style={{ minHeight: 200, height: 200 }} role="img" aria-label="">
           <LocationMap />

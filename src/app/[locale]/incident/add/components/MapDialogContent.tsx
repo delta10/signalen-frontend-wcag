@@ -77,76 +77,10 @@ const MapDialogContent = ({
     handleFeatureMarkerClick,
     openLegend,
     setOpenLegend,
+    outOfBoundsLineStyle,
+    outOfBoundsFillStyle,
+    OUT_OF_BOUNDS_SOURCE_ID,
   } = useMapDialog(onMapReady, field, features, isAssetSelect)
-
-  const restrictedTilesetTileJson =
-    'https://api.maptiler.com/tiles/019b9355-8938-7950-80a4-96585637f25e/tiles.json?key=K3FQAjXPERToZYyHKNPG'
-  const maskTilesetTileJson =
-    'https://api.maptiler.com/tiles/019beaf4-7ca8-7656-b1fb-a218f3c79078/tiles.json?key=PQAbxfeC4o0w2XNjczf0'
-
-  // IMPORTANT: you must set this to the *actual* source-layer name inside the tileset voor de huidige is dat nu test blijkbaar
-  const RESTRICTED_SOURCE_LAYER = 'test'
-
-  // Source ids
-  const RESTRICTED_SOURCE_ID = 'restricted-areas'
-  const MASK_SOURCE_ID = 'mask-areas'
-
-  // Layer ids (moeten uniek zijn!)
-  const RESTRICTED_FILL_ID = 'restricted-corridor-fill'
-  const RESTRICTED_OUTLINE_ID = 'restricted-corridor-outline'
-  const RESTRICTED_LINE_ID = 'restricted-corridor-line' // optional
-  const MASK_FILL_ID = 'outside-mask-fill'
-
-  // Corridor fill (dit laat het corridor-vlak zien)
-  const restrictedCorridorFillLayer: any = {
-    id: RESTRICTED_FILL_ID,
-    type: 'fill',
-    source: RESTRICTED_SOURCE_ID,
-    'source-layer': RESTRICTED_SOURCE_LAYER,
-    paint: {
-      'fill-opacity': 0.25,
-      // kies eventueel een kleur die je goed ziet:
-      // 'fill-color': '#00ff00',
-    },
-  }
-
-  // Corridor outline (rand van corridor)
-  const restrictedCorridorOutlineLayer: any = {
-    id: RESTRICTED_OUTLINE_ID,
-    type: 'line',
-    source: RESTRICTED_SOURCE_ID,
-    'source-layer': RESTRICTED_SOURCE_LAYER,
-    layout: { 'line-join': 'round', 'line-cap': 'round' },
-    paint: {
-      'line-width': ['interpolate', ['linear'], ['zoom'], 10, 1, 16, 2],
-      'line-opacity': 1,
-    },
-  }
-
-  // Optional: extra line layer (vaak niet nodig, maar kan)
-  const restrictedCorridorLineLayer: any = {
-    id: RESTRICTED_LINE_ID,
-    type: 'line',
-    source: RESTRICTED_SOURCE_ID,
-    'source-layer': RESTRICTED_SOURCE_LAYER,
-    layout: { 'line-join': 'round', 'line-cap': 'round' },
-    paint: {
-      'line-width': ['interpolate', ['linear'], ['zoom'], 10, 1.5, 16, 3],
-      'line-opacity': 0.9,
-    },
-  }
-
-  // Mask fill (alles buiten corridor)
-  const maskCorridorFillLayer: any = {
-    id: MASK_FILL_ID,
-    type: 'fill',
-    source: MASK_SOURCE_ID,
-    'source-layer': 'output',
-    paint: {
-      'fill-color': '#858383',
-      'fill-opacity': 0.6,
-    },
-  }
 
   return (
     <>
@@ -182,16 +116,18 @@ const MapDialogContent = ({
 
           <MapExplainerAccordion />
 
-          <div className="flex flex-col py-2">
-            <label htmlFor="address-combobox">
-              {t('search_address_label')}
-            </label>
-            <AddressCombobox
-              updatePosition={updatePosition}
-              setIsMapSelected={setIsMapSelected}
-              id="address-combobox"
-            />
-          </div>
+          {!config.restrictSelectionArea && (
+            <div className="flex flex-col py-2">
+              <label htmlFor="address-combobox">
+                {t('search_address_label')}
+              </label>
+              <AddressCombobox
+                updatePosition={updatePosition}
+                setIsMapSelected={setIsMapSelected}
+                id="address-combobox"
+              />
+            </div>
+          )}
 
           {isAssetSelect && dialogMap && config && field ? (
             <div className="flex flex-col gap-4 pt-2 flex-grow">
@@ -278,7 +214,6 @@ const MapDialogContent = ({
             maxBounds={
               config.base.map.maxBounds as [[number, number], [number, number]]
             }
-            interactiveLayerIds={[RESTRICTED_FILL_ID]} // ONLY this layer is clickable
           >
             {/* Address or selected point on map marker */}
             {marker.length && (isMapSelected === null || isMapSelected) && (
@@ -317,18 +252,18 @@ const MapDialogContent = ({
                   </Marker>
                 )
               })}
-            <Source
-              id={RESTRICTED_SOURCE_ID}
-              type="vector"
-              url={restrictedTilesetTileJson}
-            >
-              <Layer {...restrictedCorridorOutlineLayer} />
-              {/* optional: <Layer {...restrictedCorridorLineLayer} /> */}
-            </Source>
-
-            <Source id={MASK_SOURCE_ID} type="vector" url={maskTilesetTileJson}>
-              <Layer {...maskCorridorFillLayer} />
-            </Source>
+            {config.restrictSelectionArea && (
+              <>
+                <Source
+                  id={OUT_OF_BOUNDS_SOURCE_ID}
+                  type="vector"
+                  url={config.maptilerOutOfBoundsSelectionArea}
+                >
+                  <Layer {...outOfBoundsFillStyle} />
+                  <Layer {...outOfBoundsLineStyle} />
+                </Source>
+              </>
+            )}
           </Map>
           <div className="map-location-group">
             <Button

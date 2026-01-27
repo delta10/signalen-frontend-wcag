@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { Marker } from 'react-map-gl/maplibre'
+import { Layer, Marker, Source } from 'react-map-gl/maplibre'
 import { Map } from '@/components/ui/Map'
 import { useTranslations } from 'next-intl'
 
@@ -82,6 +82,9 @@ const MapDialogMobileContent = ({
     handleFeatureMarkerClick,
     openLegend,
     setOpenLegend,
+    outOfBoundsLineStyle,
+    outOfBoundsFillStyle,
+    OUT_OF_BOUNDS_SOURCE_ID,
   } = useMapDialog(onMapReady, field, features, isAssetSelect)
 
   const toggleList = () => {
@@ -147,14 +150,18 @@ const MapDialogMobileContent = ({
               setIsOpen={setIsAccordionOpen}
             />
 
-            <label htmlFor="address" className="!text-lg mt-4">
-              {t('search_address_label')}
-            </label>
-            <AddressCombobox
-              updatePosition={updatePosition}
-              setIsMapSelected={setIsMapSelected}
-              mobileView={true}
-            />
+            {!config.restrictSelectionArea && (
+              <>
+                <label htmlFor="address" className="!text-lg mt-4">
+                  {t('search_address_label')}
+                </label>
+                <AddressCombobox
+                  updatePosition={updatePosition}
+                  setIsMapSelected={setIsMapSelected}
+                  mobileView={true}
+                />
+              </>
+            )}
           </div>
           {isAssetSelect && dialogMap && config && field ? (
             <div>
@@ -203,6 +210,7 @@ const MapDialogMobileContent = ({
           )}
           ref={mapContainerRef}
         >
+          {/*todo: ook hier natuurlijk*/}
           <Map
             {...viewState}
             id="dialogMap"
@@ -251,6 +259,18 @@ const MapDialogMobileContent = ({
                   </Marker>
                 )
               })}
+            {config.restrictSelectionArea && (
+              <>
+                <Source
+                  id={OUT_OF_BOUNDS_SOURCE_ID}
+                  type="vector"
+                  url={config.maptilerOutOfBoundsSelectionArea}
+                >
+                  <Layer {...outOfBoundsFillStyle} />
+                  <Layer {...outOfBoundsLineStyle} />
+                </Source>
+              </>
+            )}
           </Map>
           <div className="map-location-group">
             {/*!text-lg !px-2 !py-2*/}
