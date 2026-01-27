@@ -340,7 +340,7 @@ function useMapDialog(
     },
   }
 
-  const isPointInsideRestrictedArea = (lng: number, lat: number): boolean => {
+  const isPointOutsideRestrictedArea = (lng: number, lat: number): boolean => {
     if (!dialogMap) return false
 
     const point = turfPoint([lng, lat])
@@ -361,7 +361,7 @@ function useMapDialog(
       const { type } = feature.geometry
       const isPolygonType = type === 'Polygon' || type === 'MultiPolygon'
 
-      return isPolygonType && !booleanPointInPolygon(point, feature as any)
+      return isPolygonType && booleanPointInPolygon(point, feature as any)
     })
   }
 
@@ -369,10 +369,9 @@ function useMapDialog(
   const handleMapClick = async (event: MapLayerMouseEvent) => {
     const { lng, lat } = event.lngLat
 
-    // todo: zorgen dat dit alleen gedaan wordt wanneer er een gebied opgegeven is
     if (
       config.restrictSelectionArea &&
-      !isPointInsideRestrictedArea(lng, lat)
+      isPointOutsideRestrictedArea(lng, lat)
     ) {
       setError(t('please_choose_a_point_on_a_road'))
       dialogRef.current?.showModal?.()
