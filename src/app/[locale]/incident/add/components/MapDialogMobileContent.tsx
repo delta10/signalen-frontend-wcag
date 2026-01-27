@@ -210,7 +210,6 @@ const MapDialogMobileContent = ({
           )}
           ref={mapContainerRef}
         >
-          {/*todo: ook hier natuurlijk*/}
           <Map
             {...viewState}
             id="dialogMap"

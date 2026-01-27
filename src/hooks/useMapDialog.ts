@@ -345,7 +345,6 @@ function useMapDialog(
 
     const point = turfPoint([lng, lat])
 
-    // TODO: Add constant for 'out-of-bounds-area' source
     const sourceFeatures = dialogMap.querySourceFeatures(
       OUT_OF_BOUNDS_SOURCE_ID,
       {
