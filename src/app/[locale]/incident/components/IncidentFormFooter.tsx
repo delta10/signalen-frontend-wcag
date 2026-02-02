@@ -54,32 +54,30 @@ const IncidentFormFooter = ({
         )}
         {step < FormStep.STEP_4_SUMMARY && (
           <Button
-            appearance="primary-action-button"
+            purpose="primary"
             type="submit"
             className="!flex !flex-row !items-center"
             disabled={blockNext}
+            iconEnd={<IconChevronRight />}
           >
             {t('next_button')}
-            <Icon className="!static">
-              <IconChevronRight />
-            </Icon>
           </Button>
         )}
         {step === FormStep.STEP_4_SUMMARY && (
           <Button
-            appearance="primary-action-button"
+            purpose="primary"
             type="submit"
             className="!flex !flex-row !items-center"
             disabled={loading || !!errors?.submit}
             tabIndex={loading ? 0 : undefined}
             aria-describedby={ariaDescribedById}
             onClick={() => (handleSignalSubmit ? handleSignalSubmit() : null)}
+            iconStart={
+              loading ? <IconLoader2 className="animate-spin" /> : undefined
+            }
+            iconEnd={<IconSend />}
           >
-            {loading && <IconLoader2 className="animate-spin" />}
             {t('submit_button')}
-            <Icon className="!static">
-              <IconSend />
-            </Icon>
           </Button>
         )}
       </ButtonGroup>

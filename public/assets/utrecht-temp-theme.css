@@ -15,6 +15,7 @@
  * All rights reserved
  */
 /* stylelint-disable no-duplicate-selectors */
+@import url('./nl-button-tokens.css');
 @media (width >= 35em) {
   .organization-theme--media-query,
   .organization-theme--media-query-viewport {
@@ -916,6 +917,7 @@
   --utrecht-button-color: var(--utrecht-color-grey-40);
   --utrecht-button-border-color: var(--utrecht-color-grey-40);
   --utrecht-button-background-color: var(--utrecht-color-white);
+  
   --utrecht-breadcrumb-nav-arrows-link-color: var(--utrecht-color-black);
   --utrecht-breadcrumb-nav-arrows-link-focus-color: var(--utrecht-color-black);
   --utrecht-breadcrumb-nav-arrows-link-background-color: var(--utrecht-color-grey-90);
@@ -2026,6 +2028,7 @@
     --utrecht-button-color: var(--utrecht-color-grey-80);
     --utrecht-button-border-color: var(--utrecht-color-grey-40);
     --utrecht-button-background-color: var(--utrecht-color-grey-30);
+    
     --utrecht-breadcrumb-nav-arrows-link-color: var(--utrecht-color-black);
     --utrecht-breadcrumb-nav-arrows-link-focus-color: var(--utrecht-color-black);
     --utrecht-breadcrumb-nav-arrows-link-background-color: var(--utrecht-color-grey-90);

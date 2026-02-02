@@ -4,7 +4,6 @@ import {
   Button,
   ButtonGroup,
   Heading,
-  IconButton,
   MapMarker,
   Paragraph,
   SpotlightSection,
@@ -92,8 +91,8 @@ const MapDialogContent = ({
           {error}
           <ButtonGroup>
             <Button
-              appearance="secondary-action-button"
-              hint="danger"
+              purpose="secondary"
+              hint="negative"
               onClick={() => dialogRef.current?.close()}
             >
               {t('close_alert_notification')}
@@ -169,11 +168,7 @@ const MapDialogContent = ({
           asChild
           onClick={() => closeMapDialog()}
         >
-          <Button
-            appearance="primary-action-button"
-            className="ml-4 mr-4 mb-4"
-            type="button"
-          >
+          <Button purpose="primary" className="ml-4 mr-4 mb-4" type="button">
             {isAssetSelect
               ? formState.selectedFeatures.length === 0
                 ? formState.address
@@ -265,7 +260,7 @@ const MapDialogContent = ({
           </Map>
           <div className="map-location-group">
             <Button
-              appearance="secondary-action-button"
+              purpose="secondary"
               onClick={() =>
                 setCurrentLocation(
                   config,
@@ -275,51 +270,48 @@ const MapDialogContent = ({
                   t
                 )
               }
+              iconStart={<IconCurrentLocation />}
             >
-              <IconCurrentLocation />
               {t('current_location')}
             </Button>
           </div>
 
           <Dialog.Close asChild>
-            <IconButton
-              appearance="secondary-action-button"
+            <Button
               className="map-button map-close-button"
+              iconOnly
+              iconStart={<IconX />}
               label={t('map_close_button_label')}
-            >
-              <IconX />
-            </IconButton>
+            />
           </Dialog.Close>
 
           {dialogMap && (
             <ButtonGroup direction="column" className="map-zoom-button-group">
-              <IconButton
-                appearance="secondary-action-button"
+              <Button
                 className="map-button map-zoom-button"
-                onClick={() => dialogMap.zoomIn()}
+                iconOnly
+                iconStart={<IconPlus />}
                 label={t('map_zoom-in_button_label')}
-              >
-                <IconPlus />
-              </IconButton>
-              <IconButton
-                appearance="secondary-action-button"
+                onClick={() => dialogMap.zoomIn()}
+              />
+              <Button
                 className="map-button map-zoom-button"
-                onClick={() => dialogMap.zoomOut()}
+                iconOnly
+                iconStart={<IconMinus />}
                 label={t('map_zoom-out_button_label')}
-              >
-                <IconMinus />
-              </IconButton>
+                onClick={() => dialogMap.zoomOut()}
+              />
             </ButtonGroup>
           )}
 
           <div className="map-legend-group">
             <Button
-              appearance="secondary-action-button"
+              purpose="secondary"
               onClick={() => {
                 setOpenLegend(!openLegend)
               }}
+              iconStart={<IconInfoCircle />}
             >
-              <IconInfoCircle />
               {t('legend')}
             </Button>
           </div>
