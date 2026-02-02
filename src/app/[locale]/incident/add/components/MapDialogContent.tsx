@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useRef } from 'react'
 import {
   AlertDialog,
   Button,
@@ -253,16 +253,14 @@ const MapDialogContent = ({
                 )
               })}
             {config.restrictSelectionArea && (
-              <>
-                <Source
-                  id={OUT_OF_BOUNDS_SOURCE_ID}
-                  type="vector"
-                  url={config.maptilerOutOfBoundsSelectionArea}
-                >
-                  <Layer {...outOfBoundsFillStyle} />
-                  <Layer {...outOfBoundsLineStyle} />
-                </Source>
-              </>
+              <Source
+                id={OUT_OF_BOUNDS_SOURCE_ID}
+                type="vector"
+                url={config.maptilerOutOfBoundsSelectionArea}
+              >
+                <Layer {...outOfBoundsFillStyle} />
+                <Layer {...outOfBoundsLineStyle} />
+              </Source>
             )}
           </Map>
           <div className="map-location-group">
