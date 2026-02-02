@@ -5,7 +5,6 @@ import { useTranslations } from 'next-intl'
 
 import {
   Heading,
-  Icon,
   IconButton,
   AlertDialog,
   Paragraph,
@@ -41,6 +40,7 @@ import { setCurrentLocation } from '@/lib/utils/LocationUtils'
 import { FeatureTypeIcon } from '@/app/[locale]/incident/add/components/FeatureTypeIcon'
 import { ExtendedFeature } from '@/types/map'
 import FeatureTypeLegend from '@/app/[locale]/incident/add/components/FeatureTypeLegend'
+import { OUT_OF_BOUNDS_SOURCE_ID } from '@/lib/utils/restrictedAreaUtils'
 
 const MapDialogMobileContent = ({
   onMapReady,
@@ -84,7 +84,6 @@ const MapDialogMobileContent = ({
     setOpenLegend,
     outOfBoundsLineStyle,
     outOfBoundsFillStyle,
-    OUT_OF_BOUNDS_SOURCE_ID,
   } = useMapDialog(onMapReady, field, features, isAssetSelect)
 
   const toggleList = () => {

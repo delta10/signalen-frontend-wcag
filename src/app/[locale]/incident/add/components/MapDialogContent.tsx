@@ -32,6 +32,7 @@ import { FeatureTypeIcon } from '@/app/[locale]/incident/add/components/FeatureT
 import { ExtendedFeature } from '@/types/map'
 import FeatureTypeLegend from '@/app/[locale]/incident/add/components/FeatureTypeLegend'
 import { Layer, Source } from 'react-map-gl/maplibre'
+import { OUT_OF_BOUNDS_SOURCE_ID } from '@/lib/utils/restrictedAreaUtils'
 
 export type MapDialogContentProps = {
   onMapReady?: (map: MapRef) => void
@@ -79,7 +80,6 @@ const MapDialogContent = ({
     setOpenLegend,
     outOfBoundsLineStyle,
     outOfBoundsFillStyle,
-    OUT_OF_BOUNDS_SOURCE_ID,
   } = useMapDialog(onMapReady, field, features, isAssetSelect)
 
   return (

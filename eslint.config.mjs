@@ -1,22 +1,37 @@
-import nextTypescript from "eslint-config-next/typescript";
-import nextCoreWebVitals from "eslint-config-next/core-web-vitals";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-import js from "@eslint/js";
-import { FlatCompat } from "@eslint/eslintrc";
+import nextTypescript from 'eslint-config-next/typescript'
+import nextCoreWebVitals from 'eslint-config-next/core-web-vitals'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+import js from '@eslint/js'
+import { FlatCompat } from '@eslint/eslintrc'
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 const compat = new FlatCompat({
-    baseDirectory: __dirname,
-    recommendedConfig: js.configs.recommended,
-    allConfig: js.configs.all
-});
+  baseDirectory: __dirname,
+  recommendedConfig: js.configs.recommended,
+  allConfig: js.configs.all,
+})
 export default [
-    ...nextTypescript,
-    ...nextCoreWebVitals,
-    ...compat.extends("plugin:prettier/recommended"),
-    {
-        ignores: ["node_modules/**", ".next/**", "out/**", "build/**", "next-env.d.ts"]
-    }
-];
+  ...nextTypescript,
+  ...nextCoreWebVitals,
+  ...compat.extends('plugin:prettier/recommended'),
+  {
+    rules: {
+      '@typescript-eslint/ban-ts-comment': [
+        'error',
+        {
+          'ts-ignore': false,
+        },
+      ],
+    },
+
+    ignores: [
+      'node_modules/**',
+      '.next/**',
+      'out/**',
+      'build/**',
+      'next-env.d.ts',
+    ],
+  },
+]
