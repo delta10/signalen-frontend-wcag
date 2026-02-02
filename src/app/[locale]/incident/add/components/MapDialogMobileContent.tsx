@@ -1,4 +1,3 @@
-import { Marker } from 'react-map-gl/maplibre'
 import React, { useRef, useState } from 'react'
 import { Layer, Marker, Source } from 'react-map-gl/maplibre'
 import { Map } from '@/components/ui/Map'

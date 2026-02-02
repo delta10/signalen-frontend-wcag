@@ -334,15 +334,8 @@ function useMapDialog(
 
   const mapStyle = getMapStyleUrl(isDarkMode)
 
-  // @ts-ignore
-  const outOfBoundsLineStyle = useMemo(() => {
-    return outOfBoundsLineStyleObject(config)
-  }, [config])
-
-  // @ts-ignore
-  const outOfBoundsFillStyle = useMemo(() => {
-    return outOfBoundsFillStyleObject(config)
-  }, [config])
+  const outOfBoundsLineStyle = outOfBoundsLineStyleObject(config)
+  const outOfBoundsFillStyle = outOfBoundsFillStyleObject(config)
 
   return {
     dialogMap,
