@@ -147,7 +147,7 @@ const MapDialogMobileContent = ({
               setIsOpen={setIsAccordionOpen}
             />
 
-            {!config.restrictSelectionArea && (
+            {config && !config.restrictSelectionArea && (
               <>
                 <label htmlFor="address" className="!text-lg mt-4">
                   {t('search_address_label')}
