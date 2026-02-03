@@ -30,6 +30,8 @@ import { setCurrentLocation } from '@/lib/utils/LocationUtils'
 import { FeatureTypeIcon } from '@/app/[locale]/incident/add/components/FeatureTypeIcon'
 import { ExtendedFeature } from '@/types/map'
 import FeatureTypeLegend from '@/app/[locale]/incident/add/components/FeatureTypeLegend'
+import { Layer, Source } from 'react-map-gl/maplibre'
+import { OUT_OF_BOUNDS_SOURCE_ID } from '@/lib/utils/restrictedAreaUtils'
 
 export type MapDialogContentProps = {
   onMapReady?: (map: MapRef) => void
@@ -75,6 +77,8 @@ const MapDialogContent = ({
     handleFeatureMarkerClick,
     openLegend,
     setOpenLegend,
+    outOfBoundsLineStyle,
+    outOfBoundsFillStyle,
   } = useMapDialog(onMapReady, field, features, isAssetSelect)
 
   return (
@@ -111,16 +115,18 @@ const MapDialogContent = ({
 
           <MapExplainerAccordion />
 
-          <div className="flex flex-col py-2">
-            <label htmlFor="address-combobox">
-              {t('search_address_label')}
-            </label>
-            <AddressCombobox
-              updatePosition={updatePosition}
-              setIsMapSelected={setIsMapSelected}
-              id="address-combobox"
-            />
-          </div>
+          {config && !config.restrictSelectionArea && (
+            <div className="flex flex-col py-2">
+              <label htmlFor="address-combobox">
+                {t('search_address_label')}
+              </label>
+              <AddressCombobox
+                updatePosition={updatePosition}
+                setIsMapSelected={setIsMapSelected}
+                id="address-combobox"
+              />
+            </div>
+          )}
 
           {isAssetSelect && dialogMap && config && field ? (
             <div className="flex flex-col gap-4 pt-2 flex-grow">
@@ -241,6 +247,16 @@ const MapDialogContent = ({
                   </Marker>
                 )
               })}
+            {config.restrictSelectionArea && (
+              <Source
+                id={OUT_OF_BOUNDS_SOURCE_ID}
+                type="vector"
+                url={config.maptilerOutOfBoundsSelectionArea}
+              >
+                <Layer {...outOfBoundsFillStyle} />
+                <Layer {...outOfBoundsLineStyle} />
+              </Source>
+            )}
           </Map>
           <div className="map-location-group">
             <Button

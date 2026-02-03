@@ -1,5 +1,5 @@
-import { useRef, useState } from 'react'
-import { Marker } from 'react-map-gl/maplibre'
+import React, { useRef, useState } from 'react'
+import { Layer, Marker, Source } from 'react-map-gl/maplibre'
 import { Map } from '@/components/ui/Map'
 import { useTranslations } from 'next-intl'
 
@@ -39,6 +39,7 @@ import { setCurrentLocation } from '@/lib/utils/LocationUtils'
 import { FeatureTypeIcon } from '@/app/[locale]/incident/add/components/FeatureTypeIcon'
 import { ExtendedFeature } from '@/types/map'
 import FeatureTypeLegend from '@/app/[locale]/incident/add/components/FeatureTypeLegend'
+import { OUT_OF_BOUNDS_SOURCE_ID } from '@/lib/utils/restrictedAreaUtils'
 
 const MapDialogMobileContent = ({
   onMapReady,
@@ -80,6 +81,8 @@ const MapDialogMobileContent = ({
     handleFeatureMarkerClick,
     openLegend,
     setOpenLegend,
+    outOfBoundsLineStyle,
+    outOfBoundsFillStyle,
   } = useMapDialog(onMapReady, field, features, isAssetSelect)
 
   const toggleList = () => {
@@ -144,14 +147,18 @@ const MapDialogMobileContent = ({
               setIsOpen={setIsAccordionOpen}
             />
 
-            <label htmlFor="address" className="!text-lg mt-4">
-              {t('search_address_label')}
-            </label>
-            <AddressCombobox
-              updatePosition={updatePosition}
-              setIsMapSelected={setIsMapSelected}
-              mobileView={true}
-            />
+            {config && !config.restrictSelectionArea && (
+              <>
+                <label htmlFor="address" className="!text-lg mt-4">
+                  {t('search_address_label')}
+                </label>
+                <AddressCombobox
+                  updatePosition={updatePosition}
+                  setIsMapSelected={setIsMapSelected}
+                  mobileView={true}
+                />
+              </>
+            )}
           </div>
           {isAssetSelect && dialogMap && config && field ? (
             <div>
@@ -248,6 +255,16 @@ const MapDialogMobileContent = ({
                   </Marker>
                 )
               })}
+            {config.restrictSelectionArea && (
+              <Source
+                id={OUT_OF_BOUNDS_SOURCE_ID}
+                type="vector"
+                url={config.maptilerOutOfBoundsSelectionArea}
+              >
+                <Layer {...outOfBoundsFillStyle} />
+                <Layer {...outOfBoundsLineStyle} />
+              </Source>
+            )}
           </Map>
           <div className="map-location-group">
             {/*!text-lg !px-2 !py-2*/}

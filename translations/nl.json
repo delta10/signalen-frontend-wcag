@@ -51,7 +51,8 @@
       "map_zoom-out_button_label": "Zoom uit op de kaart",
       "map_close_button_label": "Sluit de kaart",
       "choose_address_description": "Zoek op adres",
-      "use_map_description": "Of selecteer een punt op de kaart",
+      "or_use_map_description": "Of selecteer een punt op de kaart",
+      "use_map_description": "Selecteer een punt op de kaart",
       "choose_location": "Kies locatie",
       "edit_location": "Wijzig locatie",
       "chosen_location": "Geselecteerde locatie {location} klik om te wijzigen",
@@ -64,7 +65,8 @@
       "back_to_map": "Terug naar de kaart",
       "show_list": "Toon {name} lijst",
       "toggle_fullscreen_on": "Open de kaart op volledig scherm",
-      "toggle_fullscreen_off": "Sluit volledig schermweergave van de kaart"
+      "toggle_fullscreen_off": "Sluit volledig schermweergave van de kaart",
+      "please_choose_a_point_on_a_road": "Deze locatie ligt buiten het toegestane gebied. Kies een punt binnen het gemarkeerde gebied."
     },
     "explainer": {
       "label": "Hoe gebruik ik de kaart?",

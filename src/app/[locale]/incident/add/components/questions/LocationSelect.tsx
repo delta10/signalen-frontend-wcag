@@ -17,6 +17,7 @@ import { useTranslations } from 'next-intl'
 import { FormFieldErrorMessage } from '@/components'
 import { AddressCombobox } from '@/components/ui/AddressCombobox'
 import { getLocationDisplayName } from '@/services/location/address'
+import { useConfig } from '@/contexts/ConfigContext'
 
 export interface LocationSelectProps {
   field?: PublicQuestion
@@ -27,6 +28,7 @@ export const LocationSelect = ({ field }: LocationSelectProps) => {
     formState: { errors },
     register,
   } = useFormContext()
+  const config = useConfig()
   const errorMessage = errors['location']?.message as string
   const { formState: formStoreState } = useFormStore()
   const t = useTranslations('describe_add.map')
@@ -39,20 +41,27 @@ export const LocationSelect = ({ field }: LocationSelectProps) => {
           ? `${field.meta.label} (${tGeneral('form.required_short')})`
           : `${t('map_label')} (${tGeneral('form.required_short')})`}
       </FieldsetLegend>
-
       {Boolean(errorMessage) && errorMessage && (
         <FormFieldErrorMessage>{errorMessage}</FormFieldErrorMessage>
       )}
+      {!config.restrictSelectionArea && (
+        <>
+          <FormFieldDescription>
+            {t('choose_address_description')}
+          </FormFieldDescription>
 
+          <div className="mb-4" {...register('location')}>
+            <AddressCombobox />
+          </div>
+        </>
+      )}
       <FormFieldDescription>
-        {t('choose_address_description')}
+        {t(
+          config.restrictSelectionArea
+            ? 'use_map_description'
+            : 'or_use_map_description'
+        )}
       </FormFieldDescription>
-
-      <div className="mb-4" {...register('location')}>
-        <AddressCombobox />
-      </div>
-
-      <FormFieldDescription>{t('use_map_description')}</FormFieldDescription>
       <div className="relative w-full mb-3">
         <div style={{ minHeight: 200, height: 200 }} role="img" aria-label="">
           <LocationMap />
