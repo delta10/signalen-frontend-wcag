@@ -115,7 +115,7 @@ const MapDialogContent = ({
 
           <MapExplainerAccordion />
 
-          {!config.restrictSelectionArea && (
+          {config && !config.restrictSelectionArea && (
             <div className="flex flex-col py-2">
               <label htmlFor="address-combobox">
                 {t('search_address_label')}
