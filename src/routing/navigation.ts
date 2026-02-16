@@ -27,6 +27,7 @@ export const pathnames = {
     en: '/incident/thankyou',
     nl: '/incident/bedankt',
   },
+  '/kto/[answer]/[id]': '/kto/[answer]/[id]',
 } satisfies Pathnames<typeof locales>
 
 export const routing = defineRouting({
@@ -38,7 +39,15 @@ export const routing = defineRouting({
 
 type Paths = keyof typeof pathnames
 
-export const stepToPath: { [key: number]: Paths } = {
+/** Incident form paths only - used by stepper (excludes KTO and other dynamic routes) */
+export type IncidentPaths =
+  | '/incident'
+  | '/incident/add'
+  | '/incident/contact'
+  | '/incident/summary'
+  | '/incident/thankyou'
+
+export const stepToPath: { [key: number]: IncidentPaths } = {
   1: '/incident',
   2: '/incident/add',
   3: '/incident/contact',

@@ -186,7 +186,7 @@
       "upload_successful": "De volgende afbeeldingen zijn succesvol geselecteerd:",
       "delete_successful": "De volgende afbeelding is verwijderd van de geselecteerde afbeeldingen:"
     },
-    "loading": "Laden..."
+    "loading": "Bezig met laden..."
   },
   "current_organisation": {
     "default_homepage_label": "Keer terug naar de homepage van gemeente {organization}",
@@ -212,5 +212,32 @@
     "close_menu": "Sluit {menu_object}",
     "category_icon_alt_text": "Icoon voor categorie: {category}",
     "create_incident": "Doe een melding"
+  },
+  "kto": {
+    "heading": "Klanttevredenheidsonderzoek",
+    "heading_ja": "Ja, ik ben tevreden",
+    "heading_nee": "Nee, ik ben niet tevreden met de behandeling van mijn melding",
+    "reason_question_ja": "Waarom bent u tevreden?",
+    "reason_question_nee": "Waarom bent u ontevreden?",
+    "choose_one": "Kies één van de onderstaande antwoorden",
+    "optional_comment": "Wilt u verder nog iets vermelden of toelichten? (niet verplicht)",
+    "optional_photos": "Foto's toevoegen? (niet verplicht)",
+    "photos_help": "Voeg een foto toe om de situatie te verduidelijken",
+    "contact_heading": "Contact (niet verplicht)",
+    "contact_permission": "Mogen wij contact met u opnemen naar aanleiding van uw feedback?",
+    "contact_checkbox_label": "Ja, u mag contact met mij opnemen naar aanleiding van mijn feedback",
+    "submit": "Verstuur",
+    "characters_count": "{current}/{max} tekens",
+    "success_ja_title": "Bedankt voor uw reactie",
+    "success_ja_body": "Wij waarderen het dat u de tijd heeft genomen om te reageren.",
+    "success_nee_title": "Bedankt voor uw reactie",
+    "success_nee_body": "Wij nemen uw feedback in behandeling en zullen uw melding opnieuw bekijken.",
+    "error_filled_out_title": "Formulier al ingevuld",
+    "error_filled_out_body": "U heeft dit formulier al eerder ingevuld.",
+    "error_too_late_title": "Link verlopen",
+    "error_too_late_body": "Deze link is verlopen. U kunt deze enquête niet meer invullen.",
+    "error_not_found_title": "Formulier niet gevonden",
+    "error_not_found_body": "Dit formulier kon niet worden gevonden. Controleer of de link correct is.",
+    "error_required": "Dit veld is verplicht"
   }
 }

@@ -188,10 +188,6 @@
   @apply pb-2;
 }
 
-.utrecht-form-field--checkbox .utrecht-form-field__label .utrecht-form-field__input {
-  @apply mt-1;
-}
-
 .sr-only {
   padding: 0 !important;
 }

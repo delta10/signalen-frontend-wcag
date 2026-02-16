@@ -13,7 +13,10 @@ const LanguageSwitch = () => {
 
   const onLanguageChange = (locale: string) => {
     startTransition(() => {
-      router.replace(pathname, { locale: locale })
+      // pathname can include dynamic routes (e.g. KTO) - router accepts current path at runtime
+      router.replace(pathname as Parameters<typeof router.replace>[0], {
+        locale: locale,
+      })
     })
   }
 
