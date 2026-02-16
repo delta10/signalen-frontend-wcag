@@ -28,6 +28,9 @@ import { getAttachments } from '@/lib/utils/attachments'
 import { clsx } from 'clsx'
 import useDebounce from '@/hooks/useDebounce'
 import { useConfig } from '@/contexts/ConfigContext'
+import { Paragraph } from '@utrecht/component-library-react'
+
+const MAX_DESCRIPTION_LENGTH = 1000
 
 export const IncidentDescriptionForm = () => {
   const t = useTranslations('describe_report.form')
@@ -81,8 +84,10 @@ export const IncidentDescriptionForm = () => {
     }
 
     async function fetchCategory() {
-      const { main, sub } =
-        await getCategoryForDescription(debouncedDescription, config?.baseUrlApi)
+      const { main, sub } = await getCategoryForDescription(
+        debouncedDescription,
+        config?.baseUrlApi
+      )
 
       updateForm({
         ...formState,
@@ -121,16 +126,24 @@ export const IncidentDescriptionForm = () => {
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col gap-8 items-start"
       >
-        <FormFieldTextarea
-          rows={5}
-          description={t('describe_textarea_description')}
-          label={`${t('describe_textarea_heading')} (${tGeneral('form.required_short')})`}
-          errorMessage={form.formState.errors.description?.message}
-          invalid={Boolean(form.formState.errors.description?.message)}
-          required={true}
-          {...form.register('description')}
-        />
-
+        <div>
+          <FormFieldTextarea
+            rows={5}
+            description={t('describe_textarea_description')}
+            label={`${t('describe_textarea_heading')} (${tGeneral('form.required_short')})`}
+            errorMessage={form.formState.errors.description?.message}
+            invalid={Boolean(form.formState.errors.description?.message)}
+            required={true}
+            {...form.register('description')}
+            maxLength={MAX_DESCRIPTION_LENGTH}
+          />
+          <Paragraph className="text-sm">
+            {tGeneral('form.characters_count', {
+              current: form.watch('description')?.length ?? 0,
+              max: MAX_DESCRIPTION_LENGTH,
+            })}
+          </Paragraph>
+        </div>
         <Fieldset
           invalid={invalidFiles}
           aria-describedby={clsx(descriptionId, {
