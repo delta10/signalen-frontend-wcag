@@ -239,6 +239,8 @@
     "error_too_late_body": "This link has expired. You can no longer complete this survey.",
     "error_not_found_title": "Form not found",
     "error_not_found_body": "This form could not be found. Please check if the link is correct.",
-    "error_required": "This field is required"
+    "error_required": "This field is required",
+    "error_photos_failed": "Uploading the photos failed. You can submit the form again to retry, or remove the photos and submit without them.",
+    "error_submit_failed": "Submitting your feedback failed. Please try again."
   }
 }

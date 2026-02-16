@@ -25,6 +25,8 @@ type ContainerState =
       status: 'form'
       options: KtoOption[]
       signalId: string
+      uploadError?: boolean
+      submitError?: boolean
     }
   | { status: 'success' }
 
@@ -71,6 +73,13 @@ export function KtoContainer({ answer, id }: KtoContainerProps) {
   }) => {
     if (state.status !== 'form') return
 
+    // Clear previous errors when retrying
+    setState((prev) =>
+      prev.status === 'form'
+        ? { ...prev, uploadError: false, submitError: false }
+        : prev
+    )
+
     const { submitFeedback } = await import('@/services/feedback')
 
     // Upload photos first (only for nee path)
@@ -86,17 +95,28 @@ export function KtoContainer({ answer, id }: KtoContainerProps) {
         )
       } catch (e) {
         console.error('Failed to upload attachments', e)
+        setState((prev) =>
+          prev.status === 'form' ? { ...prev, uploadError: true } : prev
+        )
+        throw new Error('Upload failed')
       }
     }
 
-    await submitFeedback(id, state.signalId, {
-      is_satisfied: isSatisfied,
-      text_list: formData.text_list,
-      text_extra: formData.text_extra || null,
-      allows_contact: formData.allows_contact,
-    })
-
-    setState({ status: 'success' })
+    try {
+      await submitFeedback(id, state.signalId, {
+        is_satisfied: isSatisfied,
+        text_list: formData.text_list,
+        text_extra: formData.text_extra || null,
+        allows_contact: formData.allows_contact,
+      })
+      setState({ status: 'success' })
+    } catch (e) {
+      console.error('Failed to submit feedback', e)
+      setState((prev) =>
+        prev.status === 'form' ? { ...prev, submitError: true } : prev
+      )
+      throw new Error('Submit failed')
+    }
   }
 
   if (state.status === 'loading') {
@@ -150,6 +170,16 @@ export function KtoContainer({ answer, id }: KtoContainerProps) {
       <Heading level={1} className="!break-normal hyphens-none">
         {isSatisfied ? t('heading_ja') : t('heading_nee')}
       </Heading>
+      {state.uploadError && (
+        <Alert type="error">
+          <Paragraph>{t('error_photos_failed')}</Paragraph>
+        </Alert>
+      )}
+      {state.submitError && (
+        <Alert type="error">
+          <Paragraph>{t('error_submit_failed')}</Paragraph>
+        </Alert>
+      )}
       <KtoForm
         answer={answer}
         options={state.options}
