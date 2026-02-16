@@ -51,8 +51,8 @@ export const FileUpload = React.forwardRef<HTMLLabelElement, FileUploadProps>(
 
     const files: File[] = getValues('files') ?? []
 
-    const numberOfEmtpy = maxFiles - files.length - 1
-    const empty = numberOfEmtpy < 0 ? [] : [...Array(numberOfEmtpy).keys()]
+    const numberOfEmpty = maxFiles - files.length - 1
+    const empty = numberOfEmpty < 0 ? [] : [...Array(numberOfEmpty).keys()]
 
     const [fileUploadStatus, setFileUploadStatus] = useState<UploadStatus>(
       UploadStatus.NONE

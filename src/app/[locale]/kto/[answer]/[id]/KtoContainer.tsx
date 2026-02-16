@@ -175,16 +175,16 @@ export function KtoContainer({ answer, id }: KtoContainerProps) {
           <Paragraph>{t('error_photos_failed')}</Paragraph>
         </Alert>
       )}
-      {state.submitError && (
-        <Alert type="error">
-          <Paragraph>{t('error_submit_failed')}</Paragraph>
-        </Alert>
-      )}
       <KtoForm
         answer={answer}
         options={state.options}
         onSubmit={handleSubmit}
       />
+      {state.submitError && (
+        <Alert type="error">
+          <Paragraph>{t('error_submit_failed')}</Paragraph>
+        </Alert>
+      )}
     </main>
   )
 }
