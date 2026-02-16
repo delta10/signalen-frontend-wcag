@@ -15,10 +15,6 @@ export type KtoOption = {
   open_answer?: boolean
 }
 
-function stripLastNonLetterChar(text: string): string {
-  return text.replace(/[^a-zA-Z0-9\s]$/, '').trim()
-}
-
 export async function getFeedbackStatus(
   token: string
 ): Promise<FeedbackStatus> {
@@ -45,18 +41,17 @@ export async function getFeedbackStatus(
 export async function getFeedbackOptions(
   isSatisfied: boolean
 ): Promise<KtoOption[]> {
-  const response =
-    await signalsClient.v1.v1PublicFeedbackStandardAnswersList(
-      1,
-      100
-    )
+  const response = await signalsClient.v1.v1PublicFeedbackStandardAnswersList(
+    1,
+    100
+  )
 
   if (!response.results) return []
 
   return response.results
     .filter((opt) => opt.is_satisfied === isSatisfied)
     .map((opt: StandardAnswer) => ({
-      value: stripLastNonLetterChar(opt.text),
+      value: opt.text,
       text: opt.text,
       topic: opt.topic,
       open_answer: opt.open_answer,
