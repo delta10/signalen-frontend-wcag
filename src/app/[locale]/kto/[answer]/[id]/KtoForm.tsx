@@ -43,7 +43,10 @@ const createSchema = (isNotSatisfied: boolean) =>
       .array(z.string())
       .min(1, 'error_required')
       .refine((arr) => arr.length > 0 && arr[0] !== '', 'error_required'),
-    text_extra: z.string().max(EXTRA_TEXT_MAX_LENGTH).optional(),
+    text_extra: z
+      .string()
+      .max(EXTRA_TEXT_MAX_LENGTH, 'error_max_length')
+      .optional(),
     allows_contact: z.boolean().optional(),
     files: isNotSatisfied
       ? z
@@ -102,6 +105,8 @@ export function KtoForm({ answer, options, onSubmit }: KtoFormProps) {
 
   const getErrorMessage = (key: string) => {
     if (key === 'error_required') return t('error_required')
+    if (key === 'error_max_length')
+      return tGeneral('max_length', { maxLength: EXTRA_TEXT_MAX_LENGTH })
     if (key === 'file_type_invalid') return tDescribe('file_type_invalid')
     if (key === 'file_size_too_large') return tDescribe('file_size_too_large')
     if (key === 'file_size_too_small') return tDescribe('file_size_too_small')
@@ -179,12 +184,16 @@ export function KtoForm({ answer, options, onSubmit }: KtoFormProps) {
           label={t('optional_comment')}
           rows={5}
           maxLength={EXTRA_TEXT_MAX_LENGTH}
-          description={t('characters_count', {
+          description={tGeneral('characters_count', {
             current: (textExtra ?? '').length,
             max: EXTRA_TEXT_MAX_LENGTH,
           })}
           invalid={Boolean(errors.text_extra)}
-          errorMessage={errors.text_extra?.message}
+          errorMessage={
+            errors.text_extra
+              ? getErrorMessage(errors.text_extra.message ?? '')
+              : undefined
+          }
           {...register('text_extra')}
         />
 
@@ -206,7 +215,9 @@ export function KtoForm({ answer, options, onSubmit }: KtoFormProps) {
         )}
 
         <Button type="submit" purpose="primary" disabled={isSubmitting}>
-          {isSubmitting ? tGeneral('submit_button') + '...' : t('submit')}
+          {isSubmitting
+            ? tGeneral('submit_button') + '...'
+            : tGeneral('submit_button')}
         </Button>
       </form>
     </FormProvider>

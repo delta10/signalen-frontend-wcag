@@ -167,7 +167,8 @@
       "next_button": "Volgende",
       "submit_button": "Verstuur",
       "required_short": "verplicht",
-      "not_required_short": "niet verplicht"
+      "not_required_short": "niet verplicht",
+      "characters_count": "{current}/{max} tekens"
     },
     "errors": {
       "required": "Dit veld is verplicht",
@@ -226,8 +227,6 @@
     "contact_heading": "Contact (niet verplicht)",
     "contact_permission": "Mogen wij contact met u opnemen naar aanleiding van uw feedback?",
     "contact_checkbox_label": "Ja, u mag contact met mij opnemen naar aanleiding van mijn feedback",
-    "submit": "Verstuur",
-    "characters_count": "{current}/{max} tekens",
     "success_ja_title": "Bedankt voor uw reactie",
     "success_ja_body": "Wij waarderen het dat u de tijd heeft genomen om te reageren.",
     "success_nee_title": "Bedankt voor uw reactie",

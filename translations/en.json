@@ -167,7 +167,8 @@
       "next_button": "Next",
       "submit_button": "Submit",
       "required_short": "required",
-      "not_required_short": "not required"
+      "not_required_short": "not required",
+      "characters_count": "{current}/{max} characters"
     },
     "errors": {
       "required": "This field is required",
@@ -227,8 +228,6 @@
     "contact_heading": "Contact (optional)",
     "contact_permission": "May we contact you regarding your feedback?",
     "contact_checkbox_label": "Yes, you may contact me regarding my feedback",
-    "submit": "Submit",
-    "characters_count": "{current}/{max} characters",
     "success_ja_title": "Thank you for your response",
     "success_ja_body": "We appreciate you taking the time to respond.",
     "success_nee_title": "Thank you for your response",
