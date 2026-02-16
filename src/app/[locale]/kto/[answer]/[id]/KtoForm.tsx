@@ -76,6 +76,7 @@ export function KtoForm({ answer, options, onSubmit }: KtoFormProps) {
   const isNotSatisfied = answer === 'nee'
   const descriptionId = useId()
   const errorMessageId = useId()
+  const allowsContactDescriptionId = useId()
 
   const schema = createSchema(isNotSatisfied)
 
@@ -198,9 +199,9 @@ export function KtoForm({ answer, options, onSubmit }: KtoFormProps) {
         />
 
         {isNotSatisfied && (
-          <Fieldset aria-describedby="allows-contact-description">
+          <Fieldset aria-describedby={allowsContactDescriptionId}>
             <FieldsetLegend>{t('contact_heading')}</FieldsetLegend>
-            <FormFieldDescription id="allows-contact-description">
+            <FormFieldDescription id={allowsContactDescriptionId}>
               {t('contact_permission')}
             </FormFieldDescription>
             <div className="flex flex-col mt-3 w-full">
