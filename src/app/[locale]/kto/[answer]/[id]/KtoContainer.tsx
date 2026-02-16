@@ -154,13 +154,10 @@ export function KtoContainer({ answer, id }: KtoContainerProps) {
   }
 
   if (state.status === 'success') {
-    const titleKey = isSatisfied ? 'success_ja_title' : 'success_nee_title'
-    const bodyKey = isSatisfied ? 'success_ja_body' : 'success_nee_body'
-
     return (
       <main className="flex flex-col gap-6">
-        <Heading level={1}>{t(titleKey)}</Heading>
-        <Paragraph>{t(bodyKey)}</Paragraph>
+        <Heading level={1}>{t('success_title')}</Heading>
+        <Paragraph>{t('success_body')}</Paragraph>
       </main>
     )
   }
