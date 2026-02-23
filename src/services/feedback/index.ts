@@ -12,7 +12,6 @@ export type KtoOption = {
   value: string
   text: string
   topic: string
-  open_answer?: boolean
 }
 
 export async function getFeedbackStatus(
@@ -54,7 +53,6 @@ export async function getFeedbackOptions(
       value: opt.text,
       text: opt.text,
       topic: opt.topic,
-      open_answer: opt.open_answer,
     }))
 }
 

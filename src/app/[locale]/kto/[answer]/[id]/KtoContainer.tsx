@@ -42,20 +42,26 @@ export function KtoContainer({ answer, id }: KtoContainerProps) {
     let cancelled = false
 
     async function load() {
-      const status = await getFeedbackStatus(id)
+      try {
+        const status = await getFeedbackStatus(id)
 
-      if (cancelled) return
-
-      if (status.status === 'ok') {
-        const options = await getFeedbackOptions(isSatisfied)
         if (cancelled) return
-        setState({
-          status: 'form',
-          options,
-          signalId: status.data.signal_id,
-        })
-      } else {
-        setState({ status: 'error', error: status })
+
+        if (status.status === 'ok') {
+          const options = await getFeedbackOptions(isSatisfied)
+          if (cancelled) return
+          setState({
+            status: 'form',
+            options,
+            signalId: status.data.signal_id,
+          })
+        } else {
+          setState({ status: 'error', error: status })
+        }
+      } catch (e) {
+        console.error('Failed to load KTO form data', e)
+        if (cancelled) return
+        setState({ status: 'error', error: { status: 'not_found' } })
       }
     }
 
