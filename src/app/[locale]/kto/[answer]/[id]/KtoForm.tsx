@@ -24,6 +24,7 @@ import {
 import type { KtoOption } from '@/services/feedback'
 
 const EXTRA_TEXT_MAX_LENGTH = 1000
+const OPEN_ANSWER_MAX_LENGTH = 1000
 const KTO_MAX_FILES = 3
 
 interface KtoFormProps {
@@ -37,37 +38,56 @@ interface KtoFormProps {
   }) => Promise<void>
 }
 
-const createSchema = (isNotSatisfied: boolean) =>
-  z.object({
-    text_list: z
-      .array(z.string())
-      .min(1, 'error_required')
-      .refine((arr) => arr.length > 0 && arr[0] !== '', 'error_required'),
-    text_extra: z
-      .string()
-      .max(EXTRA_TEXT_MAX_LENGTH, 'error_max_length')
-      .optional(),
-    allows_contact: z.boolean().optional(),
-    files: isNotSatisfied
-      ? z
-          .array(z.instanceof(File))
-          .optional()
-          .refine(
-            (files) =>
-              !files ||
-              files.every((f) => ACCEPTED_IMAGE_TYPES.includes(f.type)),
-            { message: 'file_type_invalid' }
-          )
-          .refine(
-            (files) => !files || files.every((f) => f.size <= MAX_FILE_SIZE),
-            { message: 'file_size_too_large' }
-          )
-          .refine(
-            (files) => !files || files.every((f) => f.size >= MIN_FILE_SIZE),
-            { message: 'file_size_too_small' }
-          )
-      : z.array(z.any()).optional(),
-  })
+const createSchema = (isNotSatisfied: boolean, openAnswerValues: Set<string>) =>
+  z
+    .object({
+      text_list: z
+        .array(z.string())
+        .min(1, 'error_required')
+        .refine((arr) => arr.length > 0 && arr[0] !== '', 'error_required'),
+      open_answer_text: z
+        .string()
+        .max(OPEN_ANSWER_MAX_LENGTH, 'error_max_length')
+        .optional(),
+      text_extra: z
+        .string()
+        .max(EXTRA_TEXT_MAX_LENGTH, 'error_max_length')
+        .optional(),
+      allows_contact: z.boolean().optional(),
+      files: isNotSatisfied
+        ? z
+            .array(z.instanceof(File))
+            .optional()
+            .refine(
+              (files) =>
+                !files ||
+                files.every((f) => ACCEPTED_IMAGE_TYPES.includes(f.type)),
+              { message: 'file_type_invalid' }
+            )
+            .refine(
+              (files) => !files || files.every((f) => f.size <= MAX_FILE_SIZE),
+              { message: 'file_size_too_large' }
+            )
+            .refine(
+              (files) => !files || files.every((f) => f.size >= MIN_FILE_SIZE),
+              { message: 'file_size_too_small' }
+            )
+        : z.array(z.any()).optional(),
+    })
+    .superRefine((data, ctx) => {
+      const selected = data.text_list?.[0]
+      if (
+        selected &&
+        openAnswerValues.has(selected) &&
+        !data.open_answer_text?.trim()
+      ) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'open_answer_required',
+          path: ['open_answer_text'],
+        })
+      }
+    })
 
 export function KtoForm({ answer, options, onSubmit }: KtoFormProps) {
   const t = useTranslations('kto')
@@ -78,7 +98,10 @@ export function KtoForm({ answer, options, onSubmit }: KtoFormProps) {
   const errorMessageId = useId()
   const allowsContactDescriptionId = useId()
 
-  const schema = createSchema(isNotSatisfied)
+  const openAnswerValues = new Set(
+    options.filter((o) => o.open_answer).map((o) => o.value)
+  )
+  const schema = createSchema(isNotSatisfied, openAnswerValues)
 
   type FormData = z.infer<typeof schema>
 
@@ -86,6 +109,7 @@ export function KtoForm({ answer, options, onSubmit }: KtoFormProps) {
     resolver: zodResolver(schema),
     defaultValues: {
       text_list: [],
+      open_answer_text: '',
       text_extra: '',
       allows_contact: false,
       files: [],
@@ -102,12 +126,20 @@ export function KtoForm({ answer, options, onSubmit }: KtoFormProps) {
 
   const textExtra =
     useWatch({ control, name: 'text_extra', defaultValue: '' }) ?? ''
+  const openAnswerText =
+    useWatch({ control, name: 'open_answer_text', defaultValue: '' }) ?? ''
   const selectedReason = useWatch({ control, name: 'text_list' })?.[0]
 
-  const getErrorMessage = (key: string) => {
+  const selectedOption = options.find((opt) => opt.value === selectedReason)
+  const isOpenAnswer = selectedOption?.open_answer === true
+
+  const getErrorMessage = (key: string, maxLength?: number) => {
     if (key === 'error_required') return t('error_required')
+    if (key === 'open_answer_required') return t('open_answer_required')
     if (key === 'error_max_length')
-      return tGeneral('max_length', { maxLength: EXTRA_TEXT_MAX_LENGTH })
+      return tGeneral('max_length', {
+        maxLength: maxLength ?? EXTRA_TEXT_MAX_LENGTH,
+      })
     if (key === 'file_type_invalid') return tDescribe('file_type_invalid')
     if (key === 'file_size_too_large') return tDescribe('file_size_too_large')
     if (key === 'file_size_too_small') return tDescribe('file_size_too_small')
@@ -115,8 +147,13 @@ export function KtoForm({ answer, options, onSubmit }: KtoFormProps) {
   }
 
   const onFormSubmit = async (values: FormData) => {
+    const textList =
+      isOpenAnswer && values.open_answer_text
+        ? [values.open_answer_text]
+        : values.text_list
+
     await onSubmit({
-      text_list: values.text_list,
+      text_list: textList,
       text_extra: values.text_extra || undefined,
       allows_contact: isNotSatisfied ? values.allows_contact : undefined,
       files: isNotSatisfied && values.files?.length ? values.files : undefined,
@@ -158,6 +195,30 @@ export function KtoForm({ answer, options, onSubmit }: KtoFormProps) {
           }))}
         />
 
+        {isOpenAnswer && (
+          <FormFieldTextarea
+            className="w-full"
+            id="open_answer_text"
+            label={t('open_answer_label')}
+            rows={5}
+            maxLength={OPEN_ANSWER_MAX_LENGTH}
+            description={tGeneral('characters_count', {
+              current: openAnswerText.length,
+              max: OPEN_ANSWER_MAX_LENGTH,
+            })}
+            invalid={Boolean(errors.open_answer_text)}
+            errorMessage={
+              errors.open_answer_text
+                ? getErrorMessage(
+                    errors.open_answer_text.message ?? '',
+                    OPEN_ANSWER_MAX_LENGTH
+                  )
+                : undefined
+            }
+            {...register('open_answer_text')}
+          />
+        )}
+
         {isNotSatisfied && (
           <Fieldset
             invalid={Boolean(errors.files)}
@@ -181,6 +242,7 @@ export function KtoForm({ answer, options, onSubmit }: KtoFormProps) {
         )}
 
         <FormFieldTextarea
+          className="w-full"
           id="text_extra"
           label={t('optional_comment')}
           rows={5}

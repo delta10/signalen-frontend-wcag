@@ -237,6 +237,8 @@
     "error_not_found_body": "Dit formulier kon niet worden gevonden. Controleer of de link correct is.",
     "error_required": "Dit veld is verplicht",
     "error_photos_failed": "Het uploaden van de foto's is mislukt. U kunt het formulier opnieuw indienen om het te proberen, of de foto's verwijderen en zonder foto's versturen.",
-    "error_submit_failed": "Het versturen van uw feedback is mislukt. Probeer het opnieuw."
+    "error_submit_failed": "Het versturen van uw feedback is mislukt. Probeer het opnieuw.",
+    "open_answer_label": "Toelichting",
+    "open_answer_required": "Vul een toelichting in"
   }
 }
