@@ -3,7 +3,7 @@ import { Metadata } from 'next/types'
 import { getTranslations } from 'next-intl/server'
 import { createTitle } from '@/lib/utils/create-title'
 import { getServerConfig } from '@/services/config/config'
-import { KtoContainer } from './KtoContainer'
+import { KtoContainer } from './components/KtoContainer'
 
 const VALID_ANSWERS = ['ja', 'nee'] as const
 type ValidAnswer = (typeof VALID_ANSWERS)[number]

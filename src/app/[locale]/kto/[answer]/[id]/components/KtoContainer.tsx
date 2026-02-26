@@ -9,7 +9,7 @@ import {
   type KtoOption,
 } from '@/services/feedback'
 import { Heading, Paragraph, Alert } from '@/components'
-import { KtoForm } from './KtoForm'
+import { KtoForm } from '../KtoForm'
 import { postAttachments } from '@/services/attachment/attachments'
 import { useConfig } from '@/contexts/ConfigContext'
 
