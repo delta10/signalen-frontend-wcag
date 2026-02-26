@@ -7,6 +7,7 @@ import {
   getFeedbackOptions,
   type FeedbackStatus,
   type KtoOption,
+  KtoAnswer,
 } from '@/services/feedback'
 import { Heading, Paragraph, Alert } from '@/components'
 import { KtoForm } from '../KtoForm'
@@ -14,7 +15,7 @@ import { postAttachments } from '@/services/attachment/attachments'
 import { useConfig } from '@/contexts/ConfigContext'
 
 type KtoContainerProps = {
-  answer: 'ja' | 'nee'
+  answer: KtoAnswer
   id: string
 }
 
@@ -36,7 +37,7 @@ export function KtoContainer({ answer, id }: KtoContainerProps) {
   const config = useConfig()
   const [state, setState] = useState<ContainerState>({ status: 'loading' })
 
-  const isSatisfied = answer === 'ja'
+  const isSatisfied = answer === KtoAnswer.Ja
 
   useEffect(() => {
     let cancelled = false

@@ -2,6 +2,14 @@ import { ApiError } from '@/services/client'
 import { signalsClient } from '@/services/client/api-client'
 import type { Feedback, StandardAnswer } from '@/services/client'
 
+export enum KtoAnswer {
+  Ja = 'ja',
+  Nee = 'nee',
+}
+
+export const isValidKtoAnswer = (answer: string): answer is KtoAnswer =>
+  Object.values(KtoAnswer).includes(answer as KtoAnswer)
+
 export type FeedbackStatus =
   | { status: 'ok'; data: Feedback }
   | { status: 'filled_out' }

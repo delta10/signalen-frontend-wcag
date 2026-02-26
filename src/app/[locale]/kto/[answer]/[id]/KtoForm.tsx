@@ -21,14 +21,14 @@ import {
   MAX_FILE_SIZE,
   MIN_FILE_SIZE,
 } from '@/components/ui/upload/FileUpload'
-import type { KtoOption } from '@/services/feedback'
+import { KtoAnswer, type KtoOption } from '@/services/feedback'
 
 const EXTRA_TEXT_MAX_LENGTH = 1000
 const OPEN_ANSWER_MAX_LENGTH = 1000
 const KTO_MAX_FILES = 3
 
 interface KtoFormProps {
-  answer: 'ja' | 'nee'
+  answer: KtoAnswer
   options: KtoOption[]
   onSubmit: (data: {
     text_list: string[]
@@ -93,7 +93,7 @@ export function KtoForm({ answer, options, onSubmit }: KtoFormProps) {
   const t = useTranslations('kto')
   const tDescribe = useTranslations('describe_report.form.errors')
   const tGeneral = useTranslations('general.form')
-  const isNotSatisfied = answer === 'nee'
+  const isNotSatisfied = answer === KtoAnswer.Nee
   const descriptionId = useId()
   const errorMessageId = useId()
   const allowsContactDescriptionId = useId()
