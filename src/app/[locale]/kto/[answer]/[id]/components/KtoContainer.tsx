@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl'
 import {
   getFeedbackStatus,
   getFeedbackOptions,
+  submitFeedback,
   type FeedbackStatus,
   type KtoOption,
   KtoAnswer,
@@ -86,8 +87,6 @@ export function KtoContainer({ answer, id }: KtoContainerProps) {
         ? { ...prev, uploadError: false, submitError: false }
         : prev
     )
-
-    const { submitFeedback } = await import('@/services/feedback')
 
     // Upload photos first (only for nee path)
     if (formData.files && formData.files.length > 0 && config?.baseUrlApi) {
