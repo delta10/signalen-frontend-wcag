@@ -11,7 +11,7 @@ import {
   KtoAnswer,
 } from '@/services/feedback'
 import { Heading, Paragraph, Alert } from '@/components'
-import { KtoForm } from '../KtoForm'
+import { KtoForm } from './KtoForm'
 import { postAttachments } from '@/services/attachment/attachments'
 import { useConfig } from '@/contexts/ConfigContext'
 
@@ -32,7 +32,7 @@ type ContainerState =
     }
   | { status: 'success' }
 
-export function KtoContainer({ answer, id }: KtoContainerProps) {
+export const KtoContainer = ({ answer, id }: KtoContainerProps) => {
   const t = useTranslations('kto')
   const tGeneral = useTranslations('general')
   const config = useConfig()

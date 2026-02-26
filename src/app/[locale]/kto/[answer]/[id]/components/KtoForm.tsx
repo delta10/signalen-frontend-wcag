@@ -89,7 +89,7 @@ const createSchema = (isNotSatisfied: boolean, openAnswerValues: Set<string>) =>
       }
     })
 
-export function KtoForm({ answer, options, onSubmit }: KtoFormProps) {
+export const KtoForm = ({ answer, options, onSubmit }: KtoFormProps) => {
   const t = useTranslations('kto')
   const tDescribe = useTranslations('describe_report.form.errors')
   const tGeneral = useTranslations('general.form')
