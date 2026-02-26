@@ -148,8 +148,8 @@ export function KtoForm({ answer, options, onSubmit }: KtoFormProps) {
 
   const onFormSubmit = async (values: FormData) => {
     const textList =
-      isOpenAnswer && values.open_answer_text
-        ? [values.open_answer_text]
+      isOpenAnswer && values.open_answer_text?.trim()
+        ? [...values.text_list, values.open_answer_text]
         : values.text_list
 
     await onSubmit({
