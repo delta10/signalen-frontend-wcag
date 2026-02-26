@@ -167,7 +167,8 @@
       "next_button": "Next",
       "submit_button": "Submit",
       "required_short": "required",
-      "not_required_short": "not required"
+      "not_required_short": "not required",
+      "characters_count": "{current}/{max} characters"
     },
     "errors": {
       "required": "This field is required",
@@ -213,5 +214,32 @@
     "close_menu": "Close {menu_object}",
     "category_icon_alt_text": "icon for category: {category}",
     "create_incident": "Report now"
+  },
+  "kto": {
+    "heading": "Customer satisfaction survey",
+    "heading_ja": "Yes, I am satisfied",
+    "heading_nee": "No, I am not satisfied with the handling of my report",
+    "reason_question_ja": "Why are you satisfied?",
+    "reason_question_nee": "Why are you dissatisfied?",
+    "choose_one": "Choose one of the answers below",
+    "optional_comment": "Would you like to add or clarify anything else? (optional)",
+    "optional_photos": "Add photos? (optional)",
+    "photos_help": "Add a photo to clarify the situation",
+    "contact_heading": "Contact (optional)",
+    "contact_permission": "May we contact you regarding your feedback?",
+    "contact_checkbox_label": "Yes, you may contact me regarding my feedback",
+    "success_title": "Thank you for your feedback",
+    "success_body": "We are constantly working to improve our service.",
+    "error_filled_out_title": "Form already submitted",
+    "error_filled_out_body": "You have already submitted this form.",
+    "error_too_late_title": "Link expired",
+    "error_too_late_body": "This link has expired. You can no longer complete this survey.",
+    "error_not_found_title": "Form not found",
+    "error_not_found_body": "This form could not be found. Please check if the link is correct.",
+    "error_required": "This field is required",
+    "error_photos_failed": "Uploading the photos failed. You can submit the form again to retry, or remove the photos and submit without them.",
+    "error_submit_failed": "Submitting your feedback failed. Please try again.",
+    "open_answer_label": "Explanation",
+    "open_answer_required": "Please enter an explanation"
   }
 }

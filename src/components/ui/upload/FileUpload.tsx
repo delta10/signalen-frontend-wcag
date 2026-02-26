@@ -34,24 +34,25 @@ export const MIN_FILE_SIZE = 30720
 export const MAX_NUMBER_FILES = 5
 
 type FileUploadProps = {
-  onChange: () => void
-  onFileUpload: (e: React.ChangeEvent<HTMLInputElement>) => void
-  onDelete: (index: number) => void
-  files: File[]
-  fileRefs: Ref<HTMLButtonElement>[]
+  onChange?: () => void
+  onFileUpload?: (e: React.ChangeEvent<HTMLInputElement>) => void
+  onDelete?: (index: number) => void
+  files?: File[]
+  fileRefs?: Ref<HTMLButtonElement>[]
+  maxFiles?: number
 }
 
 export const FileUpload = React.forwardRef<HTMLLabelElement, FileUploadProps>(
-  ({ ...props }, ref) => {
+  ({ maxFiles = MAX_NUMBER_FILES, ...props }, ref) => {
     const [labelHovered, setLabelHovered] = useState(false)
     const t = useTranslations('general')
     const { setValue, getValues } = useFormContext()
     const [refObject, setRefObject] = useState({})
 
-    const files: File[] = getValues('files')
+    const files: File[] = getValues('files') ?? []
 
-    const numberOfEmtpy = MAX_NUMBER_FILES - files.length - 1
-    const empty = numberOfEmtpy < 0 ? [] : [...Array(numberOfEmtpy).keys()]
+    const numberOfEmpty = maxFiles - files.length - 1
+    const empty = numberOfEmpty < 0 ? [] : [...Array(numberOfEmpty).keys()]
 
     const [fileUploadStatus, setFileUploadStatus] = useState<UploadStatus>(
       UploadStatus.NONE
@@ -75,9 +76,9 @@ export const FileUpload = React.forwardRef<HTMLLabelElement, FileUploadProps>(
         const files = e.target.files
 
         if (files && files.length > 0) {
-          const filesArray = getValues('files')
+          const filesArray = (getValues('files') ?? [])
             .concat(Array.from(files))
-            .slice(0, MAX_NUMBER_FILES)
+            .slice(0, maxFiles)
           setValue('files', filesArray)
         }
 
@@ -114,7 +115,7 @@ export const FileUpload = React.forwardRef<HTMLLabelElement, FileUploadProps>(
         <div className="flex gap-4 flex-wrap">
           {files.length > 0 &&
             files
-              .slice(0, MAX_NUMBER_FILES)
+              .slice(0, maxFiles)
               .map((image, index) => (
                 <PreviewFile
                   file={image}
@@ -124,7 +125,7 @@ export const FileUpload = React.forwardRef<HTMLLabelElement, FileUploadProps>(
                 />
               ))}
 
-          {files.length < MAX_NUMBER_FILES && (
+          {files.length < maxFiles && (
             <div className="file-upload-box">
               <label
                 htmlFor="fileUpload"

@@ -96,8 +96,8 @@ const IncidentContactForm = () => {
       <Alert className="sr-only">
         <Paragraph>{`${t('alert_no_required_fields')} `}</Paragraph>
       </Alert>
-        <Heading level={2}>{t('heading')}</Heading>
-        <Paragraph className="contact-paragraph">{t('description')}</Paragraph>
+      <Heading level={2}>{t('heading')}</Heading>
+      <Paragraph className="contact-paragraph">{t('description')}</Paragraph>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col gap-8 items-start mt-6 md:mt-8"
