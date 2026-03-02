@@ -1,0 +1,43 @@
+/**
+ * Utrecht → basis token bridge
+ *
+ * Utrecht gebruikt --utrecht-button-* i.p.v. --basis-*.
+ * Deze bridge vertaalt basis tokens naar Utrecht, zodat we
+ * nl-button-tokens.generated.css voor ALLE themes kunnen gebruiken.
+ *
+ * Alleen laden wanneer Utrecht theme actief is (theme-utrecht.css).
+ */
+.utrecht-theme {
+  /* Layout & spacing */
+  --basis-border-radius-md: var(--utrecht-button-border-radius);
+  --basis-space-text-xs: var(--utrecht-button-column-gap);
+  --basis-space-block-large: var(--utrecht-button-padding-block-start);
+  --basis-space-inline-x-large: var(--utrecht-button-padding-inline-start);
+  --basis-icon-functional-size: var(--utrecht-button-icon-size);
+  --basis-border-width-sm: var(--utrecht-button-primary-action-border-width);
+  --basis-border-width-lg: var(--utrecht-focus-outline-width);
+  --basis-document-strong-font-weight: var(--utrecht-button-primary-action-font-weight);
+
+  /* Primary / inverse colors (button primary) */
+  --basis-color-primary-inverse-bg-1: var(--utrecht-button-primary-action-background-color);
+  --basis-color-primary-inverse-border-1: var(--utrecht-button-primary-action-border-color);
+  --basis-color-primary-inverse-text-1: var(--utrecht-button-primary-action-color);
+  --basis-color-secondary-inverse-bg-2: var(--utrecht-button-primary-action-hover-background-color);
+  --basis-color-secondary-inverse-border-1: var(--utrecht-button-primary-action-hover-border-color);
+  --basis-color-secondary-inverse-text-1: var(--utrecht-button-primary-action-hover-color);
+  --basis-color-secondary-inverse-bg-1: var(--utrecht-button-primary-action-active-background-color);
+
+  /* Primary colors (button secondary) */
+  --basis-color-primary-bg-1: var(--utrecht-button-secondary-action-background-color);
+  --basis-color-primary-border-1: var(--utrecht-button-secondary-action-border-color);
+  --basis-color-primary-text-1: var(--utrecht-button-secondary-action-color);
+
+  /* Gray / disabled */
+  --basis-color-gray-50: var(--utrecht-button-primary-action-disabled-background-color);
+  --basis-color-gray-500: var(--utrecht-button-primary-action-disabled-color);
+
+  /* Focus */
+  --basis-focus-background-color: var(--utrecht-button-primary-action-focus-background-color);
+  --basis-focus-color: var(--utrecht-button-primary-action-focus-color);
+  --basis-color-black: var(--utrecht-focus-outline-color);
+}

@@ -1,0 +1,14 @@
+/**
+ * Purmerend theme - aanvullingen op @nl-design-system-community/purmerend-design-tokens
+ *
+ * - Font imports (Cantarell, gebruikt door Purmerend)
+ * - NL Button tokens (mapping naar basis tokens)
+ */
+
+@import url('https://cdn.jsdelivr.net/npm/fontsource-cantarell@4.0.0/400-italic.css');
+@import url('https://cdn.jsdelivr.net/npm/fontsource-cantarell@4.0.0/700-italic.css');
+@import url('https://cdn.jsdelivr.net/npm/fontsource-cantarell@4.0.0/400.css');
+@import url('https://cdn.jsdelivr.net/npm/fontsource-cantarell@4.0.0/700.css');
+
+/* NL Button tokens - gegenereerd uit design-tokens/nl-button-tokens.json */
+@import '../../public/assets/nl-button-tokens.generated.css';

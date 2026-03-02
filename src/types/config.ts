@@ -9,6 +9,7 @@ export type AppConfig = {
   frontendUrl: string
   baseUrlApi: string
   base: {
+    theme?: 'purmerend' | 'utrecht'
     municipality: string
     municipality_display_name: string
     assets_url: string

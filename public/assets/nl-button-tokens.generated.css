@@ -1,0 +1,74 @@
+/**
+ * Do not edit directly, this file was auto-generated.
+ */
+
+:root {
+  --nl-button-border-radius: var(--basis-border-radius-md);
+  --nl-button-column-gap: var(--basis-space-text-xs);
+  --nl-button-font-family: var(--utrecht-document-font-family);
+  --nl-button-min-block-size: var(--utrecht-pointer-target-min-size);
+  --nl-button-min-inline-size: var(--utrecht-pointer-target-min-size);
+  --nl-button-padding-block-end: var(--basis-space-block-large);
+  --nl-button-padding-block-start: var(--basis-space-block-large);
+  --nl-button-padding-inline-end: var(--basis-space-inline-x-large);
+  --nl-button-padding-inline-start: var(--basis-space-inline-x-large);
+  --nl-button-icon-size: var(--basis-icon-functional-size);
+  --nl-button-primary-background-color: var(--basis-color-primary-inverse-bg-1);
+  --nl-button-primary-border-color: var(--basis-color-primary-inverse-border-1);
+  --nl-button-primary-border-width: var(--basis-border-width-sm);
+  --nl-button-primary-color: var(--basis-color-primary-inverse-text-1);
+  --nl-button-primary-font-size: var(--utrecht-document-font-size);
+  --nl-button-primary-font-weight: var(--basis-document-strong-font-weight);
+  --nl-button-primary-line-height: var(--utrecht-document-line-height);
+  --nl-button-primary-hover-background-color: var(--basis-color-secondary-inverse-bg-2);
+  --nl-button-primary-hover-border-color: var(--basis-color-secondary-inverse-border-1);
+  --nl-button-primary-hover-color: var(--basis-color-secondary-inverse-text-1);
+  --nl-button-primary-active-background-color: var(--basis-color-secondary-inverse-bg-1);
+  --nl-button-primary-active-border-color: var(--basis-color-secondary-inverse-border-1);
+  --nl-button-primary-active-color: var(--basis-color-secondary-inverse-text-1);
+  --nl-button-primary-disabled-background-color: var(--basis-color-gray-50);
+  --nl-button-primary-disabled-border-color: transparent;
+  --nl-button-primary-disabled-color: var(--basis-color-gray-500);
+  --nl-button-primary-focus-background-color: var(--basis-focus-background-color);
+  --nl-button-primary-focus-border-color: transparent;
+  --nl-button-primary-focus-color: var(--basis-focus-color);
+  --nl-button-secondary-background-color: var(--basis-color-primary-bg-1);
+  --nl-button-secondary-border-color: var(--basis-color-primary-border-1);
+  --nl-button-secondary-border-width: var(--basis-border-width-sm);
+  --nl-button-secondary-color: var(--basis-color-primary-text-1);
+  --nl-button-secondary-font-size: var(--utrecht-document-font-size);
+  --nl-button-secondary-font-weight: var(--basis-document-strong-font-weight);
+  --nl-button-secondary-line-height: var(--utrecht-document-line-height);
+  --nl-button-secondary-hover-background-color: var(--basis-color-secondary-inverse-bg-2);
+  --nl-button-secondary-hover-border-color: var(--basis-color-secondary-inverse-border-1);
+  --nl-button-secondary-hover-color: var(--basis-color-secondary-inverse-text-1);
+  --nl-button-secondary-active-background-color: var(--basis-color-secondary-inverse-bg-1);
+  --nl-button-secondary-active-border-color: var(--basis-color-secondary-inverse-border-1);
+  --nl-button-secondary-active-color: var(--basis-color-secondary-inverse-text-1);
+  --nl-button-secondary-disabled-background-color: var(--basis-color-gray-50);
+  --nl-button-secondary-disabled-border-color: transparent;
+  --nl-button-secondary-disabled-color: var(--basis-color-gray-500);
+  --nl-button-subtle-background-color: transparent;
+  --nl-button-subtle-border-color: transparent;
+  --nl-button-subtle-border-width: 0;
+  --nl-button-subtle-color: var(--basis-color-primary-text-1);
+  --nl-button-subtle-font-size: var(--utrecht-document-font-size);
+  --nl-button-subtle-font-weight: var(--basis-document-strong-font-weight);
+  --nl-button-subtle-line-height: var(--utrecht-document-line-height);
+  --nl-button-subtle-hover-background-color: var(--basis-color-secondary-inverse-bg-2);
+  --nl-button-subtle-hover-border-color: transparent;
+  --nl-button-subtle-hover-color: var(--basis-color-secondary-inverse-text-1);
+  --nl-button-subtle-active-background-color: var(--basis-color-secondary-inverse-bg-1);
+  --nl-button-subtle-active-border-color: transparent;
+  --nl-button-subtle-active-color: var(--basis-color-secondary-inverse-text-1);
+  --nl-button-subtle-disabled-background-color: transparent;
+  --nl-button-subtle-disabled-border-color: transparent;
+  --nl-button-subtle-disabled-color: var(--basis-color-gray-500);
+  --nl-button-focus-background-color: var(--basis-focus-background-color);
+  --nl-button-focus-border-color: transparent;
+  --nl-button-focus-color: var(--basis-focus-color);
+  --nl-button-focus-outline-color: var(--basis-color-black);
+  --nl-button-focus-outline-offset: 0;
+  --nl-button-focus-outline-style: dotted;
+  --nl-button-focus-outline-width: var(--basis-border-width-lg);
+}

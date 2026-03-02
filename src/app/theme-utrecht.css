@@ -1,0 +1,12 @@
+/**
+ * Utrecht theme - aanvullingen op @utrecht/design-tokens
+ *
+ * - Utrecht gebruikt systeemfonts / Lucida - geen extra font imports nodig
+ * - Bridge vertaalt --basis-* naar --utrecht-button-*, daarna gebruiken we dezelfde generated tokens
+ */
+
+/* 1. Bridge: basis-* → utrecht-button-* (alleen binnen .utrecht-theme) */
+@import '../../public/assets/utrecht-basis-bridge.css';
+
+/* 2. NL Button tokens - zelfde als Purmerend (werkt via bridge) */
+@import '../../public/assets/nl-button-tokens.generated.css';
