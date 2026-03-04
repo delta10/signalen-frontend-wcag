@@ -241,5 +241,25 @@
     "error_submit_failed": "Submitting your feedback failed. Please try again.",
     "open_answer_label": "Explanation",
     "open_answer_required": "Please enter an explanation"
+  },
+  "extra_information": {
+    "question_label_our_question": "Our question for you",
+    "heading": "Additional information",
+    "your_report": "Your report",
+    "report_number": "Number: {number}",
+    "reported_on": "Reported on: {date}",
+    "optional_photos": "Add photos (optional)",
+    "photos_help": "Add a photo to clarify the situation",
+    "success_title": "Thank you for your response",
+    "success_body": "Your additional information has been received. We will contact you as soon as possible if necessary.",
+    "error_filled_out_title": "Form already submitted",
+    "error_filled_out_body": "You have already submitted this form.",
+    "error_too_late_title": "Link expired",
+    "error_too_late_body": "This link has expired. You can no longer add additional information.",
+    "error_not_found_title": "You have already answered our questions",
+    "error_not_found_body": "Thank you again for the additional information you have given us.",
+    "error_required": "This field is required",
+    "error_photos_failed": "Uploading the photos failed. You can submit the form again to retry, or remove the photos and submit without them.",
+    "error_submit_failed": "Submitting your response failed. Please try again."
   }
 }
