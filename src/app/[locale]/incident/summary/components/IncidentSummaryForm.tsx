@@ -3,12 +3,12 @@
 import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentFormFooter'
 import { useLocale, useTranslations } from 'next-intl'
 import { Divider } from '@/components/ui/Divider'
-import React, { ReactNode, useEffect, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import { signalsClient } from '@/services/client/api-client'
 import { stepToPath, usePathname, useRouter } from '@/routing/navigation'
 import { postAttachments } from '@/services/attachment/attachments'
 import { useFormStore } from '@/store/form_store'
-import { _NestedLocationModel } from '@/services/client'
+import { _NestedLocationModel, ApiError } from '@/services/client'
 import { Paragraph, Heading } from '@/components/index'
 import PreviewFile from '@/components/ui/upload/PreviewFile'
 import { SubmitAlert } from '@/app/[locale]/incident/summary/components/SubmitAlert'
@@ -30,7 +30,6 @@ import {
   SummaryGridMain,
 } from './SummaryGrid'
 import { getLocationDisplayName } from '@/services/location/address'
-import { AxiosError } from 'axios'
 
 const FALLBACK_MAIN_CATEGORY = 'overig'
 const FALLBACK_SUB_CATEGORY = 'overig'
@@ -75,23 +74,19 @@ const IncidentSummaryForm = () => {
       `${config?.baseUrlApi}signals/v1/public/terms/categories/${mainCategory}/sub_categories/${subCategory}`
 
     const shouldRetryWithFallbackCategory = (err: unknown): boolean => {
-      const error = err as AxiosError<{
-        category?: {
-          sub_category?: unknown
-        }
-      }>
+      const error = err as ApiError
 
-      if (error.response?.status !== 400) {
+      if (error.status !== 400) {
         return false
       }
 
-      const subCategory = error.response?.data?.category?.sub_category
+      const subCategory = error.body?.category?.sub_category
 
       if (Array.isArray(subCategory)) {
         return subCategory.length > 0
       }
 
-      const bodyText = JSON.stringify(error.response?.data ?? '').toLowerCase()
+      const bodyText = JSON.stringify(error.body ?? '').toLowerCase()
       return bodyText.includes('sub_category')
     }
 
