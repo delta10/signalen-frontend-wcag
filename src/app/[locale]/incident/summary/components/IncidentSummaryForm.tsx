@@ -80,14 +80,7 @@ const IncidentSummaryForm = () => {
         return false
       }
 
-      const subCategory = error.body?.category?.sub_category
-
-      if (Array.isArray(subCategory)) {
-        return subCategory.length > 0
-      }
-
-      const bodyText = JSON.stringify(error.body ?? '').toLowerCase()
-      return bodyText.includes('sub_category')
+      return Boolean(error.body?.category)
     }
 
     const createSignal = async (mainCategory: string, subCategory: string) =>
