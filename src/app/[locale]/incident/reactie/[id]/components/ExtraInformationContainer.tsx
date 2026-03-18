@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { useLocale, useTranslations } from 'next-intl'
+import { useTranslations } from 'next-intl'
 import {
   getQaSession,
   postQaAnswer,
@@ -38,7 +38,6 @@ const MAX_FILES = 3
 export const ExtraInformationContainer = ({
   sessionId,
 }: ExtraInformationContainerProps) => {
-  const locale = useLocale()
   const t = useTranslations('extra_information')
   const tGeneral = useTranslations('general')
   const config = useConfig()
@@ -49,7 +48,7 @@ export const ExtraInformationContainer = ({
 
     async function load() {
       try {
-        const result = await getQaSession(sessionId, config?.baseUrlApi, locale)
+        const result = await getQaSession(sessionId, config.baseUrlApi)
 
         if (cancelled) return
 
@@ -60,9 +59,7 @@ export const ExtraInformationContainer = ({
           const signalId = signalSnapshot?.signal_id ?? ''
           const signalNumber = signalSnapshot?.id ?? 0
           // "Gemeld op" = when the report was created; use signal's created_at, not QA session's
-          const signal = signalId
-            ? await getPublicSignal(signalId, config?.baseUrlApi)
-            : null
+          const signal = signalId ? await getPublicSignal(signalId) : null
           const createdAt = signal?.created_at ?? data.created_at ?? ''
 
           setState({
@@ -86,7 +83,7 @@ export const ExtraInformationContainer = ({
     return () => {
       cancelled = true
     }
-  }, [sessionId, config?.baseUrlApi, locale])
+  }, [sessionId, config.baseUrlApi])
 
   const handleSubmit = async (formData: {
     answers: Record<string, string>
@@ -103,7 +100,7 @@ export const ExtraInformationContainer = ({
     if (
       formData.files &&
       formData.files.length > 0 &&
-      config?.baseUrlApi &&
+      config.baseUrlApi &&
       state.signalId
     ) {
       try {
@@ -132,11 +129,11 @@ export const ExtraInformationContainer = ({
             question.uuid,
             sessionId,
             answer.trim(),
-            config?.baseUrlApi
+            config.baseUrlApi
           )
         }
       }
-      await postQaSubmit(sessionId, config?.baseUrlApi)
+      await postQaSubmit(sessionId, config.baseUrlApi)
       setState({ status: 'success' })
     } catch (e) {
       console.error('Failed to submit extra information', e)
