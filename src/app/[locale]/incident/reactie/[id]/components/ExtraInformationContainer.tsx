@@ -46,7 +46,7 @@ export const ExtraInformationContainer = ({
   useEffect(() => {
     let cancelled = false
 
-    async function load() {
+    const load = async () => {
       try {
         const result = await getQaSession(sessionId, config.baseUrlApi)
 

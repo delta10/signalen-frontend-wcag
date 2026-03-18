@@ -27,7 +27,7 @@ const MAX_ANSWER_LENGTH = 1000
 
 const REPORT_TIMEZONE = 'Europe/Amsterdam'
 
-function formatReportDate(isoString: string, locale: string): string {
+const formatReportDate = (isoString: string, locale: string): string => {
   const date = new Date(isoString)
   const datePart = new Intl.DateTimeFormat(locale, {
     day: '2-digit',

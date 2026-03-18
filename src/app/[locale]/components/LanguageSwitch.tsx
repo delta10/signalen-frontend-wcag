@@ -14,10 +14,10 @@ import { useConfig } from '@/contexts/ConfigContext'
  * Falls back to the plain pathname when no brackets are found or when any
  * required param is missing / not a string.
  */
-function resolveRoute(
+const resolveRoute = (
   internalPath: string,
   routeParams: ReturnType<typeof useParams>
-) {
+) => {
   if (!internalPath.includes('[')) return internalPath
 
   const params: Record<string, string> = {}
