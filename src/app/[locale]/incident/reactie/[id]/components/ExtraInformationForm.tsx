@@ -115,13 +115,15 @@ const QuestionTextarea = ({
   return (
     <div className="w-full">
       <FormFieldTextarea
-        className="w-full"
+        className="w-full [&_textarea]:whitespace-pre-wrap"
         id={question.uuid}
-        label={label}
+        label={<span className="whitespace-pre-wrap">{label}</span>}
         rows={5}
         maxLength={MAX_ANSWER_LENGTH}
         description={
-          question.label !== question.short_label ? question.label : undefined
+          question.label !== question.short_label ? (
+            <span className="whitespace-pre-wrap">{question.label}</span>
+          ) : undefined
         }
         invalid={Boolean(errors[question.uuid])}
         errorMessage={
