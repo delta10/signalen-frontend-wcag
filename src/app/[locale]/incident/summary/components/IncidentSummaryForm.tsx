@@ -8,7 +8,7 @@ import { signalsClient } from '@/services/client/api-client'
 import { stepToPath, usePathname, useRouter } from '@/routing/navigation'
 import { postAttachments } from '@/services/attachment/attachments'
 import { useFormStore } from '@/store/form_store'
-import { _NestedLocationModel, ApiError } from '@/services/client'
+import { _NestedLocationModel } from '@/services/client'
 import { Paragraph, Heading } from '@/components/index'
 import PreviewFile from '@/components/ui/upload/PreviewFile'
 import { SubmitAlert } from '@/app/[locale]/incident/summary/components/SubmitAlert'
@@ -30,9 +30,6 @@ import {
   SummaryGridMain,
 } from './SummaryGrid'
 import { getLocationDisplayName } from '@/services/location/address'
-
-const FALLBACK_MAIN_CATEGORY = 'overig'
-const FALLBACK_SUB_CATEGORY = 'overig'
 
 const IncidentSummaryForm = () => {
   const t = useTranslations('describe_summary')
@@ -73,18 +70,8 @@ const IncidentSummaryForm = () => {
     const getSubCategoryUrl = (mainCategory: string, subCategory: string) =>
       `${config?.baseUrlApi}signals/v1/public/terms/categories/${mainCategory}/sub_categories/${subCategory}`
 
-    const shouldRetryWithFallbackCategory = (err: unknown): boolean => {
-      const error = err as ApiError
-
-      if (error.status !== 400) {
-        return false
-      }
-
-      return Boolean(error.body?.category)
-    }
-
-    const createSignal = async (mainCategory: string, subCategory: string) =>
-      await signalsClient.v1.v1PublicSignalsCreate({
+    try {
+      const res = await signalsClient.v1.v1PublicSignalsCreate({
         text: formState.description,
         // @ts-ignore
         location: {
@@ -96,7 +83,10 @@ const IncidentSummaryForm = () => {
         },
         // @ts-ignore
         category: {
-          sub_category: getSubCategoryUrl(mainCategory, subCategory),
+          sub_category: getSubCategoryUrl(
+            formState.main_category,
+            formState.sub_category
+          ),
         },
         /* TODO: check if allows_contact needs to be set */
         reporter: {
@@ -108,23 +98,6 @@ const IncidentSummaryForm = () => {
         incident_date_start: new Date().toISOString(),
         extra_properties: formState.extra_properties,
       })
-
-    try {
-      let mainCategory = formState.main_category
-      let subCategory = formState.sub_category
-      const res = await (async () => {
-        try {
-          return await createSignal(mainCategory, subCategory)
-        } catch (err) {
-          if (!shouldRetryWithFallbackCategory(err)) {
-            throw err
-          }
-
-          mainCategory = FALLBACK_MAIN_CATEGORY
-          subCategory = FALLBACK_SUB_CATEGORY
-          return await createSignal(mainCategory, subCategory)
-        }
-      })()
 
       // Set SIG number
       updateForm({
