@@ -240,5 +240,25 @@
     "error_submit_failed": "Het versturen van uw feedback is mislukt. Probeer het opnieuw.",
     "open_answer_label": "Toelichting",
     "open_answer_required": "Vul een toelichting in"
+  },
+  "extra_information": {
+    "question_label_our_question": "Onze vraag aan u",
+    "heading": "Aanvullende informatie",
+    "your_report": "Uw melding",
+    "report_number": "Nummer: {number}",
+    "reported_on": "Gemeld op: {date}",
+    "optional_photos": "Foto's toevoegen (niet verplicht)",
+    "photos_help": "Voeg een foto toe om de situatie te verduidelijken",
+    "success_title": "Bedankt voor uw reactie",
+    "success_body": "Uw aanvullende informatie is ontvangen. We nemen zo snel mogelijk contact met u op indien nodig.",
+    "error_filled_out_title": "Formulier al ingevuld",
+    "error_filled_out_body": "U heeft dit formulier al eerder ingevuld.",
+    "error_too_late_title": "Link verlopen",
+    "error_too_late_body": "Deze link is verlopen. U kunt geen aanvullende informatie meer toevoegen.",
+    "error_not_found_title": "U hebt onze vragen al eerder beantwoord",
+    "error_not_found_body": "Wij bedanken u nogmaals voor de extra informatie die u ons hebt gegeven.",
+    "error_required": "Dit veld is verplicht",
+    "error_photos_failed": "Het uploaden van de foto's is mislukt. U kunt het formulier opnieuw indienen om het te proberen, of de foto's verwijderen en zonder foto's versturen.",
+    "error_submit_failed": "Het versturen van uw reactie is mislukt. Probeer het opnieuw."
   }
 }

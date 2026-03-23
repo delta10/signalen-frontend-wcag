@@ -27,6 +27,10 @@ export const pathnames = {
     en: '/incident/thankyou',
     nl: '/incident/bedankt',
   },
+  '/incident/reactie/[id]': {
+    en: '/incident/reactie/[id]',
+    nl: '/incident/reactie/[id]',
+  },
   '/kto/[answer]/[id]': '/kto/[answer]/[id]',
 } satisfies Pathnames<typeof locales>
 
