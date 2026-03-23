@@ -58,9 +58,20 @@ export const ExtraInformationContainer = ({
           const signalSnapshot = data.signal_snapshot
           const signalId = signalSnapshot?.signal_id ?? ''
           const signalNumber = signalSnapshot?.id ?? 0
-          // "Gemeld op" = when the report was created; use signal's created_at, not QA session's
-          const signal = signalId ? await getPublicSignal(signalId) : null
-          const createdAt = signal?.created_at ?? data.created_at ?? ''
+          // "Gemeld op" = when the report was created; prefer signal.created_at, fallback to QA session created_at
+          let signalCreatedAt: string | undefined
+          if (signalId) {
+            try {
+              const signal = await getPublicSignal(signalId)
+              signalCreatedAt = signal?.created_at
+            } catch (e) {
+              console.error(
+                'Failed to load signal metadata, falling back to QA session date',
+                e
+              )
+            }
+          }
+          const createdAt = signalCreatedAt ?? data.created_at ?? ''
 
           setState({
             status: 'form',
