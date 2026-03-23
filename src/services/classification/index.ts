@@ -29,11 +29,11 @@ export const getCategoryForDescription = async (
         response.data.hoofdrubriek[0][0].match(MAIN_SLUG_REGEX)[1]
       prediction.main = predictedMainSlug
       prediction.sub = `overig-${predictedMainSlug}`
-    }
 
-    const subCertainty = response.data.subrubriek[1][0]
-    if (subCertainty >= CERTAINTY_THRESHOLD) {
-      prediction.sub = response.data.subrubriek[0][0].match(SUB_SLUG_REGEX)[1]
+      const subCertainty = response.data.subrubriek[1][0]
+      if (subCertainty >= CERTAINTY_THRESHOLD) {
+        prediction.sub = response.data.subrubriek[0][0].match(SUB_SLUG_REGEX)[1]
+      }
     }
   } catch (e) {
     console.error('Could not fetch the classification response', e)
