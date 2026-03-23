@@ -71,6 +71,8 @@ export const ExtraInformationContainer = ({
               )
             }
           }
+          if (cancelled) return
+
           const createdAt = signalCreatedAt ?? data.created_at ?? ''
 
           setState({
