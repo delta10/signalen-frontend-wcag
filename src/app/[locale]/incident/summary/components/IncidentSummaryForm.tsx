@@ -3,7 +3,7 @@
 import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentFormFooter'
 import { useLocale, useTranslations } from 'next-intl'
 import { Divider } from '@/components/ui/Divider'
-import React, { ReactNode, useEffect, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import { signalsClient } from '@/services/client/api-client'
 import { stepToPath, usePathname, useRouter } from '@/routing/navigation'
 import { postAttachments } from '@/services/attachment/attachments'
@@ -67,6 +67,9 @@ const IncidentSummaryForm = () => {
     setError(false)
     setLoading(true)
 
+    const getSubCategoryUrl = (mainCategory: string, subCategory: string) =>
+      `${config?.baseUrlApi}signals/v1/public/terms/categories/${mainCategory}/sub_categories/${subCategory}`
+
     try {
       const res = await signalsClient.v1.v1PublicSignalsCreate({
         text: formState.description,
@@ -80,8 +83,10 @@ const IncidentSummaryForm = () => {
         },
         // @ts-ignore
         category: {
-          sub_category:
-            `${config?.baseUrlApi}signals/v1/public/terms/categories/${formState.main_category}/sub_categories/${formState.sub_category}`,
+          sub_category: getSubCategoryUrl(
+            formState.main_category,
+            formState.sub_category
+          ),
         },
         /* TODO: check if allows_contact needs to be set */
         reporter: {

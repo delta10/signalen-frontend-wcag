@@ -4,7 +4,10 @@ const MAIN_SLUG_REGEX = /\/terms\/categories\/([a-z0-9\-]+)/
 const SUB_SLUG_REGEX =
   /\/terms\/categories\/[a-z0-9\-]+\/sub_categories\/([a-z0-9\-]+)/
 
-export const getCategoryForDescription = async (description: string, baseUrl: string | undefined) => {
+export const getCategoryForDescription = async (
+  description: string,
+  baseUrl: string | undefined
+) => {
   if (!baseUrl) {
     console.error('Base URL is required to fetch category prediction.')
     throw new Error('Base URL is required to fetch category prediction.')
@@ -22,13 +25,15 @@ export const getCategoryForDescription = async (description: string, baseUrl: st
 
     const mainCertainty = response.data.hoofdrubriek[1][0]
     if (mainCertainty >= CERTAINTY_THRESHOLD) {
-      prediction.main =
+      const predictedMainSlug =
         response.data.hoofdrubriek[0][0].match(MAIN_SLUG_REGEX)[1]
-    }
+      prediction.main = predictedMainSlug
+      prediction.sub = `overig-${predictedMainSlug}`
 
-    const subCertainty = response.data.subrubriek[1][0]
-    if (subCertainty >= CERTAINTY_THRESHOLD) {
-      prediction.sub = response.data.subrubriek[0][0].match(SUB_SLUG_REGEX)[1]
+      const subCertainty = response.data.subrubriek[1][0]
+      if (subCertainty >= CERTAINTY_THRESHOLD) {
+        prediction.sub = response.data.subrubriek[0][0].match(SUB_SLUG_REGEX)[1]
+      }
     }
   } catch (e) {
     console.error('Could not fetch the classification response', e)
