@@ -1,0 +1,106 @@
+{
+  "$description": "NL Button tokens - mapping naar basis tokens. Per theme worden alleen de basis token waarden aangepast via het theme package (Purmerend, Utrecht, etc.).",
+  "$schema": "https://design-tokens.github.io/community-group/format/",
+  "nl": {
+    "button": {
+      "border-radius": { "$value": "var(--basis-border-radius-md)" },
+      "column-gap": { "$value": "var(--basis-space-text-xs)" },
+      "font-family": { "$value": "var(--utrecht-document-font-family)" },
+      "min-block-size": { "$value": "var(--utrecht-pointer-target-min-size)" },
+      "min-inline-size": { "$value": "var(--utrecht-pointer-target-min-size)" },
+      "padding-block-end": { "$value": "var(--basis-space-block-large)" },
+      "padding-block-start": { "$value": "var(--basis-space-block-large)" },
+      "padding-inline-end": { "$value": "var(--basis-space-inline-x-large)" },
+      "padding-inline-start": { "$value": "var(--basis-space-inline-x-large)" },
+      "icon-size": { "$value": "var(--basis-icon-functional-size)" },
+      "primary": {
+        "background-color": { "$value": "var(--basis-color-primary-inverse-bg-1)" },
+        "border-color": { "$value": "var(--basis-color-primary-inverse-border-1)" },
+        "border-width": { "$value": "var(--basis-border-width-sm)" },
+        "color": { "$value": "var(--basis-color-primary-inverse-text-1)" },
+        "font-size": { "$value": "var(--utrecht-document-font-size)" },
+        "font-weight": { "$value": "var(--basis-document-strong-font-weight)" },
+        "line-height": { "$value": "var(--utrecht-document-line-height)" },
+        "hover": {
+          "background-color": { "$value": "var(--basis-color-secondary-inverse-bg-2)" },
+          "border-color": { "$value": "var(--basis-color-secondary-inverse-border-1)" },
+          "color": { "$value": "var(--basis-color-secondary-inverse-text-1)" }
+        },
+        "active": {
+          "background-color": { "$value": "var(--basis-color-secondary-inverse-bg-1)" },
+          "border-color": { "$value": "var(--basis-color-secondary-inverse-border-1)" },
+          "color": { "$value": "var(--basis-color-secondary-inverse-text-1)" }
+        },
+        "disabled": {
+          "background-color": { "$value": "var(--basis-color-gray-50)" },
+          "border-color": { "$value": "transparent" },
+          "color": { "$value": "var(--basis-color-gray-500)" }
+        },
+        "focus": {
+          "background-color": { "$value": "var(--basis-focus-background-color)" },
+          "border-color": { "$value": "transparent" },
+          "color": { "$value": "var(--basis-focus-color)" }
+        }
+      },
+      "secondary": {
+        "background-color": { "$value": "var(--basis-color-primary-bg-1)" },
+        "border-color": { "$value": "var(--basis-color-primary-border-1)" },
+        "border-width": { "$value": "var(--basis-border-width-sm)" },
+        "color": { "$value": "var(--basis-color-primary-text-1)" },
+        "font-size": { "$value": "var(--utrecht-document-font-size)" },
+        "font-weight": { "$value": "var(--basis-document-strong-font-weight)" },
+        "line-height": { "$value": "var(--utrecht-document-line-height)" },
+        "hover": {
+          "background-color": { "$value": "var(--basis-color-secondary-inverse-bg-2)" },
+          "border-color": { "$value": "var(--basis-color-secondary-inverse-border-1)" },
+          "color": { "$value": "var(--basis-color-secondary-inverse-text-1)" }
+        },
+        "active": {
+          "background-color": { "$value": "var(--basis-color-secondary-inverse-bg-1)" },
+          "border-color": { "$value": "var(--basis-color-secondary-inverse-border-1)" },
+          "color": { "$value": "var(--basis-color-secondary-inverse-text-1)" }
+        },
+        "disabled": {
+          "background-color": { "$value": "var(--basis-color-gray-50)" },
+          "border-color": { "$value": "transparent" },
+          "color": { "$value": "var(--basis-color-gray-500)" }
+        }
+      },
+      "subtle": {
+        "background-color": { "$value": "transparent" },
+        "border-color": { "$value": "transparent" },
+        "border-width": { "$value": "0" },
+        "color": { "$value": "var(--basis-color-primary-text-1)" },
+        "font-size": { "$value": "var(--utrecht-document-font-size)" },
+        "font-weight": { "$value": "var(--basis-document-strong-font-weight)" },
+        "line-height": { "$value": "var(--utrecht-document-line-height)" },
+        "hover": {
+          "background-color": { "$value": "var(--basis-color-secondary-inverse-bg-2)" },
+          "border-color": { "$value": "transparent" },
+          "color": { "$value": "var(--basis-color-secondary-inverse-text-1)" }
+        },
+        "active": {
+          "background-color": { "$value": "var(--basis-color-secondary-inverse-bg-1)" },
+          "border-color": { "$value": "transparent" },
+          "color": { "$value": "var(--basis-color-secondary-inverse-text-1)" }
+        },
+        "disabled": {
+          "background-color": { "$value": "transparent" },
+          "border-color": { "$value": "transparent" },
+          "color": { "$value": "var(--basis-color-gray-500)" }
+        }
+      },
+      "focus": {
+        "background-color": { "$value": "var(--basis-focus-background-color)" },
+        "border-color": { "$value": "transparent" },
+        "color": { "$value": "var(--basis-focus-color)" }
+      },
+      "focus-outline": {
+        "color": { "$value": "var(--basis-color-black)" },
+        "offset": { "$value": "0" },
+        "style": { "$value": "dotted" },
+        "width": { "$value": "var(--basis-border-width-lg)" }
+      }
+    }
+  }
+}

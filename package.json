@@ -15,7 +15,8 @@
     "update-patch": "npm-check-updates --configFileName .ncurc.patch.cjs",
     "update-minor": "npm-check-updates --configFileName .ncurc.minor.cjs",
     "update-major": "npm-check-updates --configFileName .ncurc.major.cjs",
-    "update-design-system": "npm-check-updates --configFileName .ncurc.major.cjs --filter '/^@(utrecht|nl-design-system-community)/'"
+    "update-design-system": "npm-check-updates --configFileName .ncurc.major.cjs --filter '/^@(utrecht|nl-design-system-community)/'",
+    "build:tokens": "style-dictionary build --config design-tokens/style-dictionary.config.mjs"
   },
   "dependencies": {
     "@headlessui/react": "2.2.4",
@@ -90,6 +91,7 @@
     "postcss": "8",
     "prettier": "3.6.2",
     "rimraf": "6.0.1",
+    "style-dictionary": "4.4.0",
     "tailwindcss": "3.4.14",
     "typescript": "5",
     "vitest": "3.2.4"

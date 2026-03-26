@@ -7,6 +7,7 @@
   "maptilerMapDarkMode": "https://api.maptiler.com/maps/streets-v2-dark",
   "restrictSelectionArea": false,
   "base": {
+    "theme": "utrecht",
     "municipality": "meierijstad",
     "municipality_display_name": "Purmerend",
     "assets_url": "https://meldingen.demo.meierijstad.delta10.cloud",

@@ -1,13 +1,22 @@
 import { notFound } from 'next/navigation'
 import React from 'react'
 import { getAllAvailableLocales } from '@/lib/utils/locale'
-import { Root, Body } from '@/components'
+import { Body } from '@/components'
+import { ThemeRoot } from '@/components/ThemeRoot'
 import localFont from 'next/font/local'
 import type { PropsWithChildren } from 'react'
 import { getServerConfig } from '@/services/config/config'
 import { AppConfig } from '@/types/config'
 import { ConfigProvider } from '@/contexts/ConfigContext'
-// import '../../../public/assets/theme.css'
+import type { ThemeId } from '@/lib/theme'
+
+// Beide thema's importeren – het actieve thema wordt via class op Root bepaald
+import '@nl-design-system-community/purmerend-design-tokens/dist/theme.css'
+import '@nl-design-system-community/purmerend-design-tokens/dist/color-scheme-dark/theme.css'
+import '@utrecht/design-tokens/dist/theme.css'
+import '@utrecht/design-tokens/dist/dark/theme.css'
+import '@/app/theme-purmerend.css'
+import '@/app/theme-utrecht.css'
 
 const font = localFont({
   src: '../../../public/fonts/open-sans.woff2',
@@ -25,18 +34,14 @@ const LocaleLayout = ({
 }>) => {
   if (!getAllAvailableLocales().includes(locale)) notFound()
 
+  const theme: ThemeId = config.base.theme ?? 'purmerend'
+
   return (
-    <Root
-      lang={locale}
-      className={`${font.variable} organization-theme organization-theme--media-query`}
-    >
-      <head>
-        <link rel="stylesheet" href="/assets/theme.css" />
-      </head>
+    <ThemeRoot theme={theme} lang={locale} className={font.variable}>
       <ConfigProvider config={config}>
         <Body>{children}</Body>
       </ConfigProvider>
-    </Root>
+    </ThemeRoot>
   )
 }
 
