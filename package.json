@@ -72,7 +72,7 @@
     "@axe-core/playwright": "4.11.0",
     "@nl-design-system-community/purmerend-design-tokens": "1.2.3",
     "@playwright/test": "1.57.0",
-    "@testing-library/dom": "10.4.0",
+    "@testing-library/dom": "10.4.1",
     "@testing-library/jest-dom": "6.6.3",
     "@testing-library/react": "16.0.1",
     "@types/node": "24",
