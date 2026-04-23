@@ -1,3 +1,6 @@
+/** PDOK Locatieserver suggest: `gemeentenaam` vs `provincienaam` filter. */
+export type PdokAddressSuggestScope = 'gemeente' | 'provincie'
+
 export type AppConfig = {
   maptilerApiKey: string
   maptilerMap: string
@@ -10,7 +13,21 @@ export type AppConfig = {
   baseUrlApi: string
   base: {
     municipality: string
+    /**
+     * Theme folder name under /public/assets/organizations/<theme>/theme.css
+     * Falls back to `municipality` when omitted.
+     */
+    theme?: string
     municipality_display_name: string
+    /**
+     * PDOK suggest: restrict address hits to `gemeentenaam` (default) or `provincienaam`.
+     */
+    pdok_address_suggest_scope?: PdokAddressSuggestScope
+    /**
+     * Exact PDOK provincienaam when `pdok_address_suggest_scope` is `provincie`.
+     * Falls back to `municipality_display_name` when omitted.
+     */
+    pdok_provincienaam?: string
     assets_url: string
     supportedLanguages: Array<{
       label: string

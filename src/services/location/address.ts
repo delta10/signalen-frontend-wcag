@@ -1,15 +1,18 @@
 import { axiosInstance } from '@/services/client/api-client'
 import { AxiosResponse } from 'axios'
 import { AddressCoordinateResponse, AddressSuggestResponse } from '@/types/pdok'
+import type { PdokAddressSuggestScope } from '@/types/config'
 import { FormStoreState } from '@/types/stores'
 
-// Fetches suggested addresses from PDOK API based on search query and municipality
+// Fetches suggested addresses from PDOK API based on search query and municipality or province
 // @param {string} searchQuery - Text to search for addresses
-// @param {string} municipality - Name of the municipality to filter results
+// @param {PdokAddressSuggestScope} scope - `gemeente` → gemeentenaam filter, `provincie` → provincienaam
+// @param {string} municipality - PDOK gemeentenaam or provincienaam (see scope)
 // @returns {Promise<AddressSuggestResponse>} - Promise resolving to suggested addresses
 // @throws {Error} - Throws an error if the request fails
 export const getSuggestedAddresses = async (
   searchQuery: string,
+  scope: PdokAddressSuggestScope,
   municipality: string,
   pdokBaseUrl: string | undefined
 ): Promise<AddressSuggestResponse> => {
@@ -19,10 +22,14 @@ export const getSuggestedAddresses = async (
   }
   const axios = axiosInstance(pdokBaseUrl)
 
+  const path =
+    scope === 'provincie'
+      ? `/search/v3_1/suggest?fq=provincienaam:(${municipality})&fl=id,weergavenaam,straatnaam,huis_nlt,postcode,woonplaatsnaam,centroide_ll&fq=bron:BAG&fq=type:adres&q=${searchQuery}`
+      : `/search/v3_1/suggest?fq=gemeentenaam:(${municipality})&fl=id,weergavenaam,straatnaam,huis_nlt,postcode,woonplaatsnaam,centroide_ll&fq=bron:BAG&fq=type:adres&q=${searchQuery}`
+
   try {
-    const response: AxiosResponse<AddressSuggestResponse> = await axios.get(
-      `/search/v3_1/suggest?fq=gemeentenaam:(${municipality})&fl=id,weergavenaam,straatnaam,huis_nlt,postcode,woonplaatsnaam,centroide_ll&fq=bron:BAG&fq=type:adres&q=${searchQuery}`
-    )
+    const response: AxiosResponse<AddressSuggestResponse> =
+      await axios.get(path)
 
     return response.data
   } catch (error) {

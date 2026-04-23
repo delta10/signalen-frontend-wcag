@@ -1,11 +1,17 @@
 .signalen-progress-bar {
   box-sizing: border-box;
   display: inline-flex;
-  background-color: var(--basis-color-white, transparent);
+  background-color: var(
+    --signalen-progress-bar-background-color,
+    var(--basis-color-white, transparent)
+  );
   block-size: var(--signalen-progress-bar-block-size, 0.5rem);
-  border-radius: var(--signalen-progress-bar-border-radius);
+  border-radius: var(--signalen-progress-bar-border-radius, 4px);
   overflow: hidden;
-  color: var(--utrecht-color-blue-35);
+  color: var(
+    --signalen-progress-bar-color,
+    var(--utrecht-color-blue-35)
+  );
   border: 1px solid currentColor;
 }
 

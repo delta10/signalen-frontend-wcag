@@ -17,11 +17,11 @@ const config: Config = {
         top: '0 -4px 10px -2px rgba(0, 0, 0, 0.1)',
       },
       textColor: {
-        primary: 'var(--basis-color-text-text-1)',
+        primary: 'var(--basis-color-action-1-color-default)',
       },
       backgroundColor: {
-        base: 'var(--basis-color-text-bg-1)',
-        primary: 'var(--basis-color-text-text-1)',
+        base: 'var(--basis-color-default-bg-default)',
+        primary: 'var(--basis-color-action-1-color-default)',
       },
     },
   },

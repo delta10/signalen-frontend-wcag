@@ -46,8 +46,7 @@ export {
 
 export { RadioGroup } from '@utrecht/radio-group-react'
 export { CheckboxGroup } from '@utrecht/checkbox-group-react'
-export { Root } from '@utrecht/root-react/dist/css'
-export { Body } from '@utrecht/body-react/dist/css'
+export { Root } from '@utrecht/root-react/css'
 export { PageLayout } from '@utrecht/page-layout-react/dist/css'
 export { PageHeader } from '@utrecht/page-header-react/dist/css'
 export { PageFooter } from '@utrecht/page-footer-react/dist/css'

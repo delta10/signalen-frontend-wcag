@@ -1,0 +1,16 @@
+{
+  "light": {
+    "nl.button.padding-block-start": "{basis.space.block.xl}",
+    "nl.button.padding-block-end": "{basis.space.block.xl}",
+    "nl.button.padding-inline-start": "{basis.space.inline.3xl}",
+    "nl.button.padding-inline-end": "{basis.space.inline.3xl}",
+    "utrecht.accordion.button.border-color": "{basis.color.action-1.color-default}",
+    "utrecht.accordion.button.border-width": "1px",
+    "utrecht.accordion.button.color": "{basis.color.action-1.color-default}",
+    "utrecht.alert.column-gap": "8px",
+    "utrecht.textarea.max-inline-size": "100%",
+    "utrecht.page-header.content.padding-block-end": "{basis.space.inline.xl}",
+    "utrecht.page-header.content.padding-block-start": "{basis.space.inline.xl}",
+    "utrecht.page-header.content.padding-inline": "{basis.space.inline.xl}"
+  }
+}

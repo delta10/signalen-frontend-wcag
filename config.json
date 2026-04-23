@@ -1,15 +1,19 @@
 {
-  "baseUrlApi": "https://api.meldingen.demo.meierijstad.delta10.cloud/",
+  "baseUrlApi": "https://api.meldingen-acpt.brabant.delta10.cloud/",
   "pdokUrlApi": "https://api.pdok.nl/bzk/locatieserver/",
-  "frontendUrl": "https://signalen.demo.meierijstad.delta10.cloud",
+  "frontendUrl": "https://meldingen-acpt.brabant.delta10.cloud",
   "maptilerApiKey": "x0IfDO01xuLQQKYlSzuz",
   "maptilerMap": "https://api.maptiler.com/maps/nl-cartiqo-topo",
   "maptilerMapDarkMode": "https://api.maptiler.com/maps/streets-v2-dark",
-  "restrictSelectionArea": false,
+  "maptilerOutOfBoundsSelectionArea": "https://api.maptiler.com/tiles/019bff1a-5275-7f4c-ba32-70c3d26b4122/tiles.json?key=K3FQAjXPERToZYyHKNPG",
+  "restrictSelectionArea": true,
+  "maptilerOutOfBoundsLayerId": "difference",
   "base": {
-    "municipality": "meierijstad",
-    "municipality_display_name": "Purmerend",
-    "assets_url": "https://meldingen.demo.meierijstad.delta10.cloud",
+    "municipality": "Noord-Brabant",
+    "theme": "brabant",
+    "pdok_address_suggest_scope": "provincie",
+    "municipality_display_name": "Noord-Brabant",
+    "assets_url": "https://meldingen-acpt.brabant.delta10.cloud/",
     "supportedLanguages": [
       {
         "label": "Schakel over naar het Nederlands",
@@ -17,16 +21,16 @@
         "name": "Nederlands"
       }
     ],
-    "naam": "gemeente Purmerend",
+    "naam": "provincie Noord-Brabant",
     "header": {
       "logo": {
-        "alt": "Gemeente Purmerend logo, naar de homepagina",
-        "url": "purmerend-logo-design-tokens.svg",
-        "caption": "Purmerend"
+        "alt": "Provincie Noord-Brabant logo, naar de homepagina",
+        "url": "logo_provincie_noord-brabant.svg",
+        "caption": "Noord-Brabant"
       }
     },
     "contact": {
-      "tel": "0299 452 452"
+      "tel": "073 68 12 812"
     },
     "map": {
       "find_address_in_distance": 30,
@@ -42,21 +46,21 @@
       "about": "https://signalen.org",
       "accessibility": "https://signalen.org",
       "help": "https://signalen.org/",
-      "home": "https://purmerend.nl/",
+      "home": "https://brabant.nl/",
       "privacy": "https://vng.nl/privacyverklaring-vereniging-van-nederlandse-gemeenten"
     },
     "i18n": {
       "nl": {
         "describe_report": {
           "alert": {
-            "help_text": "Problemen met het indienen van een melding? Bel [0299452452](tel:+0299452452) of mail naar [meldingen@purmerend.nl](mailto:meldingen@purmerend.nl). Wij zijn bereikbaar van maandag tot en met vrijdag van 8:00 uur tot 18:00 uur."
+            "help_text": "Problemen met het indienen van een melding? Bel [073 - 68 12 812](tel:+31736812812). Wij zijn bereikbaar van maandag tot en met vrijdag van 8:00 uur tot 18:00 uur. Bel bij calamiteiten: [073 - 680 73 68](tel:+31736807368).  U belt dit telefoonnummer als de veiligheid of doorstroming op één van de provinciale wegen acuut belemmerd wordt. Een provinciale weg heeft altijd een N-nummer. Het telefoonnummer is 24 uur per dag, 7 dagen per week bereikbaar."
           }
         }
       },
       "en": {
         "describe_report": {
           "alert": {
-            "help_text": "Having trouble submitting a report? Call [0299452452](tel:+0299452452) or mail [meldingen@purmerend.nl](mailto:meldingen@purmerend.nl). We are available monday through friday from 8:00 AM to 6:00 PM."
+            "help_text": "Having trouble submitting a report? Call [073 - 68 12 812](tel:+31736812812). We are available monday through friday from 8:00 AM to 6:00 PM. Call for emergencies: [073 - 680 73 68](tel:+31736807368). You call this phone number if security or traffic on one of the provincial roads is urgently blocked. A provincial road always has an N number. The phone number is available 24 hours a day, 7 days a week."
           }
         }
       }
