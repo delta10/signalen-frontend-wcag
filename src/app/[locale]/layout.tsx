@@ -26,7 +26,7 @@ const LocaleLayout = ({
   const configuredTheme = config.base.theme ?? config.base.municipality
   const safeTheme = /^[a-z0-9-]+$/i.test(configuredTheme)
     ? configuredTheme
-    : 'brabant'
+    : 'default'
   const organizationThemeHref = `/assets/organizations/${safeTheme}/theme.css`
   const googleFontStylesheetUrl = config.base.fonts?.googleStylesheetUrl
 
