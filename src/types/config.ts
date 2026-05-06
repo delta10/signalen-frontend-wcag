@@ -28,6 +28,10 @@ export type AppConfig = {
      * Falls back to `municipality`, then `municipality_display_name`.
      */
     pdok_address_suggest_organization?: string
+    fonts?: {
+      /** Optional Google Fonts stylesheet URL to load in the document head. */
+      googleStylesheetUrl?: string
+    }
     assets_url: string
     supportedLanguages: Array<{
       label: string

@@ -125,7 +125,7 @@ const darkThemePath = path.resolve(organizationBuildPath, 'theme.dark.css')
 const finalThemePath = path.resolve(organizationBuildPath, 'theme.css')
 const lightThemeCss = fs.readFileSync(lightThemePath, 'utf8').trim()
 const darkThemeCss = fs.readFileSync(darkThemePath, 'utf8').trim()
-const finalThemeCss = `${lightThemeCss}\n\n@media (prefers-color-scheme: dark) {color-scheme: light dark; \n${darkThemeCss}\n}\n`
+const finalThemeCss = `${lightThemeCss}\n\n@media (prefers-color-scheme: dark) {\n  .organization-theme.organization-theme--media-query {\n    color-scheme: light dark;\n  }\n${darkThemeCss}\n}\n`
 
 fs.writeFileSync(finalThemePath, finalThemeCss)
 fs.rmSync(lightThemePath, { force: true })

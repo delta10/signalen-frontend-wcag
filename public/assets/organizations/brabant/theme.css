@@ -209,8 +209,9 @@
   --basis-color-transparent: #00000000;
   --basis-form-control-border-radius: 0px;
   --basis-form-control-max-inline-size: 25rem;
+  --basis-heading-font-family: "Jost","Arial","Helvetica","sans-serif";
   --basis-heading-color: #000000;
-  --basis-heading-font-weight: bold;
+  --basis-heading-font-weight: 700;
   --basis-text-font-family-default: "Arial","Helvetica","sans-serif";
   --basis-text-font-family-monospace: "IBM Plex Mono",monospace;
   --basis-text-font-size-sm: .875rem;
@@ -654,7 +655,6 @@
   --basis-form-control-padding-block-start: var(--basis-space-block-lg);
   --basis-form-control-padding-inline-end: var(--basis-space-inline-lg);
   --basis-form-control-padding-inline-start: var(--basis-space-inline-lg);
-  --basis-heading-font-family: var(--basis-text-font-family-default);
   --utrecht-accordion-button-background-color: var(--basis-color-default-bg-default);
   --utrecht-accordion-button-border-color: var(--basis-color-action-1-color-default);
   --utrecht-accordion-button-color: var(--basis-color-action-1-color-default);
@@ -810,26 +810,32 @@
   --utrecht-form-label-radio-font-weight: var(--basis-text-font-weight-default);
   --utrecht-form-label-margin-block-end: var(--basis-space-block-lg);
   --utrecht-heading-1-color: var(--basis-heading-color);
+  --utrecht-heading-1-font-family: var(--basis-heading-font-family);
   --utrecht-heading-1-font-size: var(--basis-text-font-size-3xl);
   --utrecht-heading-1-font-weight: var(--basis-heading-font-weight);
   --utrecht-heading-1-line-height: var(--basis-text-line-height-3xl);
   --utrecht-heading-2-color: var(--basis-heading-color);
+  --utrecht-heading-2-font-family: var(--basis-heading-font-family);
   --utrecht-heading-2-font-size: var(--basis-text-font-size-2xl);
   --utrecht-heading-2-font-weight: var(--basis-heading-font-weight);
   --utrecht-heading-2-line-height: var(--basis-text-line-height-2xl);
   --utrecht-heading-3-color: var(--basis-heading-color);
+  --utrecht-heading-3-font-family: var(--basis-heading-font-family);
   --utrecht-heading-3-font-size: var(--basis-text-font-size-xl);
   --utrecht-heading-3-font-weight: var(--basis-heading-font-weight);
   --utrecht-heading-3-line-height: var(--basis-text-line-height-xl);
   --utrecht-heading-4-color: var(--basis-heading-color);
+  --utrecht-heading-4-font-family: var(--basis-heading-font-family);
   --utrecht-heading-4-font-size: var(--basis-text-font-size-lg);
   --utrecht-heading-4-font-weight: var(--basis-heading-font-weight);
   --utrecht-heading-4-line-height: var(--basis-text-line-height-lg);
   --utrecht-heading-5-color: var(--basis-heading-color);
+  --utrecht-heading-5-font-family: var(--basis-heading-font-family);
   --utrecht-heading-5-font-size: var(--basis-text-font-size-md);
   --utrecht-heading-5-font-weight: var(--basis-heading-font-weight);
   --utrecht-heading-5-line-height: var(--basis-text-line-height-md);
   --utrecht-heading-6-color: var(--basis-heading-color);
+  --utrecht-heading-6-font-family: var(--basis-heading-font-family);
   --utrecht-heading-6-font-size: var(--basis-text-font-size-sm);
   --utrecht-heading-6-font-weight: var(--basis-heading-font-weight);
   --utrecht-heading-6-line-height: var(--basis-text-line-height-sm);
@@ -1217,12 +1223,6 @@
   --utrecht-checkbox-indeterminate-background-color: var(--basis-form-control-accent-color);
   --utrecht-checkbox-indeterminate-border-width: var(--basis-form-control-border-width);
   --utrecht-form-label-disabled-color: var(--basis-color-disabled-color-subtle);
-  --utrecht-heading-1-font-family: var(--basis-heading-font-family);
-  --utrecht-heading-2-font-family: var(--basis-heading-font-family);
-  --utrecht-heading-3-font-family: var(--basis-heading-font-family);
-  --utrecht-heading-4-font-family: var(--basis-heading-font-family);
-  --utrecht-heading-5-font-family: var(--basis-heading-font-family);
-  --utrecht-heading-6-font-family: var(--basis-heading-font-family);
   --utrecht-link-active-color: var(--basis-color-action-2-color-active);
   --utrecht-spotlight-section-info-background-color: var(--basis-color-info-bg-default);
   --utrecht-radio-button-background-color: var(--basis-form-control-background-color);
@@ -1423,7 +1423,10 @@
   --utrecht-radio-button-disabled-color: var(--utrecht-radio-button-disabled-border-color);
 }
 
-@media (prefers-color-scheme: dark) {color-scheme: light dark; 
+@media (prefers-color-scheme: dark) {
+  .organization-theme.organization-theme--media-query {
+    color-scheme: light dark;
+  }
 /**
  * Do not edit directly, this file was auto-generated.
  */
@@ -1637,8 +1640,9 @@
   --basis-color-transparent: #00000000;
   --basis-form-control-border-radius: 0px;
   --basis-form-control-max-inline-size: 25rem;
+  --basis-heading-font-family: "Jost","Arial","Helvetica","sans-serif";
   --basis-heading-color: #ffffff;
-  --basis-heading-font-weight: bold;
+  --basis-heading-font-weight: 700;
   --basis-text-font-family-default: "Arial","Helvetica","sans-serif";
   --basis-text-font-family-monospace: "IBM Plex Mono",monospace;
   --basis-text-font-size-sm: .875rem;
@@ -2085,7 +2089,6 @@
   --basis-form-control-padding-block-start: var(--basis-space-block-lg);
   --basis-form-control-padding-inline-end: var(--basis-space-inline-lg);
   --basis-form-control-padding-inline-start: var(--basis-space-inline-lg);
-  --basis-heading-font-family: var(--basis-text-font-family-default);
   --utrecht-accordion-button-background-color: var(--basis-color-default-bg-default);
   --utrecht-accordion-button-border-color: var(--basis-color-action-1-color-default);
   --utrecht-accordion-button-color: var(--basis-color-action-1-color-default);
@@ -2243,26 +2246,32 @@
   --utrecht-form-label-radio-font-weight: var(--basis-text-font-weight-default);
   --utrecht-form-label-margin-block-end: var(--basis-space-block-lg);
   --utrecht-heading-1-color: var(--basis-heading-color);
+  --utrecht-heading-1-font-family: var(--basis-heading-font-family);
   --utrecht-heading-1-font-size: var(--basis-text-font-size-3xl);
   --utrecht-heading-1-font-weight: var(--basis-heading-font-weight);
   --utrecht-heading-1-line-height: var(--basis-text-line-height-3xl);
   --utrecht-heading-2-color: var(--basis-heading-color);
+  --utrecht-heading-2-font-family: var(--basis-heading-font-family);
   --utrecht-heading-2-font-size: var(--basis-text-font-size-2xl);
   --utrecht-heading-2-font-weight: var(--basis-heading-font-weight);
   --utrecht-heading-2-line-height: var(--basis-text-line-height-2xl);
   --utrecht-heading-3-color: var(--basis-heading-color);
+  --utrecht-heading-3-font-family: var(--basis-heading-font-family);
   --utrecht-heading-3-font-size: var(--basis-text-font-size-xl);
   --utrecht-heading-3-font-weight: var(--basis-heading-font-weight);
   --utrecht-heading-3-line-height: var(--basis-text-line-height-xl);
   --utrecht-heading-4-color: var(--basis-heading-color);
+  --utrecht-heading-4-font-family: var(--basis-heading-font-family);
   --utrecht-heading-4-font-size: var(--basis-text-font-size-lg);
   --utrecht-heading-4-font-weight: var(--basis-heading-font-weight);
   --utrecht-heading-4-line-height: var(--basis-text-line-height-lg);
   --utrecht-heading-5-color: var(--basis-heading-color);
+  --utrecht-heading-5-font-family: var(--basis-heading-font-family);
   --utrecht-heading-5-font-size: var(--basis-text-font-size-md);
   --utrecht-heading-5-font-weight: var(--basis-heading-font-weight);
   --utrecht-heading-5-line-height: var(--basis-text-line-height-md);
   --utrecht-heading-6-color: var(--basis-heading-color);
+  --utrecht-heading-6-font-family: var(--basis-heading-font-family);
   --utrecht-heading-6-font-size: var(--basis-text-font-size-sm);
   --utrecht-heading-6-font-weight: var(--basis-heading-font-weight);
   --utrecht-heading-6-line-height: var(--basis-text-line-height-sm);
@@ -2647,12 +2656,6 @@
   --utrecht-checkbox-indeterminate-background-color: var(--basis-form-control-accent-color);
   --utrecht-checkbox-indeterminate-border-width: var(--basis-form-control-border-width);
   --utrecht-form-label-disabled-color: var(--basis-color-disabled-color-subtle);
-  --utrecht-heading-1-font-family: var(--basis-heading-font-family);
-  --utrecht-heading-2-font-family: var(--basis-heading-font-family);
-  --utrecht-heading-3-font-family: var(--basis-heading-font-family);
-  --utrecht-heading-4-font-family: var(--basis-heading-font-family);
-  --utrecht-heading-5-font-family: var(--basis-heading-font-family);
-  --utrecht-heading-6-font-family: var(--basis-heading-font-family);
   --utrecht-link-active-color: var(--basis-color-action-2-color-active);
   --utrecht-radio-button-background-color: var(--basis-form-control-background-color);
   --utrecht-radio-button-border-color: var(--basis-form-control-border-color);

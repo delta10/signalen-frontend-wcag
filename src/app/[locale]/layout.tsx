@@ -28,6 +28,7 @@ const LocaleLayout = ({
     ? configuredTheme
     : 'brabant'
   const organizationThemeHref = `/assets/organizations/${safeTheme}/theme.css`
+  const googleFontStylesheetUrl = config.base.fonts?.googleStylesheetUrl
 
   return (
     <Root
@@ -35,6 +36,17 @@ const LocaleLayout = ({
       className={`${font.variable} organization-theme organization-theme--media-query`}
     >
       <head>
+        {googleFontStylesheetUrl ? (
+          <>
+            <link rel="preconnect" href="https://fonts.googleapis.com" />
+            <link
+              rel="preconnect"
+              href="https://fonts.gstatic.com"
+              crossOrigin="anonymous"
+            />
+            <link rel="stylesheet" href={googleFontStylesheetUrl} />
+          </>
+        ) : null}
         <link rel="stylesheet" href={organizationThemeHref} />
       </head>
       <body>

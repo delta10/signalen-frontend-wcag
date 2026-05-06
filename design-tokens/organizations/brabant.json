@@ -5,8 +5,14 @@
       "Helvetica",
       "sans-serif"
     ],
-    "basis.heading.font-family": "{basis.text.font-family.default}",
-    "basis.heading.font-weight": "bold",
+    "basis.heading.font-family": [
+      "Jost",
+      "Arial",
+      "Helvetica",
+      "sans-serif"
+    ],
+    
+    "basis.heading.font-weight": "700",
     "basis.color.accent-1.color-default": "#224271",
     "basis.color.accent-1-inverse.bg-default": "{basis.color.accent-1.color-default}",
     "basis.color.accent-1-inverse.color-default": "#ffffff",
