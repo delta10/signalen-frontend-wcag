@@ -12,6 +12,7 @@
     "municipality": "Noord-Brabant",
     "theme": "brabant",
     "pdok_address_suggest_scope": "provincie",
+    "pdok_address_suggest_organization": "Noord-Brabant",
     "municipality_display_name": "Noord-Brabant",
     "assets_url": "https://meldingen-acpt.brabant.delta10.cloud/",
     "supportedLanguages": [

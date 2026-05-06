@@ -7,13 +7,13 @@ import { FormStoreState } from '@/types/stores'
 // Fetches suggested addresses from PDOK API based on search query and municipality or province
 // @param {string} searchQuery - Text to search for addresses
 // @param {PdokAddressSuggestScope} scope - `gemeente` → gemeentenaam filter, `provincie` → provincienaam
-// @param {string} municipality - PDOK gemeentenaam or provincienaam (see scope)
+// @param {string} organization - PDOK gemeentenaam or provincienaam (see scope)
 // @returns {Promise<AddressSuggestResponse>} - Promise resolving to suggested addresses
 // @throws {Error} - Throws an error if the request fails
 export const getSuggestedAddresses = async (
   searchQuery: string,
   scope: PdokAddressSuggestScope,
-  municipality: string,
+  organization: string,
   pdokBaseUrl: string | undefined
 ): Promise<AddressSuggestResponse> => {
   if (!pdokBaseUrl) {
@@ -22,12 +22,9 @@ export const getSuggestedAddresses = async (
   }
   const axios = axiosInstance(pdokBaseUrl)
 
-  const path =
-    scope === 'provincie'
-      ? `/search/v3_1/suggest?fq=provincienaam:(${municipality})&fl=id,weergavenaam,straatnaam,huis_nlt,postcode,woonplaatsnaam,centroide_ll&fq=bron:BAG&fq=type:adres&q=${searchQuery}`
-      : `/search/v3_1/suggest?fq=gemeentenaam:(${municipality})&fl=id,weergavenaam,straatnaam,huis_nlt,postcode,woonplaatsnaam,centroide_ll&fq=bron:BAG&fq=type:adres&q=${searchQuery}`
-
   try {
+    const field = scope === 'provincie' ? 'provincienaam' : 'gemeentenaam'
+    const path = `/search/v3_1/suggest?fq=${field}:(${organization})&fl=id,weergavenaam,straatnaam,huis_nlt,postcode,woonplaatsnaam,centroide_ll&fq=bron:BAG&fq=type:adres&q=${searchQuery}`
     const response: AxiosResponse<AddressSuggestResponse> =
       await axios.get(path)
 

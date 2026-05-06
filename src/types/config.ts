@@ -24,10 +24,10 @@ export type AppConfig = {
      */
     pdok_address_suggest_scope?: PdokAddressSuggestScope
     /**
-     * Exact PDOK provincienaam when `pdok_address_suggest_scope` is `provincie`.
-     * Falls back to `municipality_display_name` when omitted.
+     * Optional exact PDOK filter value for the selected suggest scope.
+     * Falls back to `municipality`, then `municipality_display_name`.
      */
-    pdok_provincienaam?: string
+    pdok_address_suggest_organization?: string
     assets_url: string
     supportedLanguages: Array<{
       label: string

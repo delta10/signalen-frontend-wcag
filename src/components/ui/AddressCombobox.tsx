@@ -53,13 +53,13 @@ export const AddressCombobox = ({
   const normalizeQuery = (str: string) => str.trim().replace(/\s+/, ' ')
 
   useEffect(() => {
-    const scope = config?.base.pdok_address_suggest_scope ?? 'gemeente'
-    const municipality =
-      scope === 'provincie'
-        ? (config?.base.pdok_provincienaam ??
-          config?.base.municipality_display_name ??
-          '')
-        : (config?.base.municipality ?? '')
+    const base = config?.base
+    const scope = base?.pdok_address_suggest_scope ?? 'gemeente'
+    const organization =
+      base?.pdok_address_suggest_organization ??
+      base?.municipality ??
+      base?.municipality_display_name ??
+      ''
     const normalizedQuery = normalizeQuery(query)
 
     const getAddressOptions = async () => {
@@ -68,7 +68,7 @@ export const AddressCombobox = ({
         const apiCall = await getSuggestedAddresses(
           normalizedQuery,
           scope,
-          municipality,
+          organization,
           config?.pdokUrlApi
         )
 
