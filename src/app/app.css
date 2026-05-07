@@ -3,31 +3,13 @@
 @tailwind utilities;
 
 
+/* Product-specific styles */
 .utrecht-page-layout {
   min-block-size: 100svh;
 }
 
 .disabled-border-1 {
   border-color: var(--basis-color-disabled-fill-1, GrayText);
-}
-
-.maplibregl-canvas:focus-visible,
-.dashed-focus:focus-visible {
-  --_utrecht-focus-ring-box-shadow: 0 0 0 var(--utrecht-focus-outline-width, 0)
-    var(--utrecht-focus-inverse-outline-color, transparent);
-  box-shadow: var(--_utrecht-focus-ring-box-shadow);
-  outline-color: var(--utrecht-focus-outline-color, revert);
-  outline-offset: var(--utrecht-focus-outline-offset, revert);
-  outline-style: var(--utrecht-focus-outline-style, revert);
-  outline-width: var(--utrecht-focus-outline-width, revert);
-  --_utrecht-link-state-text-decoration: var(
-    --utrecht-link-focus-visible-text-decoration,
-    var(--utrecht-link-focus-text-decoration)
-  );
-  --_utrecht-link-state-text-decoration-thickness: var(
-    --utrecht-link-focus-visible-text-decoration-thickness,
-    var(--utrecht-link-focus-text-decoration-thickness)
-  );
 }
 
 .utrecht-textbox {
@@ -44,21 +26,19 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 8px;
 }
 
 .utrecht-alert {
   --utrecht-paragraph-color: currentColor;
 }
 
-/* Page header */
 .utrecht-logo__caption {
   display: none;
 }
 
-.utrecht-accordion__section > .utrecht-accordion__header > button > span {
-  color: var(--basis-color-action-1-color-default);
-  stroke: var(--basis-color-action-1-color-default);
+.utrecht-link.utrecht-link-list__link {
+  display: flex;
+  align-items: center;
 }
 
 .utrecht-accordion__section > .utrecht-accordion__panel {
@@ -67,67 +47,16 @@
 }
 
 .utrecht-accordion__section > .utrecht-accordion__header > button {
-  border: 1px solid var(--basis-color-action-1-color-default);
-  display: flex;
-  align-items: center;
-}
-
-.utrecht-link.utrecht-link-list__link {
   display: flex;
   align-items: center;
 }
 
 .utrecht-accordion.mobile
-  > .utrecht-accordion__section
-  > .utrecht-accordion__header
-  > button {
-  max-inline-size: 100%;
-  padding: var(--basis-space-text-md) !important;
-}
-
-.utrecht-accordion.mobile
-  > .utrecht-accordion__section
-  > .utrecht-accordion__header
-  > button
-  > span {
-  font-size: 1.125rem;
-  line-height: 1.75rem;
-}
-
-.utrecht-accordion.mobile .utrecht-paragraph,
-.utrecht-accordion.mobile .utrecht-unordered-list {
-  font-size: 1.125rem;
-  line-height: 1.75rem;
-}
-
-.utrecht-accordion.mobile .utrecht-heading-4,
-.utrecht-accordion.mobile .utrecht-heading-5 {
-  font-size: 1.125rem;
-  line-height: 1.75rem;
-}
-
-.utrecht-page-footer__content {
-  --utrecht-link-color: currentColor;
-  --utrecht-link-hover-color: currentColor;
-  --utrecht-link-focus-background-color: var(--basis-focus-background-color);
-  --utrecht-link-focus-color: var(--basis-focus-color);
-}
-
-.utrecht-listbox {
-  /* This issue will be fixed in the design system. */
-  max-inline-size: 100%;
-}
-
-.utrecht-button {
-  /* This issue will be fixed in the design system. */
-  min-block-size: max(
-    var(--utrecht-button-min-block-size, 44px),
-    fit-content
-  ) !important;
-  min-inline-size: max(
-    var(--utrecht-button-min-inline-size, 44px),
-    fit-content
-  ) !important;
+> .utrecht-accordion__section
+> .utrecht-accordion__header
+> button {
+max-inline-size: 100%;
+padding: var(--basis-space-text-md) !important;
 }
 
 .utrecht-button.mobile {
@@ -137,46 +66,9 @@
   max-inline-size: 100%;
 }
 
-.utrecht-button--subtle.map-icon-button {
-  background-color: var(--basis-color-default-bg-subtle);
-  border: 1px solid var(--basis-color-action-1-color-default);
-}
-
 .utrecht-button--subtle.mobile {
   font-size: 1rem;
   line-height: 1.5rem;
-}
-
-.utrecht-alert-dialog {
-  /* This issue will be fixed in the design system. */
-  align-self: center;
-  justify-self: center;
-  overflow-block: auto;
-  max-block-size: 100%;
-  max-inline-size: 100%;
-}
-
-.utrecht-radio-button:focus {
-  --_utrecht-radio-button-interactive-background-color: var(
-    --_utrecht-radio-button-state-focus-background-color,
-    var(--utrecht-radio-button-focus-background-color)
-  ) !important;
-  --_utrecht-radio-button-interactive-border-color: var(
-    --_utrecht-radio-button-state-focus-border-color,
-    var(--utrecht-radio-button-focus-border-color)
-  ) !important;
-  --_utrecht-radio-button-interactive-border-width: var(
-    --_utrecht-radio-button-state-focus-border-width,
-    var(--utrecht-radio-button-focus-border-width)
-  ) !important;
-  --_utrecht-radio-button-interactive-color: var(
-    --_utrecht-radio-button-state-focus-color,
-    var(--utrecht-radio-button-focus-color)
-  ) !important;
-}
-
-.utrecht-checkbox--custom.utrecht-checkbox--html-input:focus:not(:checked) {
-  background-image: none !important;
 }
 
 .utrecht-page-body.incident-map > .utrecht-page-body__content {
@@ -185,9 +77,6 @@
 
 .utrecht-page-header.incident-map-header .utrecht-page-header__content {
   justify-self: flex-start;
-  padding-block-end: var(--basis-space-inline-min-xl);
-  padding-block-start: var(--basis-space-inline-min-xl);
-  padding-inline: var(--basis-space-inline-min-xl);
   max-inline-size: 100%;
 }
 
@@ -234,10 +123,96 @@
   padding-bottom: 0.5rem;
 }
 
+h2.utrecht-heading-2 {
+  padding-bottom: 0.5rem;
+}
+
+/* A11y styles */
+.maplibregl-canvas:focus-visible,
+.dashed-focus:focus-visible {
+  --_utrecht-focus-ring-box-shadow: 0 0 0 var(--utrecht-focus-outline-width, 0)
+    var(--utrecht-focus-inverse-outline-color, transparent);
+  box-shadow: var(--_utrecht-focus-ring-box-shadow);
+  outline-color: var(--utrecht-focus-outline-color, revert);
+  outline-offset: var(--utrecht-focus-outline-offset, revert);
+  outline-style: var(--utrecht-focus-outline-style, revert);
+  outline-width: var(--utrecht-focus-outline-width, revert);
+  --_utrecht-link-state-text-decoration: var(
+    --utrecht-link-focus-visible-text-decoration,
+    var(--utrecht-link-focus-text-decoration)
+  );
+  --_utrecht-link-state-text-decoration-thickness: var(
+    --utrecht-link-focus-visible-text-decoration-thickness,
+    var(--utrecht-link-focus-text-decoration-thickness)
+  );
+}
+
+.utrecht-page-footer__content {
+  --utrecht-link-color: currentColor;
+  --utrecht-link-hover-color: currentColor;
+  --utrecht-link-focus-background-color: var(
+    --utrecht-focus-background-color,
+    var(--basis-focus-background-color)
+  );
+  --utrecht-link-focus-color: var(--utrecht-focus-color, var(--basis-focus-color));
+}
+
+.utrecht-radio-button:focus {
+  --_utrecht-radio-button-interactive-background-color: var(
+    --_utrecht-radio-button-state-focus-background-color,
+    var(--utrecht-radio-button-focus-background-color)
+  ) !important;
+  --_utrecht-radio-button-interactive-border-color: var(
+    --_utrecht-radio-button-state-focus-border-color,
+    var(--utrecht-radio-button-focus-border-color)
+  ) !important;
+  --_utrecht-radio-button-interactive-border-width: var(
+    --_utrecht-radio-button-state-focus-border-width,
+    var(--utrecht-radio-button-focus-border-width)
+  ) !important;
+  --_utrecht-radio-button-interactive-color: var(
+    --_utrecht-radio-button-state-focus-color,
+    var(--utrecht-radio-button-focus-color)
+  ) !important;
+}
+
+.utrecht-checkbox--custom.utrecht-checkbox--html-input:focus:not(:checked) {
+  background-image: none !important;
+}
+
 .sr-only {
   padding: 0 !important;
 }
 
-h2.utrecht-heading-2 {
-  padding-bottom: 0.5rem;
+/* Workarounds for upstream issues */
+.utrecht-listbox {
+  /* This issue will be fixed in the design system. */
+  max-inline-size: 100%;
+}
+
+.utrecht-button {
+  /* This issue will be fixed in the design system. */
+  min-block-size: max(
+    var(--utrecht-button-min-block-size, 44px),
+    fit-content
+  ) !important;
+  min-inline-size: max(
+    var(--utrecht-button-min-inline-size, 44px),
+    fit-content
+  ) !important;
+}
+
+.utrecht-alert-dialog {
+  /* This issue will be fixed in the design system. */
+  align-self: center;
+  justify-self: center;
+  overflow-block: auto;
+  max-block-size: 100%;
+  max-inline-size: 100%;
+}
+
+@media (max-width: 35rem) {
+  .organization-theme--media-query {
+    --utrecht-heading-1-font-size: var(--basis-text-font-size-2xl);
+  }
 }

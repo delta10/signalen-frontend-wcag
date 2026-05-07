@@ -414,7 +414,7 @@
   --utrecht-accordion-margin-block-start: 0px; /** [code-only] */
   --utrecht-accordion-row-gap: 0px;
   --utrecht-accordion-button-border-radius: 0px;
-  --utrecht-accordion-button-border-width: 1px;
+  --utrecht-accordion-section-border-width: 0;
   --utrecht-accordion-section-margin-block-end: 0px; /** [code-only] */
   --utrecht-accordion-section-margin-block-start: 0px; /** [code-only] */
   --utrecht-action-group-padding-block-end: 0px;
@@ -422,7 +422,6 @@
   --utrecht-action-group-margin-block-end: 0px; /** [code-only] */
   --utrecht-action-group-margin-block-start: 0px; /** [code-only] */
   --utrecht-alert-border-radius: 0px;
-  --utrecht-alert-column-gap: 8px;
   --utrecht-alert-margin-block-end: 0px; /** [code-only] */
   --utrecht-alert-margin-block-start: 0px; /** [code-only] */
   --utrecht-alert-icon-inset-block-start: 0px;
@@ -656,8 +655,9 @@
   --basis-form-control-padding-inline-end: var(--basis-space-inline-lg);
   --basis-form-control-padding-inline-start: var(--basis-space-inline-lg);
   --utrecht-accordion-button-background-color: var(--basis-color-default-bg-default);
-  --utrecht-accordion-button-border-color: var(--basis-color-action-1-color-default);
-  --utrecht-accordion-button-color: var(--basis-color-action-1-color-default);
+  --utrecht-accordion-button-border-color: var(--basis-color-transparent);
+  --utrecht-accordion-button-border-width: var(--basis-border-width-sm);
+  --utrecht-accordion-button-color: var(--basis-heading-color);
   --utrecht-accordion-button-gap: var(--basis-space-text-md);
   --utrecht-accordion-button-padding-block-end: var(--basis-space-block-lg);
   --utrecht-accordion-button-padding-block-start: var(--basis-space-block-lg);
@@ -681,13 +681,13 @@
   --utrecht-accordion-panel-padding-inline-start: var(--basis-space-inline-xl);
   --utrecht-accordion-section-border-color: var(--basis-color-default-border-subtle);
   --utrecht-accordion-section-hover-border-color: var(--basis-color-default-border-subtle);
-  --utrecht-accordion-section-border-width: var(--basis-border-width-sm);
   --utrecht-action-group-background-color: var(--basis-color-transparent);
   --utrecht-action-group-column-gap: var(--basis-space-column-md);
   --utrecht-action-group-row-gap: var(--basis-space-row-md);
   --utrecht-alert-border-color: var(--basis-color-info-border-default);
   --utrecht-alert-border-width: var(--basis-border-width-md);
   --utrecht-alert-color: var(--basis-color-info-color-document);
+  --utrecht-alert-column-gap: var(--basis-space-column-md);
   --utrecht-alert-padding-block-end: var(--basis-space-block-2xl);
   --utrecht-alert-padding-block-start: var(--basis-space-block-xl);
   --utrecht-alert-padding-inline-end: var(--basis-space-inline-xl);
@@ -943,9 +943,9 @@
   --utrecht-page-header-color: var(--basis-color-default-color-document);
   --utrecht-page-header-padding-inline: var(--basis-space-inline-4xl);
   --utrecht-page-header-content-max-inline-size: var(--basis-page-max-inline-size);
-  --utrecht-page-header-content-padding-block-end: var(--basis-space-inline-xl);
-  --utrecht-page-header-content-padding-block-start: var(--basis-space-inline-xl);
-  --utrecht-page-header-content-padding-inline: var(--basis-space-inline-xl);
+  --utrecht-page-header-content-padding-block-end: var(--basis-space-inline-min-xl);
+  --utrecht-page-header-content-padding-block-start: var(--basis-space-inline-min-xl);
+  --utrecht-page-header-content-padding-inline: var(--basis-space-inline-min-xl);
   --utrecht-page-body-background-color: var(--basis-color-default-bg-document);
   --utrecht-page-body-color: var(--basis-color-default-color-document);
   --utrecht-page-body-content-max-inline-size: var(--basis-page-max-inline-size);
@@ -1088,14 +1088,14 @@
   --nl-button-secondary-positive-pressed-hover-background-color: var(--basis-color-positive-inverse-bg-hover);
   --nl-button-secondary-positive-pressed-hover-border-color: var(--basis-color-transparent);
   --nl-button-secondary-positive-pressed-hover-color: var(--basis-color-positive-inverse-color-hover);
-  --nl-button-subtle-background-color: var(--basis-color-transparent);
-  --nl-button-subtle-border-color: var(--basis-color-transparent);
+  --nl-button-subtle-background-color: var(--basis-color-default-bg-subtle);
+  --nl-button-subtle-border-color: var(--basis-color-action-1-color-default);
   --nl-button-subtle-color: var(--basis-color-action-1-color-default);
   --nl-button-subtle-active-border-color: var(--basis-color-transparent);
   --nl-button-subtle-disabled-background-color: var(--basis-color-transparent);
   --nl-button-subtle-disabled-border-color: var(--basis-color-transparent);
-  --nl-button-subtle-hover-background-color: var(--basis-color-action-1-bg-hover);
-  --nl-button-subtle-hover-border-color: var(--basis-color-transparent);
+  --nl-button-subtle-hover-background-color: var(--basis-color-default-bg-subtle);
+  --nl-button-subtle-hover-border-color: var(--basis-color-action-1-color-hover);
   --nl-button-subtle-hover-color: var(--basis-color-action-1-color-hover);
   --nl-button-subtle-pressed-border-color: var(--basis-color-transparent);
   --nl-button-subtle-pressed-active-border-color: var(--basis-color-transparent);

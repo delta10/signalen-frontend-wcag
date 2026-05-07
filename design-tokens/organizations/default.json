@@ -76,18 +76,14 @@
     "utrecht.spotlight-section.info.color": "{basis.color.info.color-document}",
     "utrecht.page-footer.background-color": "{basis.color.accent-1-inverse.bg-default}",
     "utrecht.page-footer.color": "{basis.color.accent-1-inverse.color-default}",
-    "nl.button.secondary.background-color": "{basis.color.action-2.color-default}",
-    "nl.button.secondary.color": "#1b59a4",
-    "nl.button.secondary.border-color": "{basis.color.action-2.color-default}",
-    "nl.button.secondary.hover.background-color": "{basis.color.action-2.color-hover}",
-    "nl.button.secondary.hover.color": "#04499a",
-    "nl.button.secondary.hover.border-color": "{basis.color.action-2.color-hover}",
     "nl.button.default.background-color": "{basis.color.action-1.color-default}",
-    "nl.button.default.color": "#595959",
+    "nl.button.default.color": "{basis.color.accent-1-inverse.color-default}",
     "nl.button.default.border-color": "{basis.color.action-1.color-default}",
     "nl.button.default.hover.background-color": "{basis.color.action-1.color-hover}",
-    "nl.button.default.hover.color": "#4b4b4b",
-    "nl.button.default.hover.border-color": "{basis.color.action-1.color-hover}"
+    "nl.button.default.hover.color": "{basis.color.accent-1-inverse.color-default}",
+    "nl.button.default.hover.border-color": "{basis.color.action-1.color-hover}",
+    "nl.button.secondary.background-color": "{basis.color.default.bg-document}",
+    "nl.button.secondary.color": "{basis.color.accent-1.color-default}"
   },
   "dark": {
     "basis.color.accent-1-inverse.bg-default": "#11213d",
@@ -99,6 +95,8 @@
     "basis.color.default.color-subtle": "#dddddd",
     "basis.heading.color": "#ffffff",
     "basis.color.info.color-document": "#f5f5f5",
-    "basis.color.info.bg-default": "#1d2532"
+    "basis.color.info.bg-default": "#1d2532",
+    "nl.button.subtle.color": "{basis.color.action-1.color-default}",
+    "nl.button.subtle.hover.color": "{basis.color.action-1.color-hover}"
   }
 }

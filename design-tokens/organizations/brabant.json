@@ -11,7 +11,6 @@
       "Helvetica",
       "sans-serif"
     ],
-    
     "basis.heading.font-weight": "700",
     "basis.color.accent-1.color-default": "#224271",
     "basis.color.accent-1-inverse.bg-default": "{basis.color.accent-1.color-default}",
@@ -100,6 +99,8 @@
     "basis.color.default.color-subtle": "#dddddd",
     "basis.heading.color": "#ffffff",
     "basis.color.info.color-document": "#f5f5f5",
-    "basis.color.info.bg-default": "#1d2532"
+    "basis.color.info.bg-default": "#1d2532",
+    "nl.button.subtle.color": "{basis.color.action-1.color-default}",
+    "nl.button.subtle.hover.color": "{basis.color.action-1.color-hover}"
   }
 }

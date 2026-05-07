@@ -484,7 +484,7 @@ const IncidentMapContent = () => {
       )}
 
       {isMobile && (
-        <div className="flex items-center justify-center py-3 z-30 absolute bottom-0 w-full p-4 bg-base">
+        <div className="flex items-center justify-center py-3 z-30 absolute bottom-0 w-full p-4 bg-white dark:bg-[#161615]">
           {createIncidentButton}
         </div>
       )}
