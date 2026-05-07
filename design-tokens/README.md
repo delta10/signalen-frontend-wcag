@@ -1,17 +1,25 @@
-# Signalen theming met base + organisatie light/dark updates
+# Signalen theming met basis + organisatie-updates
 
-Deze setup gebruikt:
+Deze map bevat alles om een organisatie-thema op te bouwen. Kort samengevat:
 
-- `public/assets/organizations/<organisatie>/theme.css` als organisatie-specifieke themalaag
-- `design-tokens/base.json` als volledige basis-tokenboom en bron van waarheid
-- `design-tokens/overrides.json` als gedeelde token-overrides voor alle organisaties
-- `design-tokens/organizations/<organisatie>.json` met `light` en optioneel `dark` updates
-- Style Dictionary om de gemergde tokens om te zetten naar CSS in `public/assets/organizations/<organisatie>/`
+- `design-tokens/base.json` bevat de complete token-set die we als startpunt gebruiken.
+- `design-tokens/overrides.json` bevat gedeelde correcties die voor alle organisaties gelden.
+- `design-tokens/organizations/<organisatie>.json` bevat alleen de organisatie-specifieke verschillen.
+- De build merget deze lagen en genereert CSS-bestanden in `public/assets/organizations/<organisatie>/`.
+
+De theming wordt bepaald in deze volgorde:
+
+1. basis (`base.json`)
+2. gedeelde overrides (`overrides.json`)
+3. organisatie light (`organizations/<organisatie>.json` -> `light`)
+4. organisatie dark (`organizations/<organisatie>.json` -> `dark`, alleen afwijkingen op light)
+
+De onderste laag levert defaults; elke volgende laag mag waarden overschrijven.
 
 ## Bestandsrollen
 
-- `base.json`: volledige tokens (bron van waarheid)
-- `overrides.json`: gedeelde token-overrides voor alle organisaties, bijvoorbeeld layout- of componentcorrecties bovenop NLDS
+- `base.json`: volledige basisset van tokens waar alle thema's op starten.
+- `overrides.json`: gedeelde overrides voor alle organisaties, bijvoorbeeld fixes of projectbrede keuzes bovenop de basisset.
 - `<organisatie>.json`: organisatie-specifieke overrides in dit formaat:
 
 ```json
@@ -41,6 +49,8 @@ Bij `npm run tokens:build:org -- <organisatie>` gebeurt het volgende:
 8. Output wordt gegenereerd in `public/assets/organizations/<organisatie>/`.
 
 Als een updatepad niet bestaat in `base.json`, stopt de build met een duidelijke fout (zowel voor `light` als `dark`).
+
+Belangrijk: je definieert in een organisatiebestand dus niet opnieuw "alle tokens", maar alleen de waarden die afwijken van de lagen daaronder.
 
 ## Light, dark en inverse tokens
 
@@ -76,17 +86,34 @@ Gebruik `src/app/app.css` voor gewone CSS-regels die geen token override zijn.
 
 Zo blijven buttons en footer in beide modes via dezelfde basis-tokenrelaties werken, terwijl dark mode alleen de onderliggende basiswaarden wijzigt.
 
-## Stap voor stap: van Theme Wizard naar werkend thema
+## Concreet voorbeeld: thema maken voor Purmerend
 
-1. Open de Theme Wizard en exporteer basis tokens als JSON  
-   [Theme Wizard - basis tokens](https://theme-wizard.nl-design-system-community.nl/basis-tokens)
-2. Sla dit bestand op als `design-tokens/base.json`.
-3. Zet gedeelde token-overrides in `design-tokens/overrides.json`.
-4. Maak of update `design-tokens/organizations/<organisatie>.json` met `light` en (optioneel) `dark`.
-5. Genereer assets:
-   - `npm run tokens:build:org -- <organisatie>`
-6. Zet de runtime config op dezelfde organisatie-naam in `config.json`:
-   - `base.theme = "<organisatie>"` (of laat weg om `base.municipality` te gebruiken als fallback)
+1. Maak bestand `design-tokens/organizations/purmerend.json`.
+   - Je kunt `design-tokens/organizations/default.json` kopiëren als startpunt of gebruiken als referentie.
+2. Start met alleen `light` en zet daar de Purmerend-kleuren/typografie in die afwijken van `base.json`.
+3. Laat tokens die gelijk blijven weg; die komen automatisch uit `base.json` en `overrides.json`.
+4. Voeg pas `dark` toe als je dark mode-afwijkingen nodig hebt.
+5. Run `npm run tokens:build:org -- purmerend`.
+6. Controleer dat output bestaat in `public/assets/organizations/purmerend/` (`theme.css`, `variables.css`).
+7. Zet in `config.json` de actieve theme op `"purmerend"` via `base.theme`.
+8. Start `npm run dev` en controleer in de app of kleuren/typografie kloppen.
+
+Starttemplate voor `design-tokens/organizations/purmerend.json`:
+
+```json
+{
+  "light": {
+    "basis.color.action-1.color-default": "#1b59a4",
+    "basis.color.accent-1.color-default": "#224271"
+  },
+  "dark": {
+    "basis.color.default.bg-document": "#1d1d1d",
+    "basis.color.default.color-document": "#f5f5f5"
+  }
+}
+```
+
+Tip: begin klein met een paar duidelijke merk-kleuren. Als dat werkt, breid je stap voor stap uit.
 
 ## Commands
 
@@ -113,5 +140,5 @@ Na build vind je o.a.:
 ## Veelvoorkomende valkuilen
 
 - **Geen effect na token wijziging:** als `npm run dev` draait, worden wijzigingen in `design-tokens/organizations/<organisatie>.json`, `design-tokens/base.json` en `design-tokens/overrides.json` automatisch gebouwd; draait de watcher niet, run dan handmatig `npm run tokens:build:org -- <organisatie>`.
-- **Verkeerde styling geladen:** check dat `config.json` -> `base.theme` exact matcht met mapnaam (of laat `base.theme` weg zodat `base.municipality` als fallback geldt).
+- **Verkeerde styling geladen:** check dat `config.json` -> `base.theme` exact matcht met bestands/mapnaam (bijv. `purmerend`) of laat `base.theme` weg zodat `base.municipality` als fallback geldt.
 - **Padfout in updates:** controleer dat elke key in `light`/`dark` exact bestaat in `base.json`.
