@@ -5,12 +5,14 @@ import { pick } from '@/lib/utils/utils'
 import { Header } from '@/app/[locale]/components/Header'
 import { Footer } from '@/app/[locale]/components/Footer'
 import React from 'react'
+import { IncidentScrollToTopOnRoute } from '@/app/[locale]/incident/components/IncidentScrollToTopOnRoute'
 
 export default function IncidentLayout({ children }: Layout) {
   const messages = useMessages()
 
   return (
     <>
+      <IncidentScrollToTopOnRoute />
       <PageLayout>
         <NextIntlClientProvider
           messages={pick(messages, 'current_organisation')}
