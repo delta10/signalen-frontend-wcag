@@ -21,6 +21,9 @@ tmp/
 .DS_Store
 *.pem
 
+# generated org theme CSS (npm run tokens:build:org)
+public/assets/organizations/
+
 # debug
 npm-debug.log*
 yarn-debug.log*

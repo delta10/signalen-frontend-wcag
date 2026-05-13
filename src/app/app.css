@@ -216,3 +216,18 @@ h2.utrecht-heading-2 {
     --utrecht-heading-1-font-size: var(--basis-text-font-size-2xl);
   }
 }
+
+/* Utrecht focus ring → organization basis.focus tokens (avoids global *:focus). */
+.organization-theme {
+  --basis-focus-background-color: var(--basis-focus-background-color);
+  --utrecht-focus-background-color: var(--basis-focus-background-color);
+  --utrecht-focus-outline-color: var(--basis-focus-outline-color);
+  --utrecht-focus-outline-offset: var(--basis-focus-outline-offset);
+  --utrecht-focus-outline-style: var(--basis-focus-outline-style);
+  --utrecht-focus-outline-width: var(--basis-focus-outline-width);
+  --utrecht-focus-inverse-outline-color: var(--basis-focus-inverse-outline-color);
+}
+
+:where(.organization-theme *):focus-visible {
+  outline-color: var(--basis-focus-outline-color);
+}
