@@ -32,10 +32,6 @@
   --utrecht-paragraph-color: currentColor;
 }
 
-.utrecht-logo__caption {
-  display: none;
-}
-
 .utrecht-link.utrecht-link-list__link {
   display: flex;
   align-items: center;
@@ -97,15 +93,6 @@ padding: var(--basis-space-text-md) !important;
   padding-block-start: 0;
   padding-inline-end: 0;
   padding-inline-start: 0;
-}
-
-.utrecht-logo.mobile-header {
-  display: flex;
-  align-items: center;
-  max-block-size: 192px;
-  max-inline-size: 70px;
-  min-block-size: 50px;
-  min-inline-size: 70px;
 }
 
 .utrecht-button-link.mobile {

@@ -25,7 +25,6 @@ export {
   HeadingGroup,
   Link,
   Image,
-  Logo,
   Paragraph,
   PreHeading,
   Icon,

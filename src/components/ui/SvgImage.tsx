@@ -8,7 +8,7 @@ export interface SvgImageProps {
   alt: string
 }
 
-export const SvgImage = ({ src, width, height }: SvgImageProps) => {
+export const SvgImage = ({ src, width, height, alt }: SvgImageProps) => {
   useEffect(() => {
     const loadSvgImageElement = async () => {
       // Do not import web component during server side rendering, as HTMLElement is not available
@@ -23,5 +23,13 @@ export const SvgImage = ({ src, width, height }: SvgImageProps) => {
     loadSvgImageElement()
   }, [])
 
-  return <svg-image src={src} width={width} height={height} />
+  return (
+    <svg-image
+      src={src}
+      width={width}
+      height={height}
+      role="img"
+      aria-label={alt}
+    />
+  )
 }

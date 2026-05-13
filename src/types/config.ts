@@ -46,8 +46,9 @@ export type AppConfig = {
       logo: {
         alt: string
         url: string
+        width?: number
+        height?: number
         dark_mode_url?: string
-        caption: string
       }
     }
     contact: {

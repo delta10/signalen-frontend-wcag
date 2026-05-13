@@ -1,13 +1,12 @@
 'use client'
 
 import { LanguageSwitch } from '@/app/[locale]/components/LanguageSwitch'
-import { Heading, Link, Logo, PageHeader } from '@/components/index'
+import { Heading, Link, PageHeader } from '@/components/index'
 import { useConfig } from '@/contexts/ConfigContext'
 import { useDarkMode } from '@/hooks/useDarkMode'
 import { useTranslations } from 'next-intl'
 import { NextSvgImage } from '@/components/ui/NextSvgImage'
 import { useMediaQuery } from 'usehooks-ts'
-import { useEffect, useState } from 'react'
 import { clsx } from 'clsx'
 import { ButtonLink } from '@/components'
 
@@ -20,12 +19,9 @@ const IncidentMapHeader = () => {
   const { isDarkMode } = useDarkMode()
   const t = useTranslations('current_organisation')
   const tIncidentMap = useTranslations('incident_map')
-  const isMobile = useMediaQuery('only screen and (max-width : 768px)')
-  const [hasMounted, setHasMounted] = useState(false)
-
-  useEffect(() => {
-    setHasMounted(true)
-  }, [])
+  const isMobile = useMediaQuery('only screen and (max-width : 768px)', {
+    initializeWithValue: false,
+  })
 
   const homepageHref = config?.base.links.home
   const logo =
@@ -40,18 +36,20 @@ const IncidentMapHeader = () => {
       })
 
   const logoElement = logo ? (
-    <Logo
-      className={isMobile ? 'mobile-header' : ''}
-      caption={config ? config.base.header.logo.caption : ''}
+    <span
+      className={clsx(
+        'inline-flex max-w-full items-center overflow-hidden',
+        isMobile && 'max-h-[80px]'
+      )}
     >
-      <NextSvgImage src={`/assets/${logo}`} alt={logoAltText} priority={true} />
-    </Logo>
+      <NextSvgImage
+        src={`/assets/${logo}`}
+        alt={logoAltText}
+        width={config?.base.header.logo.width}
+        priority={true}
+      />
+    </span>
   ) : null
-
-  if (!hasMounted) {
-    // Prevents rendering anything until on client, this causes hydration errors when openening the page on mobile screens.
-    return null
-  }
 
   const createIncidentHref = stepToPath[FormStep.STEP_1_DESCRIPTION]
   const createIncidentButton = (
@@ -89,7 +87,9 @@ const IncidentMapHeader = () => {
             ) : (
               logoElement
             )}
-            <Heading level={1}>{tIncidentMap('heading')}</Heading>
+            <Heading className={isMobile ? 'sr-only' : ''} level={1}>
+              {tIncidentMap('heading')}
+            </Heading>
           </div>
 
           {config && config.base.supportedLanguages.length > 1 && (
