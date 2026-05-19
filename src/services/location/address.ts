@@ -24,7 +24,9 @@ export const getSuggestedAddresses = async (
 
   try {
     const field = scope === 'provincie' ? 'provincienaam' : 'gemeentenaam'
-    const path = `/search/v3_1/suggest?fq=${field}:(${organization})&fl=id,weergavenaam,straatnaam,huis_nlt,postcode,woonplaatsnaam,centroide_ll&fq=bron:BAG&fq=type:adres&q=${searchQuery}`
+    const encodedOrganization = encodeURIComponent(organization)
+    const encodedSearchQuery = encodeURIComponent(searchQuery)
+    const path = `/search/v3_1/suggest?fq=${field}:(${encodedOrganization})&fl=id,weergavenaam,straatnaam,huis_nlt,postcode,woonplaatsnaam,centroide_ll&fq=bron:BAG&fq=type:adres&q=${encodedSearchQuery}`
     const response: AxiosResponse<AddressSuggestResponse> =
       await axios.get(path)
 
