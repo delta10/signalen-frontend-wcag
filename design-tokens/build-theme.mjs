@@ -25,24 +25,16 @@ const getOrganizationFromConfig = () => {
 const organizationFromArg = orgFlagIndex >= 0 ? args[orgFlagIndex + 1] : null
 const organization = organizationFromArg ?? getOrganizationFromConfig()
 
-// Combines shared overrides with organization-specific updates per theme layer.
-const mergeUpdateLayers = (sharedUpdates, organizationUpdates) => ({
-  light: {
-    ...(sharedUpdates.light ?? {}),
-    ...organizationUpdates.light,
-  },
-  dark: {
-    ...(sharedUpdates.dark ?? {}),
-    ...(organizationUpdates.dark ?? {}),
-  },
-})
+const isSafeOrganizationName =
+  typeof organization === 'string' && /^[a-z0-9-]+$/i.test(organization)
 
-if (!organization || organization.startsWith('--')) {
+if (!isSafeOrganizationName || organization.startsWith('--')) {
   throw new Error(
     'Gebruik: npm run tokens:build:org -- <organisatie> of zet config.base.theme (fallback: config.base.municipality) in config.json'
   )
 }
 
+const organizationsDir = path.resolve('design-tokens/organizations')
 const baseTokensFile = path.resolve('design-tokens/base.json')
 if (!fs.existsSync(baseTokensFile)) {
   throw new Error(`Basis tokenbestand niet gevonden: ${baseTokensFile}`)
@@ -61,8 +53,21 @@ if (!fs.existsSync(sharedOverridesFile)) {
 const sharedOverridesRaw = fs.readFileSync(sharedOverridesFile, 'utf8')
 const sharedOverrides = JSON.parse(sharedOverridesRaw)
 
-const organizationTokensFile = path.resolve(
-  `design-tokens/organizations/${organization}.json`
+// Combines shared overrides with organization-specific updates per theme layer.
+const mergeUpdateLayers = (sharedUpdates, organizationUpdates) => ({
+  light: {
+    ...(sharedUpdates.light ?? {}),
+    ...organizationUpdates.light,
+  },
+  dark: {
+    ...(sharedUpdates.dark ?? {}),
+    ...(organizationUpdates.dark ?? {}),
+  },
+})
+
+const organizationTokensFile = path.join(
+  organizationsDir,
+  `${organization}.json`
 )
 if (!fs.existsSync(organizationTokensFile)) {
   throw new Error(
@@ -77,16 +82,12 @@ const tokenUpdates = mergeUpdateLayers(sharedOverrides, organizationUpdates)
 const { lightTokens, darkTokens } = applyTokenUpdates(baseTokens, tokenUpdates)
 const tempDir = path.resolve('tmp')
 fs.mkdirSync(tempDir, { recursive: true })
-const lightTokensFile = path.resolve(
-  tempDir,
-  `${organization}.light.tokens.json`
-)
-const darkTokensFile = path.resolve(tempDir, `${organization}.dark.tokens.json`)
+const lightTokensFile = path.join(tempDir, `${organization}.light.tokens.json`)
+const darkTokensFile = path.join(tempDir, `${organization}.dark.tokens.json`)
 fs.writeFileSync(lightTokensFile, `${JSON.stringify(lightTokens, null, 2)}\n`)
 fs.writeFileSync(darkTokensFile, `${JSON.stringify(darkTokens, null, 2)}\n`)
-const organizationBuildPath = path.resolve(
-  `public/assets/organizations/${organization}/`
-)
+const organizationsOutputDir = path.resolve('public/assets/organizations')
+const organizationBuildPath = path.join(organizationsOutputDir, organization)
 fs.rmSync(organizationBuildPath, { recursive: true, force: true })
 
 const lightConfig = createConfig({

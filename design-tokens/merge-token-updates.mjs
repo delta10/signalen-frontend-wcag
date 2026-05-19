@@ -15,7 +15,8 @@ const hasByDotPath = (target, dotPath) => {
   let node = target
 
   for (const segment of pathSegments) {
-    if (!isObject(node) || !(segment in node)) return false
+    if (!isObject(node) || !Object.prototype.hasOwnProperty.call(node, segment))
+      return false
     node = node[segment]
   }
 
@@ -28,14 +29,17 @@ const setByDotPath = (target, dotPath, value) => {
 
   for (let index = 0; index < pathSegments.length - 1; index += 1) {
     const segment = pathSegments[index]
-    if (!isObject(node) || !(segment in node)) {
+    if (
+      !isObject(node) ||
+      !Object.prototype.hasOwnProperty.call(node, segment)
+    ) {
       throw new Error(`Cannot set token update for unknown path "${dotPath}".`)
     }
     node = node[segment]
   }
 
   const leafKey = pathSegments[pathSegments.length - 1]
-  if (!isObject(node) || !(leafKey in node)) {
+  if (!isObject(node) || !Object.prototype.hasOwnProperty.call(node, leafKey)) {
     throw new Error(`Cannot set token update for unknown path "${dotPath}".`)
   }
 
