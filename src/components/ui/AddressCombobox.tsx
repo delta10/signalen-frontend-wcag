@@ -64,26 +64,35 @@ export const AddressCombobox = ({
 
     const getAddressOptions = async () => {
       if (query.length >= 1) {
+        if (!organization) {
+          setAddressOptions([])
+          return
+        }
         setLoading(true)
-        const apiCall = await getSuggestedAddresses(
-          normalizedQuery,
-          scope,
-          organization,
-          config?.pdokUrlApi
-        )
+        try {
+          const apiCall = await getSuggestedAddresses(
+            normalizedQuery,
+            scope,
+            organization,
+            config?.pdokUrlApi
+          )
 
-        const options = apiCall.response.docs.map((item) => ({
-          coordinates: parsePoint(item.centroide_ll),
-          id: item.id,
-          postcode: item.postcode,
-          huisnummer: item.huis_nlt,
-          woonplaats: item.woonplaatsnaam,
-          openbare_ruimte: item.straatnaam,
-          weergave_naam: item.weergavenaam,
-        }))
+          const options = apiCall.response.docs.map((item) => ({
+            coordinates: parsePoint(item.centroide_ll),
+            id: item.id,
+            postcode: item.postcode,
+            huisnummer: item.huis_nlt,
+            woonplaats: item.woonplaatsnaam,
+            openbare_ruimte: item.straatnaam,
+            weergave_naam: item.weergavenaam,
+          }))
 
-        setAddressOptions(options)
-        setLoading(false)
+          setAddressOptions(options)
+        } catch {
+          setAddressOptions([])
+        } finally {
+          setLoading(false)
+        }
         return
       }
 
