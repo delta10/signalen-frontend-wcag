@@ -53,6 +53,7 @@
     "axios": "1.13.2",
     "axios-retry": "4.5.0",
     "class-variance-authority": "0.7.1",
+    "dompurify": "3.4.5",
     "form-data": "4.0.5",
     "immer": "10.1.1",
     "maplibre-gl": "4.7.1",
