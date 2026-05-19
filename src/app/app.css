@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 /* Product-specific styles */
 .utrecht-page-layout {
   min-block-size: 100svh;
@@ -48,11 +47,11 @@
 }
 
 .utrecht-accordion.mobile
-> .utrecht-accordion__section
-> .utrecht-accordion__header
-> button {
-max-inline-size: 100%;
-padding: var(--basis-space-text-md) !important;
+  > .utrecht-accordion__section
+  > .utrecht-accordion__header
+  > button {
+  max-inline-size: 100%;
+  padding: var(--basis-space-text-md) !important;
 }
 
 .utrecht-button.mobile {
@@ -141,7 +140,10 @@ h2.utrecht-heading-2 {
     --utrecht-focus-background-color,
     var(--basis-focus-background-color)
   );
-  --utrecht-link-focus-color: var(--utrecht-focus-color, var(--basis-focus-color));
+  --utrecht-link-focus-color: var(
+    --utrecht-focus-color,
+    var(--basis-focus-color)
+  );
 }
 
 .utrecht-radio-button:focus {
@@ -206,13 +208,14 @@ h2.utrecht-heading-2 {
 
 /* Utrecht focus ring → organization basis.focus tokens (avoids global *:focus). */
 .organization-theme {
-  --basis-focus-background-color: var(--basis-focus-background-color);
   --utrecht-focus-background-color: var(--basis-focus-background-color);
   --utrecht-focus-outline-color: var(--basis-focus-outline-color);
   --utrecht-focus-outline-offset: var(--basis-focus-outline-offset);
   --utrecht-focus-outline-style: var(--basis-focus-outline-style);
   --utrecht-focus-outline-width: var(--basis-focus-outline-width);
-  --utrecht-focus-inverse-outline-color: var(--basis-focus-inverse-outline-color);
+  --utrecht-focus-inverse-outline-color: var(
+    --basis-focus-inverse-outline-color
+  );
 }
 
 :where(.organization-theme *):focus-visible {
