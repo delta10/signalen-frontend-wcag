@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import type { ElementType } from 'react'
 
 export interface SvgImageProps {
   src: string
@@ -7,6 +8,8 @@ export interface SvgImageProps {
   priority?: boolean
   alt: string
 }
+
+const SvgImageTag = 'svg-image' as ElementType
 
 export const SvgImage = ({ src, width, height, alt }: SvgImageProps) => {
   useEffect(() => {
@@ -24,7 +27,7 @@ export const SvgImage = ({ src, width, height, alt }: SvgImageProps) => {
   }, [])
 
   return (
-    <svg-image
+    <SvgImageTag
       src={src}
       width={width}
       height={height}

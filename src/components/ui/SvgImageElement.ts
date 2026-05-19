@@ -1,5 +1,3 @@
-import type { HTMLAttributes } from 'react'
-
 const css = `
 :host {
   display: contents;
@@ -24,7 +22,7 @@ let stylesheet: CSSStyleSheet
 
 const initStylesheet = () => {
   if (stylesheet) {
-    stylesheet
+    return
   } else if (typeof CSSStyleSheet !== 'undefined') {
     stylesheet = new CSSStyleSheet()
     stylesheet.replace(css)
@@ -38,53 +36,103 @@ export class SvgImageElement extends HTMLElement {
       customElements.define(SvgImageElement.localName, SvgImageElement)
     }
   }
-  static observedAttributes = ['src']
-  connectedCallback() {
-    const src = this.getAttribute('src')
-    const width = this.getAttribute('width')
-    const height = this.getAttribute('height')
-    const shadow = this.attachShadow({ mode: 'closed' })
-    const span = this.ownerDocument.createElement('span')
-    shadow.appendChild(span)
+  static observedAttributes = ['src', 'role', 'aria-label', 'width', 'height']
 
-    initStylesheet()
-    if (stylesheet) {
-      shadow.adoptedStyleSheets = [stylesheet]
+  #shadow?: ShadowRoot
+  #wrapper?: HTMLSpanElement
+
+  connectedCallback() {
+    if (!this.#shadow) {
+      this.#shadow = this.attachShadow({ mode: 'closed' })
+      this.#wrapper = this.ownerDocument.createElement('span')
+      this.#shadow.appendChild(this.#wrapper)
+
+      initStylesheet()
+      if (stylesheet) {
+        this.#shadow.adoptedStyleSheets = [stylesheet]
+      }
     }
 
+    this.#updateDimensions()
+    this.#updateAccessibility()
+    void this.#updateSrc()
+  }
+
+  attributeChangedCallback(name: string) {
+    if (!this.isConnected || !this.#wrapper) {
+      return
+    }
+
+    switch (name) {
+      case 'src':
+        void this.#updateSrc()
+        break
+      case 'role':
+      case 'aria-label':
+        this.#updateAccessibility()
+        break
+      case 'width':
+      case 'height':
+        this.#updateDimensions()
+        break
+    }
+  }
+
+  #updateDimensions() {
+    const width = this.getAttribute('width')
+    const height = this.getAttribute('height')
+
     if (width) {
-      this.style.setProperty(
-        '--svg-image-width',
-        this.getAttribute('width') + 'px'
-      )
+      this.style.setProperty('--svg-image-width', `${width}px`)
+    } else {
+      this.style.removeProperty('--svg-image-width')
     }
 
     if (height) {
-      this.style.setProperty(
-        '--svg-image-height',
-        this.getAttribute('height') + 'px'
-      )
-    }
-
-    if (typeof src === 'string') {
-      const init = async () => {
-        const response = await fetch(src)
-        const data = await response.text()
-        span.innerHTML = data
-      }
-      init()
+      this.style.setProperty('--svg-image-height', `${height}px`)
+    } else {
+      this.style.removeProperty('--svg-image-height')
     }
   }
-}
 
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      'svg-image': HTMLAttributes<HTMLElement> & {
-        src: string
-        width?: number | string
-        height?: number | string
-      }
+  #updateAccessibility() {
+    const wrapper = this.#wrapper
+    if (!wrapper) {
+      return
     }
+
+    const role = this.getAttribute('role') ?? 'img'
+    const ariaLabel = this.getAttribute('aria-label')
+
+    wrapper.setAttribute('role', role)
+
+    if (ariaLabel) {
+      wrapper.setAttribute('aria-label', ariaLabel)
+    } else {
+      wrapper.removeAttribute('aria-label')
+    }
+  }
+
+  async #updateSrc() {
+    const wrapper = this.#wrapper
+    if (!wrapper) {
+      return
+    }
+
+    const src = this.getAttribute('src')
+    if (typeof src !== 'string') {
+      wrapper.innerHTML = ''
+      return
+    }
+
+    const response = await fetch(src)
+    const data = await response.text()
+
+    if (this.getAttribute('src') !== src) {
+      return
+    }
+
+    wrapper.innerHTML = data
+    this.#updateAccessibility()
   }
 }
