@@ -6,7 +6,7 @@
     "clean": "rimraf .next/ tmp/",
     "dev": "concurrently -k -n app,tokens \"npm:dev:next\" \"npm:tokens:watch:org\"",
     "dev:next": "next dev",
-    "build": "next build",
+    "build": "npm run tokens:build:org && next build",
     "install-test-browsers": "playwright install --with-deps",
     "start": "next start",
     "start:test-e2e": "node .next/standalone/server.js",
