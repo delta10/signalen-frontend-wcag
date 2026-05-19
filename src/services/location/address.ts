@@ -1,7 +1,10 @@
 import { axiosInstance } from '@/services/client/api-client'
 import { AxiosResponse } from 'axios'
 import { AddressCoordinateResponse, AddressSuggestResponse } from '@/types/pdok'
-import type { PdokAddressSuggestScope } from '@/types/config'
+import {
+  PdokAddressSuggestScope,
+  pdokAddressSuggestFields,
+} from '@/types/config'
 import { FormStoreState } from '@/types/stores'
 
 // Fetches suggested addresses from PDOK API based on search query and municipality or province
@@ -23,7 +26,7 @@ export const getSuggestedAddresses = async (
   const axios = axiosInstance(pdokBaseUrl)
 
   try {
-    const field = scope === 'provincie' ? 'provincienaam' : 'gemeentenaam'
+    const field = pdokAddressSuggestFields[scope]
     const encodedOrganization = encodeURIComponent(organization)
     const encodedSearchQuery = encodeURIComponent(searchQuery)
     const path = `/search/v3_1/suggest?fq=${field}:(${encodedOrganization})&fl=id,weergavenaam,straatnaam,huis_nlt,postcode,woonplaatsnaam,centroide_ll&fq=bron:BAG&fq=type:adres&q=${encodedSearchQuery}`
@@ -31,7 +34,7 @@ export const getSuggestedAddresses = async (
       await axios.get(path)
 
     return response.data
-  } catch (error) {
+  } catch {
     throw new Error('Could not fetch suggested addresses. Please try again.')
   }
 }
@@ -62,7 +65,7 @@ export const getNearestAddressByCoordinate = async (
     return response.data.response.docs.sort(
       (docA, docB) => docA.afstand - docB.afstand
     )[0]
-  } catch (error) {
+  } catch {
     return null
   }
 }

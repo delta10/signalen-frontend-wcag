@@ -50,8 +50,8 @@ Logo settings are configured at `base.header.logo`.
 
 ## Address Search
 
-- `base.pdok_address_suggest_scope`: Optional PDOK filter scope. Use `gemeente` for municipality-based address suggestions or `provincie` for province-based address suggestions. Defaults to `gemeente`.
-- `base.pdok_address_suggest_organization`: Optional exact organisation value for the selected PDOK scope. When omitted, the application falls back to `base.municipality`, then `base.municipality_display_name`.
+- `base.pdok_address_suggest.scope`: PDOK filter scope. Use `gemeente` for municipality-based address suggestions or `provincie` for province-based address suggestions.
+- `base.pdok_address_suggest.organization`: Exact PDOK filter value for the selected scope.
 
 ## Map Defaults
 

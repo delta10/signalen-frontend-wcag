@@ -14,8 +14,10 @@
     "fonts": {
       "googleStylesheetUrl": "https://fonts.googleapis.com/css2?family=Jost:wght@700&display=swap"
     },
-    "pdok_address_suggest_scope": "provincie",
-    "pdok_address_suggest_organization": "Noord-Brabant",
+    "pdok_address_suggest": {
+      "scope": "provincie",
+      "organization": "Noord-Brabant"
+    },
     "municipality_display_name": "Noord-Brabant",
     "assets_url": "https://meldingen-acpt.brabant.delta10.cloud/",
     "supportedLanguages": [
