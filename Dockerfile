@@ -25,20 +25,33 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
-RUN addgroup --system --gid 1001 nodejs
+RUN addgroup --system --gid 1001 nextjs
 RUN adduser --system --uid 1001 nextjs
 
+# Copy Next application
 COPY --from=builder /app/public ./public
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nextjs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nextjs /app/.next/static ./.next/static
+
+# Copy design-tokens to have the ability to compile tokens in run-time
+COPY --from=builder --chown=nextjs:nextjs /app/design-tokens ./design-tokens
+RUN (cd design-tokens && npm ci --legacy-peer-deps)
+
+# Allow write access to these folder in run-time to make sure tokens can be compiled and stored in the container
+RUN mkdir /app/tmp && \
+    mkdir /app/public/assets/organizations && \
+    chown nextjs:nextjs /app/tmp && \
+    chown nextjs:nextjs /app/public/assets/organizations
 
 USER nextjs
-
 EXPOSE 3000
-
 ENV PORT=3000
+
+# Scriptje maken dat design tokens compileert en dan de server start
+# Compileren gaat met: node ./design-tokens/build-theme.mjs --org
+# TODO: checken hoe logo nu gemount wordt?
 
 CMD ["node", "server.js"]
