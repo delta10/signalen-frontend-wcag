@@ -34,6 +34,12 @@ Customize the `.env` configuration file for yourself:
 - `NEXT_PUBLIC_MAPTILER_MAP`: go the to [Maps page for MapTiler Cloud](https://cloud.maptiler.com/maps/) and either pick an existing map or create a new map. Copy the first part of the "Use vector style" URL, everything before `/style.json?key=`. Assign that first part of the URL to `NEXT_PUBLIC_MAPTILER_MAP`.
 - Users can specify a different map theme for dark mode, which is triggered when the browser's preferred style theme is set to dark. To implement this, set the `NEXT_PUBLIC_MAPTILER_MAP_DARK_MODE` environment variable to the desired dark mode theme.
 
+Generate the organisation-specific CSS:
+
+```sh
+npm run tokens:build:org
+```
+
 Then start the Next.js development server:
 
 ```sh
