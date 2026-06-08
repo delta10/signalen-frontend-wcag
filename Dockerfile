@@ -40,18 +40,19 @@ COPY --from=builder --chown=nextjs:nextjs /app/.next/static ./.next/static
 COPY --from=builder --chown=nextjs:nextjs /app/design-tokens ./design-tokens
 RUN (cd design-tokens && npm ci --legacy-peer-deps)
 
-# Allow write access to these folder in run-time to make sure tokens can be compiled and stored in the container
+# Allow write access to these folders in run-time to make sure tokens can be compiled and stored in the container
 RUN mkdir /app/tmp && \
     mkdir /app/public/assets/organizations && \
     chown nextjs:nextjs /app/tmp && \
     chown nextjs:nextjs /app/public/assets/organizations
 
+# Copy the start script
+COPY ./start.sh ./start.sh
+
 USER nextjs
 EXPOSE 3000
 ENV PORT=3000
 
-# Scriptje maken dat design tokens compileert en dan de server start
-# Compileren gaat met: node ./design-tokens/build-theme.mjs --org
 # TODO: checken hoe logo nu gemount wordt?
 
-CMD ["node", "server.js"]
+CMD ["sh", "start.sh"]
