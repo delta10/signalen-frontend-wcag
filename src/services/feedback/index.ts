@@ -1,5 +1,5 @@
 import { ApiError } from '@/services/client'
-import { signalsClient } from '@/services/client/api-client'
+import { createSignalsClient } from '@/services/client/api-client'
 import type { Feedback, StandardAnswer } from '@/services/client'
 
 export enum KtoAnswer {
@@ -24,9 +24,11 @@ export type KtoOption = {
 }
 
 export async function getFeedbackStatus(
+  baseUrl: string,
   token: string
 ): Promise<FeedbackStatus> {
   try {
+    const signalsClient = createSignalsClient(baseUrl)
     const data = await signalsClient.v1.v1PublicFeedbackFormsRetrieve(token)
     return { status: 'ok', data }
   } catch (error) {
@@ -47,8 +49,10 @@ export async function getFeedbackStatus(
 }
 
 export async function getFeedbackOptions(
+  baseUrl: string,
   isSatisfied: boolean
 ): Promise<KtoOption[]> {
+  const signalsClient = createSignalsClient(baseUrl)
   const response = await signalsClient.v1.v1PublicFeedbackStandardAnswersList(
     1,
     100
@@ -67,6 +71,7 @@ export async function getFeedbackOptions(
 }
 
 export async function submitFeedback(
+  baseUrl: string,
   token: string,
   signalId: string,
   feedback: {
@@ -76,6 +81,7 @@ export async function submitFeedback(
     allows_contact?: boolean
   }
 ): Promise<Feedback> {
+  const signalsClient = createSignalsClient(baseUrl)
   return signalsClient.v1.v1PublicFeedbackFormsUpdate(token, {
     ...feedback,
     signal_id: signalId,

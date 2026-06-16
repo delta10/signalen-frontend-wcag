@@ -45,12 +45,15 @@ export const KtoContainer = ({ answer, id }: KtoContainerProps) => {
 
     async function load() {
       try {
-        const status = await getFeedbackStatus(id)
+        const status = await getFeedbackStatus(config.baseUrlApi, id)
 
         if (cancelled) return
 
         if (status.status === 'ok') {
-          const options = await getFeedbackOptions(isSatisfied)
+          const options = await getFeedbackOptions(
+            config.baseUrlApi,
+            isSatisfied
+          )
           if (cancelled) return
           setState({
             status: 'form',
@@ -96,7 +99,7 @@ export const KtoContainer = ({ answer, id }: KtoContainerProps) => {
             const fd = new FormData()
             fd.append('signal_id', state.signalId)
             fd.append('file', file)
-            return postAttachments(state.signalId, fd, config.baseUrlApi)
+            return postAttachments(config.baseUrlApi, state.signalId, fd)
           })
         )
       } catch (e) {
@@ -109,7 +112,7 @@ export const KtoContainer = ({ answer, id }: KtoContainerProps) => {
     }
 
     try {
-      await submitFeedback(id, state.signalId, {
+      await submitFeedback(config.baseUrlApi, id, state.signalId, {
         is_satisfied: isSatisfied,
         text_list: formData.text_list,
         text_extra: formData.text_extra || null,

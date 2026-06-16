@@ -4,7 +4,7 @@ import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentF
 import { useLocale, useTranslations } from 'next-intl'
 import { Divider } from '@/components/ui/Divider'
 import { ReactNode, useEffect, useState } from 'react'
-import { signalsClient } from '@/services/client/api-client'
+import { createSignalsClient } from '@/services/client/api-client'
 import { stepToPath, usePathname, useRouter } from '@/routing/navigation'
 import { postAttachments } from '@/services/attachment/attachments'
 import { useFormStore } from '@/store/form_store'
@@ -66,9 +66,13 @@ const IncidentSummaryForm = () => {
   const handleSignalSubmit = async () => {
     setError(false)
     setLoading(true)
+    const signalsClient = createSignalsClient(config.baseUrlApi)
 
     const getSubCategoryUrl = (mainCategory: string, subCategory: string) =>
-      `${config?.baseUrlApi}signals/v1/public/terms/categories/${mainCategory}/sub_categories/${subCategory}`
+      new URL(
+        `signals/v1/public/terms/categories/${mainCategory}/sub_categories/${subCategory}`,
+        config.baseUrlApi
+      ).toString()
 
     try {
       const res = await signalsClient.v1.v1PublicSignalsCreate({
@@ -115,7 +119,7 @@ const IncidentSummaryForm = () => {
                 const formData = new FormData()
                 formData.append('signal_id', signalId)
                 formData.append('file', attachment)
-                return postAttachments(signalId, formData, config?.baseUrlApi)
+                return postAttachments(config.baseUrlApi, signalId, formData)
               })
             )
           } catch (e) {

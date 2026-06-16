@@ -41,8 +41,8 @@ COPY --from=builder --chown=nextjs:nextjs /app/design-tokens ./design-tokens
 RUN (cd design-tokens && npm ci --legacy-peer-deps)
 
 # Allow write access to these folders in run-time to make sure tokens can be compiled and stored in the container
-RUN mkdir /app/tmp && \
-    mkdir /app/public/assets/organizations && \
+RUN mkdir -p /app/tmp && \
+    mkdir -p /app/public/assets/organizations && \
     chown nextjs:nextjs /app/tmp && \
     chown nextjs:nextjs /app/public/assets/organizations
 

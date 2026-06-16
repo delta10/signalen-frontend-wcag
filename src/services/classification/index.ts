@@ -5,8 +5,8 @@ const SUB_SLUG_REGEX =
   /\/terms\/categories\/[a-z0-9\-]+\/sub_categories\/([a-z0-9\-]+)/
 
 export const getCategoryForDescription = async (
-  description: string,
-  baseUrl: string | undefined
+  baseUrl: string | undefined,
+  description: string
 ) => {
   if (!baseUrl) {
     console.error('Base URL is required to fetch category prediction.')

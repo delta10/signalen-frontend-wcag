@@ -1,11 +1,13 @@
-import { signalsClient } from '@/services/client/api-client'
+import { createSignalsClient } from '@/services/client/api-client'
 import { PublicQuestion } from '@/types/form'
 
 export const fetchAdditionalQuestions = async (
+  baseUrl: string,
   main: string,
   sub: string
 ): Promise<PublicQuestion[]> => {
   try {
+    const signalsClient = createSignalsClient(baseUrl)
     const data = await signalsClient.v1.v1PublicQuestionsList(main, 1, 100, sub)
 
     const questions = data.results as unknown as PublicQuestion[]

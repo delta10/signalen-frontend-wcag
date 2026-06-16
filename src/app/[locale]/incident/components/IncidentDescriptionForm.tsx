@@ -85,8 +85,8 @@ export const IncidentDescriptionForm = () => {
 
     async function fetchCategory() {
       const { main, sub } = await getCategoryForDescription(
-        debouncedDescription,
-        config?.baseUrlApi
+        config.baseUrlApi,
+        debouncedDescription
       )
 
       updateForm({

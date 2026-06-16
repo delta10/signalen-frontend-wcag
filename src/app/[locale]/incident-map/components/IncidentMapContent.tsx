@@ -31,7 +31,7 @@ import {
 import { useDarkMode } from '@/hooks/useDarkMode'
 import { useMediaQuery, useWindowSize } from 'usehooks-ts'
 import { Feature, FeatureCollection } from 'geojson'
-import { signalsClient } from '@/services/client/api-client'
+import { createSignalsClient } from '@/services/client/api-client'
 import NestedCategoryCheckboxList from '@/app/[locale]/incident-map/components/NestedCategoryCheckboxList'
 import { Category, ParentCategory } from '@/types/category'
 import { AddressCombobox } from '@/components/ui/AddressCombobox'
@@ -71,6 +71,10 @@ const IncidentMapContent = () => {
   const { width = 0 } = useWindowSize()
   const isMobile = useMediaQuery('only screen and (max-width : 768px)')
   const lastBboxRef = useRef<string | null>(null)
+  const signalsClient = useMemo(
+    () => createSignalsClient(config.baseUrlApi),
+    [config.baseUrlApi]
+  )
 
   const [viewState, setViewState] = useState<ViewState>({
     latitude: config.base.map.center[0],
@@ -155,7 +159,7 @@ const IncidentMapContent = () => {
     } catch (e) {
       console.error('Error fetching features:', e)
     }
-  }, [dialogMap, setFeatures])
+  }, [dialogMap, setFeatures, signalsClient])
 
   const debouncedSetNewFeatures = useCallback(
     debounce(() => {
@@ -230,7 +234,7 @@ const IncidentMapContent = () => {
     }
 
     getCategories()
-  }, [])
+  }, [signalsClient])
 
   const selectedFeature = useMemo(() => {
     if (!selectedFeatureId || !features) {

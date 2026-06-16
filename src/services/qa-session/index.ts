@@ -30,8 +30,8 @@ export type QaSessionStatus =
   | { status: 'filled_out' }
 
 export const getQaSession = async (
-  sessionId: string,
-  baseUrl: string
+  baseUrl: string,
+  sessionId: string
 ): Promise<QaSessionStatus> => {
   try {
     const axios = axiosInstance(baseUrl)
@@ -57,10 +57,10 @@ export const getQaSession = async (
 }
 
 export const postQaAnswer = async (
+  baseUrl: string,
   questionUuid: string,
   sessionId: string,
-  payload: string,
-  baseUrl: string
+  payload: string
 ): Promise<void> => {
   const axios = axiosInstance(baseUrl)
   await axios.post(`/signals/v1/public/qa/questions/${questionUuid}/answer`, {
@@ -70,8 +70,8 @@ export const postQaAnswer = async (
 }
 
 export const postQaSubmit = async (
-  sessionId: string,
-  baseUrl: string
+  baseUrl: string,
+  sessionId: string
 ): Promise<void> => {
   const axios = axiosInstance(baseUrl)
   await axios.post(`/signals/v1/public/qa/sessions/${sessionId}/submit/`)
