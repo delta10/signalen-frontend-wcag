@@ -4,7 +4,7 @@ import {
   isTemplateString,
   parseTemplateString,
 } from '@/lib/utils/parseTemplateString'
-import { useConfig } from '@/contexts/ConfigContext'
+import type { AppConfig } from '@/types/config'
 
 // Validates if the argument is a coordinate pair [longitude, latitude]
 // @param {unknown} arg - Input to validate
@@ -176,16 +176,20 @@ export const formatAddressToSignalenInput = (
 /**
  * Returns the appropriate MapTiler style URL based on the current theme.
  *
+ * @param config - App config containing the MapTiler settings.
  * @param isDarkMode - Boolean flag indicating if dark mode is active.
  * @returns A full MapTiler style URL with the appropriate theme and API key.
  */
-export const getMapStyleUrl = (isDarkMode: boolean): string => {
-  const config = useConfig()
-  const baseUrl = isDarkMode
-    ? config?.maptilerMapDarkMode
-    : config?.maptilerMap
-    
-  if (!config?.maptilerApiKey || (!config?.maptilerMap && !config?.maptilerMapDarkMode)) {
+export const getMapStyleUrl = (
+  config: AppConfig,
+  isDarkMode: boolean
+): string => {
+  const baseUrl = isDarkMode ? config?.maptilerMapDarkMode : config?.maptilerMap
+
+  if (
+    !config?.maptilerApiKey ||
+    (!config?.maptilerMap && !config?.maptilerMapDarkMode)
+  ) {
     throw new Error('Map configuration is missing required values')
   }
 

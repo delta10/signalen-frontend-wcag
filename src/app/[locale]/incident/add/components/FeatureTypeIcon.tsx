@@ -19,10 +19,7 @@ export const FeatureTypeIcon: React.FC<FeatureIconProps> = ({
     return (
       <Icon>
         <img
-          src={
-            config.base.assets_url +
-            '/assets/images/feature-selected-marker.svg'
-          }
+          src="/assets/images/feature-selected-marker.svg"
           alt="Selected marker"
         />
       </Icon>

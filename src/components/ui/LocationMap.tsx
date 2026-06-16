@@ -59,7 +59,7 @@ const LocationMap = () => {
       keyboard={false}
       onMove={(evt) => setViewState(evt.viewState)}
       style={{ width: '100%', height: 200 }}
-      mapStyle={getMapStyleUrl(isDarkMode)}
+      mapStyle={getMapStyleUrl(config, isDarkMode)}
       attributionControl={false}
       onLoad={() => {
         const mapCanvas = document.getElementsByClassName(

@@ -46,6 +46,7 @@ const IncidentMapHeader = () => {
         src={`/assets/${logo}`}
         alt={logoAltText}
         width={config?.base.header.logo.width}
+        height={config?.base.header.logo.height}
       />
     </span>
   ) : null
