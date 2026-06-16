@@ -383,7 +383,7 @@ function useMapDialog(
     })
   }
 
-  const mapStyle = getMapStyleUrl(isDarkMode)
+  const mapStyle = getMapStyleUrl(config, isDarkMode)
 
   return {
     dialogMap,

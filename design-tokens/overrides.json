@@ -1,0 +1,34 @@
+{
+  "light": {
+    "nl.button.padding-block-start": "{basis.space.block.xl}",
+    "nl.button.padding-block-end": "{basis.space.block.xl}",
+    "nl.button.padding-inline-start": "{basis.space.inline.3xl}",
+    "nl.button.padding-inline-end": "{basis.space.inline.3xl}",
+    "nl.button.subtle.background-color": "{basis.color.default.bg-subtle}",
+    "nl.button.subtle.color": "{basis.color.action-1.color-default}",
+    "nl.button.subtle.border-color": "{basis.color.action-1.color-default}",
+    "nl.button.subtle.hover.background-color": "{basis.color.default.bg-subtle}",
+    "nl.button.subtle.hover.color": "{basis.color.action-1.color-hover}",
+    "nl.button.subtle.hover.border-color": "{basis.color.action-1.color-hover}",
+    "utrecht.accordion.section.border-width": "0",
+    "utrecht.accordion.button.background-color": "{basis.color.default.bg-default}",
+    "utrecht.accordion.button.color": "{basis.heading.color}",
+    "utrecht.alert.column-gap": "{basis.space.column.md}",
+    "utrecht.textarea.max-inline-size": "100%",
+    "utrecht.page-header.content.padding-block-end": "{basis.space.inline.min.xl}",
+    "utrecht.page-header.content.padding-block-start": "{basis.space.inline.min.xl}",
+    "utrecht.page-header.content.padding-inline": "{basis.space.inline.min.xl}"
+  },
+  "dark": {
+    "nl.button.subtle.background-color": "{basis.color.default.bg-subtle}",
+    "nl.button.subtle.color": "{basis.color.action-1.color-default}",
+    "nl.button.subtle.border-color": "{basis.color.action-1.color-default}",
+    "nl.button.subtle.hover.background-color": "{basis.color.default.bg-subtle}",
+    "nl.button.subtle.hover.color": "{basis.color.action-1.color-hover}",
+    "nl.button.subtle.hover.border-color": "{basis.color.action-1.color-hover}",
+    "utrecht.accordion.button.background-color": "{basis.color.default.bg-document}",
+    "utrecht.accordion.button.hover.background-color": "{basis.color.default.bg-document}",
+    "utrecht.accordion.button.hover.color": "{basis.color.action-2.color-default}",
+    "nl.button.default.background-color": "{basis.color.default.bg-document}"
+  }
+}

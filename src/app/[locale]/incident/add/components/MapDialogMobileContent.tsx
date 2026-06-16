@@ -127,10 +127,11 @@ const MapDialogMobileContent = ({
             </Heading>
             <Dialog.Close asChild>
               <Button
-                className="utrecht-button--subtle map-icon-button !mr-0 !ml-auto"
+                className="map-icon-button !mr-0 !ml-auto"
                 iconOnly
                 iconStart={<IconX />}
                 label={t('map_close_button_label')}
+                purpose="subtle"
               />
             </Dialog.Close>
           </div>
@@ -269,6 +270,7 @@ const MapDialogMobileContent = ({
           <div className="map-location-group">
             {/*!text-lg !px-2 !py-2*/}
             <Button
+              purpose="secondary"
               onClick={() =>
                 setCurrentLocation(
                   config,
@@ -278,7 +280,7 @@ const MapDialogMobileContent = ({
                   t
                 )
               }
-              className="utrecht-button--subtle map-icon-button mobile"
+              className="map-icon-button mobile"
             >
               <IconCurrentLocation />
               {t('current_location')}
@@ -286,6 +288,7 @@ const MapDialogMobileContent = ({
           </div>
           <div className="map-fullscreen-group">
             <Button
+              purpose="subtle"
               onClick={() => setFullscreenMap(!fullscreenMap)}
               iconOnly
               iconStart={
@@ -300,14 +303,14 @@ const MapDialogMobileContent = ({
                   ? t('toggle_fullscreen_off')
                   : t('toggle_fullscreen_on')
               }
-              className="utrecht-button--subtle map-icon-button"
+              className="map-icon-button"
             />
           </div>
           {isAssetSelect && (
             <div className="map-list-group">
               <Button
                 onClick={() => toggleList()}
-                className="utrecht-button--subtle map-icon-button mobile"
+                className="map-icon-button mobile"
               >
                 {t('show_list', { name: objectDisplayName.plural })}
               </Button>
@@ -316,7 +319,7 @@ const MapDialogMobileContent = ({
           {isAssetSelect && (
             <div className="map-legend-group">
               <Button
-                className="utrecht-button--subtle map-icon-button mobile"
+                className="map-icon-button mobile"
                 purpose="secondary"
                 onClick={() => {
                   setOpenLegend(!openLegend)
@@ -330,14 +333,16 @@ const MapDialogMobileContent = ({
           {dialogMap && (
             <ButtonGroup direction="column" className="map-zoom-button-group">
               <Button
-                className="utrecht-button--subtle map-icon-button"
+                purpose="subtle"
+                className="map-icon-button"
                 onClick={() => dialogMap.zoomIn()}
                 iconOnly
                 iconStart={<IconPlus />}
                 label={t('map_zoom-in_button_label')}
               />
               <Button
-                className="utrecht-button--subtle map-icon-button"
+                purpose="subtle"
+                className="map-icon-button"
                 onClick={() => dialogMap.zoomOut()}
                 iconOnly
                 iconStart={<IconMinus />}
@@ -353,7 +358,7 @@ const MapDialogMobileContent = ({
           {showList && (
             <Button
               onClick={() => setShowList(false)}
-              className="mobile utrecht-button--subtle !pt-0 !pl-0 !justify-start !w-full !text-lg"
+              className="mobile !pt-0 !pl-0 !justify-start !w-full !text-lg"
             >
               <IconChevronLeft />
               {t('back_to_map')}

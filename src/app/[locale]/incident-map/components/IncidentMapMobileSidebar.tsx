@@ -83,13 +83,16 @@ const IncidentMapMobileSidebar = ({
             </Drawer.Close>
 
             {!selectedFeature && (
-              <Drawer.Description className="!text-base">
+              <>
+                <Drawer.Description className="sr-only">
+                  {tIncidentMap('description')}
+                </Drawer.Description>
                 <SpotlightSection type="info">
                   <Paragraph className="!text-lg">
                     {tIncidentMap('description')}
                   </Paragraph>
                 </SpotlightSection>
-              </Drawer.Description>
+              </>
             )}
 
             <div className="px-4 pb-20">

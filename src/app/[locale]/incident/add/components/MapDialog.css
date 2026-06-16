@@ -46,11 +46,6 @@
   max-inline-size: fit-content;
 }
 
-
-.map-icon-button.mobile > .utrecht-icon {
-  inset-block: 0 !important;
-}
-
 .map-close-button {
   position: absolute;
   top: 0.5em;

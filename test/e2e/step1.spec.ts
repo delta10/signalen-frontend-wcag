@@ -46,7 +46,7 @@ test.use({
   geolocation: { latitude: 51.6045656, longitude: 5.5342026 },
 })
 
-const websiteURL = 'http://localhost:3000/'
+const websiteURL = '/'
 
 interface MyTextConfig {
   name: string
@@ -76,8 +76,8 @@ parameters.slice(0, 1).forEach(async ({ name, testConfig, forcedColors }) => {
     test('has title', async ({ page }) => {
       await page.goto(websiteURL)
 
-      // Expect a title "to contain" a substring.
-      await expect(page).toHaveTitle(/Purmerend/i)
+      // Keep this assertion independent from the configured organization branding.
+      await expect(page).toHaveTitle(/Stap 1 van 4.*Beschrijf uw melding/i)
     })
 
     test('has heading', async ({ page }) => {

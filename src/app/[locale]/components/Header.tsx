@@ -1,11 +1,11 @@
 'use client'
 
 import { LanguageSwitch } from '@/app/[locale]/components/LanguageSwitch'
-import { Link, Logo, PageHeader } from '@/components/index'
+import { Link, PageHeader } from '@/components/index'
 import { useConfig } from '@/contexts/ConfigContext'
 import { useDarkMode } from '@/hooks/useDarkMode'
+import Image from 'next/image'
 import { useTranslations } from 'next-intl'
-import { NextSvgImage } from '@/components/ui/NextSvgImage'
 
 const Header = () => {
   const config = useConfig()
@@ -25,9 +25,14 @@ const Header = () => {
       })
 
   const logoElement = logo ? (
-    <Logo caption={config ? config.base.header.logo.caption : ''}>
-      <NextSvgImage src={`/assets/${logo}`} alt={logoAltText} priority={true} />
-    </Logo>
+    <span className="inline-flex max-h-[80px] max-w-full items-center overflow-hidden">
+      <Image
+        src={`/assets/${logo}`}
+        alt={logoAltText}
+        width={config?.base.header.logo.width}
+        height={config?.base.header.logo.height}
+      />
+    </span>
   ) : null
 
   return (

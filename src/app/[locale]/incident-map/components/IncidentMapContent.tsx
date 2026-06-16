@@ -387,7 +387,7 @@ const IncidentMapContent = () => {
             onClick={(e) => handleMapClick(e)}
             onMove={(evt) => setViewState(evt.viewState)}
             style={{ blockSize: '100%', inlineSize: '100%' }}
-            mapStyle={getMapStyleUrl(isDarkMode)}
+            mapStyle={getMapStyleUrl(config, isDarkMode)}
             scrollZoom={!(width !== 0 && width < 768)}
             attributionControl={false}
             maxBounds={
@@ -484,7 +484,7 @@ const IncidentMapContent = () => {
       )}
 
       {isMobile && (
-        <div className="flex items-center justify-center py-3 z-30 absolute bottom-0 w-full p-4 bg-base">
+        <div className="flex items-center justify-center py-3 z-30 absolute bottom-0 w-full p-4 bg-white dark:bg-[#161615]">
           {createIncidentButton}
         </div>
       )}
@@ -504,10 +504,7 @@ export const FeatureCategoryIcon = (
         {/* offset the selected feature marker by 30px to prevent shift in position and overlap with possible duplicates. */}
         <img
           className={!featureIconUrl ? 'mb-[30px]' : ''}
-          src={
-            config.base.assets_url +
-            '/assets/images/feature-selected-marker.svg'
-          }
+          src="/assets/images/feature-selected-marker.svg"
         />
       </Icon>
     )

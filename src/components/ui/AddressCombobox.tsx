@@ -37,7 +37,7 @@ export const AddressCombobox = ({
 }: AddressComboboxProps) => {
   const [query, setQuery] = useState('')
   const config = useConfig()
-  const [addressOptions, setAddressOptions] = useState<any[]>([])
+  const [addressOptions, setAddressOptions] = useState<Address[]>([])
   const [loading, setLoading] = useState<boolean>(false)
   const { formState, updateForm } = useFormStore()
   const t = useTranslations('describe_add.address')
@@ -53,30 +53,46 @@ export const AddressCombobox = ({
   const normalizeQuery = (str: string) => str.trim().replace(/\s+/, ' ')
 
   useEffect(() => {
-    const municipality = config ? config.base.municipality : ''
+    const { scope, organization } = config.base.pdok_address_suggest
     const normalizedQuery = normalizeQuery(query)
 
     const getAddressOptions = async () => {
       if (query.length >= 1) {
         setLoading(true)
-        const apiCall = await getSuggestedAddresses(
-          normalizedQuery,
-          municipality,
-          config?.pdokUrlApi
-        )
+        try {
+          const apiCall = await getSuggestedAddresses(
+            normalizedQuery,
+            scope,
+            organization,
+            config?.pdokUrlApi
+          )
 
-        const options = apiCall.response.docs.map((item) => ({
-          coordinates: parsePoint(item.centroide_ll),
-          id: item.id,
-          postcode: item.postcode,
-          huisnummer: item.huis_nlt,
-          woonplaats: item.woonplaatsnaam,
-          openbare_ruimte: item.straatnaam,
-          weergave_naam: item.weergavenaam,
-        }))
+          const options = apiCall.response.docs.flatMap((item): Address[] => {
+            const coordinates = parsePoint(item.centroide_ll)
 
-        setAddressOptions(options)
-        setLoading(false)
+            if (!coordinates) {
+              return []
+            }
+
+            return [
+              {
+                coordinates,
+                id: item.id,
+                postcode: item.postcode,
+                huisnummer: item.huis_nlt,
+                woonplaats: item.woonplaatsnaam,
+                openbare_ruimte: item.straatnaam,
+                weergave_naam: item.weergavenaam,
+              },
+            ]
+          })
+
+          setAddressOptions(options)
+        } catch {
+          setAddressOptions([])
+        } finally {
+          setLoading(false)
+        }
         return
       }
 
@@ -86,7 +102,7 @@ export const AddressCombobox = ({
     getAddressOptions()
   }, [config, query])
 
-  const onChangeAddress = (selectedAddress: Address) => {
+  const onChangeAddress = (selectedAddress: Address | null) => {
     if (selectedAddress) {
       updateForm({
         ...formState,
@@ -120,7 +136,7 @@ export const AddressCombobox = ({
       <ComboboxInput
         aria-label="Adres"
         as={Textbox}
-        displayValue={(address: any) => address?.weergave_naam}
+        displayValue={(address: Address | null) => address?.weergave_naam ?? ''}
         name="address"
         onChange={(event) => setQuery(event.target.value)}
         autoComplete="off"
@@ -143,7 +159,7 @@ export const AddressCombobox = ({
                 </ComboboxOption>
               ))
             ) : (
-              <ComboboxOption value="" as={ListboxOption} disabled>
+              <ComboboxOption value={null} as={ListboxOption} disabled>
                 <StatusText>{t('no_results')}</StatusText>
               </ComboboxOption>
             )}

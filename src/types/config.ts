@@ -1,3 +1,15 @@
+/** PDOK Locatieserver suggest: `gemeentenaam` vs `provincienaam` filter. */
+export enum PdokAddressSuggestScope {
+  Gemeente = 'gemeente',
+  Provincie = 'provincie',
+}
+
+export const pdokAddressSuggestFields: Record<PdokAddressSuggestScope, string> =
+  {
+    [PdokAddressSuggestScope.Gemeente]: 'gemeentenaam',
+    [PdokAddressSuggestScope.Provincie]: 'provincienaam',
+  }
+
 export type AppConfig = {
   maptilerApiKey: string
   maptilerMap: string
@@ -10,7 +22,23 @@ export type AppConfig = {
   baseUrlApi: string
   base: {
     municipality: string
+    /**
+     * Theme folder name under /public/assets/organizations/<theme>/theme.css
+     * Falls back to `municipality` when omitted.
+     */
+    theme?: string
     municipality_display_name: string
+    /**
+     * PDOK suggest: restrict address hits to an explicit municipality or province.
+     */
+    pdok_address_suggest: {
+      scope: PdokAddressSuggestScope
+      organization: string
+    }
+    fonts?: {
+      /** Optional Google Fonts stylesheet URL to load in the document head. */
+      googleStylesheetUrl?: string
+    }
     assets_url: string
     supportedLanguages: Array<{
       label: string
@@ -25,8 +53,9 @@ export type AppConfig = {
       logo: {
         alt: string
         url: string
+        width?: number
+        height?: number
         dark_mode_url?: string
-        caption: string
       }
     }
     contact: {
