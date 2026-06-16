@@ -1,6 +1,6 @@
 # Signalen web form
 
-We ([Delta10](https://www.delta10.nl) and [Frameless](https://www.frameless.io)) are developing a new web form for [Signalen](https://www.signalen.org), an open source application for municipalities for reports about the public space.
+We ([Delta10](https://www.delta10.nl) and [Frameless](https://www.frameless.io)) created a new web form for [Signalen](https://www.signalen.org), an open source application for municipalities for reports about the public space.
 
 Our goals are to:
 
