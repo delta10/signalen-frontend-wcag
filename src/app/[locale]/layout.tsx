@@ -11,6 +11,7 @@ import { ConfigProvider } from '@/contexts/ConfigContext'
 const font = localFont({
   src: '../../../public/fonts/open-sans.woff2',
   display: 'swap',
+  preload: false,
   variable: '--custom-font',
 })
 
