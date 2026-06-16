@@ -14,9 +14,6 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: './src/tests/vitest.setup.ts',
     exclude: [...configDefaults.exclude, 'test/e2e/*'],
-    deps: {
-      inline: ['next-intl'],
-    },
     server: {
       deps: {
         inline: ['next-intl'],
