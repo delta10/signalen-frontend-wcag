@@ -7,7 +7,7 @@ import { ApiRequestOptions } from '@/services/client/core/ApiRequestOptions'
 
 export const axiosInstance = (baseUrl?: string): AxiosInstance => {
   const instance = axios.create({
-    baseURL: baseUrl ? baseUrl : process.env.NEXT_PUBLIC_BASE_URL_API,
+    baseURL: baseUrl ?? '',
   })
 
   axiosRetry(instance)
@@ -20,7 +20,7 @@ class AxiosHttpRequestWithRetry extends BaseHttpRequest {
 
   constructor(config: OpenAPIConfig) {
     super(config)
-    this.axiosInstance = axiosInstance()
+    this.axiosInstance = axiosInstance(config.BASE)
   }
 
   public override request<T>(options: ApiRequestOptions): CancelablePromise<T> {
@@ -28,7 +28,8 @@ class AxiosHttpRequestWithRetry extends BaseHttpRequest {
   }
 }
 
-export const signalsClient = new SignalsClient(
-  { BASE: '' },
-  AxiosHttpRequestWithRetry
-)
+export const createSignalsClient = (baseUrl: string) =>
+  new SignalsClient(
+    { BASE: baseUrl.replace(/\/+$/, '') },
+    AxiosHttpRequestWithRetry
+  )

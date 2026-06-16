@@ -1,7 +1,7 @@
 {
-  "baseUrlApi": "https://api.meldingen-acpt.brabant.delta10.cloud/",
-  "pdokUrlApi": "https://api.pdok.nl/bzk/locatieserver/",
+  "baseUrlApi": "https://api.meldingen-acpt.brabant.delta10.cloud",
   "frontendUrl": "https://meldingen-acpt.brabant.delta10.cloud",
+  "pdokUrlApi": "https://api.pdok.nl/bzk/locatieserver/",
   "maptilerApiKey": "x0IfDO01xuLQQKYlSzuz",
   "maptilerMap": "https://api.maptiler.com/maps/nl-cartiqo-topo",
   "maptilerMapDarkMode": "https://api.maptiler.com/maps/streets-v2-dark",
@@ -27,7 +27,7 @@
         "name": "Nederlands"
       }
     ],
-    "naam": "provincie Noord-Brabant",
+    "naam": "Provincie Noord-Brabant",
     "header": {
       "logo": {
         "alt": "Provincie Noord-Brabant logo, naar de homepagina",
@@ -58,9 +58,19 @@
     },
     "i18n": {
       "nl": {
+        "current_organisation": {
+          "default_homepage_label": "Keer terug naar de homepage van provincie {organization}",
+          "default_logo_label": "Logo van provincie {organization}, klik voor homepage"
+        },
         "describe_report": {
           "alert": {
             "help_text": "Problemen met het indienen van een melding? Bel [073 - 68 12 812](tel:+31736812812). Wij zijn bereikbaar van maandag tot en met vrijdag van 8:00 uur tot 18:00 uur. Bel bij calamiteiten: [073 - 680 73 68](tel:+31736807368).  U belt dit telefoonnummer als de veiligheid of doorstroming op één van de provinciale wegen acuut belemmerd wordt. Een provinciale weg heeft altijd een N-nummer. Het telefoonnummer is 24 uur per dag, 7 dagen per week bereikbaar."
+          }
+        },
+        "describe_contact": {
+          "form": {
+            "send_to_other_instance_description": "Soms kan de provincie niets doen. Een andere organisatie moet dan aan het werk. Als dat zo is kunnen wij uw melding soms doorsturen. Wij sturen uw telefoonnummer of e-mailadres mee. Maar dat doen we alleen als u dat goed vindt.",
+            "describe_checkbox_input_description": "Ja, ik geef de provincie {organization} toestemming om mijn melding door te sturen naar andere organisaties als de melding niet voor de provincie is bestemd."
           }
         }
       },

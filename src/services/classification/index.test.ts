@@ -34,7 +34,7 @@ describe('getCategoryForDescription', () => {
 
   test('throws when baseUrl is missing', async () => {
     await expect(
-      getCategoryForDescription('description', undefined)
+      getCategoryForDescription(undefined, 'description')
     ).rejects.toThrow('Base URL is required to fetch category prediction.')
   })
 
@@ -42,7 +42,7 @@ describe('getCategoryForDescription', () => {
     post.mockResolvedValue(createResponse(0.4, 0.4))
 
     await expect(
-      getCategoryForDescription('description', 'https://api.example.com')
+      getCategoryForDescription('https://api.example.com', 'description')
     ).resolves.toEqual({
       main: 'overig',
       sub: 'overig',
@@ -53,7 +53,7 @@ describe('getCategoryForDescription', () => {
     post.mockResolvedValue(createResponse(0.41, 0.4))
 
     await expect(
-      getCategoryForDescription('description', 'https://api.example.com')
+      getCategoryForDescription('https://api.example.com', 'description')
     ).resolves.toEqual({
       main: 'openbaar-groen-en-water',
       sub: 'overig-openbaar-groen-en-water',
@@ -64,7 +64,7 @@ describe('getCategoryForDescription', () => {
     post.mockResolvedValue(createResponse(0.41, 0.41))
 
     await expect(
-      getCategoryForDescription('description', 'https://api.example.com')
+      getCategoryForDescription('https://api.example.com', 'description')
     ).resolves.toEqual({
       main: 'openbaar-groen-en-water',
       sub: 'beschoeiing',
@@ -75,7 +75,7 @@ describe('getCategoryForDescription', () => {
     post.mockResolvedValue(createResponse(0.4, 0.41))
 
     await expect(
-      getCategoryForDescription('description', 'https://api.example.com')
+      getCategoryForDescription('https://api.example.com', 'description')
     ).resolves.toEqual({
       main: 'overig',
       sub: 'overig',
@@ -91,7 +91,7 @@ describe('getCategoryForDescription', () => {
     post.mockRejectedValue(error)
 
     await expect(
-      getCategoryForDescription('description', 'https://api.example.com')
+      getCategoryForDescription('https://api.example.com', 'description')
     ).resolves.toEqual({
       main: 'overig',
       sub: 'overig',

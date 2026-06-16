@@ -12,9 +12,11 @@ import { LocationSelect } from '@/app/[locale]/incident/add/components/questions
 import { useTranslations } from 'next-intl'
 import { isCoordinates } from '@/lib/utils/map'
 import { getCurrentStep, getNextStepPath } from '@/lib/utils/stepper'
+import { useConfig } from '@/contexts/ConfigContext'
 
 export const IncidentQuestionsLocationForm = () => {
   const { formState: formStoreState, updateForm } = useFormStore()
+  const config = useConfig()
   const [isBlocking, setIsBlocking] = useState(false)
   const [additionalQuestions, setAdditionalQuestions] = useState<
     PublicQuestion[]
@@ -67,6 +69,7 @@ export const IncidentQuestionsLocationForm = () => {
     const appendAdditionalQuestions = async () => {
       try {
         const additionalQuestions = await fetchAdditionalQuestions(
+          config.baseUrlApi,
           formStoreState.main_category,
           formStoreState.sub_category
         )
@@ -78,7 +81,11 @@ export const IncidentQuestionsLocationForm = () => {
     }
 
     appendAdditionalQuestions()
-  }, [formStoreState.main_category, formStoreState.sub_category])
+  }, [
+    formStoreState.main_category,
+    formStoreState.sub_category,
+    config.baseUrlApi,
+  ])
 
   useEffect(() => {
     // Only trigger if there's already a location error (meaning form was submitted)

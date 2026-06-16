@@ -48,7 +48,7 @@ export const ExtraInformationContainer = ({
 
     const load = async () => {
       try {
-        const result = await getQaSession(sessionId, config.baseUrlApi)
+        const result = await getQaSession(config.baseUrlApi, sessionId)
 
         if (cancelled) return
 
@@ -62,7 +62,7 @@ export const ExtraInformationContainer = ({
           let signalCreatedAt: string | undefined
           if (signalId) {
             try {
-              const signal = await getPublicSignal(signalId)
+              const signal = await getPublicSignal(config.baseUrlApi, signalId)
               signalCreatedAt = signal?.created_at
             } catch (e) {
               console.error(
@@ -122,7 +122,7 @@ export const ExtraInformationContainer = ({
             const fd = new FormData()
             fd.append('signal_id', state.signalId)
             fd.append('file', file)
-            return postAttachments(state.signalId, fd, config.baseUrlApi)
+            return postAttachments(config.baseUrlApi, state.signalId, fd)
           })
         )
       } catch (e) {
@@ -139,14 +139,14 @@ export const ExtraInformationContainer = ({
         const answer = formData.answers[question.uuid]
         if (answer?.trim()) {
           await postQaAnswer(
+            config.baseUrlApi,
             question.uuid,
             sessionId,
-            answer.trim(),
-            config.baseUrlApi
+            answer.trim()
           )
         }
       }
-      await postQaSubmit(sessionId, config.baseUrlApi)
+      await postQaSubmit(config.baseUrlApi, sessionId)
       setState({ status: 'success' })
     } catch (e) {
       console.error('Failed to submit extra information', e)

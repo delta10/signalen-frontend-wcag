@@ -101,7 +101,9 @@ const getUrl = (config: OpenAPIConfig, options: ApiRequestOptions): string => {
             return substring;
         });
 
-    const url = `${config.BASE}${path}`;
+    const base = config.BASE.replace(/\/+$/, '');
+    const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+    const url = base ? `${base}${normalizedPath}` : normalizedPath;
     if (options.query) {
         return `${url}${getQueryString(options.query)}`;
     }
