@@ -99,7 +99,7 @@ jobs:
       # Install the cosign tool
       # https://github.com/sigstore/cosign-installer
       - name: Install cosign
-        uses: sigstore/cosign-installer@v4.0.0
+        uses: sigstore/cosign-installer@v4.1.2
 
       # Set up BuildKit Docker container builder
       # https://github.com/docker/setup-buildx-action
