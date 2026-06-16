@@ -32,7 +32,8 @@
       "logo": {
         "alt": "Provincie Noord-Brabant logo, naar de homepagina",
         "url": "logo_provincie_noord-brabant.svg",
-        "width": 300
+        "width": 300,
+        "height": 37.5
       }
     },
     "contact": {

@@ -5,7 +5,7 @@ import { Heading, Link, PageHeader } from '@/components/index'
 import { useConfig } from '@/contexts/ConfigContext'
 import { useDarkMode } from '@/hooks/useDarkMode'
 import { useTranslations } from 'next-intl'
-import { NextSvgImage } from '@/components/ui/NextSvgImage'
+import Image from 'next/image'
 import { useMediaQuery } from 'usehooks-ts'
 import { clsx } from 'clsx'
 import { ButtonLink } from '@/components'
@@ -42,11 +42,10 @@ const IncidentMapHeader = () => {
         isMobile && 'max-h-[80px]'
       )}
     >
-      <NextSvgImage
+      <Image
         src={`/assets/${logo}`}
         alt={logoAltText}
         width={config?.base.header.logo.width}
-        priority={true}
       />
     </span>
   ) : null
