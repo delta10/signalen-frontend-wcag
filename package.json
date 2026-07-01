@@ -34,7 +34,7 @@
     "@utrecht/checkbox-group-react": "1.0.14",
     "@utrecht/component-library-react": "14.0.1",
     "@utrecht/fieldset-react": "1.0.10",
-    "@utrecht/form-field-description-react": "1.0.10",
+    "@utrecht/form-field-description-react": "1.0.12",
     "@utrecht/form-field-error-message-react": "1.0.12",
     "@utrecht/form-field-react": "1.0.10",
     "@utrecht/form-label-react": "1.0.10",
