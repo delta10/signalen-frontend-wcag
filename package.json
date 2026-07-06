@@ -86,7 +86,7 @@
     "@vitejs/plugin-react": "5.2.0",
     "autoprefixer": "10.4.20",
     "chokidar-cli": "3.0.0",
-    "eslint": "9",
+    "eslint": "10",
     "eslint-config-next": "16.2.3",
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-prettier": "5.5.4",
