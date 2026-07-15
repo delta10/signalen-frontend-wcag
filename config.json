@@ -1,25 +1,23 @@
 {
-  "baseUrlApi": "https://api.meldingen-acpt.brabant.delta10.cloud",
-  "frontendUrl": "https://meldingen-acpt.brabant.delta10.cloud",
+  "baseUrlApi": "https://api.meldingen.groningen.nl",
+  "frontendUrl": "https://meldingen.groningen.nl",
   "pdokUrlApi": "https://api.pdok.nl/bzk/locatieserver/",
   "maptilerApiKey": "x0IfDO01xuLQQKYlSzuz",
   "maptilerMap": "https://api.maptiler.com/maps/nl-cartiqo-topo",
   "maptilerMapDarkMode": "https://api.maptiler.com/maps/streets-v2-dark",
-  "maptilerOutOfBoundsSelectionArea": "https://api.maptiler.com/tiles/019bff1a-5275-7f4c-ba32-70c3d26b4122/tiles.json?key=K3FQAjXPERToZYyHKNPG",
-  "restrictSelectionArea": true,
-  "maptilerOutOfBoundsLayerId": "difference",
+  "restrictSelectionArea": false,
   "base": {
-    "municipality": "Noord-Brabant",
-    "theme": "brabant",
+    "municipality": "Groningen",
+    "theme": "groningen",
     "fonts": {
-      "googleStylesheetUrl": "https://fonts.googleapis.com/css2?family=Jost:wght@700&display=swap"
+      "googleStylesheetUrl": "https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap"
     },
     "pdok_address_suggest": {
-      "scope": "provincie",
-      "organization": "Noord-Brabant"
+      "scope": "gemeente",
+      "organization": "Groningen"
     },
-    "municipality_display_name": "Noord-Brabant",
-    "assets_url": "https://meldingen-acpt.brabant.delta10.cloud/",
+    "municipality_display_name": "Groningen",
+    "assets_url": "https://meldingen.groningen.nl/",
     "supportedLanguages": [
       {
         "label": "Schakel over naar het Nederlands",
@@ -27,25 +25,25 @@
         "name": "Nederlands"
       }
     ],
-    "naam": "Provincie Noord-Brabant",
+    "naam": "Gemeente Groningen",
     "header": {
       "logo": {
-        "alt": "Provincie Noord-Brabant logo, naar de homepagina",
-        "url": "logo_provincie_noord-brabant.svg",
-        "width": 300,
-        "height": 37.5
+        "alt": "Gemeente Groningen logo, naar de homepagina",
+        "url": "logo_gemeente_groningen.svg",
+        "width": 154,
+        "height": 80
       }
     },
     "contact": {
-      "tel": "073 68 12 812"
+      "tel": "14 050"
     },
     "map": {
       "find_address_in_distance": 30,
       "minimal_zoom": 17,
-      "center": [51.52, 5.112],
+      "center": [53.216827, 6.5616563],
       "maxBounds": [
-        [3.31497114423, 50.803721015],
-        [7.09205325687, 53.5104033474]
+        [6.462745, 53.06202],
+        [6.772526, 53.312964]
       ],
       "default_zoom": 12
     },
@@ -53,31 +51,31 @@
       "about": "https://signalen.org",
       "accessibility": "https://signalen.org",
       "help": "https://signalen.org/",
-      "home": "https://brabant.nl/",
-      "privacy": "https://www.brabant.nl/@3657/privacyverklaring/"
+      "home": "https://gemeente.groningen.nl/",
+      "privacy": "https://gemeente.groningen.nl/privacyverklaring"
     },
     "i18n": {
       "nl": {
         "current_organisation": {
-          "default_homepage_label": "Keer terug naar de homepage van provincie {organization}",
-          "default_logo_label": "Logo van provincie {organization}, klik voor homepage"
+          "default_homepage_label": "Keer terug naar de homepage van gemeente {organization}",
+          "default_logo_label": "Logo van gemeente {organization}, klik voor homepage"
         },
         "describe_report": {
           "alert": {
-            "help_text": "Problemen met het indienen van een melding? Bel [073 - 68 12 812](tel:+31736812812). Wij zijn bereikbaar van maandag tot en met vrijdag van 8:00 uur tot 18:00 uur. Bel bij calamiteiten: [073 - 680 73 68](tel:+31736807368).  U belt dit telefoonnummer als de veiligheid of doorstroming op één van de provinciale wegen acuut belemmerd wordt. Een provinciale weg heeft altijd een N-nummer. Het telefoonnummer is 24 uur per dag, 7 dagen per week bereikbaar."
+            "help_text": "Dringende meldingen buiten kantoortijden? Bel de politie [0900 8844](tel:09008844)."
           }
         },
         "describe_contact": {
           "form": {
-            "send_to_other_instance_description": "Soms kan de provincie niets doen. Een andere organisatie moet dan aan het werk. Als dat zo is kunnen wij uw melding soms doorsturen. Wij sturen uw telefoonnummer of e-mailadres mee. Maar dat doen we alleen als u dat goed vindt.",
-            "describe_checkbox_input_description": "Ja, ik geef de provincie {organization} toestemming om mijn melding door te sturen naar andere organisaties als de melding niet voor de provincie is bestemd."
+            "send_to_other_instance_description": "Soms kan de gemeente niets doen. Een andere organisatie moet dan aan het werk. Als dat zo is kunnen wij uw melding soms doorsturen. Wij sturen uw telefoonnummer of e-mailadres mee. Maar dat doen we alleen als u dat goed vindt.",
+            "describe_checkbox_input_description": "Ja, ik geef de gemeente {organization} toestemming om mijn melding door te sturen naar andere organisaties als de melding niet voor de gemeente is bestemd."
           }
         }
       },
       "en": {
         "describe_report": {
           "alert": {
-            "help_text": "Having trouble submitting a report? Call [073 - 68 12 812](tel:+31736812812). We are available monday through friday from 8:00 AM to 6:00 PM. Call for emergencies: [073 - 680 73 68](tel:+31736807368). You call this phone number if security or traffic on one of the provincial roads is urgently blocked. A provincial road always has an N number. The phone number is available 24 hours a day, 7 days a week."
+            "help_text": "Urgent calls outside office hours? Call the police [0900 8844](tel:09008844)."
           }
         }
       }
