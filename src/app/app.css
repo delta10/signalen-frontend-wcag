@@ -221,3 +221,4 @@ h2.utrecht-heading-2 {
 :where(.organization-theme *):focus-visible {
   outline-color: var(--basis-focus-outline-color);
 }
+

@@ -5,6 +5,7 @@ Deze map bevat alles om een organisatie-thema op te bouwen. Kort samengevat:
 - `design-tokens/base.json` bevat de complete token-set die we als startpunt gebruiken.
 - `design-tokens/overrides.json` bevat gedeelde correcties die voor alle organisaties gelden.
 - `design-tokens/organizations/<organisatie>.json` bevat alleen de organisatie-specifieke verschillen.
+- Een organisatiebestand kan via `source` een Theme Wizard-export uit een npm-package of lokaal JSON-bestand importeren.
 - De build merget deze lagen en genereert CSS-bestanden in `public/assets/organizations/<organisatie>/`.
 
 De theming wordt bepaald in deze volgorde:
@@ -35,6 +36,24 @@ De onderste laag levert defaults; elke volgende laag mag waarden overschrijven.
 }
 ```
 
+Een organisatie kan daarnaast een volledige Theme Wizard-export importeren. De
+handmatige `light`- en `dark`-waarden blijven dan de laatste override-laag:
+
+```json
+{
+  "source": "@nl-design-system-unstable/groningen-design-tokens/figma/groningen.tokens.json",
+  "light": {
+    "basis.color.action-1.color-default": "#055fa5"
+  },
+  "dark": {}
+}
+```
+
+De import gebruikt de volgorde uit `$metadata.tokenSetOrder`, zet de aparte
+`color-scheme-dark/*`-sets om naar dark-mode-overrides en negeert tokens die niet
+in `base.json` bestaan. Zo blijft het organisatiebestand beperkt tot bewuste
+afwijkingen, terwijl de volledige export uit een versieerbare dependency komt.
+
 ## Buildgedrag
 
 Bij `npm run tokens:build:org -- <organisatie>` gebeurt het volgende:
@@ -42,9 +61,9 @@ Bij `npm run tokens:build:org -- <organisatie>` gebeurt het volgende:
 1. `base.json` wordt ingeladen.
 2. `design-tokens/overrides.json` wordt ingeladen.
 3. `design-tokens/organizations/<organisatie>.json` wordt ingeladen.
-4. Gedeelde `light` updates worden toegepast op de base tokens.
-5. Organisatie `light` updates worden daar bovenop toegepast.
-6. Gedeelde en organisatie `dark` updates worden toegepast bovenop de light tokens (fallback naar light waar dark niet bestaat).
+4. Een eventuele Theme Wizard-bron uit `source` wordt ingeladen.
+5. Gedeelde `light` updates, de bronimport en handmatige organisatie-updates worden in die volgorde toegepast.
+6. Dezelfde lagen voor `dark` worden toegepast bovenop de light tokens (fallback naar light waar dark niet bestaat).
 7. Beide varianten worden gebruikt als input voor Style Dictionary.
 8. Output wordt gegenereerd in `public/assets/organizations/<organisatie>/`.
 
@@ -121,7 +140,7 @@ Tip: begin klein met een paar duidelijke merk-kleuren. Als dat werkt, breid je s
   `npm run tokens:build:org -- <organisatie>`
 - Watch organisatie-updates en build automatisch bij save:  
   `npm run tokens:watch:org`
-  - `design-tokens/organizations/<organisatie>.json` triggert build voor die organisatie.
+- `design-tokens/organizations/<organisatie>.json` triggert build voor die organisatie.
   - `design-tokens/base.json` en `design-tokens/overrides.json` triggeren een build voor alle organisaties.
   - Let op: deze watcher moet actief draaien in een terminal.
 - `npm run dev` start nu zowel Next.js als deze token watcher.
@@ -134,6 +153,7 @@ Na build vind je o.a.:
 - `public/assets/organizations/<organisatie>/variables.css`
 
 `theme.css` bevat:
+
 - light variabelen onder `.organization-theme`
 - dark variabelen onder `@media (prefers-color-scheme: dark)` voor `.organization-theme.organization-theme--media-query`
 

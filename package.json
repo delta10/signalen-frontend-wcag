@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "clean": "rimraf .next/ tmp/",
-    "dev": "next dev",
+    "dev": "npm run tokens:build:org && concurrently --kill-others --names app,tokens \"next dev\" \"npm run tokens:watch:org\"",
     "build": "npm run tokens:build:org && next build",
     "install-test-browsers": "playwright install --with-deps",
     "start": "next start",
@@ -75,6 +75,7 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "4.11.0",
+    "@nl-design-system-unstable/groningen-design-tokens": "3.2.0",
     "@playwright/test": "1.60.0",
     "@testing-library/dom": "10.4.1",
     "@testing-library/jest-dom": "6.6.3",
@@ -86,6 +87,7 @@
     "@vitejs/plugin-react": "5.2.0",
     "autoprefixer": "10.4.20",
     "chokidar-cli": "3.0.0",
+    "concurrently": "9.2.4",
     "eslint": "9",
     "eslint-config-next": "16.2.3",
     "eslint-config-prettier": "9.1.0",
