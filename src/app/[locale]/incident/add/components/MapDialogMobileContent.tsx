@@ -40,6 +40,7 @@ import { FeatureTypeIcon } from '@/app/[locale]/incident/add/components/FeatureT
 import { ExtendedFeature } from '@/types/map'
 import FeatureTypeLegend from '@/app/[locale]/incident/add/components/FeatureTypeLegend'
 import { OUT_OF_BOUNDS_SOURCE_ID } from '@/lib/utils/restrictedAreaUtils'
+import { MapLayers } from '@/app/[locale]/incident/add/components/MapLayers'
 
 const MapDialogMobileContent = ({
   onMapReady,
@@ -266,6 +267,7 @@ const MapDialogMobileContent = ({
                 <Layer {...outOfBoundsLineStyle} />
               </Source>
             )}
+            <MapLayers />
           </Map>
           <div className="map-location-group">
             {/*!text-lg !px-2 !py-2*/}

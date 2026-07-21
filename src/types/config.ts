@@ -10,6 +10,41 @@ export const pdokAddressSuggestFields: Record<PdokAddressSuggestScope, string> =
     [PdokAddressSuggestScope.Provincie]: 'provincienaam',
   }
 
+type MapLayerStyleValue =
+  | string
+  | number
+  | boolean
+  | null
+  | MapLayerStyleValue[]
+  | { [key: string]: MapLayerStyleValue }
+
+export type MapLayerConfiguration = {
+  id: string
+  source: {
+    type: 'geojson' | 'vector'
+    url?: string
+    data?: string | { [key: string]: MapLayerStyleValue }
+    promoteId?: string
+    tolerance?: number
+  }
+  icons?: Array<{
+    id: string
+    url: string
+    width?: number
+    height?: number
+  }>
+  layers: Array<{
+    id: string
+    type: 'symbol' | 'circle' | 'line' | 'fill' | 'raster' | 'background'
+    sourceLayer?: string
+    minzoom?: number
+    maxzoom?: number
+    filter?: MapLayerStyleValue[]
+    layout?: { [key: string]: MapLayerStyleValue }
+    paint?: { [key: string]: MapLayerStyleValue }
+  }>
+}
+
 export type AppConfig = {
   maptilerApiKey: string
   maptilerMap: string
@@ -67,6 +102,7 @@ export type AppConfig = {
       default_zoom: number
       center: number[]
       maxBounds: number[][]
+      layers?: MapLayerConfiguration[]
     }
     links: {
       about: string

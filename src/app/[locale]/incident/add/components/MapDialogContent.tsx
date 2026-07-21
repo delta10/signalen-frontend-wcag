@@ -32,6 +32,7 @@ import { ExtendedFeature } from '@/types/map'
 import FeatureTypeLegend from '@/app/[locale]/incident/add/components/FeatureTypeLegend'
 import { Layer, Source } from 'react-map-gl/maplibre'
 import { OUT_OF_BOUNDS_SOURCE_ID } from '@/lib/utils/restrictedAreaUtils'
+import { MapLayers } from '@/app/[locale]/incident/add/components/MapLayers'
 
 export type MapDialogContentProps = {
   onMapReady?: (map: MapRef) => void
@@ -257,6 +258,7 @@ const MapDialogContent = ({
                 <Layer {...outOfBoundsLineStyle} />
               </Source>
             )}
+            <MapLayers />
           </Map>
           <div className="map-location-group">
             <Button

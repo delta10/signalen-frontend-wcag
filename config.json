@@ -1,6 +1,6 @@
 {
-  "baseUrlApi": "https://api.meldingen-acpt.brabant.delta10.cloud",
-  "frontendUrl": "https://meldingen-acpt.brabant.delta10.cloud",
+  "baseUrlApi": "https://api.meldingen-acpt.brabant.nl",
+  "frontendUrl": "https://meldingen-acpt.brabant.nl",
   "pdokUrlApi": "https://api.pdok.nl/bzk/locatieserver/",
   "maptilerApiKey": "x0IfDO01xuLQQKYlSzuz",
   "maptilerMap": "https://api.maptiler.com/maps/nl-cartiqo-topo",
@@ -19,7 +19,7 @@
       "organization": "Noord-Brabant"
     },
     "municipality_display_name": "Noord-Brabant",
-    "assets_url": "https://meldingen-acpt.brabant.delta10.cloud/",
+    "assets_url": "https://meldingen-acpt.brabant.nl/",
     "supportedLanguages": [
       {
         "label": "Schakel over naar het Nederlands",
@@ -47,7 +47,45 @@
         [3.31497114423, 50.803721015],
         [7.09205325687, 53.5104033474]
       ],
-      "default_zoom": 12
+      "default_zoom": 12,
+      "layers": [
+        {
+          "id": "hectometrering",
+          "source": {
+            "type": "geojson",
+            "data": "https://geoportaal.brabant.nl/server/rest/services/Mobiliteit/Provinciale_wegen/MapServer/1/query?where=1%3D1&outFields=*&returnGeometry=true&outSR=4326&f=geojson"
+          },
+          "icons": [
+            {
+              "id": "hectometer-marker",
+              "url": "/assets/images/hectometer-marker.svg",
+              "width": 64,
+              "height": 32
+            }
+          ],
+          "layers": [
+            {
+              "id": "hectometer-sign",
+              "type": "symbol",
+              "minzoom": 14,
+              "layout": {
+                "icon-image": "hectometer-marker",
+                "icon-size": 0.55,
+                "text-field": ["get", "TEKST"],
+                "text-font": ["Open Sans Bold"],
+                "text-size": 12,
+                "text-anchor": "center",
+                "text-offset": [0, 0],
+                "icon-allow-overlap": true,
+                "text-allow-overlap": true
+              },
+              "paint": {
+                "text-color": "#ffffff"
+              }
+            }
+          ]
+        }
+      ]
     },
     "links": {
       "about": "https://signalen.org",
