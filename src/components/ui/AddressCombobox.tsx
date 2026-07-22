@@ -217,28 +217,30 @@ export const AddressCombobox = ({
         })}
       />
       {!loading && (
-        <ComboboxOptions as={Listbox} anchor="bottom" className="z-[9999]">
-          <div>
-            {addressOptions.length > 0 ? (
-              addressOptions.map((address) => (
-                <ComboboxOption as={Fragment} key={address.id} value={address}>
-                  {({ focus }) => (
-                    <ListboxOption active={focus}>
-                      {address.weergave_naam}
-                    </ListboxOption>
-                  )}
-                </ComboboxOption>
-              ))
-            ) : (
-              <ComboboxOption value={null} as={ListboxOption} disabled>
-                <StatusText>
-                  {searchType === SearchType.Hectometer
-                    ? tAddress('no_hectometer_results')
-                    : tAddress('no_results')}
-                </StatusText>
+        <ComboboxOptions
+          as={Listbox}
+          anchor="bottom"
+          className="z-[9999] [--utrecht-listbox-inline-size:var(--input-width)]"
+        >
+          {addressOptions.length > 0 ? (
+            addressOptions.map((address) => (
+              <ComboboxOption as={Fragment} key={address.id} value={address}>
+                {({ focus }) => (
+                  <ListboxOption active={focus}>
+                    {address.weergave_naam}
+                  </ListboxOption>
+                )}
               </ComboboxOption>
-            )}
-          </div>
+            ))
+          ) : (
+            <ComboboxOption value={null} as={ListboxOption} disabled>
+              <StatusText>
+                {searchType === SearchType.Hectometer
+                  ? tAddress('no_hectometer_results')
+                  : tAddress('no_results')}
+              </StatusText>
+            </ComboboxOption>
+          )}
         </ComboboxOptions>
       )}
     </Combobox>
