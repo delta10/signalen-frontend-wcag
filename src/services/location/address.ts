@@ -42,6 +42,18 @@ const isHectometerWithinBounds = (
   return isCoordinateInsideMaxBound(lat, lng, bounds)
 }
 
+// Creates a PDOK coordinate range filter. The application stores bounds as
+// [longitude, latitude], while PDOK expects latitude,longitude in this filter.
+const getHectometerBoundsFilter = (bounds?: CoordinateBounds) => {
+  if (!bounds) {
+    return null
+  }
+
+  const [[minLng, minLat], [maxLng, maxLat]] = bounds
+
+  return `centroide_ll:[${minLat},${minLng} TO ${maxLat},${maxLng}]`
+}
+
 // Fetches suggested addresses from PDOK API based on search query and municipality or province
 // @param {string} searchQuery - Text to search for addresses
 // @param {PdokAddressSuggestScope} scope - `gemeente` → gemeentenaam filter, `provincie` → provincienaam
@@ -80,12 +92,14 @@ export const getSuggestedAddresses = async (
 // @param {string} searchQuery - Text to search for hectometer posts, for example "A2 123"
 // @param {string | undefined} pdokBaseUrl - Base URL for the PDOK Locatieserver API
 // @param {CoordinateBounds} bounds - Optional longitude/latitude bounds used to filter results
+// @param {string | undefined} roadNumberPrefix - Optional road number prefix, for example "N"
 // @returns {Promise<SuggestResponse<HectometerSuggestDoc>>} - Promise resolving to suggested hectometer posts
 // @throws {Error} - Throws an error if the request fails
 export const getSuggestedHectometerPosts = async (
   searchQuery: string,
   pdokBaseUrl: string | undefined,
-  bounds?: CoordinateBounds
+  bounds?: CoordinateBounds,
+  roadNumberPrefix?: string
 ): Promise<SuggestResponse<HectometerSuggestDoc>> => {
   if (!pdokBaseUrl) {
     console.error('Pdok Base URL is required to fetch hectometer posts.')
@@ -96,7 +110,17 @@ export const getSuggestedHectometerPosts = async (
 
   try {
     const encodedSearchQuery = encodeURIComponent(searchQuery)
-    const path = `/search/v3_1/suggest?fq=bron:NWB&fq=type:hectometerpaal&fl=id,identificatie,weergavenaam,centroide_ll,wegnummer,hectometernummer,hectometerletter&q=${encodedSearchQuery}`
+    const boundsFilter = getHectometerBoundsFilter(bounds)
+    const encodedBoundsFilter = boundsFilter
+      ? `&fq=${encodeURIComponent(boundsFilter)}`
+      : ''
+    const encodedRoadNumberFilter = roadNumberPrefix
+      ? `&fq=${encodeURIComponent(`wegnummer:${roadNumberPrefix}*`)}`
+      : ''
+
+    // Search only NWB hectometer posts. Apply configured bounds before PDOK's
+    // default 10-result limit and restrict province-scoped searches to N-roads.
+    const path = `/search/v3_1/suggest?fq=bron:NWB&fq=type:hectometerpaal${encodedBoundsFilter}${encodedRoadNumberFilter}&fl=id,identificatie,weergavenaam,centroide_ll,wegnummer,hectometernummer,hectometerletter&q=${encodedSearchQuery}`
 
     const response: AxiosResponse<SuggestResponse<HectometerSuggestDoc>> =
       await axios.get(path)

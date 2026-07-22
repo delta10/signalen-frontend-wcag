@@ -25,7 +25,7 @@ import { Address } from '@/types/form'
 import { useTranslations } from 'next-intl'
 import { cn } from '@/lib/utils/style'
 import { AddressSuggestDoc, HectometerSuggestDoc } from '@/types/pdok'
-import { AppConfig } from '@/types/config'
+import { AppConfig, PdokAddressSuggestScope } from '@/types/config'
 import { getPointCoordinates } from '@/lib/utils/map'
 import {
   formatHectometerDisplayName,
@@ -104,7 +104,11 @@ const getSuggestionOptions = async (
     const apiCall = await getSuggestedHectometerPosts(
       normalizeHectometerSearchQuery(searchQuery),
       config.pdokUrlApi,
-      getHectometerBounds(config)
+      getHectometerBounds(config),
+      config.base.pdok_address_suggest.scope ===
+        PdokAddressSuggestScope.Provincie
+        ? 'N'
+        : undefined
     )
 
     return apiCall.response.docs.flatMap(mapHectometerSuggestDocToAddress)
