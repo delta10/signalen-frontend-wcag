@@ -214,7 +214,7 @@ export const AddressCombobox = ({
         aria-label={
           searchType === SearchType.Hectometer
             ? tMap('search_hectometer_label')
-            : 'Adres'
+            : tMap('search_address_label')
         }
         as={Textbox}
         displayValue={getDisplayValue}

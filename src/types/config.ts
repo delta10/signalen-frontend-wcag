@@ -37,7 +37,7 @@ export type MapLayerConfiguration = {
   }>
   layers: Array<{
     id: string
-    type: 'symbol' | 'circle' | 'line' | 'fill' | 'raster' | 'background'
+    type: 'symbol' | 'circle' | 'line' | 'fill' | 'background'
     sourceLayer?: string
     minzoom?: number
     maxzoom?: number

@@ -91,7 +91,7 @@ Icon entries support:
 Style layer entries support:
 
 - `id`: Unique style layer ID.
-- `type`: Layer type. Supported values are `symbol`, `circle`, `line`, `fill`, `raster`, and `background`.
+- `type`: Layer type. Supported values are `symbol`, `circle`, `line`, `fill`, and `background`.
 - `sourceLayer`: Optional vector source layer name.
 - `minzoom`: Optional minimum zoom level.
 - `maxzoom`: Optional maximum zoom level.
