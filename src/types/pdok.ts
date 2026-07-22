@@ -1,10 +1,10 @@
-export type AddressSuggestResponse = {
+export type SuggestResponse<T> = {
   response: {
     numFound: number
     start: number
     maxScore: number
     numFoundExact: boolean
-    docs: Array<AddressSuggestDoc>
+    docs: Array<T>
   }
 }
 
@@ -16,6 +16,16 @@ export type AddressSuggestDoc = {
   centroide_ll: string
   straatnaam: string
   postcode: string
+}
+
+export type HectometerSuggestDoc = {
+  id: string
+  identificatie: string
+  weergavenaam: string
+  centroide_ll: string
+  wegnummer: string
+  hectometernummer: string
+  hectometerletter?: string
 }
 
 export type AddressCoordinateResponse = {

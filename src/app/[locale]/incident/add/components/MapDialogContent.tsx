@@ -9,7 +9,7 @@ import {
   SpotlightSection,
 } from '@/components'
 import MapExplainerAccordion from '@/app/[locale]/incident/add/components/questions/MapExplainerAccordion'
-import { AddressCombobox } from '@/components/ui/AddressCombobox'
+import { AddressCombobox, SearchType } from '@/components/ui/AddressCombobox'
 import {
   IconCurrentLocation,
   IconInfoCircle,
@@ -129,6 +129,18 @@ const MapDialogContent = ({
             </div>
           )}
 
+          {config?.base.pdok_hectometer_suggest?.enabled && (
+            <div className="flex flex-col py-2">
+              <label htmlFor="hectometer">{t('search_hectometer_label')}</label>
+              <AddressCombobox
+                updatePosition={updatePosition}
+                setIsMapSelected={setIsMapSelected}
+                id="hectometer"
+                searchType={SearchType.Hectometer}
+              />
+            </div>
+          )}
+
           {isAssetSelect && dialogMap && config && field ? (
             <div className="flex flex-col gap-4 pt-2 flex-grow">
               {dialogMap.getZoom() < config.base.map.minimal_zoom && (
@@ -207,9 +219,7 @@ const MapDialogContent = ({
             mapStyle={mapStyle}
             scrollZoom={!(width !== 0 && width < 768)}
             attributionControl={false}
-            maxBounds={
-              config.base.map.maxBounds as [[number, number], [number, number]]
-            }
+            maxBounds={config.base.map.maxBounds}
           >
             {/* Address or selected point on map marker */}
             {marker.length && (isMapSelected === null || isMapSelected) && (

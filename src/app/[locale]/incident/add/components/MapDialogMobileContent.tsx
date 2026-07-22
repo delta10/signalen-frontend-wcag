@@ -25,7 +25,7 @@ import { ButtonGroup } from '@/components'
 
 import { FeatureListItem } from '@/app/[locale]/incident/add/components/FeatureListItem'
 
-import { AddressCombobox } from '@/components/ui/AddressCombobox'
+import { AddressCombobox, SearchType } from '@/components/ui/AddressCombobox'
 
 import './MapDialog.css'
 
@@ -161,6 +161,21 @@ const MapDialogMobileContent = ({
                 />
               </>
             )}
+
+            {config?.base.pdok_hectometer_suggest?.enabled && (
+              <>
+                <label htmlFor="hectometer" className="!text-lg mt-4">
+                  {t('search_hectometer_label')}
+                </label>
+                <AddressCombobox
+                  updatePosition={updatePosition}
+                  setIsMapSelected={setIsMapSelected}
+                  mobileView={true}
+                  id="hectometer"
+                  searchType={SearchType.Hectometer}
+                />
+              </>
+            )}
           </div>
           {isAssetSelect && dialogMap && config && field ? (
             <div>
@@ -218,9 +233,7 @@ const MapDialogMobileContent = ({
             mapStyle={mapStyle}
             scrollZoom={!(width !== 0 && width < 768)}
             attributionControl={false}
-            maxBounds={
-              config.base.map.maxBounds as [[number, number], [number, number]]
-            }
+            maxBounds={config.base.map.maxBounds}
           >
             {/* Address or selected point on map marker */}
             {marker.length && (isMapSelected === null || isMapSelected) && (

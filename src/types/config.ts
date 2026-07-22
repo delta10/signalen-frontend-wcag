@@ -1,3 +1,5 @@
+import type { CoordinateBounds } from '@/lib/utils/map'
+
 /** PDOK Locatieserver suggest: `gemeentenaam` vs `provincienaam` filter. */
 export enum PdokAddressSuggestScope {
   Gemeente = 'gemeente',
@@ -70,6 +72,10 @@ export type AppConfig = {
       scope: PdokAddressSuggestScope
       organization: string
     }
+    pdok_hectometer_suggest?: {
+      enabled: boolean
+      bounds?: CoordinateBounds
+    }
     fonts?: {
       /** Optional Google Fonts stylesheet URL to load in the document head. */
       googleStylesheetUrl?: string
@@ -101,7 +107,7 @@ export type AppConfig = {
       minimal_zoom: number
       default_zoom: number
       center: number[]
-      maxBounds: number[][]
+      maxBounds: CoordinateBounds
       layers?: MapLayerConfiguration[]
     }
     links: {

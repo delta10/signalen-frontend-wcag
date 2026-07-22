@@ -18,6 +18,13 @@
       "scope": "provincie",
       "organization": "Noord-Brabant"
     },
+    "pdok_hectometer_suggest": {
+      "enabled": true,
+      "bounds": [
+        [4.17, 51.21],
+        [6.08, 51.88]
+      ]
+    },
     "municipality_display_name": "Noord-Brabant",
     "assets_url": "https://meldingen-acpt.brabant.nl/",
     "supportedLanguages": [
