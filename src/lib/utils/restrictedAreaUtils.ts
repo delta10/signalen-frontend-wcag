@@ -124,16 +124,20 @@ export const isPointOutsideRestrictedArea = (
  */
 const fetchTileJson = (url: string) => {
   if (!tileJsonCache.has(url)) {
-    tileJsonCache.set(
-      url,
-      fetch(url).then((response) => {
+    const request = fetch(url)
+      .then((response) => {
         if (!response.ok) {
           throw new Error('Could not fetch restricted area TileJSON.')
         }
 
         return response.json() as Promise<TileJson>
       })
-    )
+      .catch((error) => {
+        tileJsonCache.delete(url)
+        throw error
+      })
+
+    tileJsonCache.set(url, request)
   }
 
   return tileJsonCache.get(url)!
@@ -148,16 +152,20 @@ const fetchTileJson = (url: string) => {
  */
 const fetchVectorTile = (url: string) => {
   if (!vectorTileCache.has(url)) {
-    vectorTileCache.set(
-      url,
-      fetch(url).then((response) => {
+    const request = fetch(url)
+      .then((response) => {
         if (!response.ok) {
           throw new Error('Could not fetch restricted area vector tile.')
         }
 
         return response.arrayBuffer()
       })
-    )
+      .catch((error) => {
+        vectorTileCache.delete(url)
+        throw error
+      })
+
+    vectorTileCache.set(url, request)
   }
 
   return vectorTileCache.get(url)!
