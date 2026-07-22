@@ -27,6 +27,10 @@ import { cn } from '@/lib/utils/style'
 import { AddressSuggestDoc, HectometerSuggestDoc } from '@/types/pdok'
 import { AppConfig } from '@/types/config'
 import { getPointCoordinates } from '@/lib/utils/map'
+import {
+  formatHectometerDisplayName,
+  normalizeHectometerSearchQuery,
+} from '@/lib/utils/address'
 
 export enum SearchType {
   Address = 'address',
@@ -69,6 +73,8 @@ const mapHectometerSuggestDocToAddress = (
 ): Address[] => {
   const coordinates = getPointCoordinates(item.centroide_ll)
 
+  const displayName = formatHectometerDisplayName(item.weergavenaam)
+
   if (!coordinates) {
     return []
   }
@@ -80,8 +86,8 @@ const mapHectometerSuggestDocToAddress = (
       postcode: '',
       huisnummer: '',
       woonplaats: '',
-      openbare_ruimte: item.weergavenaam,
-      weergave_naam: item.weergavenaam,
+      openbare_ruimte: displayName,
+      weergave_naam: displayName,
     },
   ]
 }
@@ -96,7 +102,7 @@ const getSuggestionOptions = async (
 ): Promise<Address[]> => {
   if (searchType === SearchType.Hectometer) {
     const apiCall = await getSuggestedHectometerPosts(
-      searchQuery,
+      normalizeHectometerSearchQuery(searchQuery),
       config.pdokUrlApi,
       getHectometerBounds(config)
     )

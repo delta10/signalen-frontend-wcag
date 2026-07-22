@@ -59,7 +59,7 @@
       "chosen_location_address_and_points": "Geselecteerde locatie {location} en geselecteerde punten {points} klik om te wijzigen",
       "chosen_location_points": "Geselecteerde punten {points} klik om te wijzigen",
       "search_address_label": "Zoek op adres of postcode",
-      "search_hectometer_label": "Zoek op hectometerpaal",
+      "search_hectometer_label": "Zoek op wegnummer plus hectometerpaalnummer",
       "object": "object",
       "objects": "objecten",
       "pinned_location": "De locatie is gepind op de kaart",
