@@ -15,7 +15,7 @@ import { useFormStore } from '@/store/form_store'
 import { isCoordinates } from '@/lib/utils/map'
 import { useTranslations } from 'next-intl'
 import { FormFieldErrorMessage } from '@/components'
-import { AddressCombobox } from '@/components/ui/AddressCombobox'
+import { AddressCombobox, SearchType } from '@/components/ui/AddressCombobox'
 import { getLocationDisplayName } from '@/services/location/address'
 import { useConfig } from '@/contexts/ConfigContext'
 
@@ -33,6 +33,11 @@ export const LocationSelect = ({ field }: LocationSelectProps) => {
   const { formState: formStoreState } = useFormStore()
   const t = useTranslations('describe_add.map')
   const tGeneral = useTranslations('general')
+  const showAddressSearch = !config.restrictSelectionArea
+  const showHectometerSearch = Boolean(
+    config.base.pdok_hectometer_suggest?.enabled
+  )
+  const showAnySearch = showAddressSearch || showHectometerSearch
 
   return (
     <Fieldset invalid={Boolean(errorMessage)} className="w-full">
@@ -44,7 +49,7 @@ export const LocationSelect = ({ field }: LocationSelectProps) => {
       {Boolean(errorMessage) && errorMessage && (
         <FormFieldErrorMessage>{errorMessage}</FormFieldErrorMessage>
       )}
-      {!config.restrictSelectionArea && (
+      {showAddressSearch && (
         <>
           <FormFieldDescription>
             {t('choose_address_description')}
@@ -55,12 +60,22 @@ export const LocationSelect = ({ field }: LocationSelectProps) => {
           </div>
         </>
       )}
+      {showHectometerSearch && (
+        <>
+          <FormFieldDescription>
+            {t('search_hectometer_label')}
+          </FormFieldDescription>
+
+          <div className="mb-4" {...register('location')}>
+            <AddressCombobox
+              id="location-hectometer"
+              searchType={SearchType.Hectometer}
+            />
+          </div>
+        </>
+      )}
       <FormFieldDescription>
-        {t(
-          config.restrictSelectionArea
-            ? 'use_map_description'
-            : 'or_use_map_description'
-        )}
+        {t(showAnySearch ? 'or_use_map_description' : 'use_map_description')}
       </FormFieldDescription>
       <div className="relative w-full mb-3">
         <div style={{ minHeight: 200, height: 200 }} role="img" aria-label="">

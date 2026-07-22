@@ -18,7 +18,7 @@ import { useTranslations } from 'next-intl'
 import { FormFieldErrorMessage } from '@/components'
 import { getGeoJsonFeatures } from '@/services/location/features'
 import { FeatureCollection } from 'geojson'
-import { AddressCombobox } from '@/components/ui/AddressCombobox'
+import { AddressCombobox, SearchType } from '@/components/ui/AddressCombobox'
 import {
   getLocationDisplayName,
   getNearestAddressByCoordinate,
@@ -44,6 +44,11 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
   const [features, setFeatures] = useState<FeatureCollection | null>(null)
   // loading assets wordt wel geset maar niet gebruikt
   const [loadingAssets, setLoadingAssets] = useState<boolean>(false)
+  const showAddressSearch = !config.restrictSelectionArea
+  const showHectometerSearch = Boolean(
+    config.base.pdok_hectometer_suggest?.enabled
+  )
+  const showAnySearch = showAddressSearch || showHectometerSearch
 
   const onMapReady = (map: MapRef) => {
     setDialogMap(map)
@@ -146,7 +151,7 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
         <FormFieldErrorMessage>{errorMessage}</FormFieldErrorMessage>
       )}
 
-      {!config.restrictSelectionArea && (
+      {showAddressSearch && (
         <>
           <FormFieldDescription>
             {t('choose_address_description')}
@@ -158,12 +163,23 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
         </>
       )}
 
+      {showHectometerSearch && (
+        <>
+          <FormFieldDescription>
+            {t('search_hectometer_label')}
+          </FormFieldDescription>
+
+          <div className="mb-4" {...register('location')}>
+            <AddressCombobox
+              id="asset-hectometer"
+              searchType={SearchType.Hectometer}
+            />
+          </div>
+        </>
+      )}
+
       <FormFieldDescription>
-        {t(
-          config.restrictSelectionArea
-            ? 'use_map_description'
-            : 'or_use_map_description'
-        )}
+        {t(showAnySearch ? 'or_use_map_description' : 'use_map_description')}
       </FormFieldDescription>
       <div className="relative w-full">
         <div style={{ minHeight: 200, height: 200 }} role="img" aria-label="">
