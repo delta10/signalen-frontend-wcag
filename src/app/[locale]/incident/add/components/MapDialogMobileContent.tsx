@@ -42,6 +42,12 @@ import FeatureTypeLegend from '@/app/[locale]/incident/add/components/FeatureTyp
 import { OUT_OF_BOUNDS_SOURCE_ID } from '@/lib/utils/restrictedAreaUtils'
 import { MapLayers } from '@/app/[locale]/incident/add/components/MapLayers'
 
+type SearchField = {
+  id: string
+  label: string
+  searchType: SearchType
+}
+
 const MapDialogMobileContent = ({
   onMapReady,
   features,
@@ -85,6 +91,27 @@ const MapDialogMobileContent = ({
     outOfBoundsLineStyle,
     outOfBoundsFillStyle,
   } = useMapDialog(onMapReady, field, features, isAssetSelect)
+  const showAddressSearch = Boolean(config && !config.restrictSelectionArea)
+  const showHectometerSearch = Boolean(
+    config?.base.pdok_hectometer_suggest?.enabled
+  )
+  const searchFields: SearchField[] = []
+
+  if (showAddressSearch) {
+    searchFields.push({
+      id: 'address',
+      label: t('search_address_label'),
+      searchType: SearchType.Address,
+    })
+  }
+
+  if (showHectometerSearch) {
+    searchFields.push({
+      id: 'hectometer',
+      label: t('search_hectometer_label'),
+      searchType: SearchType.Hectometer,
+    })
+  }
 
   const toggleList = () => {
     setShowList(true)
@@ -149,33 +176,20 @@ const MapDialogMobileContent = ({
               setIsOpen={setIsAccordionOpen}
             />
 
-            {config && !config.restrictSelectionArea && (
-              <>
-                <label htmlFor="address" className="!text-lg mt-4">
-                  {t('search_address_label')}
+            {searchFields.map((searchField) => (
+              <React.Fragment key={searchField.id}>
+                <label htmlFor={searchField.id} className="!text-lg mt-4">
+                  {searchField.label}
                 </label>
                 <AddressCombobox
                   updatePosition={updatePosition}
                   setIsMapSelected={setIsMapSelected}
                   mobileView={true}
+                  id={searchField.id}
+                  searchType={searchField.searchType}
                 />
-              </>
-            )}
-
-            {config?.base.pdok_hectometer_suggest?.enabled && (
-              <>
-                <label htmlFor="hectometer" className="!text-lg mt-4">
-                  {t('search_hectometer_label')}
-                </label>
-                <AddressCombobox
-                  updatePosition={updatePosition}
-                  setIsMapSelected={setIsMapSelected}
-                  mobileView={true}
-                  id="hectometer"
-                  searchType={SearchType.Hectometer}
-                />
-              </>
-            )}
+              </React.Fragment>
+            ))}
           </div>
           {isAssetSelect && dialogMap && config && field ? (
             <div>

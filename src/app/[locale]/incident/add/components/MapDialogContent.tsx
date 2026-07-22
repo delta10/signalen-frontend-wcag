@@ -42,6 +42,12 @@ export type MapDialogContentProps = {
   loadingAssets?: boolean
 } & React.HTMLAttributes<HTMLDivElement>
 
+type SearchField = {
+  id: string
+  label: string
+  searchType: SearchType
+}
+
 const MapDialogContent = ({
   onMapReady,
   field,
@@ -81,6 +87,27 @@ const MapDialogContent = ({
     outOfBoundsLineStyle,
     outOfBoundsFillStyle,
   } = useMapDialog(onMapReady, field, features, isAssetSelect)
+  const showAddressSearch = Boolean(config && !config.restrictSelectionArea)
+  const showHectometerSearch = Boolean(
+    config?.base.pdok_hectometer_suggest?.enabled
+  )
+  const searchFields: SearchField[] = []
+
+  if (showAddressSearch) {
+    searchFields.push({
+      id: 'address-combobox',
+      label: t('search_address_label'),
+      searchType: SearchType.Address,
+    })
+  }
+
+  if (showHectometerSearch) {
+    searchFields.push({
+      id: 'hectometer',
+      label: t('search_hectometer_label'),
+      searchType: SearchType.Hectometer,
+    })
+  }
 
   return (
     <>
@@ -116,30 +143,17 @@ const MapDialogContent = ({
 
           <MapExplainerAccordion />
 
-          {config && !config.restrictSelectionArea && (
-            <div className="flex flex-col py-2">
-              <label htmlFor="address-combobox">
-                {t('search_address_label')}
-              </label>
+          {searchFields.map((searchField) => (
+            <div className="flex flex-col py-2" key={searchField.id}>
+              <label htmlFor={searchField.id}>{searchField.label}</label>
               <AddressCombobox
                 updatePosition={updatePosition}
                 setIsMapSelected={setIsMapSelected}
-                id="address-combobox"
+                id={searchField.id}
+                searchType={searchField.searchType}
               />
             </div>
-          )}
-
-          {config?.base.pdok_hectometer_suggest?.enabled && (
-            <div className="flex flex-col py-2">
-              <label htmlFor="hectometer">{t('search_hectometer_label')}</label>
-              <AddressCombobox
-                updatePosition={updatePosition}
-                setIsMapSelected={setIsMapSelected}
-                id="hectometer"
-                searchType={SearchType.Hectometer}
-              />
-            </div>
-          )}
+          ))}
 
           {isAssetSelect && dialogMap && config && field ? (
             <div className="flex flex-col gap-4 pt-2 flex-grow">
