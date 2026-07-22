@@ -86,6 +86,7 @@ const MapDialogContent = ({
     setOpenLegend,
     outOfBoundsLineStyle,
     outOfBoundsFillStyle,
+    validateRestrictedAreaSelection,
   } = useMapDialog(onMapReady, field, features, isAssetSelect)
   const showAddressSearch = Boolean(config && !config.restrictSelectionArea)
   const showHectometerSearch = Boolean(
@@ -151,6 +152,7 @@ const MapDialogContent = ({
                 setIsMapSelected={setIsMapSelected}
                 id={searchField.id}
                 searchType={searchField.searchType}
+                validateSelection={validateRestrictedAreaSelection}
               />
             </div>
           ))}

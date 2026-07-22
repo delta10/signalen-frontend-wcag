@@ -1,6 +1,6 @@
 import { LocationMap } from '@/components/ui/LocationMap'
 import { MapDialog } from '@/app/[locale]/incident/add/components/MapDialog'
-import { PublicQuestion } from '@/types/form'
+import { Address, PublicQuestion } from '@/types/form'
 import { MapProvider, MapRef } from 'react-map-gl/maplibre'
 import { useFormContext } from 'react-hook-form'
 import React, { useEffect, useState } from 'react'
@@ -24,6 +24,7 @@ import {
   getNearestAddressByCoordinate,
 } from '@/services/location/address'
 import { ParagraphOrList } from '@/components/ui/ParagraphOrList'
+import { isAddressOutsideRestrictedArea } from '@/lib/utils/restrictedAreaUtils'
 
 export interface AssetSelectProps {
   field?: PublicQuestion
@@ -44,11 +45,24 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
   const [features, setFeatures] = useState<FeatureCollection | null>(null)
   // loading assets wordt wel geset maar niet gebruikt
   const [loadingAssets, setLoadingAssets] = useState<boolean>(false)
+  const [restrictionError, setRestrictionError] = useState<string | null>(null)
   const showAddressSearch = !config.restrictSelectionArea
   const showHectometerSearch = Boolean(
     config.base.pdok_hectometer_suggest?.enabled
   )
   const showAnySearch = showAddressSearch || showHectometerSearch
+
+  const validateRestrictedAreaSelection = async (address: Address) => {
+    const isOutside = await isAddressOutsideRestrictedArea(config, address)
+
+    if (isOutside) {
+      setRestrictionError(t('please_choose_a_point_on_a_road'))
+      return false
+    }
+
+    setRestrictionError(null)
+    return true
+  }
 
   const onMapReady = (map: MapRef) => {
     setDialogMap(map)
@@ -140,7 +154,10 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
   }, [config, field, formStoreState.selectedFeatures, setValue])
 
   return (
-    <Fieldset invalid={Boolean(errorMessage)} className="w-full">
+    <Fieldset
+      invalid={Boolean(errorMessage) || Boolean(restrictionError)}
+      className="w-full"
+    >
       <FieldsetLegend>
         {field
           ? `${field.meta.label} (${tGeneral('form.required_short')})`
@@ -149,6 +166,9 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
 
       {Boolean(errorMessage) && errorMessage && (
         <FormFieldErrorMessage>{errorMessage}</FormFieldErrorMessage>
+      )}
+      {restrictionError && (
+        <FormFieldErrorMessage>{restrictionError}</FormFieldErrorMessage>
       )}
 
       {showAddressSearch && (
@@ -173,6 +193,7 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
             <AddressCombobox
               id="asset-hectometer"
               searchType={SearchType.Hectometer}
+              validateSelection={validateRestrictedAreaSelection}
             />
           </div>
         </>

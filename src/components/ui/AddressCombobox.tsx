@@ -39,6 +39,7 @@ type AddressComboboxProps = {
   mobileView?: boolean
   id?: string
   searchType?: SearchType
+  validateSelection?: (selectedAddress: Address) => boolean | Promise<boolean>
 }
 
 const normalizeQuery = (str: string) => str.trim().replace(/\s+/g, ' ')
@@ -120,6 +121,7 @@ export const AddressCombobox = ({
   mobileView = false,
   id,
   searchType = SearchType.Address,
+  validateSelection,
 }: AddressComboboxProps) => {
   const [query, setQuery] = useState('')
   const config = useConfig()
@@ -169,7 +171,15 @@ export const AddressCombobox = ({
     getAddressOptions()
   }, [config, query, searchType])
 
-  const onChangeAddress = (selectedAddress: Address | null) => {
+  const onChangeAddress = async (selectedAddress: Address | null) => {
+    if (
+      selectedAddress &&
+      validateSelection &&
+      !(await validateSelection(selectedAddress))
+    ) {
+      return
+    }
+
     if (selectedAddress) {
       updateForm({
         ...formState,

@@ -90,6 +90,7 @@ const MapDialogMobileContent = ({
     setOpenLegend,
     outOfBoundsLineStyle,
     outOfBoundsFillStyle,
+    validateRestrictedAreaSelection,
   } = useMapDialog(onMapReady, field, features, isAssetSelect)
   const showAddressSearch = Boolean(config && !config.restrictSelectionArea)
   const showHectometerSearch = Boolean(
@@ -187,6 +188,7 @@ const MapDialogMobileContent = ({
                   mobileView={true}
                   id={searchField.id}
                   searchType={searchField.searchType}
+                  validateSelection={validateRestrictedAreaSelection}
                 />
               </React.Fragment>
             ))}
