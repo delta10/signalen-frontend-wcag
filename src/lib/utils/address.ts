@@ -31,7 +31,7 @@ export const getNewSelectedAddress = async (
       postcode: '',
       huisnummer: '',
       woonplaats: '',
-      openbare_ruimte: '',
+      openbare_ruimte: hectometerPost.weergavenaam,
       weergave_naam: hectometerPost.weergavenaam,
     }
   }
