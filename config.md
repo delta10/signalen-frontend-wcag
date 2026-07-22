@@ -52,6 +52,8 @@ Logo settings are configured at `base.header.logo`.
 
 - `base.pdok_address_suggest.scope`: PDOK filter scope. Use `gemeente` for municipality-based address suggestions or `provincie` for province-based address suggestions.
 - `base.pdok_address_suggest.organization`: Exact PDOK filter value for the selected scope.
+- `base.pdok_hectometer_suggest.enabled`: Enables PDOK hectometer suggestions when set to `true`. Disables address suggestions.
+- `base.pdok_hectometer_suggest.bounds`: Optional coordinate bounds used to restrict hectometer suggestions, as `[[west, south], [east, north]]`.
 
 ## Map Defaults
 
@@ -62,6 +64,40 @@ Map settings are configured at `base.map`.
 - `default_zoom`: Initial map zoom level.
 - `center`: Initial map center as `[latitude, longitude]`.
 - `maxBounds`: Bounding box as `[[west, south], [east, north]]`.
+- `layers`: Optional custom MapLibre layer groups rendered on the map.
+
+Each custom map layer group has:
+
+- `id`: Unique layer group ID.
+- `source`: Map source configuration.
+- `icons`: Optional icons to load before rendering the group layers.
+- `layers`: One or more MapLibre style layers.
+
+Source configuration supports:
+
+- `type`: Source type, either `geojson` or `vector`.
+- `url`: Optional source URL.
+- `data`: Optional GeoJSON data URL or inline GeoJSON object.
+- `promoteId`: Optional feature ID property.
+- `tolerance`: Optional GeoJSON simplification tolerance.
+
+Icon entries support:
+
+- `id`: Icon ID used by layer layout properties such as `icon-image`.
+- `url`: Icon file URL.
+- `width`: Optional icon width in pixels.
+- `height`: Optional icon height in pixels.
+
+Style layer entries support:
+
+- `id`: Unique style layer ID.
+- `type`: Layer type. Supported values are `symbol`, `circle`, `line`, `fill`, `raster`, and `background`.
+- `sourceLayer`: Optional vector source layer name.
+- `minzoom`: Optional minimum zoom level.
+- `maxzoom`: Optional maximum zoom level.
+- `filter`: Optional MapLibre filter expression.
+- `layout`: Optional MapLibre layout properties.
+- `paint`: Optional MapLibre paint properties.
 
 ## Links
 
