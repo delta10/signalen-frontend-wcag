@@ -10,6 +10,7 @@ import { Feature, MultiPolygon, Polygon } from 'geojson'
 /** Source id used by the MapLibre source that renders the restricted area. */
 export const OUT_OF_BOUNDS_SOURCE_ID = 'out-of-bounds-source'
 const OUT_OF_BOUNDS_LINE_ID = 'restricted-corridor-line'
+const OUT_OF_BOUNDS_FILL_ID = 'out-of-bounds-area'
 
 type TileJson = {
   maxzoom?: number
@@ -47,7 +48,7 @@ export const outOfBoundsLineStyleObject = (config: AppConfig): LayerProps => {
  */
 export const outOfBoundsFillStyleObject = (config: AppConfig): LayerProps => {
   return {
-    id: OUT_OF_BOUNDS_SOURCE_ID,
+    id: OUT_OF_BOUNDS_FILL_ID,
     type: 'fill',
     source: OUT_OF_BOUNDS_SOURCE_ID,
     'source-layer': config.maptilerOutOfBoundsLayerId,
