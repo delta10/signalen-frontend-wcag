@@ -99,7 +99,8 @@
       "objects": "objects"
     },
     "address": {
-      "no_results": "No addresses found."
+      "no_results": "No addresses found.",
+      "no_hectometer_results": "No hectometer posts found."
     }
   },
   "describe_contact": {

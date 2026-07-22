@@ -231,7 +231,11 @@ export const AddressCombobox = ({
               ))
             ) : (
               <ComboboxOption value={null} as={ListboxOption} disabled>
-                <StatusText>{tAddress('no_results')}</StatusText>
+                <StatusText>
+                  {searchType === SearchType.Hectometer
+                    ? tAddress('no_hectometer_results')
+                    : tAddress('no_results')}
+                </StatusText>
               </ComboboxOption>
             )}
           </div>

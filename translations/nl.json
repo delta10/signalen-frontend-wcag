@@ -99,7 +99,8 @@
       "tab_navigation_objects": "Als er objecten beschikbaar zijn, met tab er doorheen bladeren en door middel van spatie selecteren"
     },
     "address": {
-      "no_results": "Geen adressen gevonden"
+      "no_results": "Geen adressen gevonden",
+      "no_hectometer_results": "Geen hectometerpalen gevonden"
     }
   },
   "describe_contact": {
