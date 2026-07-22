@@ -80,7 +80,7 @@ const mapHectometerSuggestDocToAddress = (
       postcode: '',
       huisnummer: '',
       woonplaats: '',
-      openbare_ruimte: item.wegnummer,
+      openbare_ruimte: item.weergavenaam,
       weergave_naam: item.weergavenaam,
     },
   ]
