@@ -1,10 +1,12 @@
 import { axiosInstance } from '@/services/client/api-client'
 import { AxiosResponse } from 'axios'
 import {
-  AddressCoordinateResponse,
+  CoordinateResponse,
   SuggestResponse,
   HectometerSuggestDoc,
   AddressSuggestDoc,
+  AddressCoordinateDoc,
+  HectometerCoordinateDoc,
 } from '@/types/pdok'
 import {
   PdokAddressSuggestScope,
@@ -113,11 +115,50 @@ export const getSuggestedHectometerPosts = async (
   }
 }
 
+/**
+ * Finds the nearest hectometer post to given coordinates within a specified distance.
+ *
+ * @param lat - Latitude of the reference point.
+ * @param lng - Longitude of the reference point.
+ * @param distance - Search radius in meters.
+ * @param pdokBaseUrl - Base URL for the PDOK Locatieserver API.
+ * @returns Nearest hectometer post or `null` if not found.
+ * @throws When `pdokBaseUrl` is missing.
+ */
+export const getNearestHectometerPostByCoordinate = async (
+  lat: number,
+  lng: number,
+  distance: number,
+  pdokBaseUrl: string | undefined
+) => {
+  if (!pdokBaseUrl) {
+    console.error('Pdok Base URL is required to fetch nearest hectometer post.')
+    throw new Error(
+      'Pdok Base URL is required to fetch nearest hectometer post.'
+    )
+  }
+
+  const axios = axiosInstance(pdokBaseUrl)
+
+  try {
+    const response: AxiosResponse<CoordinateResponse<HectometerCoordinateDoc>> =
+      await axios.get(
+        `/search/v3_1/reverse?lat=${lat}&lon=${lng}&distance=${distance}&type=hectometerpaal&fl=id,weergavenaam,type,score,afstand,centroide_ll&fq=bron:NWB&start=0&rows=10&wt=json`
+      )
+
+    return response.data.response.docs.sort(
+      (docA, docB) => docA.afstand - docB.afstand
+    )[0]
+  } catch {
+    return null
+  }
+}
+
 // Finds the nearest address to given coordinates within a specified distance
 // @param {number} lat - Latitude of the reference point
 // @param {number} lng - Longitude of the reference point
 // @param {number} distance - Search radius in meters
-// @returns {Promise<AddressCoordinateResponse['response']['docs'][0] | null>} - Nearest address or null if not found
+// @returns {Promise<CoordinateResponse<T>['response']['docs'][0] | null>} - Nearest address or null if not found
 // @throws {Error} - Returns null if the request fails
 export const getNearestAddressByCoordinate = async (
   lat: number,
@@ -132,9 +173,10 @@ export const getNearestAddressByCoordinate = async (
   const axios = axiosInstance(pdokBaseUrl)
 
   try {
-    const response: AxiosResponse<AddressCoordinateResponse> = await axios.get(
-      `/search/v3_1/reverse?lat=${lat}&lon=${lng}&distance=${distance}&fl=id,weergavenaam,straatnaam,huis_nlt,postcode,woonplaatsnaam,centroide_ll,openbareruimte_id`
-    )
+    const response: AxiosResponse<CoordinateResponse<AddressCoordinateDoc>> =
+      await axios.get(
+        `/search/v3_1/reverse?lat=${lat}&lon=${lng}&distance=${distance}&fl=id,weergavenaam,straatnaam,huis_nlt,postcode,woonplaatsnaam,centroide_ll,openbareruimte_id`
+      )
 
     return response.data.response.docs.sort(
       (docA, docB) => docA.afstand - docB.afstand

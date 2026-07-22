@@ -47,7 +47,7 @@
       "tel": "073 68 12 812"
     },
     "map": {
-      "find_address_in_distance": 30,
+      "find_address_in_distance": 60,
       "minimal_zoom": 17,
       "center": [51.52, 5.112],
       "maxBounds": [

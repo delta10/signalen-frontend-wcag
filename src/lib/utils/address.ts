@@ -1,4 +1,7 @@
-import { getNearestAddressByCoordinate } from '@/services/location/address'
+import {
+  getNearestAddressByCoordinate,
+  getNearestHectometerPostByCoordinate,
+} from '@/services/location/address'
 import { Feature, GeoJsonProperties, Geometry } from 'geojson'
 import { AppConfig } from '@/types/config'
 import { FormStoreState } from '@/types/stores'
@@ -8,10 +11,35 @@ export const getNewSelectedAddress = async (
   lng: number,
   config: AppConfig | null
 ) => {
+  const findAddressInDistance = config
+    ? config.base.map.find_address_in_distance
+    : 30
+
+  const hectometerPost = config?.base.pdok_hectometer_suggest?.enabled
+    ? await getNearestHectometerPostByCoordinate(
+        lat,
+        lng,
+        findAddressInDistance,
+        config.pdokUrlApi
+      )
+    : null
+
+  if (hectometerPost) {
+    return {
+      coordinates: [lng, lat],
+      id: hectometerPost.id,
+      postcode: '',
+      huisnummer: '',
+      woonplaats: '',
+      openbare_ruimte: '',
+      weergave_naam: hectometerPost.weergavenaam,
+    }
+  }
+
   const address = await getNearestAddressByCoordinate(
     lat,
     lng,
-    config ? config.base.map.find_address_in_distance : 30,
+    findAddressInDistance,
     config?.pdokUrlApi
   )
 
