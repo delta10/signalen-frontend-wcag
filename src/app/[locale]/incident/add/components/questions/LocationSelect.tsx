@@ -3,7 +3,7 @@ import { MapDialog } from '@/app/[locale]/incident/add/components/MapDialog'
 import { Address, PublicQuestion } from '@/types/form'
 import { MapProvider } from 'react-map-gl/maplibre'
 import { useFormContext } from 'react-hook-form'
-import React, { useState } from 'react'
+import React, { useId, useState } from 'react'
 import {
   Button,
   Paragraph,
@@ -35,6 +35,14 @@ export const LocationSelect = ({ field }: LocationSelectProps) => {
   const t = useTranslations('describe_add.map')
   const tGeneral = useTranslations('general')
   const [restrictionError, setRestrictionError] = useState<string | null>(null)
+  const errorMessageId = useId()
+  const restrictionErrorId = useId()
+  const comboboxAriaDescribedBy = [
+    errorMessage ? errorMessageId : undefined,
+    restrictionError ? restrictionErrorId : undefined,
+  ]
+    .filter(Boolean)
+    .join(' ')
   const showAddressSearch = !config.restrictSelectionArea
   const showHectometerSearch = Boolean(
     config.base.pdok_hectometer_suggest?.enabled
@@ -63,10 +71,14 @@ export const LocationSelect = ({ field }: LocationSelectProps) => {
           : `${t('map_label')} (${tGeneral('form.required_short')})`}
       </FieldsetLegend>
       {Boolean(errorMessage) && errorMessage && (
-        <FormFieldErrorMessage>{errorMessage}</FormFieldErrorMessage>
+        <FormFieldErrorMessage id={errorMessageId}>
+          {errorMessage}
+        </FormFieldErrorMessage>
       )}
       {restrictionError && (
-        <FormFieldErrorMessage>{restrictionError}</FormFieldErrorMessage>
+        <FormFieldErrorMessage id={restrictionErrorId}>
+          {restrictionError}
+        </FormFieldErrorMessage>
       )}
       {showAddressSearch && (
         <>
@@ -88,6 +100,8 @@ export const LocationSelect = ({ field }: LocationSelectProps) => {
           <div className="mb-4" {...register('location')}>
             <AddressCombobox
               id="location-hectometer"
+              ariaDescribedBy={comboboxAriaDescribedBy || undefined}
+              ariaInvalid={Boolean(errorMessage) || Boolean(restrictionError)}
               searchType={SearchType.Hectometer}
               validateSelection={validateRestrictedAreaSelection}
             />

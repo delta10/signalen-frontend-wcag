@@ -42,6 +42,8 @@ type AddressComboboxProps = {
   setIsMapSelected?: Dispatch<SetStateAction<boolean | null>>
   mobileView?: boolean
   id?: string
+  ariaDescribedBy?: string
+  ariaInvalid?: boolean
   searchType?: SearchType
   validateSelection?: (selectedAddress: Address) => boolean | Promise<boolean>
 }
@@ -135,6 +137,8 @@ export const AddressCombobox = ({
   setIsMapSelected,
   mobileView = false,
   id,
+  ariaDescribedBy,
+  ariaInvalid,
   searchType = SearchType.Address,
   validateSelection,
 }: AddressComboboxProps) => {
@@ -231,6 +235,8 @@ export const AddressCombobox = ({
             ? tMap('search_hectometer_label')
             : tMap('search_address_label')
         }
+        aria-describedby={ariaDescribedBy}
+        aria-invalid={ariaInvalid || undefined}
         as={Textbox}
         displayValue={getDisplayValue}
         name={searchType === SearchType.Hectometer ? 'hectometer' : 'address'}

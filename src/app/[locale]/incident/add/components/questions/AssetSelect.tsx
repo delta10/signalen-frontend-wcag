@@ -3,7 +3,7 @@ import { MapDialog } from '@/app/[locale]/incident/add/components/MapDialog'
 import { Address, PublicQuestion } from '@/types/form'
 import { MapProvider, MapRef } from 'react-map-gl/maplibre'
 import { useFormContext } from 'react-hook-form'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useId, useState } from 'react'
 import {
   Button,
   Paragraph,
@@ -46,6 +46,14 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
   // loading assets wordt wel geset maar niet gebruikt
   const [loadingAssets, setLoadingAssets] = useState<boolean>(false)
   const [restrictionError, setRestrictionError] = useState<string | null>(null)
+  const errorMessageId = useId()
+  const restrictionErrorId = useId()
+  const comboboxAriaDescribedBy = [
+    errorMessage ? errorMessageId : undefined,
+    restrictionError ? restrictionErrorId : undefined,
+  ]
+    .filter(Boolean)
+    .join(' ')
   const showAddressSearch = !config.restrictSelectionArea
   const showHectometerSearch = Boolean(
     config.base.pdok_hectometer_suggest?.enabled
@@ -165,10 +173,14 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
       </FieldsetLegend>
 
       {Boolean(errorMessage) && errorMessage && (
-        <FormFieldErrorMessage>{errorMessage}</FormFieldErrorMessage>
+        <FormFieldErrorMessage id={errorMessageId}>
+          {errorMessage}
+        </FormFieldErrorMessage>
       )}
       {restrictionError && (
-        <FormFieldErrorMessage>{restrictionError}</FormFieldErrorMessage>
+        <FormFieldErrorMessage id={restrictionErrorId}>
+          {restrictionError}
+        </FormFieldErrorMessage>
       )}
 
       {showAddressSearch && (
@@ -192,6 +204,8 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
           <div className="mb-4" {...register('location')}>
             <AddressCombobox
               id="asset-hectometer"
+              ariaDescribedBy={comboboxAriaDescribedBy || undefined}
+              ariaInvalid={Boolean(errorMessage) || Boolean(restrictionError)}
               searchType={SearchType.Hectometer}
               validateSelection={validateRestrictedAreaSelection}
             />
@@ -238,12 +252,12 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
                         ? t('chosen_location_address_and_points', {
                             location: formStoreState.address.weergave_naam,
                             points: formStoreState.selectedFeatures
-                              .map((feature: any) => feature.label)
+                              .map((feature) => feature.label)
                               .join(', '),
                           })
                         : t('chosen_location_points', {
                             points: formStoreState.selectedFeatures
-                              .map((feature: any) => feature.label)
+                              .map((feature) => feature.label)
                               .join(', '),
                           })
                       : t('edit_location')
@@ -261,7 +275,7 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
           {getLocationDisplayName(formStoreState, t('pinned_location'))}
         </Paragraph>
         <ParagraphOrList
-          entries={formStoreState.selectedFeatures.map((feature: any) => [
+          entries={formStoreState.selectedFeatures.map((feature) => [
             feature.id,
             feature.label,
           ])}
