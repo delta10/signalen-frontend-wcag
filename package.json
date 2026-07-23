@@ -23,6 +23,7 @@
   "dependencies": {
     "@headlessui/react": "2.2.10",
     "@hookform/resolvers": "3.9.0",
+    "@mapbox/vector-tile": "3.0.0",
     "@nl-design-system-candidate/button-css": "1.1.0",
     "@nl-design-system-candidate/button-react": "1.1.0",
     "@radix-ui/react-dialog": "1.1.15",
@@ -60,6 +61,7 @@
     "maplibre-gl": "4.7.1",
     "next": "16.2.9",
     "next-intl": "4.13.0",
+    "pbf": "5.1.2",
     "react": "18",
     "react-dom": "18",
     "react-hook-form": "7.69.0",

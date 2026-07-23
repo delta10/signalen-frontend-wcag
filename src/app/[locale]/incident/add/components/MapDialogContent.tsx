@@ -9,7 +9,7 @@ import {
   SpotlightSection,
 } from '@/components'
 import MapExplainerAccordion from '@/app/[locale]/incident/add/components/questions/MapExplainerAccordion'
-import { AddressCombobox } from '@/components/ui/AddressCombobox'
+import { AddressCombobox, SearchType } from '@/components/ui/AddressCombobox'
 import {
   IconCurrentLocation,
   IconInfoCircle,
@@ -32,6 +32,7 @@ import { ExtendedFeature } from '@/types/map'
 import FeatureTypeLegend from '@/app/[locale]/incident/add/components/FeatureTypeLegend'
 import { Layer, Source } from 'react-map-gl/maplibre'
 import { OUT_OF_BOUNDS_SOURCE_ID } from '@/lib/utils/restrictedAreaUtils'
+import { MapLayers } from '@/app/[locale]/incident/add/components/MapLayers'
 
 export type MapDialogContentProps = {
   onMapReady?: (map: MapRef) => void
@@ -40,6 +41,12 @@ export type MapDialogContentProps = {
   isAssetSelect?: boolean
   loadingAssets?: boolean
 } & React.HTMLAttributes<HTMLDivElement>
+
+type SearchField = {
+  id: string
+  label: string
+  searchType: SearchType
+}
 
 const MapDialogContent = ({
   onMapReady,
@@ -79,7 +86,29 @@ const MapDialogContent = ({
     setOpenLegend,
     outOfBoundsLineStyle,
     outOfBoundsFillStyle,
+    validateRestrictedAreaSelection,
   } = useMapDialog(onMapReady, field, features, isAssetSelect)
+  const showAddressSearch = Boolean(config && !config.restrictSelectionArea)
+  const showHectometerSearch = Boolean(
+    config?.base.pdok_hectometer_suggest?.enabled
+  )
+  const searchFields: SearchField[] = []
+
+  if (showAddressSearch) {
+    searchFields.push({
+      id: 'address-combobox',
+      label: t('search_address_label'),
+      searchType: SearchType.Address,
+    })
+  }
+
+  if (showHectometerSearch) {
+    searchFields.push({
+      id: 'hectometer',
+      label: t('search_hectometer_label'),
+      searchType: SearchType.Hectometer,
+    })
+  }
 
   return (
     <>
@@ -115,18 +144,18 @@ const MapDialogContent = ({
 
           <MapExplainerAccordion />
 
-          {config && !config.restrictSelectionArea && (
-            <div className="flex flex-col py-2">
-              <label htmlFor="address-combobox">
-                {t('search_address_label')}
-              </label>
+          {searchFields.map((searchField) => (
+            <div className="flex flex-col py-2" key={searchField.id}>
+              <label htmlFor={searchField.id}>{searchField.label}</label>
               <AddressCombobox
                 updatePosition={updatePosition}
                 setIsMapSelected={setIsMapSelected}
-                id="address-combobox"
+                id={searchField.id}
+                searchType={searchField.searchType}
+                validateSelection={validateRestrictedAreaSelection}
               />
             </div>
-          )}
+          ))}
 
           {isAssetSelect && dialogMap && config && field ? (
             <div className="flex flex-col gap-4 pt-2 flex-grow">
@@ -206,9 +235,7 @@ const MapDialogContent = ({
             mapStyle={mapStyle}
             scrollZoom={!(width !== 0 && width < 768)}
             attributionControl={false}
-            maxBounds={
-              config.base.map.maxBounds as [[number, number], [number, number]]
-            }
+            maxBounds={config.base.map.maxBounds}
           >
             {/* Address or selected point on map marker */}
             {marker.length && (isMapSelected === null || isMapSelected) && (
@@ -257,6 +284,7 @@ const MapDialogContent = ({
                 <Layer {...outOfBoundsLineStyle} />
               </Source>
             )}
+            <MapLayers />
           </Map>
           <div className="map-location-group">
             <Button

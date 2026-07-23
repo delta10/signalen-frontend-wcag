@@ -1,17 +1,53 @@
-import { getNearestAddressByCoordinate } from '@/services/location/address'
+import {
+  getNearestAddressByCoordinate,
+  getNearestHectometerPostByCoordinate,
+} from '@/services/location/address'
 import { Feature, GeoJsonProperties, Geometry } from 'geojson'
 import { AppConfig } from '@/types/config'
 import { FormStoreState } from '@/types/stores'
+
+export const formatHectometerDisplayName = (displayName: string) =>
+  displayName.replace(/-(\d+)(\d)$/, '-$1.$2')
+
+export const normalizeHectometerSearchQuery = (searchQuery: string) =>
+  searchQuery.replace(/(\d+)\.(\d)(?=\D|$)/g, '$1$2')
 
 export const getNewSelectedAddress = async (
   lat: number,
   lng: number,
   config: AppConfig | null
 ) => {
+  const findAddressInDistance = config
+    ? config.base.map.find_address_in_distance
+    : 30
+
+  const hectometerPost = config?.base.pdok_hectometer_suggest?.enabled
+    ? await getNearestHectometerPostByCoordinate(
+        lat,
+        lng,
+        findAddressInDistance,
+        config.pdokUrlApi
+      )
+    : null
+
+  if (hectometerPost) {
+    const displayName = formatHectometerDisplayName(hectometerPost.weergavenaam)
+
+    return {
+      coordinates: [lng, lat],
+      id: hectometerPost.id,
+      postcode: '',
+      huisnummer: '',
+      woonplaats: '',
+      openbare_ruimte: displayName,
+      weergave_naam: displayName,
+    }
+  }
+
   const address = await getNearestAddressByCoordinate(
     lat,
     lng,
-    config ? config.base.map.find_address_in_distance : 30,
+    findAddressInDistance,
     config?.pdokUrlApi
   )
 

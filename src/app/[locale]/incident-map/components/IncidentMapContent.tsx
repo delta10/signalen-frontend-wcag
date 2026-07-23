@@ -394,9 +394,7 @@ const IncidentMapContent = () => {
             mapStyle={getMapStyleUrl(config, isDarkMode)}
             scrollZoom={!(width !== 0 && width < 768)}
             attributionControl={false}
-            maxBounds={
-              config.base.map.maxBounds as [[number, number], [number, number]]
-            }
+            maxBounds={config.base.map.maxBounds}
           >
             {filteredFeatures &&
               filteredFeatures.map((feature: ExtendedFeature) => {

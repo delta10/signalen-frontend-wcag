@@ -1,3 +1,5 @@
+import type { CoordinateBounds } from '@/lib/utils/map'
+
 /** PDOK Locatieserver suggest: `gemeentenaam` vs `provincienaam` filter. */
 export enum PdokAddressSuggestScope {
   Gemeente = 'gemeente',
@@ -9,6 +11,41 @@ export const pdokAddressSuggestFields: Record<PdokAddressSuggestScope, string> =
     [PdokAddressSuggestScope.Gemeente]: 'gemeentenaam',
     [PdokAddressSuggestScope.Provincie]: 'provincienaam',
   }
+
+type MapLayerStyleValue =
+  | string
+  | number
+  | boolean
+  | null
+  | MapLayerStyleValue[]
+  | { [key: string]: MapLayerStyleValue }
+
+export type MapLayerConfiguration = {
+  id: string
+  source: {
+    type: 'geojson' | 'vector'
+    url?: string
+    data?: string | { [key: string]: MapLayerStyleValue }
+    promoteId?: string
+    tolerance?: number
+  }
+  icons?: Array<{
+    id: string
+    url: string
+    width?: number
+    height?: number
+  }>
+  layers: Array<{
+    id: string
+    type: 'symbol' | 'circle' | 'line' | 'fill' | 'background'
+    sourceLayer?: string
+    minzoom?: number
+    maxzoom?: number
+    filter?: MapLayerStyleValue[]
+    layout?: { [key: string]: MapLayerStyleValue }
+    paint?: { [key: string]: MapLayerStyleValue }
+  }>
+}
 
 export type AppConfig = {
   maptilerApiKey: string
@@ -34,6 +71,10 @@ export type AppConfig = {
     pdok_address_suggest: {
       scope: PdokAddressSuggestScope
       organization: string
+    }
+    pdok_hectometer_suggest?: {
+      enabled: boolean
+      bounds?: CoordinateBounds
     }
     fonts?: {
       /** Optional Google Fonts stylesheet URL to load in the document head. */
@@ -66,7 +107,8 @@ export type AppConfig = {
       minimal_zoom: number
       default_zoom: number
       center: number[]
-      maxBounds: number[][]
+      maxBounds: CoordinateBounds
+      layers?: MapLayerConfiguration[]
     }
     links: {
       about: string

@@ -12,7 +12,10 @@ import React, {
   useState,
 } from 'react'
 import { useConfig } from '@/contexts/ConfigContext'
-import { getSuggestedAddresses } from '@/services/location/address'
+import {
+  getSuggestedAddresses,
+  getSuggestedHectometerPosts,
+} from '@/services/location/address'
 import { Listbox, ListboxOption, StatusText, Textbox } from '@/components/index'
 // Import the Select Combobox component for the side-effects of injecting CSS
 // for related components, such as Textbox and Listbox.
@@ -21,12 +24,112 @@ import { useFormStore } from '@/store/form_store'
 import { Address } from '@/types/form'
 import { useTranslations } from 'next-intl'
 import { cn } from '@/lib/utils/style'
+import { AddressSuggestDoc, HectometerSuggestDoc } from '@/types/pdok'
+import { AppConfig, PdokAddressSuggestScope } from '@/types/config'
+import { getPointCoordinates } from '@/lib/utils/map'
+import {
+  formatHectometerDisplayName,
+  normalizeHectometerSearchQuery,
+} from '@/lib/utils/address'
+
+export enum SearchType {
+  Address = 'address',
+  Hectometer = 'hectometer',
+}
 
 type AddressComboboxProps = {
   updatePosition?: (lat: number, lng: number, flyTo?: boolean) => void
   setIsMapSelected?: Dispatch<SetStateAction<boolean | null>>
   mobileView?: boolean
   id?: string
+  ariaDescribedBy?: string
+  ariaInvalid?: boolean
+  searchType?: SearchType
+  validateSelection?: (selectedAddress: Address) => boolean | Promise<boolean>
+}
+
+const normalizeQuery = (str: string) => str.trim().replace(/\s+/g, ' ')
+
+const mapAddressSuggestDocToAddress = (item: AddressSuggestDoc): Address[] => {
+  const coordinates = getPointCoordinates(item.centroide_ll)
+
+  if (!coordinates) {
+    return []
+  }
+
+  return [
+    {
+      coordinates,
+      id: item.id,
+      postcode: item.postcode,
+      huisnummer: item.huis_nlt,
+      woonplaats: item.woonplaatsnaam,
+      openbare_ruimte: item.straatnaam,
+      weergave_naam: item.weergavenaam,
+    },
+  ]
+}
+
+const mapHectometerSuggestDocToAddress = (
+  item: HectometerSuggestDoc
+): Address[] => {
+  const coordinates = getPointCoordinates(item.centroide_ll)
+
+  const displayName = formatHectometerDisplayName(item.weergavenaam)
+
+  if (!coordinates) {
+    return []
+  }
+
+  return [
+    {
+      coordinates,
+      id: item.id,
+      postcode: '',
+      huisnummer: '',
+      woonplaats: '',
+      openbare_ruimte: displayName,
+      weergave_naam: displayName,
+    },
+  ]
+}
+
+const getHectometerBounds = (config: AppConfig) =>
+  config.base.pdok_hectometer_suggest?.bounds ?? config.base.map.maxBounds
+
+const getSuggestionOptions = async (
+  searchType: SearchType,
+  searchQuery: string,
+  config: AppConfig
+): Promise<Address[]> => {
+  if (searchType === SearchType.Hectometer) {
+    const options = {
+      bounds: getHectometerBounds(config),
+      roadNumberPrefix:
+        config.base.pdok_address_suggest.scope ===
+        PdokAddressSuggestScope.Provincie
+          ? 'N'
+          : undefined,
+    }
+
+    const apiCall = await getSuggestedHectometerPosts(
+      normalizeHectometerSearchQuery(searchQuery),
+      config.pdokUrlApi,
+      options
+    )
+
+    return apiCall.response.docs.flatMap(mapHectometerSuggestDocToAddress)
+  }
+
+  const { scope, organization } = config.base.pdok_address_suggest
+  const apiCall = await getSuggestedAddresses(
+    searchQuery,
+    scope,
+    organization,
+    config.pdokUrlApi
+  )
+
+  return apiCall.response.docs.flatMap(mapAddressSuggestDocToAddress)
 }
 
 export const AddressCombobox = ({
@@ -34,75 +137,68 @@ export const AddressCombobox = ({
   setIsMapSelected,
   mobileView = false,
   id,
+  ariaDescribedBy,
+  ariaInvalid,
+  searchType = SearchType.Address,
+  validateSelection,
 }: AddressComboboxProps) => {
   const [query, setQuery] = useState('')
   const config = useConfig()
   const [addressOptions, setAddressOptions] = useState<Address[]>([])
   const [loading, setLoading] = useState<boolean>(false)
   const { formState, updateForm } = useFormStore()
-  const t = useTranslations('describe_add.address')
+  const tAddress = useTranslations('describe_add.address')
+  const tMap = useTranslations('describe_add.map')
 
-  const parsePoint = (str: string): [number, number] | undefined => {
-    const match = /POINT\((\d+(?:\.\d+)?)\s+(\d+(?:\.\d+)?)\)/i.exec(str)
-
-    if (match) {
-      return [parseFloat(match[1]), parseFloat(match[2])]
+  const getDisplayValue = (address: Address | null) => {
+    if (!address) {
+      return ''
     }
+
+    if (searchType === SearchType.Hectometer) {
+      return address.id.startsWith('hmp-') ? (address.weergave_naam ?? '') : ''
+    }
+
+    return address.id.startsWith('hmp-') ? '' : (address.weergave_naam ?? '')
   }
 
-  const normalizeQuery = (str: string) => str.trim().replace(/\s+/, ' ')
-
   useEffect(() => {
-    const { scope, organization } = config.base.pdok_address_suggest
     const normalizedQuery = normalizeQuery(query)
 
     const getAddressOptions = async () => {
-      if (query.length >= 1) {
-        setLoading(true)
-        try {
-          const apiCall = await getSuggestedAddresses(
-            normalizedQuery,
-            scope,
-            organization,
-            config?.pdokUrlApi
-          )
-
-          const options = apiCall.response.docs.flatMap((item): Address[] => {
-            const coordinates = parsePoint(item.centroide_ll)
-
-            if (!coordinates) {
-              return []
-            }
-
-            return [
-              {
-                coordinates,
-                id: item.id,
-                postcode: item.postcode,
-                huisnummer: item.huis_nlt,
-                woonplaats: item.woonplaatsnaam,
-                openbare_ruimte: item.straatnaam,
-                weergave_naam: item.weergavenaam,
-              },
-            ]
-          })
-
-          setAddressOptions(options)
-        } catch {
-          setAddressOptions([])
-        } finally {
-          setLoading(false)
-        }
+      if (normalizedQuery.length < 1) {
+        setAddressOptions([])
         return
       }
 
-      setAddressOptions([])
+      setLoading(true)
+
+      try {
+        const options = await getSuggestionOptions(
+          searchType,
+          normalizedQuery,
+          config
+        )
+        setAddressOptions(options)
+      } catch {
+        setAddressOptions([])
+      } finally {
+        setLoading(false)
+      }
     }
 
     getAddressOptions()
-  }, [config, query])
+  }, [config, query, searchType])
 
-  const onChangeAddress = (selectedAddress: Address | null) => {
+  const onChangeAddress = async (selectedAddress: Address | null) => {
+    if (
+      selectedAddress &&
+      validateSelection &&
+      !(await validateSelection(selectedAddress))
+    ) {
+      return
+    }
+
     if (selectedAddress) {
       updateForm({
         ...formState,
@@ -134,10 +230,16 @@ export const AddressCombobox = ({
   return (
     <Combobox value={formState.address} onChange={onChangeAddress}>
       <ComboboxInput
-        aria-label="Adres"
+        aria-label={
+          searchType === SearchType.Hectometer
+            ? tMap('search_hectometer_label')
+            : tMap('search_address_label')
+        }
+        aria-describedby={ariaDescribedBy}
+        aria-invalid={ariaInvalid || undefined}
         as={Textbox}
-        displayValue={(address: Address | null) => address?.weergave_naam ?? ''}
-        name="address"
+        displayValue={getDisplayValue}
+        name={searchType === SearchType.Hectometer ? 'hectometer' : 'address'}
         onChange={(event) => setQuery(event.target.value)}
         autoComplete="off"
         id={id}
@@ -146,24 +248,30 @@ export const AddressCombobox = ({
         })}
       />
       {!loading && (
-        <ComboboxOptions as={Listbox} anchor="bottom" className="z-[9999]">
-          <div>
-            {addressOptions.length > 0 ? (
-              addressOptions.map((address) => (
-                <ComboboxOption as={Fragment} key={address.id} value={address}>
-                  {({ focus }) => (
-                    <ListboxOption active={focus}>
-                      {address.weergave_naam}
-                    </ListboxOption>
-                  )}
-                </ComboboxOption>
-              ))
-            ) : (
-              <ComboboxOption value={null} as={ListboxOption} disabled>
-                <StatusText>{t('no_results')}</StatusText>
+        <ComboboxOptions
+          as={Listbox}
+          anchor="bottom"
+          className="z-[9999] [--utrecht-listbox-inline-size:var(--input-width)]"
+        >
+          {addressOptions.length > 0 ? (
+            addressOptions.map((address) => (
+              <ComboboxOption as={Fragment} key={address.id} value={address}>
+                {({ focus }) => (
+                  <ListboxOption active={focus}>
+                    {address.weergave_naam}
+                  </ListboxOption>
+                )}
               </ComboboxOption>
-            )}
-          </div>
+            ))
+          ) : (
+            <ComboboxOption value={null} as={ListboxOption} disabled>
+              <StatusText>
+                {searchType === SearchType.Hectometer
+                  ? tAddress('no_hectometer_results')
+                  : tAddress('no_results')}
+              </StatusText>
+            </ComboboxOption>
+          )}
         </ComboboxOptions>
       )}
     </Combobox>

@@ -18,12 +18,13 @@ import { useTranslations } from 'next-intl'
 import { FormFieldErrorMessage } from '@/components'
 import { getGeoJsonFeatures } from '@/services/location/features'
 import { FeatureCollection } from 'geojson'
-import { AddressCombobox } from '@/components/ui/AddressCombobox'
+import { AddressCombobox, SearchType } from '@/components/ui/AddressCombobox'
 import {
   getLocationDisplayName,
   getNearestAddressByCoordinate,
 } from '@/services/location/address'
 import { ParagraphOrList } from '@/components/ui/ParagraphOrList'
+import { useLocationComboboxValidation } from '@/app/[locale]/incident/add/components/questions/useLocationComboboxValidation'
 
 export interface AssetSelectProps {
   field?: PublicQuestion
@@ -44,6 +45,19 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
   const [features, setFeatures] = useState<FeatureCollection | null>(null)
   // loading assets wordt wel geset maar niet gebruikt
   const [loadingAssets, setLoadingAssets] = useState<boolean>(false)
+  const {
+    comboboxAriaDescribedBy,
+    comboboxAriaInvalid,
+    errorMessageId,
+    restrictionError,
+    restrictionErrorId,
+    validateRestrictedAreaSelection,
+  } = useLocationComboboxValidation(errorMessage)
+  const showAddressSearch = !config.restrictSelectionArea
+  const showHectometerSearch = Boolean(
+    config.base.pdok_hectometer_suggest?.enabled
+  )
+  const showAnySearch = showAddressSearch || showHectometerSearch
 
   const onMapReady = (map: MapRef) => {
     setDialogMap(map)
@@ -135,7 +149,10 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
   }, [config, field, formStoreState.selectedFeatures, setValue])
 
   return (
-    <Fieldset invalid={Boolean(errorMessage)} className="w-full">
+    <Fieldset
+      invalid={Boolean(errorMessage) || Boolean(restrictionError)}
+      className="w-full"
+    >
       <FieldsetLegend>
         {field
           ? `${field.meta.label} (${tGeneral('form.required_short')})`
@@ -143,10 +160,17 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
       </FieldsetLegend>
 
       {Boolean(errorMessage) && errorMessage && (
-        <FormFieldErrorMessage>{errorMessage}</FormFieldErrorMessage>
+        <FormFieldErrorMessage id={errorMessageId}>
+          {errorMessage}
+        </FormFieldErrorMessage>
+      )}
+      {restrictionError && (
+        <FormFieldErrorMessage id={restrictionErrorId}>
+          {restrictionError}
+        </FormFieldErrorMessage>
       )}
 
-      {!config.restrictSelectionArea && (
+      {showAddressSearch && (
         <>
           <FormFieldDescription>
             {t('choose_address_description')}
@@ -158,12 +182,26 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
         </>
       )}
 
+      {showHectometerSearch && (
+        <>
+          <FormFieldDescription>
+            {t('search_hectometer_label')}
+          </FormFieldDescription>
+
+          <div className="mb-4" {...register('location')}>
+            <AddressCombobox
+              id="asset-hectometer"
+              ariaDescribedBy={comboboxAriaDescribedBy}
+              ariaInvalid={comboboxAriaInvalid}
+              searchType={SearchType.Hectometer}
+              validateSelection={validateRestrictedAreaSelection}
+            />
+          </div>
+        </>
+      )}
+
       <FormFieldDescription>
-        {t(
-          config.restrictSelectionArea
-            ? 'use_map_description'
-            : 'or_use_map_description'
-        )}
+        {t(showAnySearch ? 'or_use_map_description' : 'use_map_description')}
       </FormFieldDescription>
       <div className="relative w-full">
         <div style={{ minHeight: 200, height: 200 }} role="img" aria-label="">
@@ -201,12 +239,12 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
                         ? t('chosen_location_address_and_points', {
                             location: formStoreState.address.weergave_naam,
                             points: formStoreState.selectedFeatures
-                              .map((feature: any) => feature.label)
+                              .map((feature) => feature.label)
                               .join(', '),
                           })
                         : t('chosen_location_points', {
                             points: formStoreState.selectedFeatures
-                              .map((feature: any) => feature.label)
+                              .map((feature) => feature.label)
                               .join(', '),
                           })
                       : t('edit_location')
@@ -224,7 +262,7 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
           {getLocationDisplayName(formStoreState, t('pinned_location'))}
         </Paragraph>
         <ParagraphOrList
-          entries={formStoreState.selectedFeatures.map((feature: any) => [
+          entries={formStoreState.selectedFeatures.map((feature) => [
             feature.id,
             feature.label,
           ])}

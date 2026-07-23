@@ -6,6 +6,21 @@ import {
 } from '@/lib/utils/parseTemplateString'
 import type { AppConfig } from '@/types/config'
 
+export type CoordinateBounds = [[number, number], [number, number]]
+
+// Parses a PDOK WKT point string into longitude/latitude coordinates.
+// @param {string} point - WKT point in the format `POINT(lng lat)`
+// @returns {[number, number] | null} - Longitude/latitude coordinates or null when parsing fails
+export const getPointCoordinates = (point: string): [number, number] | null => {
+  const match = /POINT\((\d+(?:\.\d+)?)\s+(\d+(?:\.\d+)?)\)/i.exec(point)
+
+  if (!match) {
+    return null
+  }
+
+  return [parseFloat(match[1]), parseFloat(match[2])]
+}
+
 // Validates if the argument is a coordinate pair [longitude, latitude]
 // @param {unknown} arg - Input to validate
 // @returns {arg is [number, number]} - Type predicate for coordinate tuple
@@ -21,12 +36,12 @@ export const isCoordinates = (arg: unknown): arg is [number, number] => {
 // Checks if coordinates are within specified geographical bounds
 // @param {number} lat - Latitude to check
 // @param {number} lng - Longitude to check
-// @param {[[number, number], [number, number]]} maxBounds - Geographical boundary coordinates
+// @param {CoordinateBounds} maxBounds - Geographical boundary coordinates
 // @returns {boolean} - Whether coordinates are inside bounds
 export const isCoordinateInsideMaxBound = (
   lat: number,
   lng: number,
-  maxBounds: number[][]
+  maxBounds: CoordinateBounds
 ): boolean => {
   const [minLng, minLat] = maxBounds[0]
   const [maxLng, maxLat] = maxBounds[1]

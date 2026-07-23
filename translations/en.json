@@ -59,6 +59,7 @@
       "chosen_location_address_and_points": "Selected location {location} and selected points {points}, click to edit",
       "chosen_location_points": "Selected points {points}, click to edit",
       "search_address_label": "Search by address or postal code",
+      "search_hectometer_label": "Search by road number plus hectometer post number",
       "pinned_location": "The location is pinned on the map",
       "back_to_map": "Back to the map",
       "show_list": "Show {name} list",
@@ -98,7 +99,8 @@
       "objects": "objects"
     },
     "address": {
-      "no_results": "No addresses found."
+      "no_results": "No addresses found.",
+      "no_hectometer_results": "No hectometer posts found."
     }
   },
   "describe_contact": {

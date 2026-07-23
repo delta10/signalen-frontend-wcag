@@ -25,7 +25,7 @@ import { ButtonGroup } from '@/components'
 
 import { FeatureListItem } from '@/app/[locale]/incident/add/components/FeatureListItem'
 
-import { AddressCombobox } from '@/components/ui/AddressCombobox'
+import { AddressCombobox, SearchType } from '@/components/ui/AddressCombobox'
 
 import './MapDialog.css'
 
@@ -40,6 +40,13 @@ import { FeatureTypeIcon } from '@/app/[locale]/incident/add/components/FeatureT
 import { ExtendedFeature } from '@/types/map'
 import FeatureTypeLegend from '@/app/[locale]/incident/add/components/FeatureTypeLegend'
 import { OUT_OF_BOUNDS_SOURCE_ID } from '@/lib/utils/restrictedAreaUtils'
+import { MapLayers } from '@/app/[locale]/incident/add/components/MapLayers'
+
+type SearchField = {
+  id: string
+  label: string
+  searchType: SearchType
+}
 
 const MapDialogMobileContent = ({
   onMapReady,
@@ -83,7 +90,29 @@ const MapDialogMobileContent = ({
     setOpenLegend,
     outOfBoundsLineStyle,
     outOfBoundsFillStyle,
+    validateRestrictedAreaSelection,
   } = useMapDialog(onMapReady, field, features, isAssetSelect)
+  const showAddressSearch = Boolean(config && !config.restrictSelectionArea)
+  const showHectometerSearch = Boolean(
+    config?.base.pdok_hectometer_suggest?.enabled
+  )
+  const searchFields: SearchField[] = []
+
+  if (showAddressSearch) {
+    searchFields.push({
+      id: 'address',
+      label: t('search_address_label'),
+      searchType: SearchType.Address,
+    })
+  }
+
+  if (showHectometerSearch) {
+    searchFields.push({
+      id: 'hectometer',
+      label: t('search_hectometer_label'),
+      searchType: SearchType.Hectometer,
+    })
+  }
 
   const toggleList = () => {
     setShowList(true)
@@ -148,18 +177,21 @@ const MapDialogMobileContent = ({
               setIsOpen={setIsAccordionOpen}
             />
 
-            {config && !config.restrictSelectionArea && (
-              <>
-                <label htmlFor="address" className="!text-lg mt-4">
-                  {t('search_address_label')}
+            {searchFields.map((searchField) => (
+              <React.Fragment key={searchField.id}>
+                <label htmlFor={searchField.id} className="!text-lg mt-4">
+                  {searchField.label}
                 </label>
                 <AddressCombobox
                   updatePosition={updatePosition}
                   setIsMapSelected={setIsMapSelected}
                   mobileView={true}
+                  id={searchField.id}
+                  searchType={searchField.searchType}
+                  validateSelection={validateRestrictedAreaSelection}
                 />
-              </>
-            )}
+              </React.Fragment>
+            ))}
           </div>
           {isAssetSelect && dialogMap && config && field ? (
             <div>
@@ -217,9 +249,7 @@ const MapDialogMobileContent = ({
             mapStyle={mapStyle}
             scrollZoom={!(width !== 0 && width < 768)}
             attributionControl={false}
-            maxBounds={
-              config.base.map.maxBounds as [[number, number], [number, number]]
-            }
+            maxBounds={config.base.map.maxBounds}
           >
             {/* Address or selected point on map marker */}
             {marker.length && (isMapSelected === null || isMapSelected) && (
@@ -266,6 +296,7 @@ const MapDialogMobileContent = ({
                 <Layer {...outOfBoundsLineStyle} />
               </Source>
             )}
+            <MapLayers />
           </Map>
           <div className="map-location-group">
             {/*!text-lg !px-2 !py-2*/}
