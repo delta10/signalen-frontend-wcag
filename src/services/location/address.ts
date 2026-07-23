@@ -14,52 +14,81 @@ import {
 } from '@/types/config'
 import { FormStoreState } from '@/types/stores'
 import type { CoordinateBounds } from '@/lib/utils/map'
-import {
-  getPointCoordinates,
-  isCoordinateInsideMaxBound,
-} from '@/lib/utils/map'
 
-// Checks whether a hectometer post is inside configured longitude/latitude bounds.
-// @param {HectometerSuggestDoc} doc - PDOK hectometer post suggestion document
-// @param {CoordinateBounds} bounds - Optional bounds in [[minLng, minLat], [maxLng, maxLat]] format
-// @returns {boolean} - True when no bounds are configured or the post is inside the bounds
-const isHectometerWithinBounds = (
-  doc: HectometerSuggestDoc,
+type HectometerSuggestOptions = {
   bounds?: CoordinateBounds
-) => {
-  if (!bounds) {
-    return true
-  }
-
-  const coordinates = getPointCoordinates(doc.centroide_ll)
-
-  if (!coordinates) {
-    return false
-  }
-
-  const [lng, lat] = coordinates
-
-  return isCoordinateInsideMaxBound(lat, lng, bounds)
+  roadNumberPrefix?: string
 }
 
-// Creates a PDOK coordinate range filter. The application stores bounds as
-// [longitude, latitude], while PDOK expects latitude,longitude in this filter.
-const getHectometerBoundsFilter = (bounds?: CoordinateBounds) => {
+/**
+ * Creates a PDOK coordinate range filter.
+ *
+ * The application stores bounds as [longitude, latitude], while PDOK expects
+ * latitude,longitude in this filter.
+ *
+ * @param param - filter query parameter
+ * @param bounds - Optional bounds in [[minLng, minLat], [maxLng, maxLat]] format.
+ * @returns PDOK coordinate range filter or `null` when no bounds are configured.
+ */
+const getBoundsFilter = (param: string, bounds?: CoordinateBounds) => {
   if (!bounds) {
     return null
   }
 
   const [[minLng, minLat], [maxLng, maxLat]] = bounds
 
-  return `centroide_ll:[${minLat},${minLng} TO ${maxLat},${maxLng}]`
+  return `${param}:[${minLat},${minLng} TO ${maxLat},${maxLng}]`
 }
 
-// Fetches suggested addresses from PDOK API based on search query and municipality or province
-// @param {string} searchQuery - Text to search for addresses
-// @param {PdokAddressSuggestScope} scope - `gemeente` → gemeentenaam filter, `provincie` → provincienaam
-// @param {string} organization - PDOK gemeentenaam or provincienaam (see scope)
-// @returns {Promise<SuggestResponse<AddressSuggestDoc>>} - Promise resolving to suggested addresses
-// @throws {Error} - Throws an error if the request fails
+/**
+ * Creates optional PDOK filters for hectometer post suggestions.
+ *
+ * @param options - Optional bounds and road number prefix filters.
+ * @returns Encoded PDOK filter query string parts.
+ */
+const getHectometerSuggestFilters = ({
+  bounds,
+  roadNumberPrefix,
+}: HectometerSuggestOptions) => {
+  const filters = [getBoundsFilter('centroide_ll', bounds)]
+
+  if (roadNumberPrefix) {
+    filters.push(`wegnummer:${roadNumberPrefix}*`)
+  }
+
+  return filters
+    .filter((filter): filter is string => Boolean(filter))
+    .map((filter) => `&fq=${encodeURIComponent(filter)}`)
+    .join('')
+}
+
+/**
+ * Creates the PDOK suggest path for hectometer post suggestions.
+ *
+ * @param searchQuery - Text to search for hectometer posts, for example "N263 12.3".
+ * @param options - Optional bounds and road number prefix filters.
+ * @returns PDOK Locatieserver suggest path.
+ */
+const getHectometerSuggestPath = (
+  searchQuery: string,
+  options: HectometerSuggestOptions
+) => {
+  const encodedSearchQuery = encodeURIComponent(searchQuery)
+  const filters = getHectometerSuggestFilters(options)
+
+  return `/search/v3_1/suggest?fq=bron:NWB&fq=type:hectometerpaal${filters}&fl=id,identificatie,weergavenaam,centroide_ll,wegnummer,hectometernummer,hectometerletter&q=${encodedSearchQuery}`
+}
+
+/**
+ * Fetches address suggestions from the PDOK API based on a search query and municipality or province.
+ *
+ * @param searchQuery - Text used to search for addresses.
+ * @param scope - Determines whether `organization` is matched against `gemeentenaam` or `provincienaam`.
+ * @param organization - Municipality (`gemeentenaam`) or province (`provincienaam`) name, depending on `scope`.
+ * @param pdokBaseUrl - Base URL for the PDOK Locatieserver API.
+ * @returns A promise that resolves to the suggested addresses returned by the PDOK API.
+ * @throws {Error} If the request to the PDOK API fails.
+ */
 export const getSuggestedAddresses = async (
   searchQuery: string,
   scope: PdokAddressSuggestScope,
@@ -86,20 +115,23 @@ export const getSuggestedAddresses = async (
   }
 }
 
-// Fetches suggested hectometer posts from PDOK Locatieserver.
-// Hectometer posts are NWB records and do not support the BAG province filter,
-// so optional coordinate bounds are used to restrict results to the configured instance area.
-// @param {string} searchQuery - Text to search for hectometer posts, for example "A2 123"
-// @param {string | undefined} pdokBaseUrl - Base URL for the PDOK Locatieserver API
-// @param {CoordinateBounds} bounds - Optional longitude/latitude bounds used to filter results
-// @param {string | undefined} roadNumberPrefix - Optional road number prefix, for example "N"
-// @returns {Promise<SuggestResponse<HectometerSuggestDoc>>} - Promise resolving to suggested hectometer posts
-// @throws {Error} - Throws an error if the request fails
+/**
+ * Fetches suggested hectometer posts from PDOK Locatieserver.
+ *
+ * Hectometer posts are NWB records and do not support the BAG province filter,
+ * so optional coordinate bounds are used to restrict results to the configured
+ * instance area.
+ *
+ * @param searchQuery - Text to search for hectometer posts, for example "A2 123".
+ * @param pdokBaseUrl - Base URL for the PDOK Locatieserver API.
+ * @param options - Optional bounds and road number prefix filters.
+ * @returns Promise resolving to suggested hectometer posts.
+ * @throws When `pdokBaseUrl` is missing or the request fails.
+ */
 export const getSuggestedHectometerPosts = async (
   searchQuery: string,
   pdokBaseUrl: string | undefined,
-  bounds?: CoordinateBounds,
-  roadNumberPrefix?: string
+  options: HectometerSuggestOptions = {}
 ): Promise<SuggestResponse<HectometerSuggestDoc>> => {
   if (!pdokBaseUrl) {
     console.error('Pdok Base URL is required to fetch hectometer posts.')
@@ -107,33 +139,13 @@ export const getSuggestedHectometerPosts = async (
   }
 
   const axios = axiosInstance(pdokBaseUrl)
+  const path = getHectometerSuggestPath(searchQuery, options)
 
   try {
-    const encodedSearchQuery = encodeURIComponent(searchQuery)
-    const boundsFilter = getHectometerBoundsFilter(bounds)
-    const encodedBoundsFilter = boundsFilter
-      ? `&fq=${encodeURIComponent(boundsFilter)}`
-      : ''
-    const encodedRoadNumberFilter = roadNumberPrefix
-      ? `&fq=${encodeURIComponent(`wegnummer:${roadNumberPrefix}*`)}`
-      : ''
-
-    // Search only NWB hectometer posts. Apply configured bounds before PDOK's
-    // default 10-result limit and restrict province-scoped searches to N-roads.
-    const path = `/search/v3_1/suggest?fq=bron:NWB&fq=type:hectometerpaal${encodedBoundsFilter}${encodedRoadNumberFilter}&fl=id,identificatie,weergavenaam,centroide_ll,wegnummer,hectometernummer,hectometerletter&q=${encodedSearchQuery}`
-
     const response: AxiosResponse<SuggestResponse<HectometerSuggestDoc>> =
       await axios.get(path)
 
-    return {
-      ...response.data,
-      response: {
-        ...response.data.response,
-        docs: response.data.response.docs.filter((doc) =>
-          isHectometerWithinBounds(doc, bounds)
-        ),
-      },
-    }
+    return response.data
   } catch {
     throw new Error('Could not fetch hectometer posts. Please try again.')
   }
@@ -178,12 +190,16 @@ export const getNearestHectometerPostByCoordinate = async (
   }
 }
 
-// Finds the nearest address to given coordinates within a specified distance
-// @param {number} lat - Latitude of the reference point
-// @param {number} lng - Longitude of the reference point
-// @param {number} distance - Search radius in meters
-// @returns {Promise<CoordinateResponse<T>['response']['docs'][0] | null>} - Nearest address or null if not found
-// @throws {Error} - Returns null if the request fails
+/**
+ * Finds the nearest address to the given coordinates within the specified search radius.
+ *
+ * @param lat - Latitude of the reference point.
+ * @param lng - Longitude of the reference point.
+ * @param distance - Search radius in meters.
+ * @param pdokBaseUrl - Base URL for the PDOK Locatieserver API.
+ * @returns A promise that resolves to the nearest address, or `null` if no address is found within the search radius.
+ * @throws {Error} If the request to retrieve the nearest address fails.
+ */
 export const getNearestAddressByCoordinate = async (
   lat: number,
   lng: number,

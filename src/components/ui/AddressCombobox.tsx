@@ -101,14 +101,19 @@ const getSuggestionOptions = async (
   config: AppConfig
 ): Promise<Address[]> => {
   if (searchType === SearchType.Hectometer) {
+    const options = {
+      bounds: getHectometerBounds(config),
+      roadNumberPrefix:
+        config.base.pdok_address_suggest.scope ===
+        PdokAddressSuggestScope.Provincie
+          ? 'N'
+          : undefined,
+    }
+
     const apiCall = await getSuggestedHectometerPosts(
       normalizeHectometerSearchQuery(searchQuery),
       config.pdokUrlApi,
-      getHectometerBounds(config),
-      config.base.pdok_address_suggest.scope ===
-        PdokAddressSuggestScope.Provincie
-        ? 'N'
-        : undefined
+      options
     )
 
     return apiCall.response.docs.flatMap(mapHectometerSuggestDocToAddress)
