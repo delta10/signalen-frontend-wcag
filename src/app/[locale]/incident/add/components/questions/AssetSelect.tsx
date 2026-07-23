@@ -1,9 +1,9 @@
 import { LocationMap } from '@/components/ui/LocationMap'
 import { MapDialog } from '@/app/[locale]/incident/add/components/MapDialog'
-import { Address, PublicQuestion } from '@/types/form'
+import { PublicQuestion } from '@/types/form'
 import { MapProvider, MapRef } from 'react-map-gl/maplibre'
 import { useFormContext } from 'react-hook-form'
-import React, { useEffect, useId, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Button,
   Paragraph,
@@ -24,7 +24,7 @@ import {
   getNearestAddressByCoordinate,
 } from '@/services/location/address'
 import { ParagraphOrList } from '@/components/ui/ParagraphOrList'
-import { isAddressOutsideRestrictedArea } from '@/lib/utils/restrictedAreaUtils'
+import { useLocationComboboxValidation } from '@/app/[locale]/incident/add/components/questions/useLocationComboboxValidation'
 
 export interface AssetSelectProps {
   field?: PublicQuestion
@@ -45,32 +45,19 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
   const [features, setFeatures] = useState<FeatureCollection | null>(null)
   // loading assets wordt wel geset maar niet gebruikt
   const [loadingAssets, setLoadingAssets] = useState<boolean>(false)
-  const [restrictionError, setRestrictionError] = useState<string | null>(null)
-  const errorMessageId = useId()
-  const restrictionErrorId = useId()
-  const comboboxAriaDescribedBy = [
-    errorMessage ? errorMessageId : undefined,
-    restrictionError ? restrictionErrorId : undefined,
-  ]
-    .filter(Boolean)
-    .join(' ')
+  const {
+    comboboxAriaDescribedBy,
+    comboboxAriaInvalid,
+    errorMessageId,
+    restrictionError,
+    restrictionErrorId,
+    validateRestrictedAreaSelection,
+  } = useLocationComboboxValidation(errorMessage)
   const showAddressSearch = !config.restrictSelectionArea
   const showHectometerSearch = Boolean(
     config.base.pdok_hectometer_suggest?.enabled
   )
   const showAnySearch = showAddressSearch || showHectometerSearch
-
-  const validateRestrictedAreaSelection = async (address: Address) => {
-    const isOutside = await isAddressOutsideRestrictedArea(config, address)
-
-    if (isOutside) {
-      setRestrictionError(t('please_choose_a_point_on_a_road'))
-      return false
-    }
-
-    setRestrictionError(null)
-    return true
-  }
 
   const onMapReady = (map: MapRef) => {
     setDialogMap(map)
@@ -204,8 +191,8 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
           <div className="mb-4" {...register('location')}>
             <AddressCombobox
               id="asset-hectometer"
-              ariaDescribedBy={comboboxAriaDescribedBy || undefined}
-              ariaInvalid={Boolean(errorMessage) || Boolean(restrictionError)}
+              ariaDescribedBy={comboboxAriaDescribedBy}
+              ariaInvalid={comboboxAriaInvalid}
               searchType={SearchType.Hectometer}
               validateSelection={validateRestrictedAreaSelection}
             />

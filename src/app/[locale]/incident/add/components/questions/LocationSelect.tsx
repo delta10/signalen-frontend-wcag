@@ -1,9 +1,9 @@
 import { LocationMap } from '@/components/ui/LocationMap'
 import { MapDialog } from '@/app/[locale]/incident/add/components/MapDialog'
-import { Address, PublicQuestion } from '@/types/form'
+import { PublicQuestion } from '@/types/form'
 import { MapProvider } from 'react-map-gl/maplibre'
 import { useFormContext } from 'react-hook-form'
-import React, { useId, useState } from 'react'
+import React from 'react'
 import {
   Button,
   Paragraph,
@@ -18,7 +18,7 @@ import { FormFieldErrorMessage } from '@/components'
 import { AddressCombobox, SearchType } from '@/components/ui/AddressCombobox'
 import { getLocationDisplayName } from '@/services/location/address'
 import { useConfig } from '@/contexts/ConfigContext'
-import { isAddressOutsideRestrictedArea } from '@/lib/utils/restrictedAreaUtils'
+import { useLocationComboboxValidation } from '@/app/[locale]/incident/add/components/questions/useLocationComboboxValidation'
 
 export interface LocationSelectProps {
   field?: PublicQuestion
@@ -34,31 +34,19 @@ export const LocationSelect = ({ field }: LocationSelectProps) => {
   const { formState: formStoreState } = useFormStore()
   const t = useTranslations('describe_add.map')
   const tGeneral = useTranslations('general')
-  const [restrictionError, setRestrictionError] = useState<string | null>(null)
-  const errorMessageId = useId()
-  const restrictionErrorId = useId()
-  const comboboxAriaDescribedBy = [
-    errorMessage ? errorMessageId : undefined,
-    restrictionError ? restrictionErrorId : undefined,
-  ]
-    .filter(Boolean)
-    .join(' ')
+  const {
+    comboboxAriaDescribedBy,
+    comboboxAriaInvalid,
+    errorMessageId,
+    restrictionError,
+    restrictionErrorId,
+    validateRestrictedAreaSelection,
+  } = useLocationComboboxValidation(errorMessage)
   const showAddressSearch = !config.restrictSelectionArea
   const showHectometerSearch = Boolean(
     config.base.pdok_hectometer_suggest?.enabled
   )
   const showAnySearch = showAddressSearch || showHectometerSearch
-  const validateRestrictedAreaSelection = async (address: Address) => {
-    const isOutside = await isAddressOutsideRestrictedArea(config, address)
-
-    if (isOutside) {
-      setRestrictionError(t('please_choose_a_point_on_a_road'))
-      return false
-    }
-
-    setRestrictionError(null)
-    return true
-  }
 
   return (
     <Fieldset
@@ -100,8 +88,8 @@ export const LocationSelect = ({ field }: LocationSelectProps) => {
           <div className="mb-4" {...register('location')}>
             <AddressCombobox
               id="location-hectometer"
-              ariaDescribedBy={comboboxAriaDescribedBy || undefined}
-              ariaInvalid={Boolean(errorMessage) || Boolean(restrictionError)}
+              ariaDescribedBy={comboboxAriaDescribedBy}
+              ariaInvalid={comboboxAriaInvalid}
               searchType={SearchType.Hectometer}
               validateSelection={validateRestrictedAreaSelection}
             />
