@@ -2,6 +2,7 @@ import StyleDictionary from 'style-dictionary'
 import { createRequire } from 'node:module'
 import fs from 'node:fs'
 import path from 'node:path'
+import { createImportedTokenUpdates } from './import-token-source.mjs'
 import { applyTokenUpdates } from './merge-token-updates.mjs'
 
 const require = createRequire(import.meta.url)
@@ -53,16 +54,10 @@ if (!fs.existsSync(sharedOverridesFile)) {
 const sharedOverridesRaw = fs.readFileSync(sharedOverridesFile, 'utf8')
 const sharedOverrides = JSON.parse(sharedOverridesRaw)
 
-// Combines shared overrides with organization-specific updates per theme layer.
-const mergeUpdateLayers = (sharedUpdates, organizationUpdates) => ({
-  light: {
-    ...(sharedUpdates.light ?? {}),
-    ...organizationUpdates.light,
-  },
-  dark: {
-    ...(sharedUpdates.dark ?? {}),
-    ...(organizationUpdates.dark ?? {}),
-  },
+// Later layers override earlier layers for both light and dark mode.
+const mergeUpdateLayers = (...layers) => ({
+  light: Object.assign({}, ...layers.map((layer) => layer.light ?? {})),
+  dark: Object.assign({}, ...layers.map((layer) => layer.dark ?? {})),
 })
 
 const organizationTokensFile = path.join(
@@ -77,7 +72,38 @@ if (!fs.existsSync(organizationTokensFile)) {
 
 const organizationUpdatesRaw = fs.readFileSync(organizationTokensFile, 'utf8')
 const organizationUpdates = JSON.parse(organizationUpdatesRaw)
-const tokenUpdates = mergeUpdateLayers(sharedOverrides, organizationUpdates)
+
+let importedUpdates = { light: {}, dark: {} }
+if (organizationUpdates.source) {
+  if (typeof organizationUpdates.source !== 'string') {
+    throw new Error('Organisatie tokenbron moet een bestandspad zijn.')
+  }
+
+  const isFilePath =
+    organizationUpdates.source.startsWith('.') ||
+    path.isAbsolute(organizationUpdates.source)
+  const importedTokensFile = isFilePath
+    ? path.resolve(
+        path.dirname(organizationTokensFile),
+        organizationUpdates.source
+      )
+    : require.resolve(organizationUpdates.source)
+  if (!fs.existsSync(importedTokensFile)) {
+    throw new Error(
+      `Organisatie tokenbron niet gevonden: ${importedTokensFile}`
+    )
+  }
+
+  const importedTokensRaw = fs.readFileSync(importedTokensFile, 'utf8')
+  const importedTokens = JSON.parse(importedTokensRaw)
+  importedUpdates = createImportedTokenUpdates(importedTokens, baseTokens)
+}
+
+const tokenUpdates = mergeUpdateLayers(
+  sharedOverrides,
+  importedUpdates,
+  organizationUpdates
+)
 
 const { lightTokens, darkTokens } = applyTokenUpdates(baseTokens, tokenUpdates)
 const tempDir = path.resolve('tmp')

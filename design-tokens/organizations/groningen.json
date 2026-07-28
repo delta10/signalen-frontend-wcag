@@ -1,0 +1,22 @@
+{
+  "source": "@nl-design-system-unstable/groningen-design-tokens/figma/groningen.tokens.json",
+  "light": {
+    "basis.form-control.placeholder.color": "{basis.color.default.color-default}",
+    "basis.text.line-height.sm": "130%",
+    "basis.text.line-height.md": "130%",
+    "basis.text.line-height.4xl": "120%",
+    "utrecht.checkbox.border-color": "{basis.form-control.border-color}",
+    "utrecht.checkbox.checked.color": "{basis.color.action-1-inverse.color-default}",
+    "utrecht.checkbox.indeterminate.color": "{basis.color.action-1-inverse.color-default}",
+    "utrecht.form-label.disabled.color": "{basis.color.default.color-document}",
+    "utrecht.radio-button.checked.color": "{basis.color.action-1-inverse.color-default}",
+    "utrecht.radio-button.checked.active.color": "{basis.color.action-1-inverse.color-active}",
+    "utrecht.radio-button.checked.focus.background-color": "{basis.focus.background-color}",
+    "utrecht.radio-button.checked.focus.border-color": "{basis.form-control.focus.border-color}",
+    "utrecht.radio-button.checked.focus.color": "{basis.form-control.focus.color}",
+    "utrecht.radio-button.checked.hover.color": "{basis.color.action-1-inverse.color-hover}"
+  },
+  "dark": {
+    "basis.form-control.placeholder.color": "{basis.color.default.color-subtle}"
+  }
+}
