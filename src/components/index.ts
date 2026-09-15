@@ -23,6 +23,7 @@ export {
   ButtonGroup,
   Heading,
   HeadingGroup,
+  HTMLContent,
   Link,
   Image,
   Paragraph,
