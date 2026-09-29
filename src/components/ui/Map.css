@@ -14,3 +14,26 @@
   /* Override the `grab` cursor from maplibre */
   cursor: default;
 }
+
+.map-attribution-button {
+  position: absolute;
+  z-index: 1;
+  right: 4rem;
+  bottom: 0.5rem;
+}
+
+.map-attribution-button--inline {
+  position: static;
+}
+
+.location-map-preview .map-attribution-button {
+  right: var(--basis-space-inline-md);
+  bottom: var(--basis-space-block-md);
+}
+
+.map-attribution-dialog__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--basis-space-block-md);
+  max-inline-size: 32rem;
+}
