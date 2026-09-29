@@ -162,15 +162,12 @@ const IncidentMapContent = () => {
     }
   }, [dialogMap, setFeatures, signalsClient])
 
-  const debouncedSetNewFeatures = useCallback(
-    debounce(() => {
-      setNewFeatures()
-    }, 50),
-    [setNewFeatures]
-  )
-
   useEffect(() => {
     if (!dialogMap) return
+
+    const debouncedSetNewFeatures = debounce(() => {
+      setNewFeatures()
+    }, 50)
 
     const handleMapLoad = () => {
       setNewFeatures()
@@ -186,13 +183,11 @@ const IncidentMapContent = () => {
 
     // Cleanup function
     return () => {
-      if (dialogMap) {
-        dialogMap.off('load', handleMapLoad)
-        dialogMap.off('move', handleMapMove)
-        debouncedSetNewFeatures.cancel() // Cancel any pending debounced calls
-      }
+      dialogMap.off('load', handleMapLoad)
+      dialogMap.off('move', handleMapMove)
+      debouncedSetNewFeatures.cancel() // Cancel any pending debounced calls
     }
-  }, [dialogMap, setNewFeatures, debouncedSetNewFeatures])
+  }, [dialogMap, setNewFeatures])
 
   // Filter features based on selected categories
   const filteredFeatures = useMemo(() => {
