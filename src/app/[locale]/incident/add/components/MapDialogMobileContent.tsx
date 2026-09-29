@@ -16,9 +16,6 @@ import {
   IconArrowsDiagonalMinimize2,
   IconChevronLeft,
   IconCurrentLocation,
-  IconInfoCircle,
-  IconMinus,
-  IconPlus,
   IconX,
 } from '@tabler/icons-react'
 import { ButtonGroup } from '@/components'
@@ -38,9 +35,13 @@ import MapExplainerAccordion from '@/app/[locale]/incident/add/components/questi
 import { setCurrentLocation } from '@/lib/utils/LocationUtils'
 import { FeatureTypeIcon } from '@/app/[locale]/incident/add/components/FeatureTypeIcon'
 import { ExtendedFeature } from '@/types/map'
-import FeatureTypeLegend from '@/app/[locale]/incident/add/components/FeatureTypeLegend'
+import FeatureTypeLegend, {
+  getVisibleFeatureTypes,
+} from '@/app/[locale]/incident/add/components/FeatureTypeLegend'
 import { OUT_OF_BOUNDS_SOURCE_ID } from '@/lib/utils/restrictedAreaUtils'
 import { MapLayers } from '@/app/[locale]/incident/add/components/MapLayers'
+import { MapRoadSearch } from '@/app/[locale]/incident/add/components/MapRoadSearch'
+import { MapControls } from '@/app/[locale]/incident/add/components/MapControls'
 
 type SearchField = {
   id: string
@@ -66,6 +67,7 @@ const MapDialogMobileContent = ({
   const {
     dialogMap,
     dialogRef,
+    closeAlertDialogOnBackdropClick,
     config,
     viewState,
     setViewState,
@@ -81,6 +83,9 @@ const MapDialogMobileContent = ({
     closeMapDialog,
     handleMapClick,
     mapStyle,
+    aerialPhotoEnabled,
+    isAerialPhoto,
+    setIsAerialPhoto,
     width,
     mapFeatures,
     error,
@@ -97,6 +102,11 @@ const MapDialogMobileContent = ({
     config?.base.pdok_hectometer_suggest?.enabled
   )
   const searchFields: SearchField[] = []
+  const visibleFeatureTypes = getVisibleFeatureTypes(field?.meta.featureTypes)
+  const hasMapObjects = Boolean(mapFeatures?.features.length)
+  const hasLegendItems = Boolean(
+    isAssetSelect && hasMapObjects && visibleFeatureTypes.length
+  )
 
   if (showAddressSearch) {
     searchFields.push({
@@ -121,7 +131,11 @@ const MapDialogMobileContent = ({
 
   return (
     <>
-      <AlertDialog type="error" ref={dialogRef}>
+      <AlertDialog
+        type="error"
+        ref={dialogRef}
+        onClick={closeAlertDialogOnBackdropClick}
+      >
         <form method="dialog" className="map-alert-dialog__content">
           {error}
           <ButtonGroup>
@@ -135,12 +149,14 @@ const MapDialogMobileContent = ({
           </ButtonGroup>
         </form>
       </AlertDialog>
-      <FeatureTypeLegend
-        featureTypes={field?.meta.featureTypes}
-        openLegend={openLegend}
-        setOpenLegend={setOpenLegend}
-        mobile={true}
-      />
+      {hasLegendItems && (
+        <FeatureTypeLegend
+          featureTypes={visibleFeatureTypes}
+          openLegend={openLegend}
+          setOpenLegend={setOpenLegend}
+          mobile={true}
+        />
+      )}
       <div
         className={clsx(
           'flex flex-col  z-10',
@@ -298,26 +314,51 @@ const MapDialogMobileContent = ({
             )}
             <MapLayers />
           </Map>
-          <div className="map-location-group">
-            {/*!text-lg !px-2 !py-2*/}
-            <Button
-              purpose="secondary"
-              onClick={() =>
-                setCurrentLocation(
-                  config,
-                  updatePosition,
-                  setError,
-                  dialogRef,
-                  t
-                )
-              }
-              className="map-icon-button mobile"
-            >
-              <IconCurrentLocation />
-              {t('current_location')}
-            </Button>
-          </div>
-          <div className="map-fullscreen-group">
+          <MapControls
+            config={config}
+            map={dialogMap}
+            aerialPhotoEnabled={aerialPhotoEnabled}
+            isAerialPhoto={isAerialPhoto}
+            setIsAerialPhoto={setIsAerialPhoto}
+            hasLegendItems={hasLegendItems}
+            openLegend={openLegend}
+            setOpenLegend={setOpenLegend}
+            mobile
+            mobileCurrentLocationControl={
+              <Button
+                purpose="subtle"
+                onClick={() =>
+                  setCurrentLocation(
+                    config,
+                    updatePosition,
+                    setError,
+                    dialogRef,
+                    t
+                  )
+                }
+                className="map-icon-button"
+                iconOnly
+                iconStart={<IconCurrentLocation />}
+                label={t('current_location')}
+              />
+            }
+            mobileAssetListControl={
+              isAssetSelect && hasMapObjects ? (
+                <Button
+                  purpose="secondary"
+                  onClick={() => toggleList()}
+                  className="map-icon-button mobile"
+                >
+                  {t('show_list', { name: objectDisplayName.plural })}
+                </Button>
+              ) : undefined
+            }
+          >
+            <MapRoadSearch
+              id="map-road-search-mobile"
+              updatePosition={updatePosition}
+              mobile
+            />
             <Button
               purpose="subtle"
               onClick={() => setFullscreenMap(!fullscreenMap)}
@@ -334,58 +375,14 @@ const MapDialogMobileContent = ({
                   ? t('toggle_fullscreen_off')
                   : t('toggle_fullscreen_on')
               }
-              className="map-icon-button"
+              className="map-icon-button map-fullscreen-button-mobile"
             />
-          </div>
-          {isAssetSelect && (
-            <div className="map-list-group">
-              <Button
-                onClick={() => toggleList()}
-                className="map-icon-button mobile"
-              >
-                {t('show_list', { name: objectDisplayName.plural })}
-              </Button>
-            </div>
-          )}
-          {isAssetSelect && (
-            <div className="map-legend-group">
-              <Button
-                className="map-icon-button mobile"
-                purpose="secondary"
-                onClick={() => {
-                  setOpenLegend(!openLegend)
-                }}
-                iconStart={<IconInfoCircle />}
-              >
-                {t('legend')}
-              </Button>
-            </div>
-          )}
-          {dialogMap && (
-            <ButtonGroup direction="column" className="map-zoom-button-group">
-              <Button
-                purpose="subtle"
-                className="map-icon-button"
-                onClick={() => dialogMap.zoomIn()}
-                iconOnly
-                iconStart={<IconPlus />}
-                label={t('map_zoom-in_button_label')}
-              />
-              <Button
-                purpose="subtle"
-                className="map-icon-button"
-                onClick={() => dialogMap.zoomOut()}
-                iconOnly
-                iconStart={<IconMinus />}
-                label={t('map_zoom-out_button_label')}
-              />
-            </ButtonGroup>
-          )}
+          </MapControls>
         </div>
       )}
 
       {!fullscreenMap && (
-        <div className={clsx('flex flex-col my-2 px-3 self-end')}>
+        <div className={clsx('flex flex-col my-2 px-3 self-stretch')}>
           {showList && (
             <Button
               onClick={() => setShowList(false)}
@@ -397,7 +394,11 @@ const MapDialogMobileContent = ({
           )}
 
           <Dialog.Close asChild onClick={() => closeMapDialog()}>
-            <Button purpose="primary" className="mobile" type="button">
+            <Button
+              purpose="primary"
+              className="mobile !w-full !text-center"
+              type="button"
+            >
               {isAssetSelect
                 ? formState.selectedFeatures.length === 0
                   ? formState.address
