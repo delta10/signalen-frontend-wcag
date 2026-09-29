@@ -89,6 +89,12 @@ export type AppConfig = {
     pdok_hectometer_suggest?: {
       enabled: boolean
       bounds?: CoordinateBounds
+      /** Exact road numbers included in addition to the normal N-road filter. */
+      roadNumberExceptions?: string[]
+      /** Optional configured GeoJSON map layer used as the authoritative suggestion source. */
+      sourceLayerId?: string
+      /** Maximum number of suggestions shown to the user. */
+      maxResults?: number
     }
     fonts?: {
       /** Optional Google Fonts stylesheet URL to load in the document head. */
