@@ -94,7 +94,7 @@
                 "icon-image": "hectometer-marker",
                 "icon-size": 0.55,
                 "text-field": ["get", "TEKST"],
-                "text-font": ["Open Sans Bold"],
+                "text-font": ["Liberation Sans Bold"],
                 "text-size": 12,
                 "text-anchor": "center",
                 "text-offset": [0, 0],
