@@ -8,7 +8,31 @@ The application reads `config.json` from the project root. Keep the file valid J
 - `pdokUrlApi`: Base URL for the PDOK location server.
 - `frontendUrl`: Public URL of this frontend.
 
-## MapTiler
+## Map Background
+
+- `mapStyle`: Optional full MapLibre style URL for light mode. When set, this takes precedence over `maptilerMap`.
+- `mapStyleDarkMode`: Optional full MapLibre style URL for dark mode. Falls back to `mapStyle` when omitted.
+- `mapAttribution`: Optional attribution text shown on the map for the configured style.
+- `aerialPhotoMap`: Optional raster aerial photography layer. The **Kaart / Luchtfoto** switch is only shown when `enabled` is `true` and at least one tile URL is configured.
+
+`aerialPhotoMap` supports:
+
+- `enabled`: Enables or disables the map switcher without removing the remaining configuration.
+- `tiles`: One or more raster tile URL templates using `{z}`, `{x}`, and `{y}` placeholders.
+- `attribution`: Optional attribution shown while the aerial photography is active.
+- `glyphs`: Optional MapLibre glyph URL template. Configure this when custom symbol layers render text above the aerial photography.
+- `tileSize`: Optional raster tile size. Defaults to `256`.
+- `minZoom`: Optional minimum zoom level of the raster source.
+- `maxZoom`: Optional maximum zoom level of the raster source.
+
+The `text-font` of a custom symbol layer must name a font stack provided by the
+configured `glyphs` service. The PDOK BRT glyph service provides
+`Liberation Sans Bold`; requesting `Open Sans Bold` returns `404`, causing the
+symbol text to disappear. Do not omit `text-font`: MapLibre would then use its
+default font stack, which is not guaranteed to be available from the configured
+glyph service either.
+
+### MapTiler fallback
 
 - `maptilerApiKey`: API key used for MapTiler style requests.
 - `maptilerMap`: MapTiler style URL for light mode, without `/style.json`.
@@ -61,6 +85,7 @@ Map settings are configured at `base.map`.
 
 - `find_address_in_distance`: Search radius in meters when finding an address near a selected location.
 - `minimal_zoom`: Minimum zoom level required before users can select a location.
+- `selected_location_zoom`: Optional zoom level used when opening the map around an existing selected location or after selecting a street or road from the map search.
 - `default_zoom`: Initial map zoom level.
 - `center`: Initial map center as `[latitude, longitude]`.
 - `maxBounds`: Bounding box as `[[west, south], [east, north]]`.
