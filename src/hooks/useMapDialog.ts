@@ -183,16 +183,20 @@ function useMapDialog(
     }
   }, [dialogMap, keyDownHandler, onMapReady])
 
-  // Update position, flyTo position, after this set the marker position
-  const updatePosition = (lat: number, lng: number) => {
+  // Move to the requested position; only mark it when it is a location choice.
+  const updatePosition = (lat: number, lng: number, selectPosition = true) => {
     if (dialogMap) {
       dialogMap.flyTo({
         center: [lng, lat],
-        zoom: Math.max(config.base.map.minimal_zoom || 17, dialogMap.getZoom()),
+        zoom: selectPosition
+          ? Math.max(config.base.map.minimal_zoom || 17, dialogMap.getZoom())
+          : config.base.map.selected_location_zoom || 14,
       })
     }
 
-    setMarker([lat, lng])
+    if (selectPosition) {
+      setMarker([lat, lng])
+    }
   }
 
   const objectDisplayName = useMemo(
