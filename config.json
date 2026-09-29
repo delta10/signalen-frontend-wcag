@@ -118,7 +118,7 @@
         },
         "describe_report": {
           "alert": {
-            "help_text": "Problemen met het indienen van een melding? Bel [073 - 68 12 812](tel:+31736812812). Wij zijn bereikbaar van maandag tot en met vrijdag van 8:00 uur tot 18:00 uur.\n\nBel bij calamiteiten: [073 - 680 73 68](tel:+31736807368). U belt dit telefoonnummer als de veiligheid of doorstroming op de provinciale weg acuut belemmerd wordt.\n\nWat is een calamiteit?\n- Een obstakel op de weg (boom, dier, afval)\n- Glas, olie of modder op de weg\n- Drugsafval\n- Niet werkend verkeerslicht\n\nHet telefoonnummer is 24 uur per dag, 7 dagen per week bereikbaar."
+            "footer_help_text": "Problemen met het indienen van een melding? Bel [073 - 68 12 812](tel:+31736812812). Wij zijn bereikbaar van maandag tot en met vrijdag van 8:00 uur tot 18:00 uur.\n\nBel bij calamiteiten: [073 - 680 73 68](tel:+31736807368). U belt dit telefoonnummer als de veiligheid of doorstroming op de provinciale weg acuut belemmerd wordt.\n\nWat is een calamiteit?\n- Een obstakel op de weg (boom, dier, afval)\n- Glas, olie of modder op de weg\n- Drugsafval\n- Niet werkend verkeerslicht\n\nHet telefoonnummer is 24 uur per dag, 7 dagen per week bereikbaar."
           }
         },
         "describe_contact": {
@@ -136,7 +136,7 @@
       "en": {
         "describe_report": {
           "alert": {
-            "help_text": "Having trouble submitting a report? Call [073 - 68 12 812](tel:+31736812812). We are available monday through friday from 8:00 AM to 6:00 PM. Call for emergencies: [073 - 680 73 68](tel:+31736807368). You call this phone number if security or traffic on one of the provincial roads is urgently blocked. A provincial road always has an N number. The phone number is available 24 hours a day, 7 days a week."
+            "footer_help_text": "Having trouble submitting a report? Call [073 - 68 12 812](tel:+31736812812). We are available monday through friday from 8:00 AM to 6:00 PM. Call for emergencies: [073 - 680 73 68](tel:+31736807368). You call this phone number if security or traffic on one of the provincial roads is urgently blocked. A provincial road always has an N number. The phone number is available 24 hours a day, 7 days a week."
           }
         }
       }

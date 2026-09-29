@@ -17,7 +17,8 @@
       }
     },
     "alert": {
-      "help_text": "Having trouble submitting a report? Call: "
+      "help_text": "Having trouble submitting a report? Call: ",
+      "footer_help_text": ""
     }
   },
   "describe_add": {
