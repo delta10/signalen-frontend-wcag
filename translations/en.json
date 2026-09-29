@@ -66,6 +66,9 @@
       "chosen_location_points": "Selected points {points}, click to edit",
       "search_address_label": "Search by address or postal code",
       "search_hectometer_label": "Search by road number plus hectometer post number",
+      "search_road_label": "Search by street or road name",
+      "open_road_search": "Open street or road search",
+      "close_road_search": "Close street or road search",
       "pinned_location": "The location is pinned on the map",
       "back_to_map": "Back to the map",
       "show_list": "Show {name} list",
@@ -106,7 +109,8 @@
     },
     "address": {
       "no_results": "No addresses found.",
-      "no_hectometer_results": "No hectometer posts found."
+      "no_hectometer_results": "No hectometer posts found.",
+      "no_road_results": "No streets or roads found."
     }
   },
   "describe_contact": {

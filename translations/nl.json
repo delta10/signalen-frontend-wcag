@@ -66,6 +66,9 @@
       "chosen_location_points": "Geselecteerde punten {points} klik om te wijzigen",
       "search_address_label": "Zoek op adres of postcode",
       "search_hectometer_label": "Zoek op wegnummer plus hectometerpaalnummer",
+      "search_road_label": "Zoek op straat- of wegnaam",
+      "open_road_search": "Open zoeken op straat- of wegnaam",
+      "close_road_search": "Sluit zoeken op straat- of wegnaam",
       "object": "object",
       "objects": "objecten",
       "pinned_location": "De locatie is gepind op de kaart",
@@ -106,7 +109,8 @@
     },
     "address": {
       "no_results": "Geen adressen gevonden",
-      "no_hectometer_results": "Geen hectometerpalen gevonden"
+      "no_hectometer_results": "Geen hectometerpalen gevonden",
+      "no_road_results": "Geen straten of wegen gevonden"
     }
   },
   "describe_contact": {
