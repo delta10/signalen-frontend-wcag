@@ -47,7 +47,21 @@ export type MapLayerConfiguration = {
   }>
 }
 
+export type AerialPhotoMapConfiguration = {
+  enabled: boolean
+  tiles: string[]
+  attribution?: string
+  glyphs?: string
+  tileSize?: number
+  minZoom?: number
+  maxZoom?: number
+}
+
 export type AppConfig = {
+  mapStyle?: string
+  mapStyleDarkMode?: string
+  mapAttribution?: string
+  aerialPhotoMap?: AerialPhotoMapConfiguration
   maptilerApiKey: string
   maptilerMap: string
   maptilerMapDarkMode: string

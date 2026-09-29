@@ -2,6 +2,20 @@
   "baseUrlApi": "https://api.meldingen-acpt.brabant.nl",
   "frontendUrl": "https://meldingen-acpt.brabant.nl",
   "pdokUrlApi": "https://api.pdok.nl/bzk/locatieserver/",
+  "mapStyle": "https://api.pdok.nl/kadaster/brt-achtergrondkaart/ogc/v1/styles/standaard__webmercatorquad?f=mapbox",
+  "mapStyleDarkMode": "https://api.pdok.nl/kadaster/brt-achtergrondkaart/ogc/v1/styles/darkmode__webmercatorquad?f=mapbox",
+  "mapAttribution": "Kaartgegevens © <a href=\"https://www.kadaster.nl/\" target=\"_blank\" rel=\"noopener noreferrer\">Kadaster</a> / <a href=\"https://www.pdok.nl/\" target=\"_blank\" rel=\"noopener noreferrer\">PDOK</a>, <a href=\"https://creativecommons.org/licenses/by/4.0/deed.nl\" target=\"_blank\" rel=\"noopener noreferrer\">CC BY 4.0</a>",
+  "aerialPhotoMap": {
+    "enabled": true,
+    "tiles": [
+      "https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0/Actueel_orthoHR/OGC:1.0:GoogleMapsCompatible/{z}/{x}/{y}.jpeg"
+    ],
+    "attribution": "Luchtfoto © <a href=\"https://www.beeldmateriaal.nl/\" target=\"_blank\" rel=\"noopener noreferrer\">Samenwerkingsverband Beeldmateriaal</a>, <a href=\"https://creativecommons.org/licenses/by/4.0/deed.nl\" target=\"_blank\" rel=\"noopener noreferrer\">CC BY 4.0</a> · via PDOK",
+    "glyphs": "https://api.pdok.nl/kadaster/brt-achtergrondkaart/ogc/v1/resources/fonts/{fontstack}/{range}.pbf",
+    "tileSize": 256,
+    "minZoom": 0,
+    "maxZoom": 21
+  },
   "maptilerApiKey": "x0IfDO01xuLQQKYlSzuz",
   "maptilerMap": "https://api.maptiler.com/maps/nl-cartiqo-topo",
   "maptilerMapDarkMode": "https://api.maptiler.com/maps/streets-v2-dark",
