@@ -81,7 +81,10 @@ Logo settings are configured at `base.header.logo`.
 - `base.pdok_address_suggest.scope`: PDOK filter scope. Use `gemeente` for municipality-based address suggestions or `provincie` for province-based address suggestions.
 - `base.pdok_address_suggest.organization`: Exact PDOK filter value for the selected scope.
 - `base.pdok_hectometer_suggest.enabled`: Enables PDOK hectometer suggestions when set to `true`. Disables address suggestions.
-- `base.pdok_hectometer_suggest.bounds`: Optional coordinate bounds used to restrict hectometer suggestions, as `[[west, south], [east, north]]`.
+- `base.pdok_hectometer_suggest.bounds`: Optional coordinate bounds used to restrict hectometer and street/road suggestions, as `[[west, south], [east, north]]`.
+- `base.pdok_hectometer_suggest.roadNumberExceptions`: Optional exact road numbers to include alongside the default `N*` filter used for province configurations, for example `["A270"]`.
+- `base.pdok_hectometer_suggest.sourceLayerId`: Optional ID of a configured GeoJSON map layer used as the authoritative source for hectometer suggestions. When present, PDOK is not used for these suggestions.
+- `base.pdok_hectometer_suggest.maxResults`: Optional maximum number of hectometer suggestions shown. Defaults to `10` and is capped at `100`.
 
 ## Map Defaults
 
