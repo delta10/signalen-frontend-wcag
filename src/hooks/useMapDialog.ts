@@ -73,7 +73,11 @@ function useMapDialog(
       formState.address ||
       (formState.coordinates[0] !== 0 && formState.coordinates[1] !== 0)
     ) {
-      return config.base.map.minimal_zoom || 17
+      return (
+        config.base.map.selected_location_zoom ||
+        config.base.map.minimal_zoom ||
+        17
+      )
     }
 
     return config.base.map.default_zoom || 12
