@@ -3,12 +3,121 @@
   position: absolute;
   left: 0.5em;
   top: 0.5em;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--basis-space-column-md);
+  max-inline-size: calc(100% - 4.5rem);
 }
 
-.map-legend-group {
+.map-road-search-disclosure {
+  position: relative;
+  flex: none;
+}
+
+.map-road-search-toggle {
+  min-inline-size: var(--utrecht-button-min-block-size, 44px);
+}
+
+.map-road-search-panel {
   position: absolute;
-  left: 0.5em;
-  bottom: 0.5em;
+  z-index: 2;
+  inset-block-start: calc(100% + var(--basis-space-block-sm));
+  inset-inline-start: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--basis-space-block-sm);
+  inline-size: clamp(16rem, 32vw, 24rem);
+  padding: var(--basis-space-block-md) var(--basis-space-inline-md);
+  border-radius: var(--utrecht-button-border-radius);
+  background-color: var(--basis-color-default-bg-document, Canvas);
+  color: var(--basis-color-default-color-document, CanvasText);
+}
+
+.map-road-search-panel[hidden] {
+  display: none;
+}
+
+.map-road-search__input {
+  inline-size: 100%;
+}
+
+.map-location-group--mobile {
+  right: var(--basis-space-inline-md);
+  left: var(--basis-space-inline-md);
+  top: var(--basis-space-block-md);
+  display: grid;
+  grid-template-areas:
+    'search . fullscreen'
+    'style style style';
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  max-inline-size: none;
+}
+
+.map-location-group--mobile .map-road-search-disclosure {
+  grid-area: search;
+}
+
+.map-location-group--mobile .map-road-search-panel {
+  inline-size: calc(100vw - 2 * var(--basis-space-inline-md));
+}
+
+.map-fullscreen-button-mobile {
+  grid-area: fullscreen;
+  justify-self: end;
+}
+
+.map-location-group--mobile > .map-style-switcher {
+  position: static;
+  grid-area: style;
+  justify-self: start;
+}
+
+.map-bottom-left-controls {
+  position: absolute;
+  z-index: 1;
+  left: var(--basis-space-inline-md);
+  bottom: var(--basis-space-block-md);
+  display: flex;
+  align-items: flex-end;
+  gap: var(--basis-space-column-md);
+}
+
+.map-bottom-left-controls .map-style-switcher {
+  position: static;
+}
+
+.map-style-switcher {
+  position: absolute;
+  z-index: 1;
+  left: var(--basis-space-inline-md);
+  top: calc(
+    var(--basis-space-block-md) + var(--utrecht-button-min-block-size, 44px) +
+      var(--basis-space-block-xl)
+  );
+  display: flex;
+  gap: var(--basis-space-column-md);
+  margin: 0;
+  padding: var(--basis-space-block-sm);
+  border: 0;
+  border-radius: var(--utrecht-button-border-radius);
+  background-color: var(--basis-color-default-bg-document, Canvas);
+}
+
+.map-style-switcher--bottom-left {
+  top: auto;
+  bottom: var(--basis-space-block-md);
+}
+
+.map-style-switcher--mobile {
+  gap: 0;
+  padding: 2px;
+}
+
+.map-style-switcher--mobile > button {
+  min-block-size: var(--utrecht-button-min-block-size, 44px);
+  padding-block: var(--basis-space-block-xs) !important;
+  padding-inline: var(--basis-space-inline-md) !important;
+  font-size: 1rem;
 }
 
 .map-fullscreen-group {
@@ -17,10 +126,20 @@
   top: 0.5em;
 }
 
-.map-list-group {
+.map-mobile-asset-controls {
   position: absolute;
-  left: 0.5em;
-  bottom: 3em;
+  z-index: 1;
+  left: var(--basis-space-inline-md);
+  bottom: var(--basis-space-block-md);
+  display: grid;
+  gap: var(--basis-space-block-sm);
+  max-inline-size: calc(100% - 4.5rem);
+}
+
+.map-mobile-asset-controls > button {
+  inline-size: 100%;
+  max-inline-size: 100%;
+  justify-content: flex-start;
 }
 
 .map-location-alert {
@@ -67,7 +186,12 @@
 }
 
 .map-zoom-button-group.mobile {
-  bottom: 6.4em;
+  right: var(--basis-space-inline-md);
+  bottom: var(--basis-space-block-md);
+}
+
+.signalen-modal-dialog .maplibregl-ctrl-bottom-right {
+  right: 4rem;
 }
 
 .map-alert-dialog__content {
@@ -86,7 +210,8 @@
 .signalen-modal-dialog {
   background-color: var(--signalen-modal-dialog-background-color, Canvas);
   color: var(--signalen-modal-dialog-color, CanvasText);
-  z-index: var(--signalen-modal-z-index, 1);
+  /* Keep controls from the underlying preview map below the open dialog. */
+  z-index: var(--signalen-modal-z-index, 3);
 }
 
 .signalen-modal-dialog--cover-viewport {
@@ -96,4 +221,11 @@
   inset-block-end: 0;
   inset-block-start: 0;
   overflow-block: auto;
+}
+
+@media (max-width: 768px) {
+  .map-road-search-options {
+    max-block-size: min(50dvh, 22rem);
+    overflow-y: auto;
+  }
 }

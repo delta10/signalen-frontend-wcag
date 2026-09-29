@@ -9,11 +9,20 @@ import { Icon } from '@/components'
 import { IconX } from '@tabler/icons-react'
 
 type FeatureTypeLegendProps = {
-  featureTypes: FeatureType[] | null
+  featureTypes: FeatureType[]
   mobile?: boolean
   openLegend: boolean
   setOpenLegend: Dispatch<SetStateAction<boolean>>
 }
+
+const EXCLUDED_TYPE_VALUE = 'not-on-map'
+
+export const getVisibleFeatureTypes = (
+  featureTypes?: FeatureType[] | null
+): FeatureType[] =>
+  featureTypes?.filter(
+    (featureType) => featureType.typeValue !== EXCLUDED_TYPE_VALUE
+  ) ?? []
 
 const FeatureTypeLegend = ({
   featureTypes,
@@ -22,7 +31,6 @@ const FeatureTypeLegend = ({
   setOpenLegend,
 }: FeatureTypeLegendProps) => {
   const t = useTranslations('describe_add.map')
-  const EXCLUDED_TYPE_VALUE = 'not-on-map'
   return (
     <Drawer.Root
       direction={mobile ? 'bottom' : 'left'}
@@ -50,23 +58,16 @@ const FeatureTypeLegend = ({
             {t('legend_description')}
           </Drawer.Description>
 
-          {featureTypes && (
+          {featureTypes.length > 0 && (
             <ul>
-              {featureTypes
-                .filter(
-                  (featureType) => featureType.typeValue !== EXCLUDED_TYPE_VALUE
-                )
-                .map((featureType, index) => (
-                  <li key={index} className="flex items-center gap-2 py-1">
-                    <Icon>
-                      <img
-                        src={featureType.icon.iconUrl}
-                        alt="Feature marker"
-                      />
-                    </Icon>
-                    {featureType.label}
-                  </li>
-                ))}
+              {featureTypes.map((featureType, index) => (
+                <li key={index} className="flex items-center gap-2 py-1">
+                  <Icon>
+                    <img src={featureType.icon.iconUrl} alt="Feature marker" />
+                  </Icon>
+                  {featureType.label}
+                </li>
+              ))}
             </ul>
           )}
         </Drawer.Content>
