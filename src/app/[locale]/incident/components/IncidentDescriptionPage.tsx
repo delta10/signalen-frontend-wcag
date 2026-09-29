@@ -20,6 +20,7 @@ export const IncidentDescriptionPage = () => {
   const { loaded } = useFormStore()
   const config = useConfig()
   const tGeneral = useTranslations('general.form')
+  const helpText = t('alert.help_text')
 
   if (loaded) {
     return (
@@ -42,9 +43,9 @@ export const IncidentDescriptionPage = () => {
           </NextLinkWrapper>{' '}
           {tIncidentMap('post_introduction')}
         </Paragraph>
-        {config ? (
+        {config && helpText.trim() ? (
           <SpotlightSection type="info">
-            <RenderMarkdown text={t('alert.help_text')} />
+            <RenderMarkdown text={helpText} />
           </SpotlightSection>
         ) : null}
         <IncidentDescriptionForm />
