@@ -1,4 +1,4 @@
-import { LayerProps, MapRef } from 'react-map-gl/maplibre'
+import type { LayerProps, MapRef } from 'react-map-gl/maplibre'
 import { VectorTile } from '@mapbox/vector-tile'
 import { point as turfPoint } from '@turf/helpers'
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon'
@@ -18,7 +18,10 @@ type TileJson = {
 }
 
 const tileJsonCache = new Map<string, Promise<TileJson>>()
-const vectorTileCache = new Map<string, Promise<ArrayBuffer>>()
+const polygonCache = new Map<
+  string,
+  Promise<Array<Feature<Polygon | MultiPolygon>>>
+>()
 
 /**
  * Returns the line layer style used to outline the restricted-area mask.
@@ -144,34 +147,6 @@ const fetchTileJson = (url: string) => {
 }
 
 /**
- * Fetches and caches a vector tile PBF by URL. Tile requests are cached because
- * nearby hectometer suggestions often resolve to the same vector tile.
- *
- * @param url - Concrete PBF tile URL.
- * @returns A promise resolving to the raw PBF tile bytes.
- */
-const fetchVectorTile = (url: string) => {
-  if (!vectorTileCache.has(url)) {
-    const request = fetch(url)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Could not fetch restricted area vector tile.')
-        }
-
-        return response.arrayBuffer()
-      })
-      .catch((error) => {
-        vectorTileCache.delete(url)
-        throw error
-      })
-
-    vectorTileCache.set(url, request)
-  }
-
-  return vectorTileCache.get(url)!
-}
-
-/**
  * Converts longitude to the x index of a Web Mercator tile at the given zoom.
  *
  * @param lng - Longitude in WGS84 degrees.
@@ -240,8 +215,11 @@ const getRestrictedAreaFeatures = async (
   lng: number,
   lat: number
 ) => {
-  if (!config.maptilerOutOfBoundsSelectionArea) {
-    return []
+  if (
+    !config.maptilerOutOfBoundsSelectionArea ||
+    !config.maptilerOutOfBoundsLayerId
+  ) {
+    throw new Error('Restricted area source and layer must be configured.')
   }
 
   const tileJson = await fetchTileJson(config.maptilerOutOfBoundsSelectionArea)
@@ -249,67 +227,63 @@ const getRestrictedAreaFeatures = async (
   const x = longitudeToTileX(lng, zoom)
   const y = latitudeToTileY(lat, zoom)
   const tileUrl = getTileUrl(tileJson, zoom, x, y)
-  const tileBuffer = await fetchVectorTile(tileUrl)
-  const tile = new VectorTile(new PbfReader(tileBuffer))
   const layerId = config.maptilerOutOfBoundsLayerId
+  const cacheKey = JSON.stringify([tileUrl, layerId])
 
-  if (!layerId) {
-    return []
+  if (!polygonCache.has(cacheKey)) {
+    const request = fetch(tileUrl)
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error('Could not fetch restricted area vector tile.')
+        }
+
+        const tile = new VectorTile(new PbfReader(await response.arrayBuffer()))
+        const layer = tile.layers[layerId]
+        const features: Array<Feature<Polygon | MultiPolygon>> = []
+
+        for (let index = 0; index < (layer?.length ?? 0); index += 1) {
+          const feature = layer.feature(index).toGeoJSON(x, y, zoom)
+          if (
+            feature.geometry.type === 'Polygon' ||
+            feature.geometry.type === 'MultiPolygon'
+          ) {
+            features.push(feature as Feature<Polygon | MultiPolygon>)
+          }
+        }
+
+        return features
+      })
+      .catch((error) => {
+        polygonCache.delete(cacheKey)
+        throw error
+      })
+
+    polygonCache.set(cacheKey, request)
   }
 
-  const layer = tile.layers[layerId]
-
-  if (!layer) {
-    return []
-  }
-
-  const features: Array<Feature<Polygon | MultiPolygon>> = []
-
-  for (let index = 0; index < layer.length; index += 1) {
-    const feature = layer.feature(index).toGeoJSON(x, y, zoom)
-
-    if (
-      feature.geometry.type === 'Polygon' ||
-      feature.geometry.type === 'MultiPolygon'
-    ) {
-      features.push(feature as Feature<Polygon | MultiPolygon>)
-    }
-  }
-
-  return features
+  return polygonCache.get(cacheKey)!
 }
 
-/**
- * Checks whether a selected address/hectometer falls in the configured
- * out-of-bounds area without moving the visible map.
- *
- * @remarks
- * This is used for combobox selections, where the selected coordinate can be in
- * a tile that is not loaded by the visible map yet. Validation is done directly
- * against the MapTiler vector tile data instead of calling `flyTo` or `jumpTo`
- * on the visible map.
- *
- * If the restriction tile cannot be fetched or decoded, validation fails closed:
- * the selection is treated as outside the allowed area.
- *
- * @param config - Application configuration containing restriction settings.
- * @param address - Selected address or hectometer with `[lng, lat]` coordinates.
- * @returns `true` when the selected coordinate is outside the allowed area.
- */
+/** Checks the configured boundary; source failures propagate so callers can retry. */
+export const isCoordinateOutsideRestrictedArea = async (
+  config: AppConfig,
+  lng: number,
+  lat: number
+): Promise<boolean> => {
+  if (!config.restrictSelectionArea) return false
+
+  const features = await getRestrictedAreaFeatures(config, lng, lat)
+  return isPointInOutOfBoundsFeatures(features, lng, lat)
+}
+
+/** Validates a selection without moving the map, rejecting it on source failure. */
 export const isAddressOutsideRestrictedArea = async (
   config: AppConfig,
   address: Address
 ): Promise<boolean> => {
-  if (!config.restrictSelectionArea) {
-    return false
-  }
-
-  const [lng, lat] = address.coordinates
-
   try {
-    const features = await getRestrictedAreaFeatures(config, lng, lat)
-
-    return isPointInOutOfBoundsFeatures(features, lng, lat)
+    const [lng, lat] = address.coordinates
+    return await isCoordinateOutsideRestrictedArea(config, lng, lat)
   } catch {
     return true
   }

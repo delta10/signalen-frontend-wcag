@@ -85,19 +85,16 @@ const mapProvincialHectometerFeatureToAddress = (
   }
 }
 
-/** Removes invalid posts before the authoritative layer is rendered. */
-export const filterValidProvincialHectometerFeatures = (
-  source: FeatureCollection
-): FeatureCollection => ({
-  ...source,
-  features: source.features.filter((feature) =>
-    Boolean(mapProvincialHectometerFeatureToAddress(feature))
-  ),
-})
+/** Maps valid provincial features once, retaining their original map geometry. */
+export const getProvincialHectometers = (source: FeatureCollection) =>
+  source.features.flatMap((feature) => {
+    const address = mapProvincialHectometerFeatureToAddress(feature)
+    return address ? [{ feature, address }] : []
+  })
 
-/** Filters a provincial GeoJSON hectometer layer into combobox suggestions. */
+/** Searches the prepared provincial posts, sorting before applying the limit. */
 export const filterProvincialHectometerPosts = (
-  source: FeatureCollection,
+  posts: Address[],
   searchQuery: string,
   maxResults: number
 ): Address[] => {
@@ -107,21 +104,12 @@ export const filterProvincialHectometerPosts = (
     return []
   }
 
-  return source.features
-    .flatMap((feature): Address[] => {
-      const address = mapProvincialHectometerFeatureToAddress(feature)
-
-      if (
-        !address ||
-        !normalizeHectometerValue(address.weergave_naam ?? '').includes(
-          normalizedQuery
-        )
-      ) {
-        return []
-      }
-
-      return [address]
-    })
+  return posts
+    .filter((address) =>
+      normalizeHectometerValue(address.weergave_naam ?? '').includes(
+        normalizedQuery
+      )
+    )
     .sort((first, second) =>
       (first.weergave_naam ?? '').localeCompare(
         second.weergave_naam ?? '',
@@ -134,7 +122,7 @@ export const filterProvincialHectometerPosts = (
 
 /** Finds the nearest valid post in the authoritative provincial layer. */
 export const findNearestProvincialHectometerPost = (
-  source: FeatureCollection,
+  posts: Address[],
   lat: number,
   lng: number,
   maxDistance: number
@@ -142,13 +130,7 @@ export const findNearestProvincialHectometerPost = (
   let nearestAddress: Address | null = null
   let nearestDistance = maxDistance
 
-  source.features.forEach((feature) => {
-    const address = mapProvincialHectometerFeatureToAddress(feature)
-
-    if (!address) {
-      return
-    }
-
+  posts.forEach((address) => {
     const [addressLng, addressLat] = address.coordinates
     const distance = getDistanceInMeters([lng, lat], [addressLng, addressLat])
 
