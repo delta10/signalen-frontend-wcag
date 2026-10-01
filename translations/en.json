@@ -65,10 +65,9 @@
       "chosen_location_address_and_points": "Selected location {location} and selected points {points}, click to edit",
       "chosen_location_points": "Selected points {points}, click to edit",
       "search_address_label": "Search by address or postal code",
-      "search_hectometer_label": "Search by road number plus hectometer post number",
-      "search_road_label": "Search by street or road name",
-      "open_road_search": "Open street or road search",
-      "close_road_search": "Close street or road search",
+      "search_location_label": "Search by road or street name, road number or hectometer post number",
+      "search_result_outside_area": "This location is outside the allowed area. The map has zoomed to this result. Choose a location inside the allowed area to continue.",
+      "search_selection_error": "The location could not be checked. Please try again.",
       "pinned_location": "The location is pinned on the map",
       "back_to_map": "Back to the map",
       "show_list": "Show {name} list",
@@ -109,8 +108,7 @@
     },
     "address": {
       "no_results": "No addresses found.",
-      "no_hectometer_results": "No hectometer posts found.",
-      "no_road_results": "No streets or roads found."
+      "no_location_results": "No roads, streets or hectometer posts found."
     }
   },
   "describe_contact": {

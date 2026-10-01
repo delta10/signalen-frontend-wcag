@@ -38,8 +38,8 @@ export const LocationSelect = ({ field }: LocationSelectProps) => {
     comboboxAriaDescribedBy,
     comboboxAriaInvalid,
     errorMessageId,
-    restrictionError,
-    restrictionErrorId,
+    searchPosition,
+    updatePosition,
     validateRestrictedAreaSelection,
   } = useLocationComboboxValidation(errorMessage)
   const showAddressSearch = !config.restrictSelectionArea
@@ -49,10 +49,7 @@ export const LocationSelect = ({ field }: LocationSelectProps) => {
   const showAnySearch = showAddressSearch || showHectometerSearch
 
   return (
-    <Fieldset
-      invalid={Boolean(errorMessage) || Boolean(restrictionError)}
-      className="w-full"
-    >
+    <Fieldset invalid={Boolean(errorMessage)} className="w-full">
       <FieldsetLegend>
         {field
           ? `${field.meta.label} (${tGeneral('form.required_short')})`
@@ -63,11 +60,7 @@ export const LocationSelect = ({ field }: LocationSelectProps) => {
           {errorMessage}
         </FormFieldErrorMessage>
       )}
-      {restrictionError && (
-        <FormFieldErrorMessage id={restrictionErrorId}>
-          {restrictionError}
-        </FormFieldErrorMessage>
-      )}
+
       {showAddressSearch && (
         <>
           <FormFieldDescription>
@@ -82,7 +75,7 @@ export const LocationSelect = ({ field }: LocationSelectProps) => {
       {showHectometerSearch && (
         <>
           <FormFieldDescription>
-            {t('search_hectometer_label')}
+            {t('search_location_label')}
           </FormFieldDescription>
 
           <div className="mb-4" {...register('location')}>
@@ -90,7 +83,8 @@ export const LocationSelect = ({ field }: LocationSelectProps) => {
               id="location-hectometer"
               ariaDescribedBy={comboboxAriaDescribedBy}
               ariaInvalid={comboboxAriaInvalid}
-              searchType={SearchType.Hectometer}
+              searchType={SearchType.HectometerAndRoad}
+              updatePosition={updatePosition}
               validateSelection={validateRestrictedAreaSelection}
             />
           </div>
@@ -101,10 +95,11 @@ export const LocationSelect = ({ field }: LocationSelectProps) => {
       </FormFieldDescription>
       <div className="relative w-full mb-3">
         <div style={{ minHeight: 200, height: 200 }}>
-          <LocationMap />
+          <LocationMap searchPosition={searchPosition} />
         </div>
         <MapProvider>
           <MapDialog
+            searchPosition={searchPosition}
             trigger={
               isCoordinates(formStoreState.coordinates) &&
               formStoreState.coordinates[0] === 0 &&

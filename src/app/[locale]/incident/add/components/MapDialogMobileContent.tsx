@@ -40,7 +40,6 @@ import FeatureTypeLegend, {
 } from '@/app/[locale]/incident/add/components/FeatureTypeLegend'
 import { OUT_OF_BOUNDS_SOURCE_ID } from '@/lib/utils/restrictedAreaUtils'
 import { MapLayers } from '@/app/[locale]/incident/add/components/MapLayers'
-import { MapRoadSearch } from '@/app/[locale]/incident/add/components/MapRoadSearch'
 import { MapControls } from '@/app/[locale]/incident/add/components/MapControls'
 
 type SearchField = {
@@ -54,6 +53,7 @@ const MapDialogMobileContent = ({
   features,
   field,
   isAssetSelect = false,
+  searchPosition,
 }: MapDialogContentProps) => {
   const mapContainerRef = useRef<HTMLDivElement>(null)
   const { formState } = useFormStore()
@@ -96,7 +96,7 @@ const MapDialogMobileContent = ({
     outOfBoundsLineStyle,
     outOfBoundsFillStyle,
     validateRestrictedAreaSelection,
-  } = useMapDialog(onMapReady, field, features, isAssetSelect)
+  } = useMapDialog(onMapReady, field, features, isAssetSelect, searchPosition)
   const showAddressSearch = Boolean(config && !config.restrictSelectionArea)
   const showHectometerSearch = Boolean(
     config?.base.pdok_hectometer_suggest?.enabled
@@ -119,8 +119,8 @@ const MapDialogMobileContent = ({
   if (showHectometerSearch) {
     searchFields.push({
       id: 'hectometer',
-      label: t('search_hectometer_label'),
-      searchType: SearchType.Hectometer,
+      label: t('search_location_label'),
+      searchType: SearchType.HectometerAndRoad,
     })
   }
 
@@ -354,11 +354,6 @@ const MapDialogMobileContent = ({
               ) : undefined
             }
           >
-            <MapRoadSearch
-              id="map-road-search-mobile"
-              updatePosition={updatePosition}
-              mobile
-            />
             <Button
               purpose="subtle"
               onClick={() => setFullscreenMap(!fullscreenMap)}

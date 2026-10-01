@@ -29,7 +29,7 @@ import { useConfig } from '@/contexts/ConfigContext'
 import { generateFeatureId } from '@/lib/utils/features'
 import { ExtendedFeature } from '@/types/map'
 import {
-  isAddressOutsideRestrictedArea,
+  isCoordinateOutsideRestrictedArea,
   isPointOutsideRestrictedArea,
   outOfBoundsFillStyleObject,
   outOfBoundsLineStyleObject,
@@ -39,7 +39,8 @@ function useMapDialog(
   onMapReady: ((map: MapRef) => void) | undefined,
   field?: PublicQuestion | undefined,
   features?: FeatureCollection | null | undefined,
-  isAssetSelect?: boolean | undefined
+  isAssetSelect?: boolean | undefined,
+  searchPosition?: [number, number] | null
 ) {
   const { dialogMap } = useMap()
   const config = useConfig()
@@ -68,6 +69,8 @@ function useMapDialog(
   }
 
   const getInitialZoomLevel = () => {
+    if (searchPosition) return 14
+
     // Check if there is either an address selecter or point on the map.
     if (
       formState.address ||
@@ -81,13 +84,15 @@ function useMapDialog(
 
   const [viewState, setViewState] = useState<ViewState>({
     latitude:
-      formState.coordinates[0] === 0
+      searchPosition?.[0] ??
+      (formState.coordinates[0] === 0
         ? config.base.map.center[0]
-        : formState.coordinates[0],
+        : formState.coordinates[0]),
     longitude:
-      formState.coordinates[1] === 0
+      searchPosition?.[1] ??
+      (formState.coordinates[1] === 0
         ? config.base.map.center[1]
-        : formState.coordinates[1],
+        : formState.coordinates[1]),
     zoom: getInitialZoomLevel(),
     bearing: 0,
     padding: {
@@ -328,15 +333,10 @@ function useMapDialog(
   const outOfBoundsFillStyle = outOfBoundsFillStyleObject(config)
 
   const validateRestrictedAreaSelection = async (address: Address) => {
-    const isOutside = await isAddressOutsideRestrictedArea(config, address)
+    const [lng, lat] = address.coordinates
+    const isOutside = await isCoordinateOutsideRestrictedArea(config, lng, lat)
 
-    if (isOutside) {
-      setError(t('please_choose_a_point_on_a_road'))
-      dialogRef.current?.showModal?.()
-      return false
-    }
-
-    return true
+    return !isOutside
   }
 
   // Handle click on map, setIsMapSelected to true

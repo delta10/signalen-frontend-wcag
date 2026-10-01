@@ -49,8 +49,8 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
     comboboxAriaDescribedBy,
     comboboxAriaInvalid,
     errorMessageId,
-    restrictionError,
-    restrictionErrorId,
+    searchPosition,
+    updatePosition,
     validateRestrictedAreaSelection,
   } = useLocationComboboxValidation(errorMessage)
   const showAddressSearch = !config.restrictSelectionArea
@@ -149,10 +149,7 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
   }, [config, field, formStoreState.selectedFeatures, setValue])
 
   return (
-    <Fieldset
-      invalid={Boolean(errorMessage) || Boolean(restrictionError)}
-      className="w-full"
-    >
+    <Fieldset invalid={Boolean(errorMessage)} className="w-full">
       <FieldsetLegend>
         {field
           ? `${field.meta.label} (${tGeneral('form.required_short')})`
@@ -162,11 +159,6 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
       {Boolean(errorMessage) && errorMessage && (
         <FormFieldErrorMessage id={errorMessageId}>
           {errorMessage}
-        </FormFieldErrorMessage>
-      )}
-      {restrictionError && (
-        <FormFieldErrorMessage id={restrictionErrorId}>
-          {restrictionError}
         </FormFieldErrorMessage>
       )}
 
@@ -185,7 +177,7 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
       {showHectometerSearch && (
         <>
           <FormFieldDescription>
-            {t('search_hectometer_label')}
+            {t('search_location_label')}
           </FormFieldDescription>
 
           <div className="mb-4" {...register('location')}>
@@ -193,7 +185,8 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
               id="asset-hectometer"
               ariaDescribedBy={comboboxAriaDescribedBy}
               ariaInvalid={comboboxAriaInvalid}
-              searchType={SearchType.Hectometer}
+              searchType={SearchType.HectometerAndRoad}
+              updatePosition={updatePosition}
               validateSelection={validateRestrictedAreaSelection}
             />
           </div>
@@ -205,10 +198,11 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
       </FormFieldDescription>
       <div className="relative w-full">
         <div style={{ minHeight: 200, height: 200 }}>
-          <LocationMap />
+          <LocationMap searchPosition={searchPosition} />
         </div>
         <MapProvider>
           <MapDialog
+            searchPosition={searchPosition}
             onMapReady={onMapReady}
             features={features}
             field={field}
