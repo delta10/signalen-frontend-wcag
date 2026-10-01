@@ -190,7 +190,7 @@ function useMapDialog(
         center: [lng, lat],
         zoom: selectPosition
           ? Math.max(config.base.map.minimal_zoom || 17, dialogMap.getZoom())
-          : config.base.map.selected_location_zoom || 14,
+          : 14,
       })
     }
 
