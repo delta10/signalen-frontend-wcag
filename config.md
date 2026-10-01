@@ -121,7 +121,8 @@ Organisation-specific translated text is configured at `base.i18n`.
 
 Currently supported:
 
-- `base.i18n.<locale>.describe_report.alert.help_text`: Markdown text displayed on the first step of the incident flow. Use Markdown links for telephone numbers and email addresses.
+- `base.i18n.<locale>.describe_report.alert.help_text`: Markdown text displayed on the first step of the incident flow. Use Markdown links for telephone numbers and email addresses. Leave empty to hide the information block.
+- `base.i18n.<locale>.describe_report.alert.footer_help_text`: Optional Markdown text displayed in a second information block below the **Next** button on the first step. Leave empty or omit it to hide the block.
 
 Example:
 

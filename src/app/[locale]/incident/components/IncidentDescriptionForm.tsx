@@ -29,11 +29,14 @@ import { clsx } from 'clsx'
 import useDebounce from '@/hooks/useDebounce'
 import { useConfig } from '@/contexts/ConfigContext'
 import { Paragraph } from '@utrecht/component-library-react'
+import { SpotlightSection } from '@/components'
+import { RenderMarkdown } from '@/components/ui/RenderMarkdown'
 
 const MAX_DESCRIPTION_LENGTH = 1000
 
 export const IncidentDescriptionForm = () => {
   const t = useTranslations('describe_report.form')
+  const tReport = useTranslations('describe_report')
   const tGeneral = useTranslations('general')
   const { updateForm, formState } = useFormStore()
   const router = useRouter()
@@ -42,6 +45,7 @@ export const IncidentDescriptionForm = () => {
   const descriptionId = useId()
   const errorMessageId = useId()
   const config = useConfig()
+  const footerHelpText = tReport('alert.footer_help_text')
 
   useEffect(() => {
     router.prefetch('/incident/add')
@@ -168,6 +172,11 @@ export const IncidentDescriptionForm = () => {
         </Fieldset>
 
         <IncidentFormFooter />
+        {footerHelpText.trim() && (
+          <SpotlightSection type="info" className="w-full">
+            <RenderMarkdown text={footerHelpText} />
+          </SpotlightSection>
+        )}
       </form>
     </FormProvider>
   )

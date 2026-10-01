@@ -122,6 +122,7 @@ export type AppConfig = {
         describe_report: {
           alert: {
             help_text: string
+            footer_help_text?: string
           }
         }
       }
