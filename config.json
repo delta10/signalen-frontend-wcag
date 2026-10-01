@@ -2,9 +2,9 @@
   "baseUrlApi": "https://api.meldingen-acpt.brabant.nl",
   "frontendUrl": "https://meldingen-acpt.brabant.nl",
   "pdokUrlApi": "https://api.pdok.nl/bzk/locatieserver/",
-  "mapStyle": "https://api.pdok.nl/kadaster/brt-achtergrondkaart/ogc/v1/styles/standaard__webmercatorquad?f=mapbox",
-  "mapStyleDarkMode": "https://api.pdok.nl/kadaster/brt-achtergrondkaart/ogc/v1/styles/darkmode__webmercatorquad?f=mapbox",
-  "mapAttribution": "Kaartgegevens © <a href=\"https://www.kadaster.nl/\" target=\"_blank\" rel=\"noopener noreferrer\">Kadaster</a> / <a href=\"https://www.pdok.nl/\" target=\"_blank\" rel=\"noopener noreferrer\">PDOK</a>, <a href=\"https://creativecommons.org/licenses/by/4.0/deed.nl\" target=\"_blank\" rel=\"noopener noreferrer\">CC BY 4.0</a>",
+  "mapStyle": "https://tiles.delta10.cloud/styles/signalen/style.json",
+  "mapStyleDarkMode": "https://tiles.delta10.cloud/styles/signalen/style.json",
+  "mapAttribution": "Kaartgegevens © <a href=\"https://www.openmaptiles.org/\" target=\"_blank\" rel=\"noopener noreferrer\">OpenMapTiles</a> © <a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\" rel=\"noopener noreferrer\">OpenStreetMap contributors</a>",
   "aerialPhotoMap": {
     "enabled": true,
     "tiles": [
