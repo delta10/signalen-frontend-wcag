@@ -213,10 +213,7 @@ export const getMapStyleUrl = (
 
   const baseUrl = isDarkMode ? config?.maptilerMapDarkMode : config?.maptilerMap
 
-  if (
-    !config?.maptilerApiKey ||
-    (!config?.maptilerMap && !config?.maptilerMapDarkMode)
-  ) {
+  if (!config?.maptilerApiKey || !baseUrl) {
     throw new Error('Map configuration is missing required values')
   }
 

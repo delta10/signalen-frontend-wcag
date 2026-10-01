@@ -34,6 +34,10 @@ glyph service either.
 
 ### MapTiler fallback
 
+The MapTiler settings below are optional when a provider-independent style is
+configured for the active theme. Otherwise, the API key and MapTiler style URL
+for the active theme are required.
+
 - `maptilerApiKey`: API key used for MapTiler style requests.
 - `maptilerMap`: MapTiler style URL for light mode, without `/style.json`.
 - `maptilerMapDarkMode`: MapTiler style URL for dark mode, without `/style.json`.
