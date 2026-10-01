@@ -89,7 +89,6 @@ Map settings are configured at `base.map`.
 
 - `find_address_in_distance`: Search radius in meters when finding an address near a selected location.
 - `minimal_zoom`: Minimum zoom level required before users can select a location.
-- `selected_location_zoom`: Optional zoom level used when opening the map around an existing selected location or after selecting a street or road from the map search.
 - `default_zoom`: Initial map zoom level.
 - `center`: Initial map center as `[latitude, longitude]`.
 - `maxBounds`: Bounding box as `[[west, south], [east, north]]`.

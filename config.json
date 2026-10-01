@@ -63,7 +63,6 @@
     "map": {
       "find_address_in_distance": 60,
       "minimal_zoom": 17,
-      "selected_location_zoom": 14,
       "center": [51.52, 5.112],
       "maxBounds": [
         [3.31497114423, 50.803721015],
