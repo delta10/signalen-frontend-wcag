@@ -1,4 +1,11 @@
-import { type MouseEvent, useEffect, useId, useRef, useState } from 'react'
+import {
+  type ComponentProps,
+  type MouseEvent,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+} from 'react'
 import { IconInfoCircle } from '@tabler/icons-react'
 import { useTranslations } from 'next-intl'
 
@@ -9,12 +16,14 @@ type MapAttributionProps = {
   attribution?: string
   inline?: boolean
   mobile?: boolean
+  purpose?: ComponentProps<typeof Button>['purpose']
 }
 
 const MapAttribution = ({
   attribution,
   inline = false,
   mobile = false,
+  purpose,
 }: MapAttributionProps) => {
   const dialogRef = useRef<HTMLDialogElement>(null)
   const closeButtonRef = useRef<HTMLButtonElement>(null)
@@ -93,7 +102,7 @@ const MapAttribution = ({
           mobile ? 'map-icon-button' : 'map-button',
           { 'map-attribution-button--inline': inline }
         )}
-        purpose={mobile ? 'subtle' : undefined}
+        purpose={purpose}
         iconOnly
         iconStart={<IconInfoCircle />}
         label={t('show_attribution')}

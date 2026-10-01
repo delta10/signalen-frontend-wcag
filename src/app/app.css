@@ -67,7 +67,13 @@
 }
 
 .utrecht-page-body.incident-map > .utrecht-page-body__content {
+  display: flex;
+  flex-direction: column;
   padding: 0;
+}
+
+.incident-map-header {
+  flex-shrink: 0;
 }
 
 .utrecht-page-header.incident-map-header .utrecht-page-header__content {
