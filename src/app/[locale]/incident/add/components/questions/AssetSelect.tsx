@@ -204,7 +204,7 @@ export const AssetSelect = ({ field }: AssetSelectProps) => {
         {t(showAnySearch ? 'or_use_map_description' : 'use_map_description')}
       </FormFieldDescription>
       <div className="relative w-full">
-        <div style={{ minHeight: 200, height: 200 }} role="img" aria-label="">
+        <div style={{ minHeight: 200, height: 200 }}>
           <LocationMap />
         </div>
         <MapProvider>
