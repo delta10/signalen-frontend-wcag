@@ -10,13 +10,7 @@ import {
 } from '@/components'
 import MapExplainerAccordion from '@/app/[locale]/incident/add/components/questions/MapExplainerAccordion'
 import { AddressCombobox, SearchType } from '@/components/ui/AddressCombobox'
-import {
-  IconCurrentLocation,
-  IconInfoCircle,
-  IconMinus,
-  IconPlus,
-  IconX,
-} from '@tabler/icons-react'
+import { IconCurrentLocation, IconX } from '@tabler/icons-react'
 import { FeatureListItem } from '@/app/[locale]/incident/add/components/FeatureListItem'
 import * as Dialog from '@radix-ui/react-dialog'
 import { Map } from '@/components/ui/Map'
@@ -29,16 +23,20 @@ import { PublicQuestion } from '@/types/form'
 import { setCurrentLocation } from '@/lib/utils/LocationUtils'
 import { FeatureTypeIcon } from '@/app/[locale]/incident/add/components/FeatureTypeIcon'
 import { ExtendedFeature } from '@/types/map'
-import FeatureTypeLegend from '@/app/[locale]/incident/add/components/FeatureTypeLegend'
+import FeatureTypeLegend, {
+  getVisibleFeatureTypes,
+} from '@/app/[locale]/incident/add/components/FeatureTypeLegend'
 import { Layer, Source } from 'react-map-gl/maplibre'
 import { OUT_OF_BOUNDS_SOURCE_ID } from '@/lib/utils/restrictedAreaUtils'
 import { MapLayers } from '@/app/[locale]/incident/add/components/MapLayers'
+import { MapControls } from '@/app/[locale]/incident/add/components/MapControls'
 
 export type MapDialogContentProps = {
   onMapReady?: (map: MapRef) => void
   field?: PublicQuestion
   features?: FeatureCollection | null
   isAssetSelect?: boolean
+  searchPosition?: [number, number] | null
   loadingAssets?: boolean
 } & React.HTMLAttributes<HTMLDivElement>
 
@@ -53,6 +51,7 @@ const MapDialogContent = ({
   field,
   features,
   isAssetSelect = false,
+  searchPosition,
 }: MapDialogContentProps) => {
   const mapContainerRef = useRef<HTMLDivElement>(null)
   const { formState } = useFormStore()
@@ -62,6 +61,7 @@ const MapDialogContent = ({
   const {
     dialogMap,
     dialogRef,
+    closeAlertDialogOnBackdropClick,
     config,
     viewState,
     setViewState,
@@ -77,6 +77,9 @@ const MapDialogContent = ({
     closeMapDialog,
     handleMapClick,
     mapStyle,
+    aerialPhotoEnabled,
+    isAerialPhoto,
+    setIsAerialPhoto,
     width,
     mapFeatures,
     error,
@@ -87,12 +90,17 @@ const MapDialogContent = ({
     outOfBoundsLineStyle,
     outOfBoundsFillStyle,
     validateRestrictedAreaSelection,
-  } = useMapDialog(onMapReady, field, features, isAssetSelect)
+  } = useMapDialog(onMapReady, field, features, isAssetSelect, searchPosition)
   const showAddressSearch = Boolean(config && !config.restrictSelectionArea)
   const showHectometerSearch = Boolean(
     config?.base.pdok_hectometer_suggest?.enabled
   )
   const searchFields: SearchField[] = []
+  const visibleFeatureTypes = getVisibleFeatureTypes(field?.meta.featureTypes)
+  const hasMapObjects = Boolean(mapFeatures?.features.length)
+  const hasLegendItems = Boolean(
+    isAssetSelect && hasMapObjects && visibleFeatureTypes.length
+  )
 
   if (showAddressSearch) {
     searchFields.push({
@@ -105,14 +113,18 @@ const MapDialogContent = ({
   if (showHectometerSearch) {
     searchFields.push({
       id: 'hectometer',
-      label: t('search_hectometer_label'),
-      searchType: SearchType.Hectometer,
+      label: t('search_location_label'),
+      searchType: SearchType.HectometerAndRoad,
     })
   }
 
   return (
     <>
-      <AlertDialog type="error" ref={dialogRef}>
+      <AlertDialog
+        type="error"
+        ref={dialogRef}
+        onClick={closeAlertDialogOnBackdropClick}
+      >
         <form
           method="dialog"
           className="map-alert-dialog__content md:!min-w-[400px] md:!max-w-[400px]"
@@ -129,11 +141,13 @@ const MapDialogContent = ({
           </ButtonGroup>
         </form>
       </AlertDialog>
-      <FeatureTypeLegend
-        featureTypes={field?.meta.featureTypes}
-        openLegend={openLegend}
-        setOpenLegend={setOpenLegend}
-      />
+      {hasLegendItems && (
+        <FeatureTypeLegend
+          featureTypes={visibleFeatureTypes}
+          openLegend={openLegend}
+          setOpenLegend={setOpenLegend}
+        />
+      )}
       <div className="col-span-1 flex flex-col min-h-[100vh] max-h-[100vh] md:max-h-screen gap-4 shadow-right z-10">
         <div className="flex flex-col overflow-y-auto gap-4 px-4 pt-4">
           <Heading level={1}>
@@ -286,7 +300,16 @@ const MapDialogContent = ({
             )}
             <MapLayers />
           </Map>
-          <div className="map-location-group">
+          <MapControls
+            config={config}
+            map={dialogMap}
+            aerialPhotoEnabled={aerialPhotoEnabled}
+            isAerialPhoto={isAerialPhoto}
+            setIsAerialPhoto={setIsAerialPhoto}
+            hasLegendItems={hasLegendItems}
+            openLegend={openLegend}
+            setOpenLegend={setOpenLegend}
+          >
             <Button
               purpose="secondary"
               onClick={() =>
@@ -302,7 +325,7 @@ const MapDialogContent = ({
             >
               {t('current_location')}
             </Button>
-          </div>
+          </MapControls>
 
           <Dialog.Close asChild>
             <Button
@@ -312,37 +335,6 @@ const MapDialogContent = ({
               label={t('map_close_button_label')}
             />
           </Dialog.Close>
-
-          {dialogMap && (
-            <ButtonGroup direction="column" className="map-zoom-button-group">
-              <Button
-                className="map-button map-zoom-button"
-                iconOnly
-                iconStart={<IconPlus />}
-                label={t('map_zoom-in_button_label')}
-                onClick={() => dialogMap.zoomIn()}
-              />
-              <Button
-                className="map-button map-zoom-button"
-                iconOnly
-                iconStart={<IconMinus />}
-                label={t('map_zoom-out_button_label')}
-                onClick={() => dialogMap.zoomOut()}
-              />
-            </ButtonGroup>
-          )}
-
-          <div className="map-legend-group">
-            <Button
-              purpose="secondary"
-              onClick={() => {
-                setOpenLegend(!openLegend)
-              }}
-              iconStart={<IconInfoCircle />}
-            >
-              {t('legend')}
-            </Button>
-          </div>
         </div>
       )}
     </>

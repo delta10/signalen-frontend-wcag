@@ -1,4 +1,4 @@
-import { test, expect } from 'vitest'
+import { test, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { FieldTypes } from '@/types/form'
 import { FormMock } from '../../../../../../../__mocks__/FormMock'
@@ -23,7 +23,7 @@ test('should show text input', async () => {
     required: false,
   }
 
-  renderWithForm(<RenderSingleField field={field} />, {})
+  renderWithForm(<RenderSingleField field={field} setIsBlocking={vi.fn()} />, {})
 
   expect(
     screen.queryByRole('textbox', {
@@ -45,7 +45,7 @@ test('should not show text input', async () => {
     required: false,
   }
 
-  renderWithForm(<RenderSingleField field={field} />, {})
+  renderWithForm(<RenderSingleField field={field} setIsBlocking={vi.fn()} />, {})
 
   expect(screen.queryByRole('textbox')).not.toBeInTheDocument()
 })
@@ -63,7 +63,7 @@ test('should show text input with ifOneOf resolving to true', async () => {
     required: false,
   }
 
-  renderWithForm(<RenderSingleField field={field} />, {
+  renderWithForm(<RenderSingleField field={field} setIsBlocking={vi.fn()} />, {
     Bank_type_melding: '1',
   })
 
@@ -87,7 +87,7 @@ test('should not show text input with ifOneOf resolving to false', async () => {
     required: false,
   }
 
-  renderWithForm(<RenderSingleField field={field} />, {
+  renderWithForm(<RenderSingleField field={field} setIsBlocking={vi.fn()} />, {
     Bank_type_melding: '2',
   })
 
@@ -108,7 +108,7 @@ test('should show text input with ifAllOf condition resolving to true', async ()
     required: false,
   }
 
-  renderWithForm(<RenderSingleField field={field} />, {
+  renderWithForm(<RenderSingleField field={field} setIsBlocking={vi.fn()} />, {
     Bank_type_melding: '2',
     Test_type_melding: '15',
   })
@@ -134,7 +134,7 @@ test('should not show text input with ifAllOf condition resolving to false', asy
     required: false,
   }
 
-  renderWithForm(<RenderSingleField field={field} />, {
+  renderWithForm(<RenderSingleField field={field} setIsBlocking={vi.fn()} />, {
     Bank_type_melding: '2',
     Test_type_melding: '15',
   })
@@ -161,7 +161,7 @@ test('should show text input with ifOneOf nested condition (ifAllOf) resolving t
     required: false,
   }
 
-  renderWithForm(<RenderSingleField field={field} />, {
+  renderWithForm(<RenderSingleField field={field} setIsBlocking={vi.fn()} />, {
     Bank_type_melding: '2',
     Test_type_melding: '15',
   })
@@ -192,7 +192,7 @@ test('should show text input with ifOneOf nested condition (ifOneOf) resolving t
     required: false,
   }
 
-  renderWithForm(<RenderSingleField field={field} />, {
+  renderWithForm(<RenderSingleField field={field} setIsBlocking={vi.fn()} />, {
     Bank_type_melding: '1',
     Test_type_melding: '15',
   })
