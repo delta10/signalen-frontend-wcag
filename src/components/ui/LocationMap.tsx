@@ -9,7 +9,9 @@ import { useDarkMode } from '@/hooks/useDarkMode'
 import { getMapAttribution, getMapStyleUrl } from '@/lib/utils/map'
 import { MapAttribution } from './MapAttribution'
 
-const LocationMap = () => {
+const LocationMap = (
+  mapImageProps: React.HTMLAttributes<HTMLDivElement> = {}
+) => {
   const { formState } = useFormStore()
   const config = useConfig()
   const { isDarkMode } = useDarkMode()
@@ -52,7 +54,11 @@ const LocationMap = () => {
 
   return (
     <div className="location-map-preview relative">
-      <div role="img" aria-label="">
+      <div
+        {...mapImageProps}
+        role="img"
+        aria-label={mapImageProps['aria-label'] ?? ''}
+      >
         <Map
           {...viewState}
           id="locationMap"

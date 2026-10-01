@@ -100,7 +100,7 @@ export const LocationSelect = ({ field }: LocationSelectProps) => {
         {t(showAnySearch ? 'or_use_map_description' : 'use_map_description')}
       </FormFieldDescription>
       <div className="relative w-full mb-3">
-        <div style={{ minHeight: 200, height: 200 }} role="img" aria-label="">
+        <div style={{ minHeight: 200, height: 200 }}>
           <LocationMap />
         </div>
         <MapProvider>
