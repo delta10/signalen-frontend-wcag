@@ -44,7 +44,8 @@ import { clsx } from 'clsx'
 import { debounce } from '@/lib/utils/utils'
 import IncidentMapMobileSidebar from '@/app/[locale]/incident-map/components/IncidentMapMobileSidebar'
 import { setCurrentLocation } from '@/lib/utils/LocationUtils'
-import { getMapStyleUrl } from '@/lib/utils/map'
+import { getMapAttribution, getMapStyleUrl } from '@/lib/utils/map'
+import { MapAttribution } from '@/components/ui/MapAttribution'
 import { Paragraph } from '@utrecht/component-library-react/dist/css-module'
 import { ExtendedFeature } from '@/types/map'
 import { stepToPath } from '@/routing/navigation'
@@ -419,6 +420,7 @@ const IncidentMapContent = () => {
                 )
               })}
           </Map>
+          <MapAttribution attribution={getMapAttribution(config)} />
           <div className="map-location-group">
             <Button
               purpose="secondary"

@@ -5,6 +5,7 @@ import {
   parseTemplateString,
 } from '@/lib/utils/parseTemplateString'
 import type { AppConfig } from '@/types/config'
+import type { StyleSpecification } from 'maplibre-gl'
 
 export type CoordinateBounds = [[number, number], [number, number]]
 
@@ -189,27 +190,71 @@ export const formatAddressToSignalenInput = (
 }
 
 /**
- * Returns the appropriate MapTiler style URL based on the current theme.
+ * Returns the configured map style URL based on the current theme.
  *
- * @param config - App config containing the MapTiler settings.
+ * A provider-independent style URL takes precedence. Existing MapTiler
+ * configuration remains supported as a fallback for other deployments.
+ *
+ * @param config - App config containing the map style settings.
  * @param isDarkMode - Boolean flag indicating if dark mode is active.
- * @returns A full MapTiler style URL with the appropriate theme and API key.
+ * @returns A full map style URL for MapLibre.
  */
 export const getMapStyleUrl = (
   config: AppConfig,
   isDarkMode: boolean
 ): string => {
+  const styleUrl = isDarkMode
+    ? config.mapStyleDarkMode || config.mapStyle
+    : config.mapStyle
+
+  if (styleUrl) {
+    return styleUrl
+  }
+
   const baseUrl = isDarkMode ? config?.maptilerMapDarkMode : config?.maptilerMap
 
-  if (
-    !config?.maptilerApiKey ||
-    (!config?.maptilerMap && !config?.maptilerMapDarkMode)
-  ) {
+  if (!config?.maptilerApiKey || !baseUrl) {
     throw new Error('Map configuration is missing required values')
   }
 
   return `${baseUrl}/style.json?key=${config?.maptilerApiKey}`
 }
+
+/** Returns a raster MapLibre style for the configured aerial photography. */
+export const getAerialPhotoMapStyle = (
+  config: AppConfig
+): StyleSpecification | null => {
+  const aerialPhotoMap = config.aerialPhotoMap
+
+  if (!aerialPhotoMap?.enabled || aerialPhotoMap.tiles.length === 0) {
+    return null
+  }
+
+  return {
+    version: 8,
+    ...(aerialPhotoMap.glyphs ? { glyphs: aerialPhotoMap.glyphs } : {}),
+    sources: {
+      'aerial-photo': {
+        type: 'raster',
+        tiles: aerialPhotoMap.tiles,
+        tileSize: aerialPhotoMap.tileSize ?? 256,
+        minzoom: aerialPhotoMap.minZoom,
+        maxzoom: aerialPhotoMap.maxZoom,
+      },
+    },
+    layers: [
+      {
+        id: 'aerial-photo',
+        type: 'raster',
+        source: 'aerial-photo',
+      },
+    ],
+  }
+}
+
+/** Returns the attribution for the active background map. */
+export const getMapAttribution = (config: AppConfig, isAerialPhoto = false) =>
+  isAerialPhoto ? config.aerialPhotoMap?.attribution : config.mapAttribution
 
 const getFeatureType = (
   properties: GeoJsonProperties,
