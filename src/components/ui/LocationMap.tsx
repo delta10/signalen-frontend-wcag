@@ -46,7 +46,9 @@ const LocationMap = ({
       <div
         {...mapImageProps}
         role="group"
-        aria-label={mapImageProps['aria-label'] ?? ''}
+        aria-label={
+          mapImageProps['aria-label']?.trim() || t('map_preview_label')
+        }
       >
         <Map
           {...viewState}
