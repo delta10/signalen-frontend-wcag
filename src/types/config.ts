@@ -62,9 +62,9 @@ export type AppConfig = {
   mapStyleDarkMode?: string
   mapAttribution?: string
   aerialPhotoMap?: AerialPhotoMapConfiguration
-  maptilerApiKey: string
-  maptilerMap: string
-  maptilerMapDarkMode: string
+  maptilerApiKey?: string
+  maptilerMap?: string
+  maptilerMapDarkMode?: string
   maptilerOutOfBoundsSelectionArea?: string
   maptilerOutOfBoundsLayerId?: string
   restrictSelectionArea: boolean
