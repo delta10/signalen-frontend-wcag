@@ -8,11 +8,13 @@ import FormProgress from '@/app/[locale]/components/FormProgress'
 import { getLastPath } from '@/lib/utils/stepper'
 import { useEffect } from 'react'
 import { redirect } from 'next/navigation'
+import { usePrefetchHectometers } from '@/hooks/usePrefetchHectometers'
 
 const currentStep = 2
 const maxStep = 4
 
 export const AdditionalInformationPage = () => {
+  usePrefetchHectometers()
   const t = useTranslations('describe_add')
   const tGeneral = useTranslations('general.form')
   const { loaded, formState } = useFormStore()
