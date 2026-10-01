@@ -60,6 +60,7 @@
       "or_use_map_description": "Or select a point on the map",
       "use_map_description": "Select a point on the map",
       "choose_location": "Choose location",
+      "map_preview_label": "Map preview for choosing a report location",
       "edit_location": "Edit location",
       "chosen_location": "Selected location {location} click to edit",
       "chosen_location_address_and_points": "Selected location {location} and selected points {points}, click to edit",
