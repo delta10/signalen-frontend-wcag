@@ -60,6 +60,7 @@ export const LocationSelect = ({ field }: LocationSelectProps) => {
           {errorMessage}
         </FormFieldErrorMessage>
       )}
+
       {showAddressSearch && (
         <>
           <FormFieldDescription>
@@ -74,7 +75,7 @@ export const LocationSelect = ({ field }: LocationSelectProps) => {
       {showHectometerSearch && (
         <>
           <FormFieldDescription>
-            {t('search_hectometer_label')}
+            {t('search_location_label')}
           </FormFieldDescription>
 
           <div className="mb-4" {...register('location')}>
@@ -82,7 +83,7 @@ export const LocationSelect = ({ field }: LocationSelectProps) => {
               id="location-hectometer"
               ariaDescribedBy={comboboxAriaDescribedBy}
               ariaInvalid={comboboxAriaInvalid}
-              searchType={SearchType.Hectometer}
+              searchType={SearchType.HectometerAndRoad}
               updatePosition={updatePosition}
               validateSelection={validateRestrictedAreaSelection}
             />

@@ -8,7 +8,10 @@ import {
   isValidForStep3,
   useFormStore,
 } from '@/store/form_store'
-import { getSuggestedHectometerPosts } from '@/services/location/address'
+import {
+  getSuggestedHectometerPosts,
+  getSuggestedRoads,
+} from '@/services/location/address'
 import { isCoordinateOutsideRestrictedArea } from '@/lib/utils/restrictedAreaUtils'
 import type { AppConfig } from '@/types/config'
 import config from '../../../config.json'
@@ -17,6 +20,7 @@ import { AddressCombobox, SearchType } from './AddressCombobox'
 vi.mock('@/services/location/address', () => ({
   getSuggestedAddresses: vi.fn(),
   getSuggestedHectometerPosts: vi.fn(),
+  getSuggestedRoads: vi.fn(),
 }))
 
 vi.mock('@/lib/utils/restrictedAreaUtils', () => ({
@@ -35,6 +39,7 @@ const post = {
 
 beforeEach(() => {
   vi.resetAllMocks()
+  vi.mocked(getSuggestedRoads).mockRejectedValue(new Error('No road response'))
   vi.mocked(isCoordinateOutsideRestrictedArea).mockResolvedValue(false)
   useFormStore.setState({
     formState: createFormState({
@@ -99,7 +104,7 @@ const showSuggestions = async (
         config={{ ...config, restrictSelectionArea } as unknown as AppConfig}
       >
         <AddressCombobox
-          searchType={SearchType.Hectometer}
+          searchType={SearchType.HectometerAndRoad}
           updatePosition={updatePosition}
           validateSelection={validateSelection}
         />
@@ -124,6 +129,94 @@ const choosePost = async (validateSelection: () => Promise<boolean>) => {
 }
 
 describe('hectometer selection', () => {
+  it('keeps road results alongside hectometer posts without applying the post boundary filter to roads', async () => {
+    vi.mocked(getSuggestedRoads).mockResolvedValue({
+      response: {
+        numFound: 1,
+        start: 0,
+        maxScore: 1,
+        numFoundExact: true,
+        docs: [
+          {
+            id: 'weg-outside',
+            weergavenaam: 'N270, Noord-Brabant',
+            straatnaam: 'N270',
+            centroide_ll: 'POINT(5.58953096 51.46621774)',
+          },
+        ],
+      },
+    })
+    vi.mocked(isCoordinateOutsideRestrictedArea).mockImplementation(
+      async (_config, lng) => lng === 5.58953096
+    )
+    await showSuggestions(async () => true)
+    expect(
+      screen.getByRole('option', { name: 'N270, Noord-Brabant' })
+    ).toBeInTheDocument()
+    expect(screen.getAllByRole('option')).toHaveLength(2)
+    expect(isCoordinateOutsideRestrictedArea).toHaveBeenCalledTimes(1)
+    expect(getSuggestedRoads).toHaveBeenCalledWith(
+      'A270 6.5',
+      config.base.pdok_address_suggest.scope,
+      config.base.pdok_address_suggest.organization,
+      config.pdokUrlApi,
+      { bounds: config.base.pdok_hectometer_suggest.bounds },
+      expect.any(AbortSignal)
+    )
+  })
+
+  it.each([true, false])(
+    'selects a permitted road or only navigates to an outside road (permitted: %s)',
+    async (permitted) => {
+      vi.mocked(getSuggestedRoads).mockResolvedValue({
+        response: {
+          numFound: 1,
+          start: 0,
+          maxScore: 1,
+          numFoundExact: true,
+          docs: [
+            {
+              id: 'weg-result',
+              weergavenaam: 'N270, Noord-Brabant',
+              straatnaam: 'N270',
+              centroide_ll: 'POINT(5.58953096 51.46621774)',
+            },
+          ],
+        },
+      })
+      const { updatePosition } = await showSuggestions(async () => permitted)
+      fireEvent.mouseDown(
+        screen.getByRole('option', { name: 'N270, Noord-Brabant' }),
+        { button: 0 }
+      )
+      await waitFor(() => {
+        if (permitted) {
+          expect(updatePosition).toHaveBeenCalledWith(51.46621774, 5.58953096)
+          expect(useFormStore.getState().formState.address?.id).toBe(
+            'weg-result'
+          )
+        } else {
+          expect(updatePosition).toHaveBeenCalledWith(
+            51.46621774,
+            5.58953096,
+            false
+          )
+          expect(useFormStore.getState().formState).toMatchObject({
+            address: null,
+            coordinates: [0, 0],
+            selectedFeatures: [],
+          })
+          expect(
+            screen.getByText(
+              'This location is outside the allowed area. The map has zoomed to this result. Choose a location inside the allowed area to continue.'
+            )
+          ).toBeInTheDocument()
+        }
+      })
+      expect(isValidForStep3(useFormStore.getState().formState)).toBe(permitted)
+    }
+  )
+
   it('filters posts outside the reporting boundary before displaying suggestions', async () => {
     const outsidePost = {
       ...post,
@@ -165,7 +258,7 @@ describe('hectometer selection', () => {
     render(
       <RootMock>
         <ConfigProvider config={config as unknown as AppConfig}>
-          <AddressCombobox searchType={SearchType.Hectometer} />
+          <AddressCombobox searchType={SearchType.HectometerAndRoad} />
         </ConfigProvider>
       </RootMock>
     )
@@ -179,7 +272,7 @@ describe('hectometer selection', () => {
       screen.queryByRole('option', { name: 'Hectometerpaal A270-6.5' })
     ).not.toBeInTheDocument()
     expect(
-      screen.queryByText('No hectometer posts found')
+      screen.queryByText('No roads, streets or hectometer posts found.')
     ).not.toBeInTheDocument()
   })
 

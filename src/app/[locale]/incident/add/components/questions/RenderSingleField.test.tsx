@@ -23,7 +23,10 @@ test('should show text input', async () => {
     required: false,
   }
 
-  renderWithForm(<RenderSingleField field={field} setIsBlocking={vi.fn()} />, {})
+  renderWithForm(
+    <RenderSingleField field={field} setIsBlocking={vi.fn()} />,
+    {}
+  )
 
   expect(
     screen.queryByRole('textbox', {
@@ -45,7 +48,10 @@ test('should not show text input', async () => {
     required: false,
   }
 
-  renderWithForm(<RenderSingleField field={field} setIsBlocking={vi.fn()} />, {})
+  renderWithForm(
+    <RenderSingleField field={field} setIsBlocking={vi.fn()} />,
+    {}
+  )
 
   expect(screen.queryByRole('textbox')).not.toBeInTheDocument()
 })

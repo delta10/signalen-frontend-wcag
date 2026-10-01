@@ -41,7 +41,6 @@ import FeatureTypeLegend, {
 } from '@/app/[locale]/incident/add/components/FeatureTypeLegend'
 import { OUT_OF_BOUNDS_SOURCE_ID } from '@/lib/utils/restrictedAreaUtils'
 import { MapLayers } from '@/app/[locale]/incident/add/components/MapLayers'
-import { MapRoadSearch } from '@/app/[locale]/incident/add/components/MapRoadSearch'
 import { MapControls } from '@/app/[locale]/incident/add/components/MapControls'
 
 type SearchField = {
@@ -121,8 +120,8 @@ const MapDialogMobileContent = ({
   if (showHectometerSearch) {
     searchFields.push({
       id: 'hectometer',
-      label: t('search_hectometer_label'),
-      searchType: SearchType.Hectometer,
+      label: t('search_location_label'),
+      searchType: SearchType.HectometerAndRoad,
     })
   }
 
@@ -368,11 +367,6 @@ const MapDialogMobileContent = ({
               ) : undefined
             }
           >
-            <MapRoadSearch
-              id="map-road-search-mobile"
-              updatePosition={updatePosition}
-              mobile
-            />
             <Button
               purpose="subtle"
               onClick={() => setFullscreenMap(!fullscreenMap)}

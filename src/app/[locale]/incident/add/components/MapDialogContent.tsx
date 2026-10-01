@@ -30,7 +30,6 @@ import FeatureTypeLegend, {
 import { Layer, Source } from 'react-map-gl/maplibre'
 import { OUT_OF_BOUNDS_SOURCE_ID } from '@/lib/utils/restrictedAreaUtils'
 import { MapLayers } from '@/app/[locale]/incident/add/components/MapLayers'
-import { MapRoadSearch } from '@/app/[locale]/incident/add/components/MapRoadSearch'
 import { MapControls } from '@/app/[locale]/incident/add/components/MapControls'
 
 export type MapDialogContentProps = {
@@ -115,8 +114,8 @@ const MapDialogContent = ({
   if (showHectometerSearch) {
     searchFields.push({
       id: 'hectometer',
-      label: t('search_hectometer_label'),
-      searchType: SearchType.Hectometer,
+      label: t('search_location_label'),
+      searchType: SearchType.HectometerAndRoad,
     })
   }
 
@@ -324,10 +323,6 @@ const MapDialogContent = ({
             openLegend={openLegend}
             setOpenLegend={setOpenLegend}
           >
-            <MapRoadSearch
-              id="map-road-search-desktop"
-              updatePosition={updatePosition}
-            />
             <Button
               purpose="secondary"
               onClick={() =>

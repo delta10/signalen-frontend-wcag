@@ -3,6 +3,7 @@ import { axiosInstance } from '@/services/client/api-client'
 import {
   getNearestHectometerPostByCoordinate,
   getSuggestedHectometerPosts,
+  getSuggestedRoads,
 } from './address'
 
 vi.mock('@/services/client/api-client', () => ({ axiosInstance: vi.fn() }))
@@ -15,6 +16,33 @@ beforeEach(() => {
 })
 
 describe('PDOK hectometer requests', () => {
+  it('requests street and road suggestions within the same configured rectangle', async () => {
+    get.mockResolvedValue({ data: { response: { docs: [] } } })
+    const { PdokAddressSuggestScope } = await import('@/types/config')
+    const signal = new AbortController().signal
+    await getSuggestedRoads(
+      'N270',
+      PdokAddressSuggestScope.Provincie,
+      'Noord-Brabant',
+      'https://api.pdok.nl/bzk/locatieserver',
+      {
+        bounds: [
+          [4.17, 51.21],
+          [6.08, 51.88],
+        ],
+      },
+      signal
+    )
+    const url = new URL(get.mock.calls[0][0], 'https://example.test')
+    expect(url.searchParams.get('q')).toBe('N270')
+    expect(url.searchParams.getAll('fq')).toEqual([
+      'provincienaam:(Noord-Brabant)',
+      'type:weg',
+      'centroide_ll:[51.21,4.17 TO 51.88,6.08]',
+    ])
+    expect(get.mock.calls[0][1]).toEqual({ signal })
+  })
+
   it('requests 400 posts within the search rectangle using the N-road filter and exact A270 exception', async () => {
     get.mockResolvedValue({ data: { response: { docs: [] } } })
     await getSuggestedHectometerPosts(

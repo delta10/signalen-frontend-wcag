@@ -9,25 +9,32 @@ export const useLocationComboboxValidation = (errorMessage?: string) => {
   const { formState } = useFormStore()
   const [search, setSearch] = useState<{
     position: [number, number]
+    address: Address | null
     coordinates: number[]
   } | null>(null)
-  const errorMessageId = useId()
   const searchPosition =
-    search?.coordinates === formState.coordinates ? search.position : null
-
+    search?.address === formState.address &&
+    search?.coordinates === formState.coordinates
+      ? search.position
+      : null
   const updatePosition = (lat: number, lng: number, selectPosition = true) => {
+    const current = useFormStore.getState().formState
     setSearch(
       selectPosition
         ? null
         : {
             position: [lat, lng],
-            coordinates: useFormStore.getState().formState.coordinates,
+            address: current.address,
+            coordinates: current.coordinates,
           }
     )
   }
+  const errorMessageId = useId()
   const validateRestrictedAreaSelection = async (address: Address) => {
     const [lng, lat] = address.coordinates
-    return !(await isCoordinateOutsideRestrictedArea(config, lng, lat))
+    const isOutside = await isCoordinateOutsideRestrictedArea(config, lng, lat)
+
+    return !isOutside
   }
 
   return {
