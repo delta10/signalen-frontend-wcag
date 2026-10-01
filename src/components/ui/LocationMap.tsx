@@ -2,6 +2,7 @@ import { Marker, ViewState } from 'react-map-gl/maplibre'
 import { Map } from './Map'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import React from 'react'
+import { useTranslations } from 'next-intl'
 import { useFormStore } from '@/store/form_store'
 import { useConfig } from '@/contexts/ConfigContext'
 import { MapMarker } from './MapMarker'
@@ -20,6 +21,7 @@ const LocationMap = ({
   const { formState } = useFormStore()
   const config = useConfig()
   const { isDarkMode } = useDarkMode()
+  const t = useTranslations('describe_add.map')
   const marker = [formState.coordinates[0], formState.coordinates[1]]
   const viewState: ViewState = {
     latitude: searchPosition?.[0] ?? (marker[0] || config.base.map.center[0]),
@@ -39,7 +41,9 @@ const LocationMap = ({
       <div
         {...mapImageProps}
         role="img"
-        aria-label={mapImageProps['aria-label'] ?? ''}
+        aria-label={
+          mapImageProps['aria-label']?.trim() || t('map_preview_label')
+        }
       >
         <Map
           {...viewState}

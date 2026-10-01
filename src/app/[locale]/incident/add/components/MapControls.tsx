@@ -91,6 +91,7 @@ export const MapControls = ({
             attribution={getMapAttribution(config, isAerialPhoto)}
             inline
             mobile={mobile}
+            purpose={mobile ? 'subtle' : undefined}
           />
           <Button
             purpose={mobile ? 'subtle' : undefined}
