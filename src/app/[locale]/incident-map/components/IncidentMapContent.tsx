@@ -162,15 +162,12 @@ const IncidentMapContent = () => {
     }
   }, [dialogMap, setFeatures, signalsClient])
 
-  const debouncedSetNewFeatures = useCallback(
-    debounce(() => {
-      setNewFeatures()
-    }, 50),
-    [setNewFeatures]
-  )
-
   useEffect(() => {
     if (!dialogMap) return
+
+    const debouncedSetNewFeatures = debounce(() => {
+      setNewFeatures()
+    }, 50)
 
     const handleMapLoad = () => {
       setNewFeatures()
@@ -186,13 +183,11 @@ const IncidentMapContent = () => {
 
     // Cleanup function
     return () => {
-      if (dialogMap) {
-        dialogMap.off('load', handleMapLoad)
-        dialogMap.off('move', handleMapMove)
-        debouncedSetNewFeatures.cancel() // Cancel any pending debounced calls
-      }
+      dialogMap.off('load', handleMapLoad)
+      dialogMap.off('move', handleMapMove)
+      debouncedSetNewFeatures.cancel() // Cancel any pending debounced calls
     }
-  }, [dialogMap, setNewFeatures, debouncedSetNewFeatures])
+  }, [dialogMap, setNewFeatures])
 
   // Filter features based on selected categories
   const filteredFeatures = useMemo(() => {
@@ -315,7 +310,7 @@ const IncidentMapContent = () => {
   }
 
   return (
-    <div className="grid md:grid-cols-[max-content_1fr] min-h-[calc(100svh-5.4rem)] md:min-h-[calc(100vh-102px)] overflow-y-hidden grid-rows-[auto_1fr_auto] md:grid-rows-[auto]">
+    <div className="grid h-full md:grid-cols-[max-content_1fr] overflow-y-hidden grid-rows-[auto_minmax(0,1fr)_auto] md:grid-rows-[minmax(0,1fr)]">
       <AlertDialog type="error" ref={dialogRef}>
         <form
           method="dialog"
@@ -333,9 +328,8 @@ const IncidentMapContent = () => {
           </ButtonGroup>
         </form>
       </AlertDialog>
-      {/*min-h-[calc(100svh-102px)]*/}
       {!isMobile && (
-        <div className="col-span-1 flex flex-col shadow-right z-10 md:max-h-[calc(100vh-102px)] md:max-w-[500px] overflow-y-auto">
+        <div className="col-span-1 flex flex-col shadow-right z-10 md:max-h-full md:max-w-[500px] overflow-y-auto">
           {selectedFeatureId ? (
             <div className="p-4">
               <SelectedIncidentDetails
@@ -383,7 +377,7 @@ const IncidentMapContent = () => {
 
       {config && (
         <div
-          className="col-span-1 relative min-h-full max-h-full h-full"
+          className="col-span-1 relative min-h-0 h-full"
           ref={mapContainerRef}
         >
           <Map
@@ -420,7 +414,6 @@ const IncidentMapContent = () => {
                 )
               })}
           </Map>
-          <MapAttribution attribution={getMapAttribution(config)} />
           <div className="map-location-group">
             <Button
               purpose="secondary"
@@ -451,6 +444,11 @@ const IncidentMapContent = () => {
                 isMobile ? 'mobile' : ''
               )}
             >
+              <MapAttribution
+                attribution={getMapAttribution(config)}
+                inline
+                mobile={isMobile}
+              />
               <Button
                 className={clsx(
                   'map-zoom-button',
@@ -477,19 +475,18 @@ const IncidentMapContent = () => {
       )}
 
       {isMobile && (
-        <IncidentMapMobileSidebar
-          selectedFeature={selectedFeature}
-          selectedFeatureAddress={selectedFeatureAddress}
-          categories={categories}
-          selectedSubCategories={selectedSubCategories}
-          setSelectedSubCategories={setSelectedSubCategories}
-          resetSelectedIncident={resetSelectedIncident}
-        />
-      )}
-
-      {isMobile && (
-        <div className="flex items-center justify-center py-3 z-30 absolute bottom-0 w-full p-4 bg-white dark:bg-[#161615]">
-          {createIncidentButton}
+        <div className="flex flex-col">
+          <IncidentMapMobileSidebar
+            selectedFeature={selectedFeature}
+            selectedFeatureAddress={selectedFeatureAddress}
+            categories={categories}
+            selectedSubCategories={selectedSubCategories}
+            setSelectedSubCategories={setSelectedSubCategories}
+            resetSelectedIncident={resetSelectedIncident}
+          />
+          <div className="relative flex items-center justify-center py-3 z-30 w-full p-4 bg-white dark:bg-[#161615]">
+            {createIncidentButton}
+          </div>
         </div>
       )}
     </div>

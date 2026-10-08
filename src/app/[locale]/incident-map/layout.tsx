@@ -11,7 +11,7 @@ export default function IncidentLayout({ children }: Layout) {
       <PageBody className="incident-map">
         <NextIntlClientProvider messages={messages}>
           <IncidentMapHeader />
-          <div className="col-span-1 md:col-span-8">{children}</div>
+          <div className="flex-1 min-h-0">{children}</div>
         </NextIntlClientProvider>
       </PageBody>
     </PageLayout>
