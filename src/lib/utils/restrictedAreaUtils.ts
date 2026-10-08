@@ -4,7 +4,6 @@ import { point as turfPoint } from '@turf/helpers'
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon'
 import { PbfReader } from 'pbf'
 import { AppConfig } from '@/types/config'
-import { Address } from '@/types/form'
 import { Feature, MultiPolygon, Polygon } from 'geojson'
 
 /** Source id used by the MapLibre source that renders the restricted area. */
@@ -80,7 +79,7 @@ const isPointInOutOfBoundsFeatures = (
  * This is intended for map clicks only. A click happens inside the current
  * viewport, so MapLibre has normally loaded the vector tile that contains the
  * relevant restriction polygons. Combobox selections can point outside the
- * current viewport and therefore use {@link isAddressOutsideRestrictedArea}
+ * current viewport and therefore use {@link isCoordinateOutsideRestrictedArea}
  * instead.
  *
  * @param config - Application configuration containing the MapTiler layer id.
@@ -274,17 +273,4 @@ export const isCoordinateOutsideRestrictedArea = async (
 
   const features = await getRestrictedAreaFeatures(config, lng, lat)
   return isPointInOutOfBoundsFeatures(features, lng, lat)
-}
-
-/** Validates a selection without moving the map, rejecting it on source failure. */
-export const isAddressOutsideRestrictedArea = async (
-  config: AppConfig,
-  address: Address
-): Promise<boolean> => {
-  try {
-    const [lng, lat] = address.coordinates
-    return await isCoordinateOutsideRestrictedArea(config, lng, lat)
-  } catch {
-    return true
-  }
 }

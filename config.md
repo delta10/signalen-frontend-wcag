@@ -81,6 +81,8 @@ Logo settings are configured at `base.header.logo`.
 - `base.pdok_address_suggest.scope`: PDOK filter scope. Use `gemeente` for municipality-based address suggestions or `provincie` for province-based address suggestions.
 - `base.pdok_address_suggest.organization`: Exact PDOK filter value for the selected scope.
 - `base.pdok_hectometer_suggest.enabled`: Enables PDOK hectometer suggestions when set to `true`. Disables address suggestions.
+Street/road names and hectometer posts are shown together in the existing hectometer search field when enabled. Selecting a result inside the permitted area chooses that location; selecting one outside it only moves the map and clears the previous location. The user must choose a permitted location before continuing. Boundary checks use the configured restriction source, not just the search bounds.
+
 - `base.pdok_hectometer_suggest.bounds`: Optional coordinate bounds used to restrict hectometer and street/road suggestions, as `[[west, south], [east, north]]`.
 - `base.pdok_hectometer_suggest.roadNumberExceptions`: Optional exact road numbers to include alongside the default `N*` filter used for province configurations, for example `["A270"]`.
 - `base.pdok_hectometer_suggest.sourceLayerId`: Optional ID of a configured GeoJSON map layer used as the authoritative source for hectometer suggestions. When present, PDOK is not used for these suggestions. The map, search and nearest-post lookup share the same valid provincial posts. With `restrictSelectionArea` enabled, posts in the configured out-of-bounds mask are removed before applying the result limit. Source or boundary failures reject the request and are retried on the next request.

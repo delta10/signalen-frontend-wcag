@@ -7,10 +7,10 @@ import {
 import React, {
   Dispatch,
   Fragment,
-  type Ref,
   SetStateAction,
   useEffect,
   useState,
+  useRef,
 } from 'react'
 import { useConfig } from '@/contexts/ConfigContext'
 import {
@@ -19,7 +19,13 @@ import {
   getSuggestedProvincialHectometerPosts,
   getSuggestedRoads,
 } from '@/services/location/address'
-import { Listbox, ListboxOption, StatusText, Textbox } from '@/components/index'
+import {
+  AlertText,
+  Listbox,
+  ListboxOption,
+  StatusText,
+  Textbox,
+} from '@/components/index'
 // Import the Select Combobox component for the side-effects of injecting CSS
 // for related components, such as Textbox and Listbox.
 import '@utrecht/select-combobox-react/dist/css'
@@ -41,8 +47,7 @@ import {
 
 export enum SearchType {
   Address = 'address',
-  Hectometer = 'hectometer',
-  Road = 'road',
+  HectometerAndRoad = 'hectometer-and-road',
 }
 
 type AddressComboboxProps = {
@@ -54,10 +59,8 @@ type AddressComboboxProps = {
   ariaInvalid?: boolean
   searchType?: SearchType
   validateSelection?: (selectedAddress: Address) => boolean | Promise<boolean>
-  selectLocation?: boolean
   placeholder?: string
   className?: string
-  inputRef?: Ref<HTMLInputElement>
 }
 
 const normalizeQuery = (str: string) => str.trim().replace(/\s+/g, ' ')
@@ -147,15 +150,52 @@ const getHectometerSourceLayerId = (config: AppConfig) => {
   return hasGeoJsonSource ? sourceLayerId : undefined
 }
 
+const getHectometerSuggestionOptions = async (
+  searchQuery: string,
+  config: AppConfig,
+  signal: AbortSignal
+): Promise<Address[]> => {
+  const normalizedSearchQuery = normalizeHectometerSearchQuery(searchQuery)
+  const provincialSourceLayerId = getHectometerSourceLayerId(config)
+
+  if (provincialSourceLayerId) {
+    return getSuggestedProvincialHectometerPosts(
+      normalizedSearchQuery,
+      provincialSourceLayerId,
+      config.base.pdok_hectometer_suggest?.maxResults,
+      signal
+    )
+  }
+
+  const restrictToProvincialRoads =
+    config.base.pdok_address_suggest.scope === PdokAddressSuggestScope.Provincie
+  const options = {
+    bounds: getLocationSearchBounds(config),
+    roadNumberPrefix: restrictToProvincialRoads ? 'N' : undefined,
+    roadNumberExceptions: restrictToProvincialRoads
+      ? config.base.pdok_hectometer_suggest?.roadNumberExceptions
+      : undefined,
+  }
+
+  const apiCall = await getSuggestedHectometerPosts(
+    normalizedSearchQuery,
+    config.pdokUrlApi,
+    options,
+    signal
+  )
+
+  return apiCall.response.docs.flatMap(mapHectometerSuggestDocToAddress)
+}
+
 const getSuggestionOptions = async (
   searchType: SearchType,
   searchQuery: string,
   config: AppConfig,
   signal: AbortSignal
 ): Promise<Address[]> => {
-  if (searchType === SearchType.Road) {
+  if (searchType === SearchType.HectometerAndRoad) {
     const { scope, organization } = config.base.pdok_address_suggest
-    const apiCall = await getSuggestedRoads(
+    const roadRequest = getSuggestedRoads(
       searchQuery,
       scope,
       organization,
@@ -164,41 +204,20 @@ const getSuggestionOptions = async (
       signal
     )
 
-    return apiCall.response.docs.flatMap(mapRoadSuggestDocToAddress)
-  }
+    const results = await Promise.allSettled([
+      getHectometerSuggestionOptions(searchQuery, config, signal),
+      roadRequest.then((response) =>
+        response.response.docs.flatMap(mapRoadSuggestDocToAddress)
+      ),
+    ])
 
-  if (searchType === SearchType.Hectometer) {
-    const normalizedSearchQuery = normalizeHectometerSearchQuery(searchQuery)
-    const provincialSourceLayerId = getHectometerSourceLayerId(config)
-
-    if (provincialSourceLayerId) {
-      return getSuggestedProvincialHectometerPosts(
-        normalizedSearchQuery,
-        provincialSourceLayerId,
-        config.base.pdok_hectometer_suggest?.maxResults,
-        signal
-      )
+    if (results.every((result) => result.status === 'rejected')) {
+      throw new Error('Could not fetch location suggestions.')
     }
 
-    const restrictToProvincialRoads =
-      config.base.pdok_address_suggest.scope ===
-      PdokAddressSuggestScope.Provincie
-    const options = {
-      bounds: getLocationSearchBounds(config),
-      roadNumberPrefix: restrictToProvincialRoads ? 'N' : undefined,
-      roadNumberExceptions: restrictToProvincialRoads
-        ? config.base.pdok_hectometer_suggest?.roadNumberExceptions
-        : undefined,
-    }
-
-    const apiCall = await getSuggestedHectometerPosts(
-      normalizedSearchQuery,
-      config.pdokUrlApi,
-      options,
-      signal
+    return results.flatMap((result) =>
+      result.status === 'fulfilled' ? result.value : []
     )
-
-    return apiCall.response.docs.flatMap(mapHectometerSuggestDocToAddress)
   }
 
   const { scope, organization } = config.base.pdok_address_suggest
@@ -222,31 +241,44 @@ export const AddressCombobox = ({
   ariaInvalid,
   searchType = SearchType.Address,
   validateSelection,
-  selectLocation = true,
   placeholder,
   className,
-  inputRef,
 }: AddressComboboxProps) => {
   const [query, setQuery] = useState('')
   const config = useConfig()
   const [addressOptions, setAddressOptions] = useState<Address[]>([])
   const [loading, setLoading] = useState<boolean>(false)
-  const [searchSelection, setSearchSelection] = useState<Address | null>(null)
+  const [searchSelection, setSearchSelection] = useState<{
+    result: Address
+    address: Address | null
+    coordinates: number[]
+  } | null>(null)
+  const [selectionError, setSelectionError] = useState(false)
+  const selectionRequest = useRef(0)
   const { formState, updateForm } = useFormStore()
   const tAddress = useTranslations('describe_add.address')
   const tMap = useTranslations('describe_add.map')
+
+  useEffect(
+    () => () => {
+      selectionRequest.current += 1
+    },
+    []
+  )
+
+  const navigationSelection =
+    searchSelection?.address === formState.address &&
+    searchSelection?.coordinates === formState.coordinates
+      ? searchSelection.result
+      : null
 
   const getDisplayValue = (address: Address | null) => {
     if (!address) {
       return ''
     }
 
-    if (searchType === SearchType.Hectometer) {
-      return address.id.startsWith('hmp-') ? (address.weergave_naam ?? '') : ''
-    }
-
-    if (searchType === SearchType.Road) {
-      return address.id.startsWith('weg-') ? (address.weergave_naam ?? '') : ''
+    if (searchType === SearchType.HectometerAndRoad) {
+      return address.weergave_naam ?? ''
     }
 
     return address.id.startsWith('hmp-') ? '' : (address.weergave_naam ?? '')
@@ -272,7 +304,7 @@ export const AddressCombobox = ({
           config,
           abortController.signal
         )
-        setAddressOptions(options)
+        if (!abortController.signal.aborted) setAddressOptions(options)
       } catch {
         if (!abortController.signal.aborted) {
           setAddressOptions([])
@@ -291,28 +323,69 @@ export const AddressCombobox = ({
   }, [config, query, searchType])
 
   const onChangeAddress = async (selectedAddress: Address | null) => {
-    if (
-      selectedAddress &&
-      validateSelection &&
-      !(await validateSelection(selectedAddress))
-    ) {
-      return
+    const requestId = ++selectionRequest.current
+    setSelectionError(false)
+
+    // A new search choice replaces the previous location, even while checking
+    // its boundary. Navigation-only results must never leave a valid old pin.
+    if (selectedAddress && searchType === SearchType.HectometerAndRoad) {
+      updateForm({
+        ...useFormStore.getState().formState,
+        address: null,
+        coordinates: [0, 0],
+        selectedFeatures: [],
+      })
+      setIsMapSelected?.(false)
     }
 
-    if (!selectLocation) {
-      setSearchSelection(selectedAddress)
-    } else if (selectedAddress) {
+    const selectionState = useFormStore.getState().formState
+    if (selectedAddress && validateSelection) {
+      let canSelect: boolean
+      try {
+        canSelect = await validateSelection(selectedAddress)
+      } catch {
+        if (requestId === selectionRequest.current) setSelectionError(true)
+        return
+      }
+      const currentState = useFormStore.getState().formState
+      if (
+        requestId !== selectionRequest.current ||
+        currentState.address !== selectionState.address ||
+        currentState.coordinates !== selectionState.coordinates
+      )
+        return
+
+      if (!canSelect) {
+        if (searchType === SearchType.HectometerAndRoad) {
+          setSearchSelection({
+            result: selectedAddress,
+            address: useFormStore.getState().formState.address,
+            coordinates: useFormStore.getState().formState.coordinates,
+          })
+          updatePosition?.(
+            selectedAddress.coordinates[1],
+            selectedAddress.coordinates[0],
+            false
+          )
+        }
+        return
+      }
+    }
+
+    setSearchSelection(null)
+
+    if (selectedAddress) {
       updateForm({
-        ...formState,
+        ...useFormStore.getState().formState,
         address: selectedAddress,
-        coordinates: selectedAddress && [
+        coordinates: [
           selectedAddress.coordinates[1],
           selectedAddress.coordinates[0],
         ],
       })
     } else {
       updateForm({
-        ...formState,
+        ...useFormStore.getState().formState,
         address: selectedAddress,
       })
     }
@@ -321,73 +394,79 @@ export const AddressCombobox = ({
       updatePosition(
         selectedAddress.coordinates[1],
         selectedAddress.coordinates[0],
-        selectLocation
+        true
       )
     }
 
-    if (selectLocation && setIsMapSelected) {
+    if (selectedAddress && setIsMapSelected) {
       setIsMapSelected(true)
     }
   }
 
   const inputLabel =
-    searchType === SearchType.Hectometer
-      ? tMap('search_hectometer_label')
-      : searchType === SearchType.Road
-        ? tMap('search_road_label')
-        : tMap('search_address_label')
+    searchType === SearchType.HectometerAndRoad
+      ? tMap('search_location_label')
+      : tMap('search_address_label')
 
   return (
-    <Combobox
-      value={selectLocation ? formState.address : searchSelection}
-      onChange={onChangeAddress}
-    >
-      <ComboboxInput
-        ref={inputRef}
-        aria-label={inputLabel}
-        aria-describedby={ariaDescribedBy}
-        aria-invalid={ariaInvalid || undefined}
-        as={Textbox}
-        displayValue={getDisplayValue}
-        name={searchType === SearchType.Hectometer ? 'hectometer' : 'address'}
-        onChange={(event) => setQuery(event.target.value)}
-        autoComplete="off"
-        id={id}
-        placeholder={placeholder}
-        className={cn(className, { mobile: mobileView })}
-      />
-      {!loading && (
-        <ComboboxOptions
-          as={Listbox}
-          anchor="bottom"
-          className={cn(
-            'z-[9999] [--utrecht-listbox-inline-size:var(--input-width)]',
-            { 'map-road-search-options': searchType === SearchType.Road }
-          )}
-        >
-          {addressOptions.length > 0 ? (
-            addressOptions.map((address) => (
-              <ComboboxOption as={Fragment} key={address.id} value={address}>
-                {({ focus }) => (
-                  <ListboxOption active={focus}>
-                    {address.weergave_naam}
-                  </ListboxOption>
-                )}
-              </ComboboxOption>
-            ))
-          ) : (
-            <ComboboxOption value={null} as={ListboxOption} disabled>
-              <StatusText>
-                {searchType === SearchType.Hectometer
-                  ? tAddress('no_hectometer_results')
-                  : searchType === SearchType.Road
-                    ? tAddress('no_road_results')
+    <>
+      <Combobox
+        value={navigationSelection ?? formState.address}
+        onChange={onChangeAddress}
+      >
+        <ComboboxInput
+          aria-label={inputLabel}
+          aria-describedby={ariaDescribedBy}
+          aria-invalid={ariaInvalid || undefined}
+          as={Textbox}
+          displayValue={getDisplayValue}
+          name={searchType === SearchType.Address ? 'address' : 'hectometer'}
+          onChange={(event) => setQuery(event.target.value)}
+          autoComplete="off"
+          id={id}
+          placeholder={placeholder}
+          className={cn(className, { mobile: mobileView })}
+        />
+        {!loading && (
+          <ComboboxOptions
+            as={Listbox}
+            anchor="bottom"
+            className={cn(
+              'z-[9999] [--utrecht-listbox-inline-size:var(--input-width)]',
+              {
+                'map-location-search-options':
+                  searchType === SearchType.HectometerAndRoad,
+              }
+            )}
+          >
+            {addressOptions.length > 0 ? (
+              addressOptions.map((address) => (
+                <ComboboxOption as={Fragment} key={address.id} value={address}>
+                  {({ focus }) => (
+                    <ListboxOption active={focus}>
+                      {address.weergave_naam}
+                    </ListboxOption>
+                  )}
+                </ComboboxOption>
+              ))
+            ) : (
+              <ComboboxOption value={null} as={ListboxOption} disabled>
+                <StatusText>
+                  {searchType === SearchType.HectometerAndRoad
+                    ? tAddress('no_location_results')
                     : tAddress('no_results')}
-              </StatusText>
-            </ComboboxOption>
-          )}
-        </ComboboxOptions>
+                </StatusText>
+              </ComboboxOption>
+            )}
+          </ComboboxOptions>
+        )}
+      </Combobox>
+      {selectionError && (
+        <AlertText>{tMap('search_selection_error')}</AlertText>
       )}
-    </Combobox>
+      {!selectionError && navigationSelection && (
+        <StatusText>{tMap('search_result_outside_area')}</StatusText>
+      )}
+    </>
   )
 }

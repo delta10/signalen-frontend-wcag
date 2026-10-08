@@ -1,7 +1,7 @@
 import { Marker, ViewState } from 'react-map-gl/maplibre'
 import { Map } from './Map'
 import 'maplibre-gl/dist/maplibre-gl.css'
-import React, { useEffect, useMemo, useState } from 'react'
+import React from 'react'
 import { useFormStore } from '@/store/form_store'
 import { useConfig } from '@/contexts/ConfigContext'
 import { MapMarker } from './MapMarker'
@@ -9,48 +9,30 @@ import { useDarkMode } from '@/hooks/useDarkMode'
 import { getMapAttribution, getMapStyleUrl } from '@/lib/utils/map'
 import { MapAttribution } from './MapAttribution'
 
-const LocationMap = (
-  mapImageProps: React.HTMLAttributes<HTMLDivElement> = {}
-) => {
+type LocationMapProps = React.HTMLAttributes<HTMLDivElement> & {
+  searchPosition?: [number, number] | null
+}
+
+const LocationMap = ({
+  searchPosition,
+  ...mapImageProps
+}: LocationMapProps = {}) => {
   const { formState } = useFormStore()
   const config = useConfig()
   const { isDarkMode } = useDarkMode()
-  const [viewState, setViewState] = useState<ViewState>({
-    latitude: config.base.map.center[0],
-    longitude: config.base.map.center[1],
-    zoom: formState.address
-      ? config.base.map.minimal_zoom || 17
-      : config.base.map.default_zoom || 12,
-    bearing: 0,
-    padding: {
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-    },
-    pitch: 0,
-  })
-
-  // Memoize marker coordinates, dependent on formState.coordinates
-  const marker = useMemo(() => {
-    return [formState.coordinates[0], formState.coordinates[1]]
-  }, [formState.coordinates])
-
-  // Update viewState, to move map view with marker
-  useEffect(() => {
-    if (marker[0] === 0 && marker[1] === 0) {
-      return
-    }
-
-    setViewState((state) => ({
-      ...state,
-      latitude: marker[0],
-      longitude: marker[1],
-      zoom: formState.address
+  const marker = [formState.coordinates[0], formState.coordinates[1]]
+  const viewState: ViewState = {
+    latitude: searchPosition?.[0] ?? (marker[0] || config.base.map.center[0]),
+    longitude: searchPosition?.[1] ?? (marker[1] || config.base.map.center[1]),
+    zoom: searchPosition
+      ? 14
+      : formState.address
         ? config.base.map.minimal_zoom || 17
         : config.base.map.default_zoom || 12,
-    }))
-  }, [marker])
+    bearing: 0,
+    padding: { top: 0, left: 0, right: 0, bottom: 0 },
+    pitch: 0,
+  }
 
   return (
     <div className="location-map-preview relative">
@@ -66,7 +48,6 @@ const LocationMap = (
           doubleClickZoom={false}
           dragPan={false}
           keyboard={false}
-          onMove={(evt) => setViewState(evt.viewState)}
           style={{ width: '100%', height: 200 }}
           mapStyle={getMapStyleUrl(config, isDarkMode)}
           attributionControl={false}
@@ -79,9 +60,11 @@ const LocationMap = (
             mapCanvas.classList.add('dashed-focus')
           }}
         >
-          <Marker latitude={marker[0]} longitude={marker[1]}>
-            <MapMarker />
-          </Marker>
+          {marker[0] !== 0 && marker[1] !== 0 && (
+            <Marker latitude={marker[0]} longitude={marker[1]}>
+              <MapMarker />
+            </Marker>
+          )}
         </Map>
       </div>
       <MapAttribution attribution={getMapAttribution(config)} />

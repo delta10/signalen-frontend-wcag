@@ -65,7 +65,9 @@
       "chosen_location_address_and_points": "Geselecteerde locatie {location} en geselecteerde punten {points} klik om te wijzigen",
       "chosen_location_points": "Geselecteerde punten {points} klik om te wijzigen",
       "search_address_label": "Zoek op adres of postcode",
-      "search_hectometer_label": "Zoek op wegnummer plus hectometerpaalnummer",
+      "search_location_label": "Zoek op weg- of straatnaam, wegnummer of hectometerpaalnummer",
+      "search_result_outside_area": "Deze locatie ligt buiten het toegestane gebied. De kaart is hierop ingezoomd. Kies een locatie binnen het toegestane gebied om verder te gaan.",
+      "search_selection_error": "De locatie kon niet worden gecontroleerd. Probeer het opnieuw.",
       "object": "object",
       "objects": "objecten",
       "pinned_location": "De locatie is gepind op de kaart",
@@ -106,7 +108,7 @@
     },
     "address": {
       "no_results": "Geen adressen gevonden",
-      "no_hectometer_results": "Geen hectometerpalen gevonden"
+      "no_location_results": "Geen wegen, straten of hectometerpalen gevonden"
     }
   },
   "describe_contact": {
