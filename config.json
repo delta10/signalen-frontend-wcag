@@ -2,6 +2,20 @@
   "baseUrlApi": "https://api.meldingen-acpt.brabant.nl",
   "frontendUrl": "https://meldingen-acpt.brabant.nl",
   "pdokUrlApi": "https://api.pdok.nl/bzk/locatieserver/",
+  "mapStyle": "https://tiles.delta10.cloud/styles/signalen/style.json",
+  "mapStyleDarkMode": "https://tiles.delta10.cloud/styles/signalen/style.json",
+  "mapAttribution": "Kaartgegevens © <a href=\"https://www.openmaptiles.org/\" target=\"_blank\" rel=\"noopener noreferrer\">OpenMapTiles</a> © <a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\" rel=\"noopener noreferrer\">OpenStreetMap contributors</a>",
+  "aerialPhotoMap": {
+    "enabled": true,
+    "tiles": [
+      "https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0/Actueel_orthoHR/OGC:1.0:GoogleMapsCompatible/{z}/{x}/{y}.jpeg"
+    ],
+    "attribution": "Luchtfoto © <a href=\"https://www.beeldmateriaal.nl/\" target=\"_blank\" rel=\"noopener noreferrer\">Samenwerkingsverband Beeldmateriaal</a>, <a href=\"https://creativecommons.org/licenses/by/4.0/deed.nl\" target=\"_blank\" rel=\"noopener noreferrer\">CC BY 4.0</a> · via PDOK",
+    "glyphs": "https://api.pdok.nl/kadaster/brt-achtergrondkaart/ogc/v1/resources/fonts/{fontstack}/{range}.pbf",
+    "tileSize": 256,
+    "minZoom": 0,
+    "maxZoom": 21
+  },
   "maptilerApiKey": "x0IfDO01xuLQQKYlSzuz",
   "maptilerMap": "https://api.maptiler.com/maps/nl-cartiqo-topo",
   "maptilerMapDarkMode": "https://api.maptiler.com/maps/streets-v2-dark",
@@ -54,7 +68,7 @@
         [3.31497114423, 50.803721015],
         [7.09205325687, 53.5104033474]
       ],
-      "default_zoom": 12,
+      "default_zoom": 9,
       "layers": [
         {
           "id": "hectometrering",
@@ -79,7 +93,7 @@
                 "icon-image": "hectometer-marker",
                 "icon-size": 0.55,
                 "text-field": ["get", "TEKST"],
-                "text-font": ["Open Sans Bold"],
+                "text-font": ["Liberation Sans Bold"],
                 "text-size": 12,
                 "text-anchor": "center",
                 "text-offset": [0, 0],

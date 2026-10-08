@@ -6,9 +6,12 @@ import { useFormStore } from '@/store/form_store'
 import { useConfig } from '@/contexts/ConfigContext'
 import { MapMarker } from './MapMarker'
 import { useDarkMode } from '@/hooks/useDarkMode'
-import { getMapStyleUrl } from '@/lib/utils/map'
+import { getMapAttribution, getMapStyleUrl } from '@/lib/utils/map'
+import { MapAttribution } from './MapAttribution'
 
-const LocationMap = () => {
+const LocationMap = (
+  mapImageProps: React.HTMLAttributes<HTMLDivElement> = {}
+) => {
   const { formState } = useFormStore()
   const config = useConfig()
   const { isDarkMode } = useDarkMode()
@@ -50,30 +53,39 @@ const LocationMap = () => {
   }, [marker])
 
   return (
-    <Map
-      {...viewState}
-      id="locationMap"
-      scrollZoom={false}
-      doubleClickZoom={false}
-      dragPan={false}
-      keyboard={false}
-      onMove={(evt) => setViewState(evt.viewState)}
-      style={{ width: '100%', height: 200 }}
-      mapStyle={getMapStyleUrl(config, isDarkMode)}
-      attributionControl={false}
-      onLoad={() => {
-        const mapCanvas = document.getElementsByClassName(
-          'maplibregl-canvas'
-        )[0] as HTMLCanvasElement
+    <div className="location-map-preview relative">
+      <div
+        {...mapImageProps}
+        role="img"
+        aria-label={mapImageProps['aria-label'] ?? ''}
+      >
+        <Map
+          {...viewState}
+          id="locationMap"
+          scrollZoom={false}
+          doubleClickZoom={false}
+          dragPan={false}
+          keyboard={false}
+          onMove={(evt) => setViewState(evt.viewState)}
+          style={{ width: '100%', height: 200 }}
+          mapStyle={getMapStyleUrl(config, isDarkMode)}
+          attributionControl={false}
+          onLoad={() => {
+            const mapCanvas = document.getElementsByClassName(
+              'maplibregl-canvas'
+            )[0] as HTMLCanvasElement
 
-        mapCanvas.tabIndex = -1
-        mapCanvas.classList.add('dashed-focus')
-      }}
-    >
-      <Marker latitude={marker[0]} longitude={marker[1]}>
-        <MapMarker />
-      </Marker>
-    </Map>
+            mapCanvas.tabIndex = -1
+            mapCanvas.classList.add('dashed-focus')
+          }}
+        >
+          <Marker latitude={marker[0]} longitude={marker[1]}>
+            <MapMarker />
+          </Marker>
+        </Map>
+      </div>
+      <MapAttribution attribution={getMapAttribution(config)} />
+    </div>
   )
 }
 

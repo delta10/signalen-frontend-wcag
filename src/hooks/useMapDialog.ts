@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef } from 'react'
+import { useState, useEffect, useMemo, useRef, type MouseEvent } from 'react'
 import {
   MapLayerMouseEvent,
   MapRef,
@@ -14,6 +14,7 @@ import { FeatureCollection } from 'geojson'
 import { getNearestAddressByCoordinate } from '@/services/location/address'
 import {
   formatAddressToSignalenInput,
+  getAerialPhotoMapStyle,
   getMapStyleUrl,
   processFeature,
 } from '@/lib/utils/map'
@@ -54,8 +55,17 @@ function useMapDialog(
   const [focusedItemId, setFocusedItemId] = useState<number | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [openLegend, setOpenLegend] = useState<boolean>(false)
+  const [isAerialPhoto, setIsAerialPhoto] = useState(false)
 
   const t = useTranslations('describe_add.map')
+
+  const closeAlertDialogOnBackdropClick = (
+    event: MouseEvent<HTMLDialogElement>
+  ) => {
+    if (event.target === event.currentTarget) {
+      event.currentTarget.close()
+    }
+  }
 
   const getInitialZoomLevel = () => {
     // Check if there is either an address selecter or point on the map.
@@ -348,11 +358,20 @@ function useMapDialog(
     })
   }
 
-  const mapStyle = getMapStyleUrl(config, isDarkMode)
+  const aerialPhotoMapStyle = useMemo(
+    () => getAerialPhotoMapStyle(config),
+    [config]
+  )
+  const aerialPhotoEnabled = aerialPhotoMapStyle !== null
+  const mapStyle =
+    isAerialPhoto && aerialPhotoMapStyle
+      ? aerialPhotoMapStyle
+      : getMapStyleUrl(config, isDarkMode)
 
   return {
     dialogMap,
     dialogRef,
+    closeAlertDialogOnBackdropClick,
     config,
     viewState,
     setViewState,
@@ -368,6 +387,9 @@ function useMapDialog(
     closeMapDialog,
     handleMapClick,
     mapStyle,
+    aerialPhotoEnabled,
+    isAerialPhoto,
+    setIsAerialPhoto,
     width,
     mapFeatures,
     setMapFeatures,
