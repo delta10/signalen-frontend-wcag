@@ -12,7 +12,7 @@ The application reads `config.json` from the project root. Keep the file valid J
 
 - `mapStyle`: Optional full MapLibre style URL for light mode. When set, this takes precedence over `maptilerMap`.
 - `mapStyleDarkMode`: Optional full MapLibre style URL for dark mode. Falls back to `mapStyle` when omitted.
-- `mapAttribution`: Optional attribution text shown on the map for the configured style.
+- `mapAttribution`: Optional additional attribution for the background map. Map source credits are shown automatically; only configure this when the source omits required credits, to avoid duplicates.
 - `aerialPhotoMap`: Optional raster aerial photography layer. The **Kaart / Luchtfoto** switch is only shown when `enabled` is `true` and at least one tile URL is configured.
 
 `aerialPhotoMap` supports:

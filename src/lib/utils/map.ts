@@ -236,6 +236,7 @@ export const getAerialPhotoMapStyle = (
     sources: {
       'aerial-photo': {
         type: 'raster',
+        attribution: aerialPhotoMap.attribution,
         tiles: aerialPhotoMap.tiles,
         tileSize: aerialPhotoMap.tileSize ?? 256,
         minzoom: aerialPhotoMap.minZoom,
@@ -251,10 +252,6 @@ export const getAerialPhotoMapStyle = (
     ],
   }
 }
-
-/** Returns the attribution for the active background map. */
-export const getMapAttribution = (config: AppConfig, isAerialPhoto = false) =>
-  isAerialPhoto ? config.aerialPhotoMap?.attribution : config.mapAttribution
 
 const getFeatureType = (
   properties: GeoJsonProperties,

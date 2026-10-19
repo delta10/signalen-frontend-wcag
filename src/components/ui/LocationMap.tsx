@@ -6,8 +6,9 @@ import { useFormStore } from '@/store/form_store'
 import { useConfig } from '@/contexts/ConfigContext'
 import { MapMarker } from './MapMarker'
 import { useDarkMode } from '@/hooks/useDarkMode'
-import { getMapAttribution, getMapStyleUrl } from '@/lib/utils/map'
+import { getMapStyleUrl } from '@/lib/utils/map'
 import { MapAttribution } from './MapAttribution'
+import { useTranslations } from 'next-intl'
 
 const LocationMap = (
   mapImageProps: React.HTMLAttributes<HTMLDivElement> = {}
@@ -15,6 +16,7 @@ const LocationMap = (
   const { formState } = useFormStore()
   const config = useConfig()
   const { isDarkMode } = useDarkMode()
+  const t = useTranslations('describe_add.map')
   const [viewState, setViewState] = useState<ViewState>({
     latitude: config.base.map.center[0],
     longitude: config.base.map.center[1],
@@ -56,7 +58,7 @@ const LocationMap = (
     <div className="location-map-preview relative">
       <div
         {...mapImageProps}
-        role="img"
+        role="group"
         aria-label={mapImageProps['aria-label'] ?? ''}
       >
         <Map
@@ -70,6 +72,9 @@ const LocationMap = (
           style={{ width: '100%', height: 200 }}
           mapStyle={getMapStyleUrl(config, isDarkMode)}
           attributionControl={false}
+          locale={{
+            'AttributionControl.ToggleAttribution': t('toggle_attribution'),
+          }}
           onLoad={() => {
             const mapCanvas = document.getElementsByClassName(
               'maplibregl-canvas'
@@ -79,12 +84,12 @@ const LocationMap = (
             mapCanvas.classList.add('dashed-focus')
           }}
         >
+          <MapAttribution customAttribution={config.mapAttribution} />
           <Marker latitude={marker[0]} longitude={marker[1]}>
             <MapMarker />
           </Marker>
         </Map>
       </div>
-      <MapAttribution attribution={getMapAttribution(config)} />
     </div>
   )
 }
