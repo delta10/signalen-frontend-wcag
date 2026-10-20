@@ -39,6 +39,7 @@ import {
   normalizeHectometerSearchQuery,
 } from '@/lib/utils/address'
 import { isValidHectometerDisplayName } from '@/lib/utils/hectometer'
+import { isCoordinateOutsideRestrictedArea } from '@/lib/utils/restrictedAreaUtils'
 
 export enum SearchType {
   Address = 'address',
@@ -130,7 +131,17 @@ const getSuggestionOptions = async (
       signal
     )
 
-    return apiCall.response.docs.flatMap(mapHectometerSuggestDocToAddress)
+    const suggestions = apiCall.response.docs.flatMap(
+      mapHectometerSuggestDocToAddress
+    )
+    if (!config.restrictSelectionArea) return suggestions
+
+    const outside = await Promise.all(
+      suggestions.map(({ coordinates: [lng, lat] }) =>
+        isCoordinateOutsideRestrictedArea(config, lng, lat)
+      )
+    )
+    return suggestions.filter((_, index) => !outside[index])
   }
 
   const { scope, organization } = config.base.pdok_address_suggest
@@ -159,6 +170,7 @@ export const AddressCombobox = ({
   const config = useConfig()
   const [addressOptions, setAddressOptions] = useState<Address[]>([])
   const [loading, setLoading] = useState<boolean>(false)
+  const [searchError, setSearchError] = useState(false)
   const [searchSelection, setSearchSelection] = useState<{
     result: Address
     coordinates: number[]
@@ -198,12 +210,14 @@ export const AddressCombobox = ({
     if (normalizedQuery.length < 1) {
       setAddressOptions([])
       setLoading(false)
+      setSearchError(false)
       return
     }
 
     const abortController = new AbortController()
     const timeoutId = window.setTimeout(async () => {
       setLoading(true)
+      setSearchError(false)
 
       try {
         const options = await getSuggestionOptions(
@@ -216,6 +230,7 @@ export const AddressCombobox = ({
       } catch {
         if (!abortController.signal.aborted) {
           setAddressOptions([])
+          setSearchError(true)
         }
       } finally {
         if (!abortController.signal.aborted) {
@@ -342,11 +357,15 @@ export const AddressCombobox = ({
               ))
             ) : (
               <ComboboxOption value={null} as={ListboxOption} disabled>
-                <StatusText>
-                  {searchType === SearchType.Hectometer
-                    ? tAddress('no_hectometer_results')
-                    : tAddress('no_results')}
-                </StatusText>
+                {searchError ? (
+                  <AlertText>{tMap('location_search_failed')}</AlertText>
+                ) : (
+                  <StatusText>
+                    {searchType === SearchType.Hectometer
+                      ? tAddress('no_hectometer_results')
+                      : tAddress('no_results')}
+                  </StatusText>
+                )}
               </ComboboxOption>
             )}
           </ComboboxOptions>

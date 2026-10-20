@@ -71,6 +71,7 @@
       "toggle_fullscreen_on": "Show the map on fullscreen",
       "toggle_fullscreen_off": "close fullscreen view of the map",
       "location_search_error": "This location could not be checked. Please try again.",
+      "location_search_failed": "The search results could not be retrieved or checked. Please try again.",
       "please_choose_a_point_on_a_road": "This location is outside the allowed area. Please choose a point within the highlighted area."
     },
     "explainer": {
