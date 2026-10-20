@@ -80,11 +80,12 @@ Logo settings are configured at `base.header.logo`.
 
 - `base.pdok_address_suggest.scope`: PDOK filter scope. Use `gemeente` for municipality-based address suggestions or `provincie` for province-based address suggestions.
 - `base.pdok_address_suggest.organization`: Exact PDOK filter value for the selected scope.
-- `base.pdok_hectometer_suggest.enabled`: Enables PDOK hectometer suggestions when set to `true`. Disables address suggestions.
-- `base.pdok_hectometer_suggest.bounds`: Optional coordinate bounds used to restrict hectometer and street/road suggestions, as `[[west, south], [east, north]]`.
+- `base.pdok_hectometer_suggest.enabled`: Enables PDOK hectometer suggestions when set to `true`.
+- `base.pdok_hectometer_suggest.bounds`: Optional rectangular search area for PDOK hectometer suggestions, as `[[west, south], [east, north]]`. The Brabant configuration uses `[[4.17, 51.21], [6.08, 51.88]]`.
 - `base.pdok_hectometer_suggest.roadNumberExceptions`: Optional exact road numbers to include alongside the default `N*` filter used for province configurations, for example `["A270"]`.
-- `base.pdok_hectometer_suggest.sourceLayerId`: Optional ID of a configured GeoJSON map layer used as the authoritative source for hectometer suggestions. When present, PDOK is not used for these suggestions. The map, search and nearest-post lookup share the same valid provincial posts. With `restrictSelectionArea` enabled, posts in the configured out-of-bounds mask are removed before applying the result limit. Source or boundary failures reject the request and are retried on the next request.
-- `base.pdok_hectometer_suggest.maxResults`: Optional maximum number of hectometer suggestions shown. Defaults to `10` and is capped at `100`.
+- `base.pdok_hectometer_suggest.maxResults`: Maximum number of suggestions requested from PDOK using `rows`. Defaults to `400`, before filtering invalid post numbers. Typing a more specific query narrows the results. This is a limit, not a guarantee that every post on a road is listed.
+
+With `restrictSelectionArea` enabled, the selected hectometer result is checked against the reporting boundary. An outside result only moves the map and clears the previous report location. Boundary lookup failures block selection and show an error. The configured provincial `hectometrering` GeoJSON map layer filters invalid `TEKST` values in the browser, independently of PDOK search.
 
 ## Map Defaults
 

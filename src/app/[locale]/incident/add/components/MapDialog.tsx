@@ -19,6 +19,7 @@ export type MapDialogProps = {
   field?: PublicQuestion
   isAssetSelect?: boolean
   loadingAssets?: boolean
+  searchPosition?: [number, number] | null
 } & React.HTMLAttributes<HTMLDivElement>
 
 const MapDialog = ({
@@ -28,6 +29,7 @@ const MapDialog = ({
   field,
   isAssetSelect = false,
   loadingAssets = false,
+  searchPosition,
 }: MapDialogProps) => {
   const t = useTranslations('describe_add.map')
   const isMobile = useMediaQuery('only screen and (max-width : 768px)')
@@ -56,6 +58,7 @@ const MapDialog = ({
               features={features}
               isAssetSelect={isAssetSelect}
               loadingAssets={loadingAssets}
+              searchPosition={searchPosition}
             />
           ) : (
             <MapDialogContent
@@ -64,6 +67,7 @@ const MapDialog = ({
               features={features}
               isAssetSelect={isAssetSelect}
               loadingAssets={loadingAssets}
+              searchPosition={searchPosition}
             />
           )}
         </Dialog.Content>

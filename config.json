@@ -38,8 +38,7 @@
         [6.08, 51.88]
       ],
       "roadNumberExceptions": ["A270"],
-      "sourceLayerId": "hectometrering",
-      "maxResults": 100
+      "maxResults": 400
     },
     "municipality_display_name": "Noord-Brabant",
     "assets_url": "https://meldingen-acpt.brabant.nl/",

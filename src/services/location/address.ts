@@ -4,7 +4,6 @@ import {
   CoordinateResponse,
   SuggestResponse,
   HectometerSuggestDoc,
-  RoadSuggestDoc,
   AddressSuggestDoc,
   AddressCoordinateDoc,
   HectometerCoordinateDoc,
@@ -15,60 +14,13 @@ import {
 } from '@/types/config'
 import { FormStoreState } from '@/types/stores'
 import type { CoordinateBounds } from '@/lib/utils/map'
-import type { Address } from '@/types/form'
 import { isValidHectometerDisplayName } from '@/lib/utils/hectometer'
 
 type HectometerSuggestOptions = {
   bounds?: CoordinateBounds
   roadNumberPrefix?: string
   roadNumberExceptions?: string[]
-}
-
-type RoadSuggestOptions = {
-  bounds?: CoordinateBounds
-}
-
-/**
- * Searches the configured provincial hectometer layer through the local API.
- */
-export const getSuggestedProvincialHectometerPosts = async (
-  searchQuery: string,
-  sourceLayerId: string,
-  maxResults = 10,
-  signal?: AbortSignal
-): Promise<Address[]> => {
-  const axios = axiosInstance()
-  const response: AxiosResponse<Address[]> = await axios.get(
-    '/api/hectometers',
-    {
-      params: { q: searchQuery, sourceLayerId, maxResults },
-      signal,
-    }
-  )
-
-  return response.data
-}
-
-/** Finds the nearest valid post in the configured provincial layer. */
-export const getNearestProvincialHectometerPostByCoordinate = async (
-  lat: number,
-  lng: number,
-  distance: number,
-  sourceLayerId: string
-): Promise<Address | null> => {
-  try {
-    const axios = axiosInstance()
-    const response: AxiosResponse<Address | null> = await axios.get(
-      '/api/hectometers',
-      {
-        params: { lat, lng, distance, sourceLayerId },
-      }
-    )
-
-    return response.data
-  } catch {
-    return null
-  }
+  maxResults?: number
 }
 
 /**
@@ -133,8 +85,9 @@ const getHectometerSuggestPath = (
 ) => {
   const encodedSearchQuery = encodeURIComponent(searchQuery)
   const filters = getHectometerSuggestFilters(options)
+  const rows = options.maxResults ?? 400
 
-  return `/search/v3_1/suggest?fq=bron:NWB&fq=type:hectometerpaal${filters}&fl=id,identificatie,weergavenaam,centroide_ll,wegnummer,hectometernummer,hectometerletter&q=${encodedSearchQuery}`
+  return `/search/v3_1/suggest?fq=bron:NWB&fq=type:hectometerpaal${filters}&fl=id,identificatie,weergavenaam,centroide_ll,wegnummer,hectometernummer,hectometerletter&rows=${rows}&q=${encodedSearchQuery}`
 }
 
 /**
@@ -171,39 +124,6 @@ export const getSuggestedAddresses = async (
     return response.data
   } catch {
     throw new Error('Could not fetch suggested addresses. Please try again.')
-  }
-}
-
-/** Fetches street and road suggestions within the configured organisation. */
-export const getSuggestedRoads = async (
-  searchQuery: string,
-  scope: PdokAddressSuggestScope,
-  organization: string,
-  pdokBaseUrl: string | undefined,
-  options: RoadSuggestOptions = {},
-  signal?: AbortSignal
-): Promise<SuggestResponse<RoadSuggestDoc>> => {
-  if (!pdokBaseUrl) {
-    throw new Error('Pdok Base URL is required to fetch suggested roads.')
-  }
-
-  const axios = axiosInstance(pdokBaseUrl)
-  const field = pdokAddressSuggestFields[scope]
-  const encodedOrganization = encodeURIComponent(organization)
-  const encodedSearchQuery = encodeURIComponent(searchQuery)
-  const boundsFilter = getBoundsFilter('centroide_ll', options.bounds)
-  const encodedBoundsFilter = boundsFilter
-    ? `&fq=${encodeURIComponent(boundsFilter)}`
-    : ''
-  const path = `/search/v3_1/suggest?fq=${field}:(${encodedOrganization})&fq=type:weg${encodedBoundsFilter}&fl=id,weergavenaam,straatnaam,centroide_ll&q=${encodedSearchQuery}`
-
-  try {
-    const response: AxiosResponse<SuggestResponse<RoadSuggestDoc>> =
-      await axios.get(path, { signal })
-
-    return response.data
-  } catch {
-    throw new Error('Could not fetch suggested roads. Please try again.')
   }
 }
 

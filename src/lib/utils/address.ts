@@ -1,14 +1,13 @@
 import {
   getNearestAddressByCoordinate,
   getNearestHectometerPostByCoordinate,
-  getNearestProvincialHectometerPostByCoordinate,
 } from '@/services/location/address'
 import { Feature, GeoJsonProperties, Geometry } from 'geojson'
 import { AppConfig } from '@/types/config'
 import { FormStoreState } from '@/types/stores'
-import { formatHectometerDisplayName } from '@/lib/utils/hectometer'
 
 export { formatHectometerDisplayName } from '@/lib/utils/hectometer'
+import { formatHectometerDisplayName } from '@/lib/utils/hectometer'
 
 export const normalizeHectometerSearchQuery = (searchQuery: string) =>
   searchQuery
@@ -24,33 +23,14 @@ export const getNewSelectedAddress = async (
     ? config.base.map.find_address_in_distance
     : 30
 
-  const hectometerConfig = config?.base.pdok_hectometer_suggest
-  const provincialHectometerPost =
-    hectometerConfig?.enabled && hectometerConfig.sourceLayerId
-      ? await getNearestProvincialHectometerPostByCoordinate(
-          lat,
-          lng,
-          findAddressInDistance,
-          hectometerConfig.sourceLayerId
-        )
-      : null
-
-  if (provincialHectometerPost) {
-    return {
-      ...provincialHectometerPost,
-      coordinates: [lng, lat],
-    }
-  }
-
-  const hectometerPost =
-    hectometerConfig?.enabled && !hectometerConfig.sourceLayerId
-      ? await getNearestHectometerPostByCoordinate(
-          lat,
-          lng,
-          findAddressInDistance,
-          config?.pdokUrlApi
-        )
-      : null
+  const hectometerPost = config?.base.pdok_hectometer_suggest?.enabled
+    ? await getNearestHectometerPostByCoordinate(
+        lat,
+        lng,
+        findAddressInDistance,
+        config.pdokUrlApi
+      )
+    : null
 
   if (hectometerPost) {
     const displayName = formatHectometerDisplayName(hectometerPost.weergavenaam)

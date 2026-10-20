@@ -1,10 +1,9 @@
-import type { LayerProps, MapRef } from 'react-map-gl/maplibre'
+import { LayerProps, MapRef } from 'react-map-gl/maplibre'
 import { VectorTile } from '@mapbox/vector-tile'
 import { point as turfPoint } from '@turf/helpers'
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon'
 import { PbfReader } from 'pbf'
 import { AppConfig } from '@/types/config'
-import { Address } from '@/types/form'
 import { Feature, MultiPolygon, Polygon } from 'geojson'
 
 /** Source id used by the MapLibre source that renders the restricted area. */
@@ -18,10 +17,7 @@ type TileJson = {
 }
 
 const tileJsonCache = new Map<string, Promise<TileJson>>()
-const polygonCache = new Map<
-  string,
-  Promise<Array<Feature<Polygon | MultiPolygon>>>
->()
+const vectorTileCache = new Map<string, Promise<ArrayBuffer>>()
 
 /**
  * Returns the line layer style used to outline the restricted-area mask.
@@ -80,7 +76,7 @@ const isPointInOutOfBoundsFeatures = (
  * This is intended for map clicks only. A click happens inside the current
  * viewport, so MapLibre has normally loaded the vector tile that contains the
  * relevant restriction polygons. Combobox selections can point outside the
- * current viewport and therefore use {@link isAddressOutsideRestrictedArea}
+ * current viewport and therefore use {@link isCoordinateOutsideRestrictedArea}
  * instead.
  *
  * @param config - Application configuration containing the MapTiler layer id.
@@ -144,6 +140,34 @@ const fetchTileJson = (url: string) => {
   }
 
   return tileJsonCache.get(url)!
+}
+
+/**
+ * Fetches and caches a vector tile PBF by URL. Tile requests are cached because
+ * nearby hectometer suggestions often resolve to the same vector tile.
+ *
+ * @param url - Concrete PBF tile URL.
+ * @returns A promise resolving to the raw PBF tile bytes.
+ */
+const fetchVectorTile = (url: string) => {
+  if (!vectorTileCache.has(url)) {
+    const request = fetch(url)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Could not fetch restricted area vector tile.')
+        }
+
+        return response.arrayBuffer()
+      })
+      .catch((error) => {
+        vectorTileCache.delete(url)
+        throw error
+      })
+
+    vectorTileCache.set(url, request)
+  }
+
+  return vectorTileCache.get(url)!
 }
 
 /**
@@ -227,64 +251,43 @@ const getRestrictedAreaFeatures = async (
   const x = longitudeToTileX(lng, zoom)
   const y = latitudeToTileY(lat, zoom)
   const tileUrl = getTileUrl(tileJson, zoom, x, y)
+  const tileBuffer = await fetchVectorTile(tileUrl)
+  const tile = new VectorTile(new PbfReader(tileBuffer))
   const layerId = config.maptilerOutOfBoundsLayerId
-  const cacheKey = JSON.stringify([tileUrl, layerId])
 
-  if (!polygonCache.has(cacheKey)) {
-    const request = fetch(tileUrl)
-      .then(async (response) => {
-        if (!response.ok) {
-          throw new Error('Could not fetch restricted area vector tile.')
-        }
-
-        const tile = new VectorTile(new PbfReader(await response.arrayBuffer()))
-        const layer = tile.layers[layerId]
-        const features: Array<Feature<Polygon | MultiPolygon>> = []
-
-        for (let index = 0; index < (layer?.length ?? 0); index += 1) {
-          const feature = layer.feature(index).toGeoJSON(x, y, zoom)
-          if (
-            feature.geometry.type === 'Polygon' ||
-            feature.geometry.type === 'MultiPolygon'
-          ) {
-            features.push(feature as Feature<Polygon | MultiPolygon>)
-          }
-        }
-
-        return features
-      })
-      .catch((error) => {
-        polygonCache.delete(cacheKey)
-        throw error
-      })
-
-    polygonCache.set(cacheKey, request)
+  if (!layerId) {
+    return []
   }
 
-  return polygonCache.get(cacheKey)!
+  const layer = tile.layers[layerId]
+
+  if (!layer) {
+    return []
+  }
+
+  const features: Array<Feature<Polygon | MultiPolygon>> = []
+
+  for (let index = 0; index < layer.length; index += 1) {
+    const feature = layer.feature(index).toGeoJSON(x, y, zoom)
+
+    if (
+      feature.geometry.type === 'Polygon' ||
+      feature.geometry.type === 'MultiPolygon'
+    ) {
+      features.push(feature as Feature<Polygon | MultiPolygon>)
+    }
+  }
+
+  return features
 }
 
-/** Checks the configured boundary; source failures propagate so callers can retry. */
+/** Checks a search result without moving the map; lookup failures propagate. */
 export const isCoordinateOutsideRestrictedArea = async (
   config: AppConfig,
   lng: number,
   lat: number
 ): Promise<boolean> => {
   if (!config.restrictSelectionArea) return false
-
   const features = await getRestrictedAreaFeatures(config, lng, lat)
   return isPointInOutOfBoundsFeatures(features, lng, lat)
-}
-
-/** Validates a selection without moving the map, rejecting it on source failure. */
-export const isAddressOutsideRestrictedArea = async (
-  config: AppConfig,
-  address: Address
-): Promise<boolean> => {
-  try {
-    const [lng, lat] = address.coordinates
-    return await isCoordinateOutsideRestrictedArea(config, lng, lat)
-  } catch {
-    return true
-  }
 }

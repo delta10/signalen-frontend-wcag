@@ -28,13 +28,6 @@ export type HectometerSuggestDoc = {
   hectometerletter?: string
 }
 
-export type RoadSuggestDoc = {
-  id: string
-  weergavenaam: string
-  centroide_ll: string
-  straatnaam: string
-}
-
 export type CoordinateResponse<T> = {
   response: {
     numFound: number

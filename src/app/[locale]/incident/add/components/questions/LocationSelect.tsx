@@ -38,8 +38,8 @@ export const LocationSelect = ({ field }: LocationSelectProps) => {
     comboboxAriaDescribedBy,
     comboboxAriaInvalid,
     errorMessageId,
-    restrictionError,
-    restrictionErrorId,
+    searchPosition,
+    updatePosition,
     validateRestrictedAreaSelection,
   } = useLocationComboboxValidation(errorMessage)
   const showAddressSearch = !config.restrictSelectionArea
@@ -49,10 +49,7 @@ export const LocationSelect = ({ field }: LocationSelectProps) => {
   const showAnySearch = showAddressSearch || showHectometerSearch
 
   return (
-    <Fieldset
-      invalid={Boolean(errorMessage) || Boolean(restrictionError)}
-      className="w-full"
-    >
+    <Fieldset invalid={Boolean(errorMessage)} className="w-full">
       <FieldsetLegend>
         {field
           ? `${field.meta.label} (${tGeneral('form.required_short')})`
@@ -61,11 +58,6 @@ export const LocationSelect = ({ field }: LocationSelectProps) => {
       {Boolean(errorMessage) && errorMessage && (
         <FormFieldErrorMessage id={errorMessageId}>
           {errorMessage}
-        </FormFieldErrorMessage>
-      )}
-      {restrictionError && (
-        <FormFieldErrorMessage id={restrictionErrorId}>
-          {restrictionError}
         </FormFieldErrorMessage>
       )}
       {showAddressSearch && (
@@ -91,6 +83,7 @@ export const LocationSelect = ({ field }: LocationSelectProps) => {
               ariaDescribedBy={comboboxAriaDescribedBy}
               ariaInvalid={comboboxAriaInvalid}
               searchType={SearchType.Hectometer}
+              updatePosition={updatePosition}
               validateSelection={validateRestrictedAreaSelection}
             />
           </div>
@@ -101,10 +94,11 @@ export const LocationSelect = ({ field }: LocationSelectProps) => {
       </FormFieldDescription>
       <div className="relative w-full mb-3">
         <div style={{ minHeight: 200, height: 200 }}>
-          <LocationMap />
+          <LocationMap searchPosition={searchPosition} />
         </div>
         <MapProvider>
           <MapDialog
+            searchPosition={searchPosition}
             trigger={
               isCoordinates(formStoreState.coordinates) &&
               formStoreState.coordinates[0] === 0 &&

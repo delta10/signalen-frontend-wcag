@@ -1,74 +1,52 @@
-import { useEffect, useMemo } from 'react'
-import { useMap } from 'react-map-gl/maplibre'
+import { useEffect, useState } from 'react'
+import type { FeatureCollection } from 'geojson'
 import { useConfig } from '@/contexts/ConfigContext'
+import type { MapLayerConfiguration } from '@/types/config'
+import { isHectometerNotation } from '@/lib/utils/hectometer'
 import { MapLayer } from '@/app/[locale]/incident/add/components/MapLayer'
+
+const HectometerLayer = ({ layer }: { layer: MapLayerConfiguration }) => {
+  const [data, setData] = useState<FeatureCollection | null>(null)
+  const sourceUrl = layer.source.data as string
+
+  useEffect(() => {
+    const controller = new AbortController()
+    fetch(sourceUrl, { signal: controller.signal })
+      .then((response) => {
+        if (!response.ok) throw new Error('Could not fetch hectometer layer.')
+        return response.json() as Promise<FeatureCollection>
+      })
+      .then((source) => {
+        if (!controller.signal.aborted) {
+          setData({
+            ...source,
+            features: source.features.filter((feature) =>
+              isHectometerNotation(String(feature.properties?.TEKST ?? ''))
+            ),
+          })
+        }
+      })
+      .catch(() => {
+        /* Hide the layer when its source cannot be loaded. */
+      })
+
+    return () => controller.abort()
+  }, [sourceUrl])
+
+  return data ? (
+    <MapLayer layer={{ ...layer, source: { ...layer.source, data } }} />
+  ) : null
+}
 
 export const MapLayers = () => {
   const config = useConfig()
-  const { dialogMap } = useMap()
-  const hectometerSourceLayerId =
-    config.base.pdok_hectometer_suggest?.sourceLayerId
-  const layers = useMemo(() => {
-    const configuredLayers = config.base.map.layers ?? []
-
-    return configuredLayers.map((layer) => {
-      if (
-        layer.id !== hectometerSourceLayerId ||
-        layer.source.type !== 'geojson'
-      ) {
-        return layer
-      }
-
-      return {
-        ...layer,
-        source: {
-          ...layer.source,
-          data: `/api/hectometers?sourceLayerId=${encodeURIComponent(layer.id)}&validatedSource=true`,
-        },
-      }
-    })
-  }, [config.base.map.layers, hectometerSourceLayerId])
-  const symbolLayerIds = useMemo(
-    () =>
-      layers.flatMap((layer) =>
-        layer.layers
-          .filter((configuredLayer) => configuredLayer.type === 'symbol')
-          .map((configuredLayer) => configuredLayer.id)
-      ),
-    [layers]
+  return (config.base.map.layers ?? []).map((layer) =>
+    layer.id === 'hectometrering' &&
+    layer.source.type === 'geojson' &&
+    typeof layer.source.data === 'string' ? (
+      <HectometerLayer key={layer.source.data} layer={layer} />
+    ) : (
+      <MapLayer key={layer.id} layer={layer} />
+    )
   )
-
-  useEffect(() => {
-    if (!dialogMap || symbolLayerIds.length === 0) return
-
-    const moveSymbolLayersToTop = () => {
-      const styleLayerIds =
-        dialogMap.getStyle()?.layers?.map((styleLayer) => styleLayer.id) ?? []
-      const existingSymbolLayerIds = symbolLayerIds.filter((id) =>
-        styleLayerIds.includes(id)
-      )
-
-      if (existingSymbolLayerIds.length === 0) return
-
-      const currentTopLayerIds = styleLayerIds.slice(
-        -existingSymbolLayerIds.length
-      )
-      const alreadyOnTop = existingSymbolLayerIds.every(
-        (id, index) => currentTopLayerIds[index] === id
-      )
-
-      if (!alreadyOnTop) {
-        existingSymbolLayerIds.forEach((id) => dialogMap.moveLayer(id))
-      }
-    }
-
-    moveSymbolLayersToTop()
-    dialogMap.on('styledata', moveSymbolLayersToTop)
-
-    return () => {
-      dialogMap.off('styledata', moveSymbolLayersToTop)
-    }
-  }, [dialogMap, symbolLayerIds])
-
-  return layers.map((layer) => <MapLayer key={layer.id} layer={layer} />)
 }
