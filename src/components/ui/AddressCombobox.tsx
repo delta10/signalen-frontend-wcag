@@ -172,12 +172,12 @@ const getSuggestionOptions = async (
   searchType: SearchType,
   searchQuery: string,
   config: AppConfig,
-  signal: AbortSignal
+  signal: AbortSignal,
+  onResults: (options: Address[]) => void
 ): Promise<Address[]> => {
   if (searchType === SearchType.HectometerAndRoad) {
     const { scope, organization } = config.base.pdok_address_suggest
     const results = await Promise.allSettled([
-      getHectometerSuggestionOptions(searchQuery, config, signal),
       getSuggestedRoads(
         searchQuery,
         scope,
@@ -189,9 +189,12 @@ const getSuggestionOptions = async (
             config.base.map.maxBounds,
         },
         signal
-      ).then((response) =>
-        response.response.docs.flatMap(mapRoadSuggestDocToAddress)
-      ),
+      ).then((response) => {
+        const roads = response.response.docs.flatMap(mapRoadSuggestDocToAddress)
+        if (roads.length > 0) onResults(roads)
+        return roads
+      }),
+      getHectometerSuggestionOptions(searchQuery, config, signal),
     ])
 
     if (results.every((result) => result.status === 'rejected')) {
@@ -240,6 +243,7 @@ export const AddressCombobox = ({
   const [selectionError, setSelectionError] = useState(false)
   const selectionRequest = useRef(0)
   const { formState, updateForm } = useFormStore()
+  const tGeneral = useTranslations('general')
   const tAddress = useTranslations('describe_add.address')
   const tMap = useTranslations('describe_add.map')
   const navigationSelection =
@@ -278,18 +282,26 @@ export const AddressCombobox = ({
     }
 
     const abortController = new AbortController()
-    const timeoutId = window.setTimeout(async () => {
-      setLoading(true)
-      setSearchError(false)
+    const updateOptions = (options: Address[]) => {
+      if (!abortController.signal.aborted) {
+        setAddressOptions(options)
+        setLoading(false)
+      }
+    }
+    setAddressOptions([])
+    setLoading(true)
+    setSearchError(false)
 
+    const timeoutId = window.setTimeout(async () => {
       try {
         const options = await getSuggestionOptions(
           searchType,
           normalizedQuery,
           config,
-          abortController.signal
+          abortController.signal,
+          updateOptions
         )
-        if (!abortController.signal.aborted) setAddressOptions(options)
+        updateOptions(options)
       } catch {
         if (!abortController.signal.aborted) {
           setAddressOptions([])
@@ -408,37 +420,37 @@ export const AddressCombobox = ({
           placeholder={placeholder}
           className={cn(className, { mobile: mobileView })}
         />
-        {!loading && (
-          <ComboboxOptions
-            as={Listbox}
-            anchor="bottom"
-            className="z-[9999] overflow-y-auto [--anchor-max-height:16rem] [--utrecht-listbox-inline-size:var(--input-width)]"
-          >
-            {addressOptions.length > 0 ? (
-              addressOptions.map((address) => (
-                <ComboboxOption as={Fragment} key={address.id} value={address}>
-                  {({ focus }) => (
-                    <ListboxOption active={focus}>
-                      {address.weergave_naam}
-                    </ListboxOption>
-                  )}
-                </ComboboxOption>
-              ))
-            ) : (
-              <ComboboxOption value={null} as={ListboxOption} disabled>
-                {searchError ? (
-                  <AlertText>{tMap('location_search_failed')}</AlertText>
-                ) : (
-                  <StatusText>
-                    {searchType === SearchType.HectometerAndRoad
-                      ? tAddress('no_location_results')
-                      : tAddress('no_results')}
-                  </StatusText>
+        <ComboboxOptions
+          as={Listbox}
+          anchor="bottom"
+          className="z-[9999] overflow-y-auto [--anchor-max-height:16rem] [--utrecht-listbox-inline-size:var(--input-width)]"
+        >
+          {addressOptions.length > 0 ? (
+            addressOptions.map((address) => (
+              <ComboboxOption as={Fragment} key={address.id} value={address}>
+                {({ focus }) => (
+                  <ListboxOption active={focus}>
+                    {address.weergave_naam}
+                  </ListboxOption>
                 )}
               </ComboboxOption>
-            )}
-          </ComboboxOptions>
-        )}
+            ))
+          ) : (
+            <ComboboxOption value={null} as={ListboxOption} disabled>
+              {loading ? (
+                <StatusText>{tGeneral('loading')}</StatusText>
+              ) : searchError ? (
+                <AlertText>{tMap('location_search_failed')}</AlertText>
+              ) : (
+                <StatusText>
+                  {searchType === SearchType.HectometerAndRoad
+                    ? tAddress('no_location_results')
+                    : tAddress('no_results')}
+                </StatusText>
+              )}
+            </ComboboxOption>
+          )}
+        </ComboboxOptions>
       </Combobox>
       {selectionError && <AlertText>{tMap('location_search_error')}</AlertText>}
       {!selectionError && navigationSelection && (

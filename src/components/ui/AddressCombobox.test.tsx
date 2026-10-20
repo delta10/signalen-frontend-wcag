@@ -93,7 +93,7 @@ beforeEach(() => {
   Element.prototype.scrollIntoView = vi.fn()
 })
 
-const showSuggestions = async (
+const renderSearch = (
   validateSelection: () => Promise<boolean>,
   restrictSelectionArea = true
 ) => {
@@ -111,7 +111,17 @@ const showSuggestions = async (
       </ConfigProvider>
     </RootMock>
   )
-  const input = screen.getByRole('combobox')
+  return { updatePosition, input: screen.getByRole('combobox') }
+}
+
+const showSuggestions = async (
+  validateSelection: () => Promise<boolean>,
+  restrictSelectionArea = true
+) => {
+  const { updatePosition, input } = renderSearch(
+    validateSelection,
+    restrictSelectionArea
+  )
   fireEvent.change(input, { target: { value: 'A270 6.5' } })
   const option = await screen.findByRole('option', {
     name: 'Hectometerpaal A270-6.5',
@@ -129,6 +139,163 @@ const choosePost = async (validateSelection: () => Promise<boolean>) => {
 }
 
 describe('hectometer selection', () => {
+  it('shows roads on the first query while post boundary checks are still pending, then appends posts underneath', async () => {
+    let resolveBoundary!: (outside: boolean) => void
+    const boundary = new Promise<boolean>((resolve) => {
+      resolveBoundary = resolve
+    })
+    vi.mocked(isCoordinateOutsideRestrictedArea).mockReturnValue(boundary)
+    vi.mocked(getSuggestedRoads).mockResolvedValue({
+      response: {
+        numFound: 1,
+        start: 0,
+        maxScore: 1,
+        numFoundExact: true,
+        docs: [
+          {
+            id: 'weg-n270',
+            weergavenaam: 'N270, Deurne',
+            straatnaam: 'N270',
+            centroide_ll: 'POINT(5.58953096 51.46621774)',
+          },
+        ],
+      },
+    })
+    const { input } = renderSearch(async () => true)
+    fireEvent.change(input, { target: { value: 'N270' } })
+    await screen.findByRole('option', { name: 'N270, Deurne' })
+    expect(
+      screen.queryByRole('option', { name: 'Hectometerpaal A270-6.5' })
+    ).not.toBeInTheDocument()
+    await act(async () => resolveBoundary(false))
+    await screen.findByRole('option', { name: 'Hectometerpaal A270-6.5' })
+    expect(
+      screen.getAllByRole('option').map((option) => option.textContent)
+    ).toEqual(['N270, Deurne', 'Hectometerpaal A270-6.5'])
+    expect(getSuggestedRoads).toHaveBeenCalledTimes(1)
+    expect(getSuggestedHectometerPosts).toHaveBeenCalledTimes(1)
+  })
+
+  it('shows that the initial search is loading, then displays a street without typing again', async () => {
+    let resolveRoads!: (
+      value: Awaited<ReturnType<typeof getSuggestedRoads>>
+    ) => void
+    vi.mocked(getSuggestedRoads).mockReturnValue(
+      new Promise((resolve) => {
+        resolveRoads = resolve
+      })
+    )
+    vi.mocked(getSuggestedHectometerPosts).mockResolvedValue({
+      response: {
+        numFound: 0,
+        start: 0,
+        maxScore: 1,
+        numFoundExact: true,
+        docs: [],
+      },
+    })
+    const { input } = renderSearch(async () => true)
+    fireEvent.change(input, { target: { value: 'Dorpsstraat' } })
+    await screen.findByText('Loading...')
+    expect(
+      screen.queryByText('No roads, streets or hectometer posts found.')
+    ).not.toBeInTheDocument()
+    await waitFor(() => expect(getSuggestedRoads).toHaveBeenCalledTimes(1))
+    await act(async () =>
+      resolveRoads({
+        response: {
+          numFound: 1,
+          start: 0,
+          maxScore: 1,
+          numFoundExact: true,
+          docs: [
+            {
+              id: 'weg-dorpsstraat',
+              weergavenaam: 'Dorpsstraat, Nuenen',
+              straatnaam: 'Dorpsstraat',
+              centroide_ll: 'POINT(5.54162224 51.45663389)',
+            },
+          ],
+        },
+      })
+    )
+    await screen.findByRole('option', { name: 'Dorpsstraat, Nuenen' })
+    expect(input).toHaveValue('Dorpsstraat')
+  })
+
+  it('ignores road and post results from a superseded search', async () => {
+    let resolveOldRoads!: (
+      value: Awaited<ReturnType<typeof getSuggestedRoads>>
+    ) => void
+    let resolveOldBoundary!: (outside: boolean) => void
+    vi.mocked(getSuggestedRoads)
+      .mockReturnValueOnce(
+        new Promise((resolve) => {
+          resolveOldRoads = resolve
+        })
+      )
+      .mockResolvedValue({
+        response: {
+          numFound: 1,
+          start: 0,
+          maxScore: 1,
+          numFoundExact: true,
+          docs: [
+            {
+              id: 'weg-new',
+              weergavenaam: 'Nieuwe straat',
+              straatnaam: 'Nieuwe straat',
+              centroide_ll: 'POINT(5.54162224 51.45663389)',
+            },
+          ],
+        },
+      })
+    vi.mocked(isCoordinateOutsideRestrictedArea)
+      .mockReturnValueOnce(
+        new Promise((resolve) => {
+          resolveOldBoundary = resolve
+        })
+      )
+      .mockResolvedValue(true)
+    const { input } = renderSearch(async () => true)
+    fireEvent.change(input, { target: { value: 'N270' } })
+    await waitFor(() =>
+      expect(isCoordinateOutsideRestrictedArea).toHaveBeenCalledTimes(1)
+    )
+    const firstSignal = vi.mocked(getSuggestedRoads).mock.calls[0][5]
+    fireEvent.change(input, { target: { value: 'Nieuwe straat' } })
+    await screen.findByRole('option', { name: 'Nieuwe straat' })
+    expect(firstSignal?.aborted).toBe(true)
+    await act(async () => {
+      resolveOldRoads({
+        response: {
+          numFound: 1,
+          start: 0,
+          maxScore: 1,
+          numFoundExact: true,
+          docs: [
+            {
+              id: 'weg-old',
+              weergavenaam: 'Oude weg',
+              straatnaam: 'Oude weg',
+              centroide_ll: 'POINT(5.54162224 51.45663389)',
+            },
+          ],
+        },
+      })
+      resolveOldBoundary(false)
+    })
+    expect(
+      screen.queryByRole('option', { name: 'Oude weg' })
+    ).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('option', { name: 'Hectometerpaal A270-6.5' })
+    ).not.toBeInTheDocument()
+    expect(
+      screen.getByRole('option', { name: 'Nieuwe straat' })
+    ).toBeInTheDocument()
+  })
+
   it('keeps road results alongside hectometer posts without applying the post boundary filter to roads', async () => {
     vi.mocked(getSuggestedRoads).mockResolvedValue({
       response: {

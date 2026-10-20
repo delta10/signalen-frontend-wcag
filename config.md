@@ -87,7 +87,7 @@ Logo settings are configured at `base.header.logo`.
 
 With `restrictSelectionArea` enabled, hectometer suggestions outside the reporting boundary are filtered out before the list is shown. Without this restriction, all valid PDOK suggestions in the search rectangle remain available. The selected result is checked again when clicked. Boundary lookup failures show an error instead of displaying unchecked results. The configured provincial `hectometrering` GeoJSON map layer filters invalid `TEKST` values in the browser, independently of PDOK search.
 
-Street/road names and hectometer posts are shown together in the existing search field when hectometer search is enabled. Selecting a permitted result chooses that location. A street/road result outside the reporting boundary only moves the map and clears the previous location. The user must choose a permitted location before continuing. Boundary checks use the configured restriction source, not just the search rectangle.
+Street/road names and hectometer posts are shown together in the existing search field when hectometer search is enabled. Street/road results appear first as soon as PDOK returns them; hectometer posts are appended below after their boundary checks finish. Selecting a permitted result chooses that location. A street/road result outside the reporting boundary only moves the map and clears the previous location. The user must choose a permitted location before continuing. Boundary checks use the configured restriction source, not just the search rectangle.
 
 ## Map Defaults
 
