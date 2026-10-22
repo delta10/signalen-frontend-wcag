@@ -60,7 +60,7 @@ const IncidentMapMobileSidebar = ({
             ? tIncidentMap('details')
             : tIncidentMap('filters'),
         })}
-        className="absolute bottom-16 w-full flex h-10 flex-shrink-0 items-center justify-center overflow-hidden bg-white px-4 text-base font-medium transition-all hover:bg-[#FAFAFA] dark:bg-[#161615] dark:hover:bg-[#1A1A19] shadow-top"
+        className="w-full flex h-10 flex-shrink-0 items-center justify-center overflow-hidden bg-white px-4 text-base font-medium transition-all hover:bg-[#FAFAFA] dark:bg-[#161615] dark:hover:bg-[#1A1A19] shadow-top"
       >
         <DragHandle />
       </Drawer.Trigger>
