@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react'
 import { Layer, Marker, Source } from 'react-map-gl/maplibre'
 import { Map } from '@/components/ui/Map'
+import { MapAttribution } from '@/components/ui/MapAttribution'
 import { useTranslations } from 'next-intl'
 
 import {
@@ -81,6 +82,8 @@ const MapDialogMobileContent = ({
     closeMapDialog,
     handleMapClick,
     mapStyle,
+    aerialPhotoEnabled,
+    isAerialPhoto,
     width,
     mapFeatures,
     error,
@@ -249,8 +252,18 @@ const MapDialogMobileContent = ({
             mapStyle={mapStyle}
             scrollZoom={!(width !== 0 && width < 768)}
             attributionControl={false}
+            locale={{
+              'AttributionControl.ToggleAttribution': t('toggle_attribution'),
+            }}
             maxBounds={config.base.map.maxBounds}
           >
+            <MapAttribution
+              customAttribution={
+                isAerialPhoto && aerialPhotoEnabled
+                  ? undefined
+                  : config.mapAttribution
+              }
+            />
             {/* Address or selected point on map marker */}
             {marker.length && (isMapSelected === null || isMapSelected) && (
               <Marker latitude={marker[0]} longitude={marker[1]}>

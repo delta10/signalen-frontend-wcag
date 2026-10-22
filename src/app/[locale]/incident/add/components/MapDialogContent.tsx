@@ -20,6 +20,7 @@ import {
 import { FeatureListItem } from '@/app/[locale]/incident/add/components/FeatureListItem'
 import * as Dialog from '@radix-ui/react-dialog'
 import { Map } from '@/components/ui/Map'
+import { MapAttribution } from '@/components/ui/MapAttribution'
 import { MapRef, Marker } from 'react-map-gl/maplibre'
 import { useTranslations } from 'next-intl'
 import useMapDialog from '@/hooks/useMapDialog'
@@ -77,6 +78,8 @@ const MapDialogContent = ({
     closeMapDialog,
     handleMapClick,
     mapStyle,
+    aerialPhotoEnabled,
+    isAerialPhoto,
     width,
     mapFeatures,
     error,
@@ -235,8 +238,18 @@ const MapDialogContent = ({
             mapStyle={mapStyle}
             scrollZoom={!(width !== 0 && width < 768)}
             attributionControl={false}
+            locale={{
+              'AttributionControl.ToggleAttribution': t('toggle_attribution'),
+            }}
             maxBounds={config.base.map.maxBounds}
           >
+            <MapAttribution
+              customAttribution={
+                isAerialPhoto && aerialPhotoEnabled
+                  ? undefined
+                  : config.mapAttribution
+              }
+            />
             {/* Address or selected point on map marker */}
             {marker.length && (isMapSelected === null || isMapSelected) && (
               <Marker latitude={marker[0]} longitude={marker[1]}>

@@ -45,6 +45,7 @@ import { debounce } from '@/lib/utils/utils'
 import IncidentMapMobileSidebar from '@/app/[locale]/incident-map/components/IncidentMapMobileSidebar'
 import { setCurrentLocation } from '@/lib/utils/LocationUtils'
 import { getMapStyleUrl } from '@/lib/utils/map'
+import { MapAttribution } from '@/components/ui/MapAttribution'
 import { Paragraph } from '@utrecht/component-library-react/dist/css-module'
 import { ExtendedFeature } from '@/types/map'
 import { stepToPath } from '@/routing/navigation'
@@ -382,7 +383,7 @@ const IncidentMapContent = () => {
 
       {config && (
         <div
-          className="col-span-1 relative min-h-full max-h-full h-full"
+          className="incident-map col-span-1 relative min-h-full max-h-full h-full"
           ref={mapContainerRef}
         >
           <Map
@@ -394,8 +395,12 @@ const IncidentMapContent = () => {
             mapStyle={getMapStyleUrl(config, isDarkMode)}
             scrollZoom={!(width !== 0 && width < 768)}
             attributionControl={false}
+            locale={{
+              'AttributionControl.ToggleAttribution': t('toggle_attribution'),
+            }}
             maxBounds={config.base.map.maxBounds}
           >
+            <MapAttribution customAttribution={config.mapAttribution} />
             {filteredFeatures &&
               filteredFeatures.map((feature: ExtendedFeature) => {
                 return (

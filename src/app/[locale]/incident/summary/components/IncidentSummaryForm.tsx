@@ -191,10 +191,8 @@ const IncidentSummaryForm = () => {
               tStepAdd('map.pinned_location')
             )}
           >
-            <div
+            <LocationMap
               className="signalen-map-img"
-              role="img"
-              inert
               data-lat={formState.coordinates && formState.coordinates[0]}
               data-lon={formState.coordinates && formState.coordinates[1]}
               aria-label={
@@ -248,9 +246,7 @@ const IncidentSummaryForm = () => {
                     })
                   : undefined
               }
-            >
-              <LocationMap />
-            </div>
+            />
           </IncidentSummaryFormItem>
 
           {formState.extra_properties.map((answer) => {

@@ -14,3 +14,36 @@
   /* Override the `grab` cursor from maplibre */
   cursor: default;
 }
+
+.location-map-preview {
+  isolation: isolate;
+}
+
+.maplibregl-ctrl-bottom-right {
+  right: 4rem;
+  bottom: 0.5rem;
+  max-inline-size: calc(100% - 4.5rem);
+}
+
+.maplibregl-ctrl-bottom-right .maplibregl-ctrl-attrib {
+  box-sizing: border-box;
+  max-inline-size: 100%;
+  min-block-size: 24px;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.location-map-preview .maplibregl-ctrl-bottom-right {
+  right: var(--basis-space-inline-md);
+  bottom: var(--basis-space-block-md);
+  max-inline-size: calc(100% - 2 * var(--basis-space-inline-md));
+}
+
+@media (max-width: 768px) {
+  .incident-map .maplibregl-ctrl-bottom-right {
+    right: 0.5rem;
+    top: 0.5rem;
+    bottom: auto;
+    max-inline-size: calc(100% - 11rem);
+  }
+}
