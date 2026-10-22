@@ -4,6 +4,7 @@ import {
   CoordinateResponse,
   SuggestResponse,
   HectometerSuggestDoc,
+  RoadSuggestDoc,
   AddressSuggestDoc,
   AddressCoordinateDoc,
   HectometerCoordinateDoc,
@@ -124,6 +125,39 @@ export const getSuggestedAddresses = async (
     return response.data
   } catch {
     throw new Error('Could not fetch suggested addresses. Please try again.')
+  }
+}
+
+/** Fetches street and road suggestions within the configured organisation. */
+export const getSuggestedRoads = async (
+  searchQuery: string,
+  scope: PdokAddressSuggestScope,
+  organization: string,
+  pdokBaseUrl: string | undefined,
+  options: { bounds?: CoordinateBounds } = {},
+  signal?: AbortSignal
+): Promise<SuggestResponse<RoadSuggestDoc>> => {
+  if (!pdokBaseUrl) {
+    throw new Error('Pdok Base URL is required to fetch suggested roads.')
+  }
+
+  const axios = axiosInstance(pdokBaseUrl)
+  const field = pdokAddressSuggestFields[scope]
+  const encodedOrganization = encodeURIComponent(organization)
+  const encodedSearchQuery = encodeURIComponent(searchQuery)
+  const boundsFilter = getBoundsFilter('centroide_ll', options.bounds)
+  const encodedBoundsFilter = boundsFilter
+    ? `&fq=${encodeURIComponent(boundsFilter)}`
+    : ''
+  const path = `/search/v3_1/suggest?fq=${field}:(${encodedOrganization})&fq=type:weg${encodedBoundsFilter}&fl=id,weergavenaam,straatnaam,centroide_ll&q=${encodedSearchQuery}`
+
+  try {
+    const response: AxiosResponse<SuggestResponse<RoadSuggestDoc>> =
+      await axios.get(path, { signal })
+
+    return response.data
+  } catch {
+    throw new Error('Could not fetch suggested roads. Please try again.')
   }
 }
 
