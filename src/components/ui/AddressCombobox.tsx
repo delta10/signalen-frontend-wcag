@@ -10,13 +10,20 @@ import React, {
   SetStateAction,
   useEffect,
   useState,
+  useRef,
 } from 'react'
 import { useConfig } from '@/contexts/ConfigContext'
 import {
   getSuggestedAddresses,
   getSuggestedHectometerPosts,
 } from '@/services/location/address'
-import { Listbox, ListboxOption, StatusText, Textbox } from '@/components/index'
+import {
+  AlertText,
+  Listbox,
+  ListboxOption,
+  StatusText,
+  Textbox,
+} from '@/components/index'
 // Import the Select Combobox component for the side-effects of injecting CSS
 // for related components, such as Textbox and Listbox.
 import '@utrecht/select-combobox-react/dist/css'
@@ -31,6 +38,8 @@ import {
   formatHectometerDisplayName,
   normalizeHectometerSearchQuery,
 } from '@/lib/utils/address'
+import { isValidHectometerDisplayName } from '@/lib/utils/hectometer'
+import { isCoordinateOutsideRestrictedArea } from '@/lib/utils/restrictedAreaUtils'
 
 export enum SearchType {
   Address = 'address',
@@ -38,7 +47,7 @@ export enum SearchType {
 }
 
 type AddressComboboxProps = {
-  updatePosition?: (lat: number, lng: number, flyTo?: boolean) => void
+  updatePosition?: (lat: number, lng: number, selectPosition?: boolean) => void
   setIsMapSelected?: Dispatch<SetStateAction<boolean | null>>
   mobileView?: boolean
   id?: string
@@ -49,6 +58,7 @@ type AddressComboboxProps = {
 }
 
 const normalizeQuery = (str: string) => str.trim().replace(/\s+/g, ' ')
+const SEARCH_DEBOUNCE_MS = 250
 
 const mapAddressSuggestDocToAddress = (item: AddressSuggestDoc): Address[] => {
   const coordinates = getPointCoordinates(item.centroide_ll)
@@ -77,7 +87,7 @@ const mapHectometerSuggestDocToAddress = (
 
   const displayName = formatHectometerDisplayName(item.weergavenaam)
 
-  if (!coordinates) {
+  if (!coordinates || !isValidHectometerDisplayName(item.weergavenaam)) {
     return []
   }
 
@@ -94,31 +104,44 @@ const mapHectometerSuggestDocToAddress = (
   ]
 }
 
-const getHectometerBounds = (config: AppConfig) =>
-  config.base.pdok_hectometer_suggest?.bounds ?? config.base.map.maxBounds
-
 const getSuggestionOptions = async (
   searchType: SearchType,
   searchQuery: string,
-  config: AppConfig
+  config: AppConfig,
+  signal: AbortSignal
 ): Promise<Address[]> => {
   if (searchType === SearchType.Hectometer) {
+    const normalizedSearchQuery = normalizeHectometerSearchQuery(searchQuery)
+    const restrictToProvincialRoads =
+      config.base.pdok_address_suggest.scope ===
+      PdokAddressSuggestScope.Provincie
     const options = {
-      bounds: getHectometerBounds(config),
-      roadNumberPrefix:
-        config.base.pdok_address_suggest.scope ===
-        PdokAddressSuggestScope.Provincie
-          ? 'N'
-          : undefined,
+      bounds: config.base.pdok_hectometer_suggest?.bounds,
+      maxResults: config.base.pdok_hectometer_suggest?.maxResults,
+      roadNumberPrefix: restrictToProvincialRoads ? 'N' : undefined,
+      roadNumberExceptions: restrictToProvincialRoads
+        ? config.base.pdok_hectometer_suggest?.roadNumberExceptions
+        : undefined,
     }
 
     const apiCall = await getSuggestedHectometerPosts(
-      normalizeHectometerSearchQuery(searchQuery),
+      normalizedSearchQuery,
       config.pdokUrlApi,
-      options
+      options,
+      signal
     )
 
-    return apiCall.response.docs.flatMap(mapHectometerSuggestDocToAddress)
+    const suggestions = apiCall.response.docs.flatMap(
+      mapHectometerSuggestDocToAddress
+    )
+    if (!config.restrictSelectionArea) return suggestions
+
+    const outside = await Promise.all(
+      suggestions.map(({ coordinates: [lng, lat] }) =>
+        isCoordinateOutsideRestrictedArea(config, lng, lat)
+      )
+    )
+    return suggestions.filter((_, index) => !outside[index])
   }
 
   const { scope, organization } = config.base.pdok_address_suggest
@@ -126,7 +149,8 @@ const getSuggestionOptions = async (
     searchQuery,
     scope,
     organization,
-    config.pdokUrlApi
+    config.pdokUrlApi,
+    signal
   )
 
   return apiCall.response.docs.flatMap(mapAddressSuggestDocToAddress)
@@ -146,9 +170,27 @@ export const AddressCombobox = ({
   const config = useConfig()
   const [addressOptions, setAddressOptions] = useState<Address[]>([])
   const [loading, setLoading] = useState<boolean>(false)
+  const [searchError, setSearchError] = useState(false)
+  const [searchSelection, setSearchSelection] = useState<{
+    result: Address
+    coordinates: number[]
+  } | null>(null)
+  const [selectionError, setSelectionError] = useState(false)
+  const selectionRequest = useRef(0)
   const { formState, updateForm } = useFormStore()
   const tAddress = useTranslations('describe_add.address')
   const tMap = useTranslations('describe_add.map')
+  const navigationSelection =
+    searchSelection?.coordinates === formState.coordinates
+      ? searchSelection.result
+      : null
+
+  useEffect(
+    () => () => {
+      selectionRequest.current += 1
+    },
+    []
+  )
 
   const getDisplayValue = (address: Address | null) => {
     if (!address) {
@@ -165,115 +207,171 @@ export const AddressCombobox = ({
   useEffect(() => {
     const normalizedQuery = normalizeQuery(query)
 
-    const getAddressOptions = async () => {
-      if (normalizedQuery.length < 1) {
-        setAddressOptions([])
-        return
-      }
+    if (normalizedQuery.length < 1) {
+      setAddressOptions([])
+      setLoading(false)
+      setSearchError(false)
+      return
+    }
 
+    const abortController = new AbortController()
+    const timeoutId = window.setTimeout(async () => {
       setLoading(true)
+      setSearchError(false)
 
       try {
         const options = await getSuggestionOptions(
           searchType,
           normalizedQuery,
-          config
+          config,
+          abortController.signal
         )
-        setAddressOptions(options)
+        if (!abortController.signal.aborted) setAddressOptions(options)
       } catch {
-        setAddressOptions([])
+        if (!abortController.signal.aborted) {
+          setAddressOptions([])
+          setSearchError(true)
+        }
       } finally {
-        setLoading(false)
+        if (!abortController.signal.aborted) {
+          setLoading(false)
+        }
       }
-    }
+    }, SEARCH_DEBOUNCE_MS)
 
-    getAddressOptions()
+    return () => {
+      window.clearTimeout(timeoutId)
+      abortController.abort()
+    }
   }, [config, query, searchType])
 
   const onChangeAddress = async (selectedAddress: Address | null) => {
-    if (
-      selectedAddress &&
-      validateSelection &&
-      !(await validateSelection(selectedAddress))
-    ) {
-      return
+    const requestId = ++selectionRequest.current
+    setSelectionError(false)
+    const isHectometerSearch = searchType === SearchType.Hectometer
+
+    // A new post replaces the previous location, even while its boundary is checked.
+    if (selectedAddress && isHectometerSearch) {
+      updateForm({
+        ...useFormStore.getState().formState,
+        address: null,
+        coordinates: [0, 0],
+        selectedFeatures: [],
+      })
+      setIsMapSelected?.(false)
     }
+
+    const selectionState = useFormStore.getState().formState
+    if (selectedAddress && validateSelection) {
+      let canSelect: boolean
+      try {
+        canSelect = await validateSelection(selectedAddress)
+      } catch {
+        if (requestId === selectionRequest.current) setSelectionError(true)
+        return
+      }
+      const currentState = useFormStore.getState().formState
+      if (
+        requestId !== selectionRequest.current ||
+        currentState.address !== selectionState.address ||
+        currentState.coordinates !== selectionState.coordinates
+      )
+        return
+
+      if (!canSelect) {
+        if (isHectometerSearch) {
+          setSearchSelection({
+            result: selectedAddress,
+            coordinates: currentState.coordinates,
+          })
+          updatePosition?.(
+            selectedAddress.coordinates[1],
+            selectedAddress.coordinates[0],
+            false
+          )
+        }
+        return
+      }
+    }
+
+    setSearchSelection(null)
+    updateForm({
+      ...useFormStore.getState().formState,
+      address: selectedAddress,
+      ...(selectedAddress
+        ? {
+            coordinates: [
+              selectedAddress.coordinates[1],
+              selectedAddress.coordinates[0],
+            ],
+          }
+        : {}),
+    })
 
     if (selectedAddress) {
-      updateForm({
-        ...formState,
-        address: selectedAddress,
-        coordinates: selectedAddress && [
-          selectedAddress.coordinates[1],
-          selectedAddress.coordinates[0],
-        ],
-      })
-    } else {
-      updateForm({
-        ...formState,
-        address: selectedAddress,
-      })
-    }
-
-    if (selectedAddress && updatePosition) {
-      updatePosition(
+      updatePosition?.(
         selectedAddress.coordinates[1],
         selectedAddress.coordinates[0]
       )
-    }
-
-    if (setIsMapSelected) {
-      setIsMapSelected(true)
+      setIsMapSelected?.(true)
     }
   }
 
   return (
-    <Combobox value={formState.address} onChange={onChangeAddress}>
-      <ComboboxInput
-        aria-label={
-          searchType === SearchType.Hectometer
-            ? tMap('search_hectometer_label')
-            : tMap('search_address_label')
-        }
-        aria-describedby={ariaDescribedBy}
-        aria-invalid={ariaInvalid || undefined}
-        as={Textbox}
-        displayValue={getDisplayValue}
-        name={searchType === SearchType.Hectometer ? 'hectometer' : 'address'}
-        onChange={(event) => setQuery(event.target.value)}
-        autoComplete="off"
-        id={id}
-        className={cn({
-          mobile: mobileView,
-        })}
-      />
-      {!loading && (
-        <ComboboxOptions
-          as={Listbox}
-          anchor="bottom"
-          className="z-[9999] [--utrecht-listbox-inline-size:var(--input-width)]"
-        >
-          {addressOptions.length > 0 ? (
-            addressOptions.map((address) => (
-              <ComboboxOption as={Fragment} key={address.id} value={address}>
-                {({ focus }) => (
-                  <ListboxOption active={focus}>
-                    {address.weergave_naam}
-                  </ListboxOption>
+    <>
+      <Combobox
+        value={navigationSelection ?? formState.address}
+        onChange={onChangeAddress}
+      >
+        <ComboboxInput
+          aria-label={
+            searchType === SearchType.Hectometer
+              ? tMap('search_hectometer_label')
+              : tMap('search_address_label')
+          }
+          aria-describedby={ariaDescribedBy}
+          aria-invalid={ariaInvalid || undefined}
+          as={Textbox}
+          displayValue={getDisplayValue}
+          name={searchType === SearchType.Hectometer ? 'hectometer' : 'address'}
+          onChange={(event) => setQuery(event.target.value)}
+          autoComplete="off"
+          id={id}
+          className={cn({ mobile: mobileView })}
+        />
+        {!loading && (
+          <ComboboxOptions
+            as={Listbox}
+            anchor="bottom"
+            className="z-[9999] overflow-y-auto [--anchor-max-height:16rem] [--utrecht-listbox-inline-size:var(--input-width)]"
+          >
+            {addressOptions.length > 0 ? (
+              addressOptions.map((address) => (
+                <ComboboxOption as={Fragment} key={address.id} value={address}>
+                  {({ focus }) => (
+                    <ListboxOption active={focus}>
+                      {address.weergave_naam}
+                    </ListboxOption>
+                  )}
+                </ComboboxOption>
+              ))
+            ) : (
+              <ComboboxOption value={null} as={ListboxOption} disabled>
+                {searchError ? (
+                  <AlertText>{tMap('location_search_failed')}</AlertText>
+                ) : (
+                  <StatusText>
+                    {searchType === SearchType.Hectometer
+                      ? tAddress('no_hectometer_results')
+                      : tAddress('no_results')}
+                  </StatusText>
                 )}
               </ComboboxOption>
-            ))
-          ) : (
-            <ComboboxOption value={null} as={ListboxOption} disabled>
-              <StatusText>
-                {searchType === SearchType.Hectometer
-                  ? tAddress('no_hectometer_results')
-                  : tAddress('no_results')}
-              </StatusText>
-            </ComboboxOption>
-          )}
-        </ComboboxOptions>
-      )}
-    </Combobox>
+            )}
+          </ComboboxOptions>
+        )}
+      </Combobox>
+      {selectionError && <AlertText>{tMap('location_search_error')}</AlertText>}
+    </>
   )
 }

@@ -4,7 +4,6 @@ import { point as turfPoint } from '@turf/helpers'
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon'
 import { PbfReader } from 'pbf'
 import { AppConfig } from '@/types/config'
-import { Address } from '@/types/form'
 import { Feature, MultiPolygon, Polygon } from 'geojson'
 
 /** Source id used by the MapLibre source that renders the restricted area. */
@@ -77,7 +76,7 @@ const isPointInOutOfBoundsFeatures = (
  * This is intended for map clicks only. A click happens inside the current
  * viewport, so MapLibre has normally loaded the vector tile that contains the
  * relevant restriction polygons. Combobox selections can point outside the
- * current viewport and therefore use {@link isAddressOutsideRestrictedArea}
+ * current viewport and therefore use {@link isCoordinateOutsideRestrictedArea}
  * instead.
  *
  * @param config - Application configuration containing the MapTiler layer id.
@@ -240,8 +239,11 @@ const getRestrictedAreaFeatures = async (
   lng: number,
   lat: number
 ) => {
-  if (!config.maptilerOutOfBoundsSelectionArea) {
-    return []
+  if (
+    !config.maptilerOutOfBoundsSelectionArea ||
+    !config.maptilerOutOfBoundsLayerId
+  ) {
+    throw new Error('Restricted area source and layer must be configured.')
   }
 
   const tileJson = await fetchTileJson(config.maptilerOutOfBoundsSelectionArea)
@@ -279,38 +281,13 @@ const getRestrictedAreaFeatures = async (
   return features
 }
 
-/**
- * Checks whether a selected address/hectometer falls in the configured
- * out-of-bounds area without moving the visible map.
- *
- * @remarks
- * This is used for combobox selections, where the selected coordinate can be in
- * a tile that is not loaded by the visible map yet. Validation is done directly
- * against the MapTiler vector tile data instead of calling `flyTo` or `jumpTo`
- * on the visible map.
- *
- * If the restriction tile cannot be fetched or decoded, validation fails closed:
- * the selection is treated as outside the allowed area.
- *
- * @param config - Application configuration containing restriction settings.
- * @param address - Selected address or hectometer with `[lng, lat]` coordinates.
- * @returns `true` when the selected coordinate is outside the allowed area.
- */
-export const isAddressOutsideRestrictedArea = async (
+/** Checks a search result without moving the map; lookup failures propagate. */
+export const isCoordinateOutsideRestrictedArea = async (
   config: AppConfig,
-  address: Address
+  lng: number,
+  lat: number
 ): Promise<boolean> => {
-  if (!config.restrictSelectionArea) {
-    return false
-  }
-
-  const [lng, lat] = address.coordinates
-
-  try {
-    const features = await getRestrictedAreaFeatures(config, lng, lat)
-
-    return isPointInOutOfBoundsFeatures(features, lng, lat)
-  } catch {
-    return true
-  }
+  if (!config.restrictSelectionArea) return false
+  const features = await getRestrictedAreaFeatures(config, lng, lat)
+  return isPointInOutOfBoundsFeatures(features, lng, lat)
 }

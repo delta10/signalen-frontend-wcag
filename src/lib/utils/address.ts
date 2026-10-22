@@ -6,11 +6,13 @@ import { Feature, GeoJsonProperties, Geometry } from 'geojson'
 import { AppConfig } from '@/types/config'
 import { FormStoreState } from '@/types/stores'
 
-export const formatHectometerDisplayName = (displayName: string) =>
-  displayName.replace(/-(\d+)(\d)$/, '-$1.$2')
+export { formatHectometerDisplayName } from '@/lib/utils/hectometer'
+import { formatHectometerDisplayName } from '@/lib/utils/hectometer'
 
 export const normalizeHectometerSearchQuery = (searchQuery: string) =>
-  searchQuery.replace(/(\d+)\.(\d)(?=\D|$)/g, '$1$2')
+  searchQuery
+    .replace(/^hectometerpaal(?:\s+|$)/i, '')
+    .replace(/(\d+)\.(\d)(?=\D|$)/g, '$1$2')
 
 export const getNewSelectedAddress = async (
   lat: number,

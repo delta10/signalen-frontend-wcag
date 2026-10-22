@@ -80,8 +80,12 @@ Logo settings are configured at `base.header.logo`.
 
 - `base.pdok_address_suggest.scope`: PDOK filter scope. Use `gemeente` for municipality-based address suggestions or `provincie` for province-based address suggestions.
 - `base.pdok_address_suggest.organization`: Exact PDOK filter value for the selected scope.
-- `base.pdok_hectometer_suggest.enabled`: Enables PDOK hectometer suggestions when set to `true`. Disables address suggestions.
-- `base.pdok_hectometer_suggest.bounds`: Optional coordinate bounds used to restrict hectometer suggestions, as `[[west, south], [east, north]]`.
+- `base.pdok_hectometer_suggest.enabled`: Enables PDOK hectometer suggestions when set to `true`.
+- `base.pdok_hectometer_suggest.bounds`: Optional rectangular search area for PDOK hectometer suggestions, as `[[west, south], [east, north]]`. The Brabant configuration uses `[[4.17, 51.21], [6.08, 51.88]]`. When `restrictSelectionArea` is enabled, results inside this rectangle are also checked against the reporting boundary before being displayed.
+- `base.pdok_hectometer_suggest.roadNumberExceptions`: Optional exact road numbers to include alongside the default `N*` filter used for province configurations, for example `["A270"]`.
+- `base.pdok_hectometer_suggest.maxResults`: Maximum number of suggestions requested from PDOK using `rows`. Defaults to `400`, before filtering invalid post numbers and outside results. Typing a more specific query narrows the results. This is a limit, not a guarantee that every post on a road is listed.
+
+With `restrictSelectionArea` enabled, hectometer suggestions outside the reporting boundary are filtered out before the list is shown. Without this restriction, all valid PDOK suggestions in the search rectangle remain available. The selected result is checked again when clicked. Boundary lookup failures show an error instead of displaying unchecked results. The configured provincial `hectometrering` GeoJSON map layer filters invalid `TEKST` values in the browser, independently of PDOK search.
 
 ## Map Defaults
 

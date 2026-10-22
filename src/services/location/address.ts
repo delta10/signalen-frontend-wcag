@@ -14,10 +14,13 @@ import {
 } from '@/types/config'
 import { FormStoreState } from '@/types/stores'
 import type { CoordinateBounds } from '@/lib/utils/map'
+import { isValidHectometerDisplayName } from '@/lib/utils/hectometer'
 
 type HectometerSuggestOptions = {
   bounds?: CoordinateBounds
   roadNumberPrefix?: string
+  roadNumberExceptions?: string[]
+  maxResults?: number
 }
 
 /**
@@ -43,17 +46,24 @@ const getBoundsFilter = (param: string, bounds?: CoordinateBounds) => {
 /**
  * Creates optional PDOK filters for hectometer post suggestions.
  *
- * @param options - Optional bounds and road number prefix filters.
+ * @param options - Optional bounds, road number prefix and exact exception filters.
  * @returns Encoded PDOK filter query string parts.
  */
 const getHectometerSuggestFilters = ({
   bounds,
   roadNumberPrefix,
+  roadNumberExceptions = [],
 }: HectometerSuggestOptions) => {
   const filters = [getBoundsFilter('centroide_ll', bounds)]
+  const roadNumberFilters = [
+    roadNumberPrefix ? `${roadNumberPrefix}*` : null,
+    ...roadNumberExceptions,
+  ].filter((filter): filter is string => Boolean(filter))
 
-  if (roadNumberPrefix) {
-    filters.push(`wegnummer:${roadNumberPrefix}*`)
+  if (roadNumberFilters.length === 1) {
+    filters.push(`wegnummer:${roadNumberFilters[0]}`)
+  } else if (roadNumberFilters.length > 1) {
+    filters.push(`wegnummer:(${roadNumberFilters.join(' OR ')})`)
   }
 
   return filters
@@ -66,7 +76,7 @@ const getHectometerSuggestFilters = ({
  * Creates the PDOK suggest path for hectometer post suggestions.
  *
  * @param searchQuery - Text to search for hectometer posts, for example "N263 12.3".
- * @param options - Optional bounds and road number prefix filters.
+ * @param options - Optional bounds, road number prefix and exact exception filters.
  * @returns PDOK Locatieserver suggest path.
  */
 const getHectometerSuggestPath = (
@@ -75,8 +85,9 @@ const getHectometerSuggestPath = (
 ) => {
   const encodedSearchQuery = encodeURIComponent(searchQuery)
   const filters = getHectometerSuggestFilters(options)
+  const rows = options.maxResults ?? 400
 
-  return `/search/v3_1/suggest?fq=bron:NWB&fq=type:hectometerpaal${filters}&fl=id,identificatie,weergavenaam,centroide_ll,wegnummer,hectometernummer,hectometerletter&q=${encodedSearchQuery}`
+  return `/search/v3_1/suggest?fq=bron:NWB&fq=type:hectometerpaal${filters}&fl=id,identificatie,weergavenaam,centroide_ll,wegnummer,hectometernummer,hectometerletter&rows=${rows}&q=${encodedSearchQuery}`
 }
 
 /**
@@ -93,7 +104,8 @@ export const getSuggestedAddresses = async (
   searchQuery: string,
   scope: PdokAddressSuggestScope,
   organization: string,
-  pdokBaseUrl: string | undefined
+  pdokBaseUrl: string | undefined,
+  signal?: AbortSignal
 ): Promise<SuggestResponse<AddressSuggestDoc>> => {
   if (!pdokBaseUrl) {
     console.error('Pdok Base URL is required to fetch suggested addresses.')
@@ -107,7 +119,7 @@ export const getSuggestedAddresses = async (
     const encodedSearchQuery = encodeURIComponent(searchQuery)
     const path = `/search/v3_1/suggest?fq=${field}:(${encodedOrganization})&fl=id,weergavenaam,straatnaam,huis_nlt,postcode,woonplaatsnaam,centroide_ll&fq=bron:BAG&fq=type:adres&q=${encodedSearchQuery}`
     const response: AxiosResponse<SuggestResponse<AddressSuggestDoc>> =
-      await axios.get(path)
+      await axios.get(path, { signal })
 
     return response.data
   } catch {
@@ -131,7 +143,8 @@ export const getSuggestedAddresses = async (
 export const getSuggestedHectometerPosts = async (
   searchQuery: string,
   pdokBaseUrl: string | undefined,
-  options: HectometerSuggestOptions = {}
+  options: HectometerSuggestOptions = {},
+  signal?: AbortSignal
 ): Promise<SuggestResponse<HectometerSuggestDoc>> => {
   if (!pdokBaseUrl) {
     console.error('Pdok Base URL is required to fetch hectometer posts.')
@@ -143,7 +156,7 @@ export const getSuggestedHectometerPosts = async (
 
   try {
     const response: AxiosResponse<SuggestResponse<HectometerSuggestDoc>> =
-      await axios.get(path)
+      await axios.get(path, { signal })
 
     return response.data
   } catch {
@@ -182,9 +195,9 @@ export const getNearestHectometerPostByCoordinate = async (
         `/search/v3_1/reverse?lat=${lat}&lon=${lng}&distance=${distance}&type=hectometerpaal&fl=id,weergavenaam,type,score,afstand,centroide_ll&fq=bron:NWB&start=0&rows=10&wt=json`
       )
 
-    return response.data.response.docs.sort(
-      (docA, docB) => docA.afstand - docB.afstand
-    )[0]
+    return response.data.response.docs
+      .filter((doc) => isValidHectometerDisplayName(doc.weergavenaam))
+      .sort((docA, docB) => docA.afstand - docB.afstand)[0]
   } catch {
     return null
   }

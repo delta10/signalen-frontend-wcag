@@ -1,3 +1,4 @@
+import type { FeatureCollection } from 'geojson'
 import type { CoordinateBounds } from '@/lib/utils/map'
 
 /** PDOK Locatieserver suggest: `gemeentenaam` vs `provincienaam` filter. */
@@ -25,7 +26,7 @@ export type MapLayerConfiguration = {
   source: {
     type: 'geojson' | 'vector'
     url?: string
-    data?: string | { [key: string]: MapLayerStyleValue }
+    data?: string | FeatureCollection | { [key: string]: MapLayerStyleValue }
     promoteId?: string
     tolerance?: number
   }
@@ -89,6 +90,10 @@ export type AppConfig = {
     pdok_hectometer_suggest?: {
       enabled: boolean
       bounds?: CoordinateBounds
+      /** Exact road numbers included in addition to the normal N-road filter. */
+      roadNumberExceptions?: string[]
+      /** Maximum number of suggestions shown to the user. */
+      maxResults?: number
     }
     fonts?: {
       /** Optional Google Fonts stylesheet URL to load in the document head. */

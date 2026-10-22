@@ -72,6 +72,8 @@
       "show_list": "Toon {name} lijst",
       "toggle_fullscreen_on": "Open de kaart op volledig scherm",
       "toggle_fullscreen_off": "Sluit volledig schermweergave van de kaart",
+      "location_search_error": "Deze locatie kon niet worden gecontroleerd. Probeer het opnieuw.",
+      "location_search_failed": "De zoekresultaten konden niet worden opgehaald of gecontroleerd. Probeer het opnieuw.",
       "please_choose_a_point_on_a_road": "Deze locatie ligt buiten het toegestane gebied. Kies een punt binnen het gemarkeerde gebied."
     },
     "explainer": {

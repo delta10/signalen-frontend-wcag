@@ -41,6 +41,7 @@ export type MapDialogContentProps = {
   features?: FeatureCollection | null
   isAssetSelect?: boolean
   loadingAssets?: boolean
+  searchPosition?: [number, number] | null
 } & React.HTMLAttributes<HTMLDivElement>
 
 type SearchField = {
@@ -54,6 +55,7 @@ const MapDialogContent = ({
   field,
   features,
   isAssetSelect = false,
+  searchPosition,
 }: MapDialogContentProps) => {
   const mapContainerRef = useRef<HTMLDivElement>(null)
   const { formState } = useFormStore()
@@ -90,7 +92,7 @@ const MapDialogContent = ({
     outOfBoundsLineStyle,
     outOfBoundsFillStyle,
     validateRestrictedAreaSelection,
-  } = useMapDialog(onMapReady, field, features, isAssetSelect)
+  } = useMapDialog(onMapReady, field, features, isAssetSelect, searchPosition)
   const showAddressSearch = Boolean(config && !config.restrictSelectionArea)
   const showHectometerSearch = Boolean(
     config?.base.pdok_hectometer_suggest?.enabled
@@ -251,11 +253,14 @@ const MapDialogContent = ({
               }
             />
             {/* Address or selected point on map marker */}
-            {marker.length && (isMapSelected === null || isMapSelected) && (
-              <Marker latitude={marker[0]} longitude={marker[1]}>
-                <MapMarker />
-              </Marker>
-            )}
+            {marker.length === 2 &&
+              marker[0] !== 0 &&
+              marker[1] !== 0 &&
+              (isMapSelected === null || isMapSelected) && (
+                <Marker latitude={marker[0]} longitude={marker[1]}>
+                  <MapMarker />
+                </Marker>
+              )}
             {/* Show available features assets on the map */}
             {onMapReady &&
               dialogMap &&
