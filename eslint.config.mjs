@@ -1,21 +1,27 @@
 import nextTypescript from 'eslint-config-next/typescript'
 import nextCoreWebVitals from 'eslint-config-next/core-web-vitals'
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
-import js from '@eslint/js'
-import { FlatCompat } from '@eslint/eslintrc'
+import prettierRecommended from 'eslint-plugin-prettier/recommended'
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all,
-})
-export default [
+const config = [
   ...nextTypescript,
   ...nextCoreWebVitals,
-  ...compat.extends('plugin:prettier/recommended'),
+  prettierRecommended,
+  {
+    files: ['**/*.cjs', 'next.config.js'],
+    rules: {
+      '@typescript-eslint/no-require-imports': 'off',
+    },
+  },
+  {
+    ignores: [
+      'node_modules/**',
+      '.next/**',
+      'out/**',
+      'build/**',
+      'tmp/**',
+      'next-env.d.ts',
+    ],
+  },
   {
     rules: {
       '@typescript-eslint/ban-ts-comment': [
@@ -25,13 +31,7 @@ export default [
         },
       ],
     },
-
-    ignores: [
-      'node_modules/**',
-      '.next/**',
-      'out/**',
-      'build/**',
-      'next-env.d.ts',
-    ],
   },
 ]
+
+export default config
