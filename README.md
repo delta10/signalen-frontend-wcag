@@ -34,6 +34,12 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the web form.
 
+### Dependency maintenance
+
+ESLint is pinned to version 9 because the plugins included with `eslint-config-next` do not yet support ESLint 10. The major-update script keeps this pin in place.
+
+The `tailwindcss` overrides in `package.json` use the patched `postcss-selector-parser` for Tailwind 3 and its nested CSS plugin. Keep these overrides until Tailwind's dependencies include the security fix, or until upgrading to Tailwind 4. Both dependency trees can be installed with `npm ci` without peer-dependency bypass flags; audit the root project and `design-tokens` separately.
+
 ## End-to-end tests
 
 To run the end-to-end tests you need to have the "headless browsers" installed. Headless browsers are invisible browsers that run from the command line.

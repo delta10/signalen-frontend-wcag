@@ -253,7 +253,10 @@ const MapDialogContent = ({
             locale={{
               'AttributionControl.ToggleAttribution': t('toggle_attribution'),
             }}
-            maxBounds={config.base.map.maxBounds}
+            maxBounds={[
+              ...config.base.map.maxBounds[0],
+              ...config.base.map.maxBounds[1],
+            ]}
           >
             <MapAttribution
               customAttribution={

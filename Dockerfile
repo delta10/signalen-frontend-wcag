@@ -6,7 +6,7 @@ WORKDIR /app
 
 # Install dependencies based on the preferred package manager
 COPY package.json package-lock.json ./
-RUN npm ci --legacy-peer-deps
+RUN npm ci
 
 # Rebuild the source code only when needed
 FROM node:24-alpine AS builder
@@ -38,7 +38,7 @@ COPY --from=builder --chown=nextjs:nextjs /app/.next/static ./.next/static
 
 # Copy design-tokens to have the ability to compile tokens in run-time
 COPY --from=builder --chown=nextjs:nextjs /app/design-tokens ./design-tokens
-RUN (cd design-tokens && npm ci --legacy-peer-deps)
+RUN (cd design-tokens && npm ci)
 
 # Allow write access to these folders in run-time to make sure tokens can be compiled and stored in the container
 RUN mkdir -p /app/tmp && \
