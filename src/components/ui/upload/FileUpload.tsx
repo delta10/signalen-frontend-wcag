@@ -43,11 +43,10 @@ type FileUploadProps = {
 }
 
 export const FileUpload = React.forwardRef<HTMLLabelElement, FileUploadProps>(
-  ({ maxFiles = MAX_NUMBER_FILES, ...props }, ref) => {
+  ({ maxFiles = MAX_NUMBER_FILES }, ref) => {
     const [labelHovered, setLabelHovered] = useState(false)
     const t = useTranslations('general')
     const { setValue, getValues } = useFormContext()
-    const [refObject, setRefObject] = useState({})
 
     const files: File[] = getValues('files') ?? []
 

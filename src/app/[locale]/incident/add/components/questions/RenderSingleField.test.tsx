@@ -1,8 +1,9 @@
-import { test, expect, vi } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { test, expect, vi, afterEach } from 'vitest'
+import { render, screen, fireEvent } from '@testing-library/react'
 import { FieldTypes } from '@/types/form'
+import { useFormStore } from '@/store/form_store'
 import { FormMock } from '../../../../../../../__mocks__/FormMock'
-import { FieldValues } from 'react-hook-form'
+import { FieldValues, useFormContext } from 'react-hook-form'
 import { RenderSingleField } from '@/app/[locale]/incident/add/components/questions/RenderSingleField'
 
 const renderWithForm = (
@@ -208,4 +209,70 @@ test('should show text input with ifOneOf nested condition (ifOneOf) resolving t
       name: `${field.meta.label} ${field.required ? '' : '(not required)'}`,
     })
   ).toBeInTheDocument()
+})
+
+afterEach(() => {
+  useFormStore.getState().resetForm()
+})
+
+const VisibilityControl = () => {
+  const { register } = useFormContext()
+  return (
+    <select aria-label="Visibility" {...register('trigger')}>
+      <option value="yes">Show question</option>
+      <option value="no">Hide question</option>
+    </select>
+  )
+}
+
+test('preserves edits on rerender and restores saved answers when a question becomes visible again', () => {
+  const field = {
+    key: 'followup',
+    field_type: FieldTypes.TEXT_INPUT,
+    meta: {
+      label: 'Follow-up question',
+      ifOneOf: { trigger: ['yes'] },
+      validators: ['isBlocking'],
+    },
+    required: false,
+  }
+  useFormStore.getState().updateForm({
+    ...useFormStore.getState().formState,
+    extra_properties: [
+      {
+        id: field.key,
+        label: field.meta.label,
+        answer: 'Saved answer',
+        category_url: '',
+      },
+    ],
+  })
+  const setIsBlocking = vi.fn()
+  const content = () => (
+    <FormMock defaultValues={{ trigger: 'yes' }}>
+      <VisibilityControl />
+      <RenderSingleField field={{ ...field }} setIsBlocking={setIsBlocking} />
+    </FormMock>
+  )
+  const { rerender } = render(content())
+
+  expect(screen.getByRole('textbox')).toHaveValue('Saved answer')
+  expect(setIsBlocking).toHaveBeenLastCalledWith(true)
+  fireEvent.change(screen.getByRole('textbox'), {
+    target: { value: 'Edited answer' },
+  })
+  rerender(content())
+  expect(screen.getByRole('textbox')).toHaveValue('Edited answer')
+
+  fireEvent.change(screen.getByLabelText('Visibility'), {
+    target: { value: 'no' },
+  })
+  expect(screen.queryByRole('textbox')).not.toBeInTheDocument()
+  expect(setIsBlocking).toHaveBeenLastCalledWith(false)
+
+  fireEvent.change(screen.getByLabelText('Visibility'), {
+    target: { value: 'yes' },
+  })
+  expect(screen.getByRole('textbox')).toHaveValue('Saved answer')
+  expect(setIsBlocking).toHaveBeenLastCalledWith(true)
 })

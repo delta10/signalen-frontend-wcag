@@ -1,3 +1,4 @@
+import NextImage from 'next/image'
 import React, { useEffect, useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { Button } from '@/components'
@@ -23,11 +24,18 @@ const PreviewFile = ({ file, allowDelete = false, onDelete }: Props) => {
 
   return (
     <div className="relative">
-      <img
-        className="empty-box object-cover"
-        src={imageUrl}
-        alt={t('file.preview', { file: file.name })}
-      />
+      {imageUrl ? (
+        <NextImage
+          unoptimized
+          width={100}
+          height={100}
+          className="empty-box object-cover"
+          src={imageUrl}
+          alt={t('file.preview', { file: file.name })}
+        />
+      ) : (
+        <div className="empty-box" />
+      )}
       {/*          className="absolute bottom-0 right-0 w-full flex justify-center items-center py-2 file-preview-button-background"*/}
       {allowDelete && (
         <Button

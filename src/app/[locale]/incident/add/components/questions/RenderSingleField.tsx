@@ -1,7 +1,8 @@
 import { FieldTypes, PublicQuestion } from '@/types/form'
-import { useEffect, useMemo, useState } from 'react'
-import { useFormContext } from 'react-hook-form'
+import { useEffect, useMemo } from 'react'
+import { useFormContext, useWatch } from 'react-hook-form'
 import { useFormStore } from '@/store/form_store'
+import type { FormStoreState } from '@/types/stores'
 import { RadioInput } from '@/app/[locale]/incident/add/components/questions/RadioInput'
 import { PlainText } from '@/app/[locale]/incident/add/components/questions/PlainText'
 import { TextInput } from '@/app/[locale]/incident/add/components/questions/TextInput'
@@ -13,15 +14,26 @@ import { AssetSelect } from '@/app/[locale]/incident/add/components/questions/As
 
 type props = {
   field: PublicQuestion
-  setIsBlocking: any
+  setIsBlocking: (isBlocking: boolean) => void
 }
 
 export const RenderSingleField = ({ field, setIsBlocking }: props) => {
-  const [shouldRender, setShouldRender] = useState<boolean>(false)
-  const { watch, setValue, unregister } = useFormContext()
-  const { formState: formStoreState, updateForm } = useFormStore()
-
-  const watchValues = watch()
+  const { control, setValue, unregister } = useFormContext()
+  const extraProperties = useFormStore(
+    (state) => state.formState.extra_properties
+  )
+  const watchValues = useWatch({ control })
+  const shouldRender = evaluateConditions(field.meta, watchValues)
+  const defaultValue = useMemo(
+    () =>
+      getDefaultValue(
+        field.key,
+        field.field_type,
+        field.meta.values,
+        extraProperties
+      ),
+    [field.key, field.field_type, field.meta.values, extraProperties]
+  )
 
   const additionalQuestionTypes = {
     [FieldTypes.RADIO_INPUT]: (field: PublicQuestion) => (
@@ -47,110 +59,17 @@ export const RenderSingleField = ({ field, setIsBlocking }: props) => {
     ),
   }
 
-  // Memoize `evaluateConditions` result to prevent unnecessary updates
-  const shouldRenderResult = useMemo(
-    () => evaluateConditions(field.meta, watchValues),
-    [field.meta, watchValues]
-  )
-
-  // Handle visibility changes
   useEffect(() => {
-    if (shouldRender !== shouldRenderResult) {
-      setShouldRender(shouldRenderResult)
-      if (!shouldRenderResult) {
-        setValue(field.key, null)
-      } else {
-        const defaultValue =
-          field.field_type === FieldTypes.CHECKBOX_INPUT
-            ? getDefaultValueCheckboxInput(field.key)
-            : field.field_type === FieldTypes.RADIO_INPUT
-              ? getDefaultValueRadioInput(field.key)
-              : getDefaultValueTextInput(field.key)
-        if (defaultValue) {
-          setValue(field.key, defaultValue)
-        }
-      }
-    }
-  }, [shouldRenderResult, shouldRender, field.key, setValue])
-
-  // Get default value textbox helper function
-  const getDefaultValueTextInput = (id: string) => {
-    const extraProperties = formStoreState.extra_properties.filter(
-      (question) => question.id === id
-    )
-
-    if (!extraProperties.length) {
-      return ''
-    }
-
-    if (typeof extraProperties[0].answer === 'string') {
-      return extraProperties[0].answer
-    }
-
-    return ''
-  }
-
-  // Get default value checkbox helper function
-  const getDefaultValueCheckboxInput = (id: string) => {
-    const extraProperty = formStoreState.extra_properties.find(
-      (question) => question.id === id
-    )
-
-    if (!extraProperty) return null
-
-    if (typeof extraProperty.answer !== 'string') {
-      // If the answer is an array (of selected checkboxes), map selected IDs
-      const selectedAnswers =
-        // @ts-ignore
-        typeof extraProperty.answer !== 'string' && extraProperty.answer.length
-          ? // @ts-ignore
-            extraProperty.answer?.map((answer: any) => answer?.id)
-          : []
-
-      // Generate the array as expected by react-hook-form, based on options
-      return [
-        'empty',
-        ...Object.keys(field.meta.values).map((key: any) =>
-          selectedAnswers.includes(key) ? key : false
-        ),
-      ]
-    }
-
-    return null
-  }
-
-  // Get default value radio input helper function
-  const getDefaultValueRadioInput = (id: string) => {
-    const extraProperty = formStoreState.extra_properties.find(
-      (question) => question.id === id
-    )
-
-    if (!extraProperty) return null
-
-    if (typeof extraProperty.answer !== 'string' && extraProperty.answer?.id) {
-      return extraProperty.answer.id
-    }
-
-    return null
-  }
-
-  // Register the field immediately with initial value
-  useEffect(() => {
-    // unregisters field if it should not render
     if (!shouldRender) {
+      setValue(field.key, null)
       unregister(field.key)
+      return
     }
 
-    const defaultValue =
-      field.field_type === FieldTypes.CHECKBOX_INPUT
-        ? getDefaultValueCheckboxInput(field.key)
-        : field.field_type === FieldTypes.RADIO_INPUT
-          ? getDefaultValueRadioInput(field.key)
-          : getDefaultValueTextInput(field.key)
-    if (defaultValue && shouldRender) {
+    if (defaultValue) {
       setValue(field.key, defaultValue)
     }
-  }, [field.key, setValue, shouldRender])
+  }, [field.key, defaultValue, setValue, shouldRender, unregister])
 
   // control hard stop
   useEffect(() => {
@@ -162,17 +81,44 @@ export const RenderSingleField = ({ field, setIsBlocking }: props) => {
       )
 
       setIsBlocking(shouldRender ? isBlocking : false)
-      // refactor uit de state
-      // updateForm({
-      //   ...formStoreState,
-      //   isBlocking: shouldRender ? isBlocking : false,
-      // })
     }
-  }, [field, shouldRender])
+  }, [field, shouldRender, setIsBlocking])
 
   if (!shouldRender) {
     return null
   }
 
   return additionalQuestionTypes[field.field_type]?.(field)
+}
+
+function getDefaultValue(
+  key: PublicQuestion['key'],
+  fieldType: PublicQuestion['field_type'],
+  values: PublicQuestion['meta']['values'],
+  extraProperties: FormStoreState['extra_properties']
+) {
+  const extraProperty = extraProperties.find((question) => question.id === key)
+
+  if (fieldType === FieldTypes.CHECKBOX_INPUT) {
+    if (!extraProperty || typeof extraProperty.answer === 'string') return null
+
+    const selectedAnswers = Array.isArray(extraProperty.answer)
+      ? extraProperty.answer.map((answer) => answer?.id)
+      : []
+
+    return [
+      'empty',
+      ...Object.keys(values).map((key) =>
+        selectedAnswers.includes(key) ? key : false
+      ),
+    ]
+  }
+
+  if (fieldType === FieldTypes.RADIO_INPUT) {
+    return extraProperty && typeof extraProperty.answer !== 'string'
+      ? extraProperty.answer?.id || null
+      : null
+  }
+
+  return typeof extraProperty?.answer === 'string' ? extraProperty.answer : ''
 }

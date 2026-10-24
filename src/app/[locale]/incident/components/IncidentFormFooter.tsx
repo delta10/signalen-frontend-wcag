@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React from 'react'
 import { useTranslations } from 'next-intl'
 import { Button, ButtonGroup, Icon, LinkButton } from '@/components'
 import { usePathname, useRouter } from '@/routing/navigation'

@@ -32,14 +32,10 @@ export interface RadioGroupOptionProps
   inputRef?: Ref<HTMLInputElement>
 }
 export interface RadioGroupProps
-  extends Omit<FormFieldProps, 'type' | 'invalid'>,
-    Pick<
-      RadioButtonProps,
-      'disabled' | 'invalid' | 'name' | 'required' | 'value'
-    > {
+  extends Omit<FormFieldProps, 'type' | 'invalid' | 'defaultValue' | 'value'>,
+    Pick<RadioButtonProps, 'disabled' | 'invalid' | 'name' | 'required'> {
   description?: ReactNode
   errorMessage?: ReactNode
-  inputRef?: Ref<HTMLInputElement>
   label: ReactNode
   status?: ReactNode
   options?: RadioGroupOptionProps[]
@@ -50,11 +46,9 @@ export const RadioGroupNLDS = forwardRef(
     {
       children,
       className,
-      defaultValue,
       description,
       disabled,
       errorMessage,
-      inputRef,
       invalid,
       label,
       name,
@@ -64,7 +58,6 @@ export const RadioGroupNLDS = forwardRef(
       onInput,
       required,
       status,
-      value,
       options,
       ...props
     }: PropsWithChildren<RadioGroupProps>,

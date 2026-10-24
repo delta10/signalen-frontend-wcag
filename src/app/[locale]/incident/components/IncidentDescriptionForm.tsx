@@ -1,7 +1,7 @@
 'use client'
 
 import * as z from 'zod'
-import { FormProvider, useForm } from 'react-hook-form'
+import { FormProvider, useForm, useWatch } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
 import { IncidentFormFooter } from '@/app/[locale]/incident/components/IncidentFormFooter'
@@ -79,13 +79,15 @@ export const IncidentDescriptionForm = () => {
   })
   const { register } = form
 
-  const { description } = form.watch()
+  const description = useWatch({ control: form.control, name: 'description' })
   const debouncedDescription = useDebounce(description, 100)
 
   useEffect(() => {
-    if (!description) {
+    if (!debouncedDescription) {
       return
     }
+
+    let cancelled = false
 
     async function fetchCategory() {
       const { main, sub } = await getCategoryForDescription(
@@ -93,15 +95,20 @@ export const IncidentDescriptionForm = () => {
         debouncedDescription
       )
 
+      if (cancelled) return
+
       updateForm({
-        ...formState,
+        ...useFormStore.getState().formState,
         main_category: main,
         sub_category: sub,
       })
     }
 
     fetchCategory()
-  }, [debouncedDescription])
+    return () => {
+      cancelled = true
+    }
+  }, [debouncedDescription, config.baseUrlApi, updateForm])
 
   const onSubmit = (values: z.infer<typeof incidentDescriptionFormSchema>) => {
     updateForm({
@@ -143,7 +150,7 @@ export const IncidentDescriptionForm = () => {
           />
           <Paragraph className="text-sm">
             {tGeneral('form.characters_count', {
-              current: form.watch('description')?.length ?? 0,
+              current: description?.length ?? 0,
               max: MAX_DESCRIPTION_LENGTH,
             })}
           </Paragraph>

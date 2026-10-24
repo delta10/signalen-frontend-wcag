@@ -1,4 +1,11 @@
-import { useState, useEffect, useMemo, useRef, type MouseEvent } from 'react'
+import {
+  useState,
+  useEffect,
+  useMemo,
+  useRef,
+  useCallback,
+  type MouseEvent,
+} from 'react'
 import {
   MapLayerMouseEvent,
   MapRef,
@@ -146,57 +153,57 @@ function useMapDialog(
     }
   }, [features, field])
 
-  const keyDownHandler = async (event: any) => {
-    if (event.key === 'Enter' || event.key === ' ') {
-      const coordinates = dialogMap?.getCenter()
-      if (coordinates) {
-        updatePosition(coordinates.lat, coordinates.lng)
-        setIsMapSelected(true)
-        const address = await getNewSelectedAddress(
-          coordinates.lat,
-          coordinates.lng,
-          config
-        )
-
-        updateForm({
-          ...formState,
-          address: address,
+  // Navigation to an outside search result does not select a location.
+  const updatePosition = useCallback(
+    (lat: number, lng: number, selectPosition = true) => {
+      if (dialogMap) {
+        dialogMap.flyTo({
+          center: [lng, lat],
+          zoom: selectPosition
+            ? Math.max(config.base.map.minimal_zoom || 17, dialogMap.getZoom())
+            : 14,
         })
       }
-    }
-  }
+
+      setMarker(selectPosition ? [lat, lng] : [])
+    },
+    [dialogMap, config.base.map.minimal_zoom]
+  )
 
   useEffect(() => {
+    const keyDownHandler = async (event: KeyboardEvent) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        const coordinates = dialogMap?.getCenter()
+        if (coordinates) {
+          updatePosition(coordinates.lat, coordinates.lng)
+          setIsMapSelected(true)
+          const address = await getNewSelectedAddress(
+            coordinates.lat,
+            coordinates.lng,
+            config
+          )
+
+          updateForm({
+            ...useFormStore.getState().formState,
+            address,
+          })
+        }
+      }
+    }
     const element = document.getElementsByClassName('maplibregl-canvas')
     const canvas = element[1]
     const debouncedHandler = debounce(keyDownHandler, 500)
+    const eventHandler = (event: Event) => {
+      if (event instanceof KeyboardEvent) debouncedHandler(event)
+    }
 
-    // Create a reference to the wrapped handler function
-    const eventHandler = (e: KeyboardEvent) => debouncedHandler(e)
-
-    // @ts-ignore
     canvas?.addEventListener('keydown', eventHandler)
 
-    // Cleanup using the same function reference
     return () => {
-      // @ts-ignore
       canvas?.removeEventListener('keydown', eventHandler)
+      debouncedHandler.cancel()
     }
-  }, [dialogMap, keyDownHandler, onMapReady])
-
-  // Navigation to an outside search result does not select a location.
-  const updatePosition = (lat: number, lng: number, selectPosition = true) => {
-    if (dialogMap) {
-      dialogMap.flyTo({
-        center: [lng, lat],
-        zoom: selectPosition
-          ? Math.max(config.base.map.minimal_zoom || 17, dialogMap.getZoom())
-          : 14,
-      })
-    }
-
-    setMarker(selectPosition ? [lat, lng] : [])
-  }
+  }, [dialogMap, config, updateForm, updatePosition])
 
   const objectDisplayName = useMemo(
     () => ({
@@ -220,7 +227,7 @@ function useMapDialog(
     }
 
     return []
-  }, [dialogMap, formState, mapFeatures])
+  }, [dialogMap, formState, mapFeatures, config.base.map.minimal_zoom])
 
   // Handle click on feature marker, set selectedFeatures and show error if maxNumberOfAssets is reached
   const handleFeatureMarkerClick = async (

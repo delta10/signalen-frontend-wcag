@@ -1,4 +1,3 @@
-import { Feature } from 'geojson'
 import { Address, FormStep } from '@/types/form'
 import { ExtendedFeature } from '@/types/map'
 
