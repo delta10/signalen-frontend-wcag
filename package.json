@@ -54,7 +54,7 @@
     "axios-retry": "4.5.0",
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
-    "dompurify": "3.4.10",
+    "dompurify": "3.4.16",
     "form-data": "4.0.6",
     "geojson": "0.5.0",
     "immer": "10.1.1",
