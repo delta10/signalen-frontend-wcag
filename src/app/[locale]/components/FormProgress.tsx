@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { LinkButton, Icon } from '@/components/index'
 import { useTranslations } from 'next-intl'
 import { usePathname, useRouter } from '@/routing/navigation'
@@ -18,12 +18,6 @@ const FormProgress = ({ children }: FormProgressProps) => {
   const router = useRouter()
   const pathname = usePathname()
   const step = getCurrentStep(pathname)
-
-  const [percentage, setPercentage] = useState<number>(1)
-
-  useEffect(() => {
-    setPercentage((step / 4) * 100)
-  }, [step])
 
   const back = () => {
     const previousStep = getPreviousStepPath(step)

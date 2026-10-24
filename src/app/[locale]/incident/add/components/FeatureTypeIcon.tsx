@@ -1,3 +1,4 @@
+import NextImage from 'next/image'
 import React from 'react'
 import { Icon } from '@/components'
 import { useConfig } from '@/contexts/ConfigContext'
@@ -18,7 +19,11 @@ export const FeatureTypeIcon: React.FC<FeatureIconProps> = ({
   if (isSelected) {
     return (
       <Icon>
-        <img
+        <NextImage
+          unoptimized
+          width={28}
+          height={28}
+          className="w-full h-auto"
           src="/assets/images/feature-selected-marker.svg"
           alt="Selected marker"
         />
@@ -37,7 +42,11 @@ export const FeatureTypeIcon: React.FC<FeatureIconProps> = ({
   if (!iconUrl) {
     return (
       <Icon>
-        <img
+        <NextImage
+          unoptimized
+          width={28}
+          height={28}
+          className="w-full h-auto"
           src={
             config.base.assets_url + '/assets/images/feature-default-marker.svg'
           }
@@ -49,7 +58,14 @@ export const FeatureTypeIcon: React.FC<FeatureIconProps> = ({
 
   return (
     <Icon>
-      <img src={iconUrl} alt="Feature marker" />
+      <NextImage
+        unoptimized
+        width={28}
+        height={28}
+        className="w-full h-auto"
+        src={iconUrl}
+        alt="Feature marker"
+      />
     </Icon>
   )
 }

@@ -74,7 +74,7 @@ export const KtoContainer = ({ answer, id }: KtoContainerProps) => {
     return () => {
       cancelled = true
     }
-  }, [id, isSatisfied])
+  }, [id, isSatisfied, config.baseUrlApi])
 
   const handleSubmit = async (formData: {
     text_list: string[]

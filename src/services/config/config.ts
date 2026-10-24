@@ -13,7 +13,7 @@ export async function getServerConfig() {
   try {
     const fileBuffer = await fs.readFile(CONFIG_PATH, 'utf8')
     json = JSON.parse(fileBuffer.toString())
-  } catch (e) {
+  } catch {
     console.log('Could not load config file, using default configuration')
   }
 

@@ -1,6 +1,6 @@
 import React, { Dispatch, RefObject, SetStateAction } from 'react'
 import { PublicQuestion } from '@/types/form'
-import { FormField, FormFieldCheckbox, Icon } from '@/components/index'
+import { FormField, FormFieldCheckbox } from '@/components/index'
 import { useTranslations } from 'next-intl'
 import { ExtendedFeature } from '@/types/map'
 import { useFormStore } from '@/store/form_store'
@@ -12,7 +12,7 @@ type FeatureListItemProps = {
   feature: ExtendedFeature
   field: PublicQuestion
   setError: Dispatch<SetStateAction<string | null>>
-  dialogRef: RefObject<HTMLDialogElement>
+  dialogRef: RefObject<HTMLDialogElement | null>
   configUrl?: string
   setFocusedItemId: Dispatch<SetStateAction<number | null>>
 }
@@ -86,12 +86,12 @@ export const FeatureListItem = ({
     <li className="py-4 border-t disabled-border-1">
       <FormField
         className="flex flex-row items-center gap-2"
-        onFocus={(e) => {
+        onFocus={() => {
           setTimeout(() => {
             setFocusedItemId(featureId)
           }, 10)
         }}
-        onBlur={(e) => {
+        onBlur={() => {
           setTimeout(() => {
             setFocusedItemId(null)
           }, 0)

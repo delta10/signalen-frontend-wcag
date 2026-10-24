@@ -452,7 +452,7 @@ describe('hectometer selection', () => {
         false
       )
     )
-    expect(input).toHaveValue('Hectometerpaal A270-6.5')
+    await waitFor(() => expect(input).toHaveValue('Hectometerpaal A270-6.5'))
     expect(useFormStore.getState().formState).toMatchObject({
       address: null,
       coordinates: [0, 0],

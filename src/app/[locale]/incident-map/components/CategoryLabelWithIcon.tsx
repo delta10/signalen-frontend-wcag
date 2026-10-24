@@ -1,3 +1,4 @@
+import NextImage from 'next/image'
 import React from 'react'
 import { Icon } from '@/components'
 import { IconMapPinFilled } from '@tabler/icons-react'
@@ -14,7 +15,14 @@ export const CategoryLabelWithIcon = (category: Category) => {
     <span className="flex gap-2 items-start">
       <Icon className="!min-w-7 !min-h-7 !max-w-7 !max-h-7">
         {categoryIcon ? (
-          <img src={categoryIcon} alt={`Icon for category: ${category.name}`} />
+          <NextImage
+            unoptimized
+            width={28}
+            height={28}
+            className="w-full h-auto"
+            src={categoryIcon}
+            alt={`Icon for category: ${category.name}`}
+          />
         ) : (
           <IconMapPinFilled color="currentColor" />
         )}

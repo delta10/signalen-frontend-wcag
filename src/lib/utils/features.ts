@@ -1,5 +1,4 @@
 import { Feature } from 'geojson'
-import crypto from 'crypto'
 
 export function generateFeatureId(feature: Feature | undefined): string {
   if (!feature || !feature.geometry || !feature.properties) {

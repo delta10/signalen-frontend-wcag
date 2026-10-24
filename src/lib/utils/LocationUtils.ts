@@ -21,7 +21,7 @@ export const setCurrentLocation = (
   setError: (
     value: ((prevState: string | null) => string | null) | string | null
   ) => void,
-  dialogRef: RefObject<HTMLDialogElement> | null,
+  dialogRef: RefObject<HTMLDialogElement | null> | null,
   t: (key: string, values?: Record<string, any>) => string
 ) => {
   navigator.geolocation.getCurrentPosition(

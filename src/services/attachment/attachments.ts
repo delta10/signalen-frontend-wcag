@@ -20,7 +20,7 @@ export const postAttachments = async (
     )
 
     return response.data
-  } catch (error) {
+  } catch {
     throw new Error('Something went wrong uploading the attachment')
   }
 }

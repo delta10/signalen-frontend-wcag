@@ -1,5 +1,3 @@
-import { FormStoreState } from '@/types/stores'
-
 /**
  * Retrieves valid `File` objects from the `attachments` property of the `formState`.
  *

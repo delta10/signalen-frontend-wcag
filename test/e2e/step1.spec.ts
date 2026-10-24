@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { expect, test as base, BrowserContext } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
-import { describe } from 'vitest'
 import { createSessionStorageFixture } from '@/store/form_store'
 import { FormStoreState } from '@/types/stores'
 
@@ -14,7 +13,7 @@ type AxeFixture = {
 // This new "test" can be used in multiple test files, and each of them will get
 // a consistently configured AxeBuilder instance.
 export const test = base.extend<AxeFixture>({
-  makeAxeBuilder: async ({ page }, use, testInfo) => {
+  makeAxeBuilder: async ({ page }, use) => {
     const makeAxeBuilder = () =>
       new AxeBuilder({ page })
         .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
@@ -63,7 +62,7 @@ const parameters: MyTextConfig[] = [
   // { name: 'Forced colors', forcedColors: true },
 ]
 
-parameters.slice(0, 1).forEach(async ({ name, testConfig, forcedColors }) => {
+parameters.slice(0, 1).forEach(async ({ name, testConfig }) => {
   test.describe(`${name}`, () => {
     // TODO: Make new context for each test config to avoid interference
     if (testConfig) {
@@ -178,7 +177,6 @@ parameters.slice(0, 1).forEach(async ({ name, testConfig, forcedColors }) => {
     })
 
     test.describe('step 2', () => {
-      const pageURL = 'http://localhost:3000/nl/incident/vulaan'
       // test('has title', async ({ page, context }) => {
       //   formStateFixture(context, { description: 'lamp' })
       //
@@ -190,7 +188,6 @@ parameters.slice(0, 1).forEach(async ({ name, testConfig, forcedColors }) => {
       //   // Expect a title "to contain" a substring.
       //   await expect(page).toHaveTitle(/Purmerend/i)
       // })
-
       // test('has heading', async ({ context, page }) => {
       //   formStateFixture(context, { description: 'lamp' })
       //
@@ -203,7 +200,6 @@ parameters.slice(0, 1).forEach(async ({ name, testConfig, forcedColors }) => {
       //
       //   await expect(heading).toBeVisible()
       // })
-
       // test('Focus combobox', async ({ context, page }) => {
       //   formStateFixture(context, { description: 'lamp' })
       //

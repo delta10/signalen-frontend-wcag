@@ -1,5 +1,6 @@
 'use client'
 
+import NextImage from 'next/image'
 import React, { Dispatch, SetStateAction } from 'react'
 import { clsx } from 'clsx'
 import { Drawer } from 'vaul'
@@ -63,7 +64,14 @@ const FeatureTypeLegend = ({
               {featureTypes.map((featureType, index) => (
                 <li key={index} className="flex items-center gap-2 py-1">
                   <Icon>
-                    <img src={featureType.icon.iconUrl} alt="Feature marker" />
+                    <NextImage
+                      unoptimized
+                      width={28}
+                      height={28}
+                      className="w-full h-auto"
+                      src={featureType.icon.iconUrl}
+                      alt="Feature marker"
+                    />
                   </Icon>
                   {featureType.label}
                 </li>

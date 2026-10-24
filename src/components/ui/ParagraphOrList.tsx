@@ -1,5 +1,5 @@
 import { Key, ReactNode } from 'react'
-import { Paragraph, UnorderedList, UnorderedListItem } from '..'
+import { UnorderedList, UnorderedListItem } from '..'
 
 export type ParagraphOrListEntry = [Key, ReactNode]
 
@@ -11,8 +11,8 @@ export const ParagraphOrList = ({ entries }: ParagraphOrListProps) => {
   if (entries.length >= 2) {
     return (
       <UnorderedList>
-        {entries.map(([id, item], index) => (
-          <UnorderedListItem key={index}>{item}</UnorderedListItem>
+        {entries.map(([id, item]) => (
+          <UnorderedListItem key={id}>{item}</UnorderedListItem>
         ))}
       </UnorderedList>
     )

@@ -167,7 +167,7 @@ export const IncidentQuestionsLocationForm = () => {
         className="flex flex-col gap-8 items-start"
       >
         {additionalQuestions.length ? (
-          Object.keys(additionalQuestions).map((value, index, array) => {
+          Object.keys(additionalQuestions).map((value, index) => {
             const question = additionalQuestions[index]
             const fieldName = question.key
 

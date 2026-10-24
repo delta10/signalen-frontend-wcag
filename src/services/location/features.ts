@@ -15,7 +15,7 @@ export const getGeoJsonFeatures = async (
     const response: AxiosResponse<FeatureCollection> = await axios.get('')
 
     return response.data
-  } catch (error) {
+  } catch {
     throw new Error('Could not fetch suggested features. Please try again.')
   }
 }

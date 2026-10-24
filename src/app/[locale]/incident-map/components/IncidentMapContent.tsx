@@ -1,5 +1,6 @@
 'use client'
 
+import NextImage from 'next/image'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   MapLayerMouseEvent,
@@ -39,7 +40,6 @@ import { getNewSelectedAddress } from '@/lib/utils/address'
 import { generateFeatureId } from '@/lib/utils/features'
 import SelectedIncidentDetails from '@/app/[locale]/incident-map/components/SelectedIncidentDetails'
 import { Address } from '@/types/form'
-import { AppConfig } from '@/types/config'
 import { clsx } from 'clsx'
 import { debounce } from '@/lib/utils/utils'
 import IncidentMapMobileSidebar from '@/app/[locale]/incident-map/components/IncidentMapMobileSidebar'
@@ -240,7 +240,7 @@ const IncidentMapContent = () => {
     return features.find(
       (feature: ExtendedFeature) => feature.internal_id === selectedFeatureId
     )
-  }, [selectedFeatureId])
+  }, [selectedFeatureId, features])
 
   // Update position, flyTo position, after this set the marker position
   const updatePosition = (lat: number, lng: number) => {
@@ -414,8 +414,7 @@ const IncidentMapContent = () => {
                     {FeatureCategoryIcon(
                       feature.internal_id,
                       selectedFeatureId,
-                      getFeatureCategoryIcon(feature),
-                      config
+                      getFeatureCategoryIcon(feature)
                     )}
                   </Marker>
                 )
@@ -498,14 +497,17 @@ const IncidentMapContent = () => {
 export const FeatureCategoryIcon = (
   featureId: string | number | undefined,
   selectedFeatureId: number,
-  featureIconUrl: string | null,
-  config: AppConfig
+  featureIconUrl: string | null
 ) => {
   if (featureId === selectedFeatureId) {
     return (
       <Icon>
         {/* offset the selected feature marker by 30px to prevent shift in position and overlap with possible duplicates. */}
-        <img
+        <NextImage
+          unoptimized
+          width={28}
+          height={28}
+          alt=""
           className={!featureIconUrl ? 'mb-[30px]' : ''}
           src="/assets/images/feature-selected-marker.svg"
         />
@@ -516,7 +518,14 @@ export const FeatureCategoryIcon = (
   if (featureIconUrl) {
     return (
       <Icon className="!w-7 !h-7">
-        <img src={featureIconUrl} alt="Categorie icoon" />
+        <NextImage
+          unoptimized
+          width={28}
+          height={28}
+          className="w-full h-auto"
+          src={featureIconUrl}
+          alt="Categorie icoon"
+        />
       </Icon>
     )
   }
