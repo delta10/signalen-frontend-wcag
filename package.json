@@ -32,7 +32,7 @@
     "@turf/boolean-point-in-polygon": "7.3.5",
     "@turf/helpers": "7.3.5",
     "@utrecht/checkbox-group-react": "1.0.17",
-    "@utrecht/component-library-react": "14.0.1",
+    "@utrecht/component-library-react": "15.0.0",
     "@utrecht/fieldset-react": "1.0.10",
     "@utrecht/form-field-description-react": "1.0.12",
     "@utrecht/form-field-error-message-react": "1.0.12",
