@@ -8,29 +8,6 @@ The application reads `config.json` from the project root. Keep the file valid J
 - `pdokUrlApi`: Base URL for the PDOK location server.
 - `frontendUrl`: Public URL of this frontend.
 
-### Utrecht preview configuration
-
-The checked-in configuration enables the Utrecht theme, logo, municipal address
-search and contact details. The map is centred on Utrecht using the PDOK location
-server's town centroid. Provincial road layers, hectometer search and the Brabant
-selection restriction are removed.
-
-The available history of `config.json` contains Utrecht branding in commits
-`d9f9c34` and `5b81f84`; these configurations used Meierijstad demo assets.
-Commit `a47a67b` also used the Utrecht theme with the Meierijstad demo API.
-No Utrecht acceptance URL was found in the 76 available revisions examined.
-
-- `baseUrlApi` uses the historical Meierijstad demo API, which currently responds
-  successfully on its public categories endpoint.
-- `base.assets_url` uses the matching Meierijstad demo frontend for API assets.
-- `frontendUrl` is `http://localhost:3000` for local preview. The historical
-  `signalen.demo.meierijstad.delta10.cloud` hostname no longer resolves.
-
-This is a local Utrecht preview backed by Meierijstad demo data. Configure the
-actual frontend URL and matching API/assets URLs when a Utrecht environment is
-available. A missing URL in Git history does not establish that no such
-environment exists elsewhere.
-
 ## Map Background
 
 - `mapStyle`: Optional full MapLibre style URL for light mode. When set, this takes precedence over `maptilerMap`.

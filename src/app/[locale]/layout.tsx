@@ -34,7 +34,7 @@ const LocaleLayout = ({
   return (
     <Root
       lang={locale}
-      className={`${font.variable} organization-theme organization-theme--${safeTheme} organization-theme--media-query`}
+      className={`${font.variable} organization-theme organization-theme--media-query`}
     >
       <head>
         {googleFontStylesheetUrl ? (

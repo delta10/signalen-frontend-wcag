@@ -5,20 +5,16 @@ Deze map bevat alles om een organisatie-thema op te bouwen. Kort samengevat:
 - `design-tokens/base.json` bevat de complete token-set die we als startpunt gebruiken.
 - `design-tokens/overrides.json` bevat gedeelde correcties die voor alle organisaties gelden.
 - `design-tokens/organizations/<organisatie>.json` bevat alleen de organisatie-specifieke verschillen.
-- Via `source` kan een organisatie DTCG-tokenbestanden uit een versieerbaar npm-package importeren.
 - De build merget deze lagen en genereert CSS-bestanden in `public/assets/organizations/<organisatie>/`.
 
 De theming wordt bepaald in deze volgorde:
 
 1. basis (`base.json`)
-2. geïmporteerde organisatiebron (`source.light` of `source.dark`), met eventuele gedeelde tokenkoppelingen uit `source.adapter`
-3. gedeelde applicatie-overrides (`overrides.json`)
-4. organisatiecorrecties (`organizations/<organisatie>.json`)
+2. gedeelde overrides (`overrides.json`)
+3. organisatie light (`organizations/<organisatie>.json` -> `light`)
+4. organisatie dark (`organizations/<organisatie>.json` -> `dark`, alleen afwijkingen op light)
 
 De onderste laag levert defaults; elke volgende laag mag waarden overschrijven.
-In dark mode worden de light-overrides opnieuw toegepast bovenop de dark-import,
-gevolgd door de expliciete gedeelde en organisatie-specifieke dark-overrides.
-Zo wist een volledige dark-export onze applicatie-aanpassingen niet.
 
 ## Bestandsrollen
 
@@ -39,70 +35,34 @@ Zo wist een volledige dark-export onze applicatie-aanpassingen niet.
 }
 ```
 
-## Utrecht: tokens importeren
+## Utrecht: zelfstandig organisatiebestand
 
-Het Utrecht-thema gebruikt de volledige gepubliceerde tokenbestanden uit
-[`@utrecht/design-tokens`](https://github.com/nl-design-system/utrecht/tree/main/proprietary/design-tokens).
-De versie staat exact vast in `package.json` en `package-lock.json`.
-Er worden geen eigen Utrecht-kleuren of typografiewaarden vastgelegd.
+`organizations/utrecht.json` gebruikt hetzelfde `light`/`dark`-formaat als de
+andere organisaties. Kleuren en typografie zijn gebaseerd op de eerder bekeken
+Utrecht-tokenversie 7.0.0; de applicatie gebruikt de bestaande basisset en
+`overrides.json` voor componenten en layout. Het is een lokaal onderhouden thema,
+geen volledige kopie van het Utrecht-package. Nieuwe Utrecht-versies worden niet
+automatisch overgenomen.
 
-`organizations/utrecht.json` bevat de bronbestanden:
-
-```json
-{
-  "source": {
-    "light": "@utrecht/design-tokens/dist/tokens.json",
-    "dark": "@utrecht/design-tokens/dist/dark/tokens.json",
-    "adapter": "../adapters/utrecht.json"
-  },
-  "light": {
-    "utrecht.root.background-color": "{utrecht.document.background-color}"
-  },
-  "dark": {}
-}
-```
-
-Utrecht publiceert DTCG-tokenbomen, geen Theme Wizard-export met
-`$metadata.tokenSetOrder` zoals in de Groningen-PR. Daarom worden hun light- en
-dark-bestanden rechtstreeks ingelezen. Iedere geïmporteerde namespace vervangt
-dezelfde namespace uit de basisset volledig. Ook nieuwe tokens komen mee;
-weggelaten componenttokens vallen terug op de CSS van de component in plaats
-van op oude, opgeloste waarden uit `base.json`.
-
-De app gebruikt daarnaast `basis.*`, Signalen-onderdelen en de nieuwe NL Button.
-`adapters/utrecht.json` verbindt deze met bestaande Utrecht-tokens. Dit gedeelde
-koppelbestand hoort bij het tokenformaat en kan door andere organisaties worden
-hergebruikt. Het organisatiebestand bevat alleen de import en de eigen light/dark
-correcties. De build schrijft echte tokenreferenties, zodat dezelfde koppelingen
-ook de dark-waarden volgen. Daarna winnen onze gedeelde applicatie-overrides van
-de import en deze koppelingen, bijvoorbeeld voor de textarea-breedte en padding.
-Alle referenties worden bij de build gevalideerd. De lettertypen worden lokaal
-geladen via de font-import uit het Utrecht-package in `src/app/layout.tsx`.
-
-De verwijzingen verbinden ook root, body en pagina-oppervlakken met
-`utrecht.document.*`: deze onderdelen hebben in de gepubliceerde dark-export
-nog vaste lichte waarden. Het informatievlak gebruikt de documenttekstkleur;
-links daarin volgen `currentColor` via `.organization-theme--utrecht` in
-`src/app/app.css`. Dit corrigeert het aangetoonde contrastverlies zonder eigen
-kleurwaarden toe te voegen. Iedere organisatie krijgt in de layout een eigen
-`organization-theme--<thema>`-klasse voor zulke lokale CSS-regels.
+De componenttokens verwijzen waar mogelijk naar `basis.*`, zodat light en dark
+dezelfde relaties delen. De donkere informatievlakken zijn afgestemd op leesbare
+tekst en links. Zolang Utrecht in beide modi dezelfde lichte kaart gebruikt,
+houdt `utrecht.map-marker.background-color` de kaartpin zwart, zoals in light mode.
+Er is geen import, adapter of extra npm-dependency nodig. De
+bestaande themabuild en frontend-layouts blijven hiervoor ongewijzigd.
 
 Build en activeer het thema:
 
 1. Run `npm run tokens:build:org -- utrecht`.
 2. Zet `base.theme` in `config.json` op `"utrecht"`.
-3. De optionele Google Fonts-stylesheet is niet nodig voor Utrecht.
-4. Start `npm run dev` en controleer light en dark mode.
+3. Laad Noto Sans via de bestaande instelling `base.fonts.googleStylesheetUrl`,
+   zoals in de meegeleverde configuratie. Zonder die stylesheet wordt Arial
+   gebruikt als fallback.
+4. Controleer light en dark mode op desktop en mobiel.
 
-`base.theme` bepaalt alleen de vormgeving. Organisatienaam, logo, API, kaart en
-teksten blijven aparte configuratie. De meegeleverde `config.json` activeert
-Utrecht voor een lokale preview, met de historische Meierijstad-demo als backend.
-Zie `config.md` voor de herkomst en de omgevinginstellingen.
-
-Een `source` mag ook één string zijn (alleen light). Relatieve bestandspaden
-worden opgelost vanaf het organisatiebestand; packagepaden via Node-resolutie.
-Beide JSON-bestanden moeten DTCG-tokens met `$value` bevatten. `light` en `dark`
-blijven beschikbaar voor expliciete overrides bovenop een import.
+De eerdere aanpak met geïmporteerde tokens is bewaard in commit `0ca01bc` op
+`feat/utrecht-theme`. De meegeleverde `config.json` gebruikt Meierijstad-demodata
+voor een lokale Utrecht-preview; zie `config.md` voor de omgevinginstellingen.
 
 ## Buildgedrag
 
@@ -111,16 +71,13 @@ Bij `npm run tokens:build:org -- <organisatie>` gebeurt het volgende:
 1. `base.json` wordt ingeladen.
 2. `design-tokens/overrides.json` wordt ingeladen.
 3. `design-tokens/organizations/<organisatie>.json` wordt ingeladen.
-4. Geïmporteerde light namespaces en de eventuele adapter worden toegepast op de base tokens.
-5. Gedeelde `light` updates en organisatie `light` correcties worden daarop toegepast.
-6. Geïmporteerde dark namespaces en de adapter worden toegepast bovenop light. Daarna worden de light-overrides opnieuw toegepast, gevolgd door de gedeelde en organisatie-specifieke `dark` updates.
+4. Gedeelde `light` updates worden toegepast op de base tokens.
+5. Organisatie `light` updates worden daar bovenop toegepast.
+6. Gedeelde en organisatie `dark` updates worden toegepast bovenop de light tokens (fallback naar light waar dark niet bestaat).
 7. Beide varianten worden gebruikt als input voor Style Dictionary.
 8. Output wordt gegenereerd in `public/assets/organizations/<organisatie>/`.
 
-Als een updatepad niet bestaat in de basisset of de geïmporteerde tokens, stopt de
-build met een duidelijke fout. Applicatie-overrides mogen expliciet basis-tokens
-terugzetten die de import weglaat; andere weggelaten tokens behouden de CSS-fallback
-van de component.
+Als een updatepad niet bestaat in `base.json`, stopt de build met een duidelijke fout (zowel voor `light` als `dark`).
 
 Belangrijk: je definieert in een organisatiebestand dus niet opnieuw "alle tokens", maar alleen de waarden die afwijken van de lagen daaronder.
 
@@ -195,9 +152,8 @@ Tip: begin klein met een paar duidelijke merk-kleuren. Als dat werkt, breid je s
   `npm run tokens:watch:org`
   - `design-tokens/organizations/<organisatie>.json` triggert build voor die organisatie.
   - `design-tokens/base.json` en `design-tokens/overrides.json` triggeren een build voor alle organisaties.
-  - `design-tokens/adapters/*.json` triggeren ook een build voor alle organisaties.
   - Let op: deze watcher moet actief draaien in een terminal.
-- `npm run dev` start Next.js. Start de token watcher in een tweede terminal als je tokens wilt aanpassen.
+- `npm run dev` start nu zowel Next.js als deze token watcher.
 
 ## Output bestanden
 
@@ -213,6 +169,6 @@ Na build vind je o.a.:
 
 ## Veelvoorkomende valkuilen
 
-- **Geen effect na token wijziging:** start `npm run tokens:watch:org` in een tweede terminal of run handmatig `npm run tokens:build:org -- <organisatie>`. Na een package-update moet je het thema opnieuw bouwen.
+- **Geen effect na token wijziging:** als `npm run dev` draait, worden wijzigingen in `design-tokens/organizations/<organisatie>.json`, `design-tokens/base.json` en `design-tokens/overrides.json` automatisch gebouwd; draait de watcher niet, run dan handmatig `npm run tokens:build:org -- <organisatie>`.
 - **Verkeerde styling geladen:** check dat `config.json` -> `base.theme` exact matcht met bestands/mapnaam (bijv. `purmerend`) of laat `base.theme` weg zodat `base.municipality` als fallback geldt.
-- **Padfout in updates:** controleer dat elke key in `light`/`dark` exact bestaat in de basisset of de geïmporteerde tokens.
+- **Padfout in updates:** controleer dat elke key in `light`/`dark` exact bestaat in `base.json`.

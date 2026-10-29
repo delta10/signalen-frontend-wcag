@@ -18,7 +18,7 @@
     "update-design-system": "npm-check-updates --configFileName .ncurc.major.cjs --filter '/^@(utrecht|nl-design-system-community)/'",
     "tokens:build": "node ./design-tokens/build-theme.mjs",
     "tokens:build:org": "node ./design-tokens/build-theme.mjs --org",
-    "tokens:watch:org": "chokidar \"design-tokens/base.json\" \"design-tokens/overrides.json\" \"design-tokens/adapters/*.json\" \"design-tokens/organizations/*.json\" --initial --polling -d 500 -c \"node ./design-tokens/watch-build-org.mjs {path}\""
+    "tokens:watch:org": "chokidar \"design-tokens/base.json\" \"design-tokens/overrides.json\" \"design-tokens/organizations/*.json\" --initial --polling -d 500 -c \"node ./design-tokens/watch-build-org.mjs {path}\""
   },
   "dependencies": {
     "@headlessui/react": "2.2.10",
@@ -33,7 +33,6 @@
     "@turf/helpers": "7.3.5",
     "@utrecht/checkbox-group-react": "1.0.17",
     "@utrecht/component-library-react": "14.0.1",
-    "@utrecht/design-tokens": "7.0.0",
     "@utrecht/fieldset-react": "1.0.10",
     "@utrecht/form-field-description-react": "1.0.12",
     "@utrecht/form-field-error-message-react": "1.0.12",

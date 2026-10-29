@@ -22,6 +22,9 @@
   "base": {
     "municipality": "utrecht",
     "theme": "utrecht",
+    "fonts": {
+      "googleStylesheetUrl": "https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap"
+    },
     "pdok_address_suggest": {
       "scope": "gemeente",
       "organization": "Utrecht"

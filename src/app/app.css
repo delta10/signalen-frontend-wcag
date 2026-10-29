@@ -87,6 +87,19 @@
   padding-inline: var(--basis-space-inline-min-md);
 }
 
+/* Keep the checkbox and its label content together in FormFieldCheckbox. */
+.utrecht-form-field__label--checkbox > .utrecht-form-label--checkbox {
+  display: flex;
+  align-items: flex-start;
+}
+
+.utrecht-form-field__label--checkbox
+  > .utrecht-form-label--checkbox
+  > .utrecht-checkbox {
+  order: 0;
+  flex-shrink: 0;
+}
+
 .utrecht-page-body.incident-map .utrecht-page-body__content {
   max-inline-size: 100%;
   padding-block-end: 0;
@@ -134,8 +147,7 @@ h2.utrecht-heading-2 {
   );
 }
 
-.utrecht-page-footer__content,
-.organization-theme--utrecht .utrecht-spotlight-section {
+.utrecht-page-footer__content {
   --utrecht-link-color: currentColor;
   --utrecht-link-hover-color: currentColor;
   --utrecht-link-focus-background-color: var(
@@ -208,8 +220,8 @@ h2.utrecht-heading-2 {
   }
 }
 
-/* Focus fallback: imported theme definitions take precedence, avoiding cycles. */
-:where(.organization-theme) {
+/* Utrecht focus ring → organization basis.focus tokens (avoids global *:focus). */
+.organization-theme {
   --utrecht-focus-background-color: var(--basis-focus-background-color);
   --utrecht-focus-outline-color: var(--basis-focus-outline-color);
   --utrecht-focus-outline-offset: var(--basis-focus-outline-offset);
