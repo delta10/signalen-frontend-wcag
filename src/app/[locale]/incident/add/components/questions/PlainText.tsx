@@ -2,11 +2,19 @@ import { QuestionField } from '@/types/form'
 import { Alert } from '@/components'
 import { RenderMarkdown } from '@/components/ui/RenderMarkdown'
 
-interface PlainTextProps extends QuestionField {}
+export const PlainText = ({ field }: QuestionField) => {
+  const validators = field.meta.validators
+  const isBlocking =
+    validators === 'isBlocking' ||
+    (Array.isArray(validators) && validators.includes('isBlocking'))
 
-export const PlainText = ({ field }: PlainTextProps) => {
   return field.meta.value ? (
-    <Alert type="error" data-testid="plain-text-hard-stop">
+    <Alert
+      type={isBlocking ? 'error' : 'info'}
+      data-testid={
+        isBlocking ? 'plain-text-hard-stop' : 'plain-text-information'
+      }
+    >
       <RenderMarkdown text={field.meta.value} />
     </Alert>
   ) : null

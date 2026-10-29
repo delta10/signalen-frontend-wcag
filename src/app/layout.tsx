@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import '@nl-design-system-candidate/button-css/button.css'
+import '@utrecht/design-tokens/dist/font-family.js'
 import './app.css'
 import config from '../../config.json'
 

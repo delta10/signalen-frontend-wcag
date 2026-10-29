@@ -2,7 +2,10 @@ import StyleDictionary from 'style-dictionary'
 import { createRequire } from 'node:module'
 import fs from 'node:fs'
 import path from 'node:path'
-import { applyTokenUpdates } from './merge-token-updates.mjs'
+import {
+  createOrganizationTokens,
+  loadTokenSources,
+} from './import-token-source.mjs'
 
 const require = createRequire(import.meta.url)
 const { createConfig } = require('./style-dictionary-config.cjs')
@@ -53,18 +56,6 @@ if (!fs.existsSync(sharedOverridesFile)) {
 const sharedOverridesRaw = fs.readFileSync(sharedOverridesFile, 'utf8')
 const sharedOverrides = JSON.parse(sharedOverridesRaw)
 
-// Combines shared overrides with organization-specific updates per theme layer.
-const mergeUpdateLayers = (sharedUpdates, organizationUpdates) => ({
-  light: {
-    ...(sharedUpdates.light ?? {}),
-    ...organizationUpdates.light,
-  },
-  dark: {
-    ...(sharedUpdates.dark ?? {}),
-    ...(organizationUpdates.dark ?? {}),
-  },
-})
-
 const organizationTokensFile = path.join(
   organizationsDir,
   `${organization}.json`
@@ -77,9 +68,16 @@ if (!fs.existsSync(organizationTokensFile)) {
 
 const organizationUpdatesRaw = fs.readFileSync(organizationTokensFile, 'utf8')
 const organizationUpdates = JSON.parse(organizationUpdatesRaw)
-const tokenUpdates = mergeUpdateLayers(sharedOverrides, organizationUpdates)
-
-const { lightTokens, darkTokens } = applyTokenUpdates(baseTokens, tokenUpdates)
+const sources = loadTokenSources(
+  organizationUpdates.source,
+  organizationTokensFile
+)
+const { lightTokens, darkTokens } = createOrganizationTokens(
+  baseTokens,
+  sharedOverrides,
+  organizationUpdates,
+  sources
+)
 const tempDir = path.resolve('tmp')
 fs.mkdirSync(tempDir, { recursive: true })
 const lightTokensFile = path.join(tempDir, `${organization}.light.tokens.json`)

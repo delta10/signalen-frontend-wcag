@@ -24,7 +24,11 @@ const buildOrganization = (organization) => {
   }
 }
 
-if (fileName === 'base.json' || fileName === 'overrides.json') {
+const isAdapter =
+  path.dirname(path.resolve(changedFilePath)) ===
+  path.resolve('design-tokens/adapters')
+
+if (fileName === 'base.json' || fileName === 'overrides.json' || isAdapter) {
   const organizations = fs
     .readdirSync(organizationsDir)
     .filter((entry) => entry.endsWith('.json'))

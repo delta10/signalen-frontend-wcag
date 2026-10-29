@@ -13,9 +13,34 @@ import {
   getSuggestedRoads,
 } from '@/services/location/address'
 import { isCoordinateOutsideRestrictedArea } from '@/lib/utils/restrictedAreaUtils'
-import type { AppConfig } from '@/types/config'
-import config from '../../../config.json'
+import { PdokAddressSuggestScope, type AppConfig } from '@/types/config'
+import defaultConfig from '../../../config.json'
 import { AddressCombobox, SearchType } from './AddressCombobox'
+
+// Provincial search scenarios must not depend on the active organisation.
+const applicationConfig = defaultConfig as unknown as AppConfig
+const config = {
+  ...applicationConfig,
+  restrictSelectionArea: true,
+  maptilerOutOfBoundsSelectionArea: 'https://example.test/bounds/tiles.json',
+  maptilerOutOfBoundsLayerId: 'difference',
+  base: {
+    ...applicationConfig.base,
+    pdok_address_suggest: {
+      scope: PdokAddressSuggestScope.Provincie,
+      organization: 'Noord-Brabant',
+    },
+    pdok_hectometer_suggest: {
+      enabled: true,
+      bounds: [
+        [4.17, 51.21],
+        [6.08, 51.88],
+      ],
+      roadNumberExceptions: ['A270'],
+      maxResults: 400,
+    },
+  },
+} satisfies AppConfig
 
 vi.mock('@/services/location/address', () => ({
   getSuggestedAddresses: vi.fn(),

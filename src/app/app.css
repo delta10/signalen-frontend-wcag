@@ -87,11 +87,6 @@
   padding-inline: var(--basis-space-inline-min-md);
 }
 
-.utrecht-form-label.utrecht-form-label--checkbox {
-  display: flex !important;
-  flex-direction: row-reverse !important;
-}
-
 .utrecht-page-body.incident-map .utrecht-page-body__content {
   max-inline-size: 100%;
   padding-block-end: 0;
@@ -139,7 +134,8 @@ h2.utrecht-heading-2 {
   );
 }
 
-.utrecht-page-footer__content {
+.utrecht-page-footer__content,
+.organization-theme--utrecht .utrecht-spotlight-section {
   --utrecht-link-color: currentColor;
   --utrecht-link-hover-color: currentColor;
   --utrecht-link-focus-background-color: var(
@@ -212,8 +208,8 @@ h2.utrecht-heading-2 {
   }
 }
 
-/* Utrecht focus ring → organization basis.focus tokens (avoids global *:focus). */
-.organization-theme {
+/* Focus fallback: imported theme definitions take precedence, avoiding cycles. */
+:where(.organization-theme) {
   --utrecht-focus-background-color: var(--basis-focus-background-color);
   --utrecht-focus-outline-color: var(--basis-focus-outline-color);
   --utrecht-focus-outline-offset: var(--basis-focus-outline-offset);

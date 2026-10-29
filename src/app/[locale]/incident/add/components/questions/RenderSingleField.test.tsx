@@ -225,6 +225,34 @@ const VisibilityControl = () => {
   )
 }
 
+test.each([
+  { validators: undefined, variant: 'info' },
+  { validators: 'isBlocking', variant: 'error' },
+  { validators: ['isBlocking'], variant: 'error' },
+])(
+  'renders plain text as $variant for validators $validators',
+  ({ validators, variant }) => {
+    const setIsBlocking = vi.fn()
+    renderWithForm(
+      <RenderSingleField
+        field={{
+          key: 'message',
+          field_type: FieldTypes.PLAIN_TEXT,
+          required: false,
+          meta: { value: 'Message for the resident', validators },
+        }}
+        setIsBlocking={setIsBlocking}
+      />,
+      {}
+    )
+    expect(
+      screen.getByText('Message for the resident').closest('.utrecht-alert')
+    ).toHaveClass(`utrecht-alert--${variant}`)
+    if (variant === 'error')
+      expect(setIsBlocking).toHaveBeenLastCalledWith(true)
+  }
+)
+
 test('preserves edits on rerender and restores saved answers when a question becomes visible again', () => {
   const field = {
     key: 'followup',

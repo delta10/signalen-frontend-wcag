@@ -1,0 +1,20 @@
+{
+  "source": {
+    "light": "@utrecht/design-tokens/dist/tokens.json",
+    "dark": "@utrecht/design-tokens/dist/dark/tokens.json",
+    "adapter": "../adapters/utrecht.json"
+  },
+  "light": {
+    "utrecht.root.background-color": "{utrecht.document.background-color}",
+    "utrecht.root.color": "{utrecht.document.color}",
+    "utrecht.body.background-color": "{utrecht.document.background-color}",
+    "utrecht.body.color": "{utrecht.document.color}",
+    "utrecht.page-body.content.background-color": "{utrecht.document.background-color}",
+    "utrecht.page-body.content.color": "{utrecht.document.color}",
+    "utrecht.page-header.content.background-color": "{utrecht.document.background-color}",
+    "utrecht.page-header.content.color": "{utrecht.document.color}",
+    "utrecht.spotlight-section.color": "{utrecht.document.color}",
+    "utrecht.spotlight-section.info.color": "{utrecht.document.color}"
+  },
+  "dark": {}
+}
