@@ -35,6 +35,35 @@ De onderste laag levert defaults; elke volgende laag mag waarden overschrijven.
 }
 ```
 
+## Utrecht: zelfstandig organisatiebestand
+
+`organizations/utrecht.json` gebruikt hetzelfde `light`/`dark`-formaat als de
+andere organisaties. Kleuren en typografie zijn gebaseerd op de eerder bekeken
+Utrecht-tokenversie 7.0.0; de applicatie gebruikt de bestaande basisset en
+`overrides.json` voor componenten en layout. Het is een lokaal onderhouden thema,
+geen volledige kopie van het Utrecht-package. Nieuwe Utrecht-versies worden niet
+automatisch overgenomen.
+
+De componenttokens verwijzen waar mogelijk naar `basis.*`, zodat light en dark
+dezelfde relaties delen. De donkere informatievlakken zijn afgestemd op leesbare
+tekst en links. Zolang Utrecht in beide modi dezelfde lichte kaart gebruikt,
+houdt `utrecht.map-marker.background-color` de kaartpin zwart, zoals in light mode.
+Er is geen import, adapter of extra npm-dependency nodig. De
+bestaande themabuild en frontend-layouts blijven hiervoor ongewijzigd.
+
+Build en activeer het thema:
+
+1. Run `npm run tokens:build:org -- utrecht`.
+2. Zet `base.theme` in `config.json` op `"utrecht"`.
+3. Laad Noto Sans via de bestaande instelling `base.fonts.googleStylesheetUrl`,
+   zoals in de meegeleverde configuratie. Zonder die stylesheet wordt Arial
+   gebruikt als fallback.
+4. Controleer light en dark mode op desktop en mobiel.
+
+De eerdere aanpak met geïmporteerde tokens is bewaard in commit `0ca01bc` op
+`feat/utrecht-theme`. De meegeleverde `config.json` gebruikt Meierijstad-demodata
+voor een lokale Utrecht-preview; zie `config.md` voor de omgevinginstellingen.
+
 ## Buildgedrag
 
 Bij `npm run tokens:build:org -- <organisatie>` gebeurt het volgende:
@@ -134,6 +163,7 @@ Na build vind je o.a.:
 - `public/assets/organizations/<organisatie>/variables.css`
 
 `theme.css` bevat:
+
 - light variabelen onder `.organization-theme`
 - dark variabelen onder `@media (prefers-color-scheme: dark)` voor `.organization-theme.organization-theme--media-query`
 

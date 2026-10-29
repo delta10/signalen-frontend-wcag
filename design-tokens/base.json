@@ -41058,6 +41058,12 @@
       }
     },
     "form-field": {
+      "label": {
+        "margin-block-end": {
+          "$type": "dimension",
+          "$value": "0px"
+        }
+      },
       "margin-block-end": {
         "key": "{utrecht.form-field.margin-block-end}",
         "$type": "dimension",
@@ -41214,6 +41220,14 @@
             "invalid",
             "padding-inline-start"
           ]
+        }
+      }
+    },
+    "form-fieldset": {
+      "legend": {
+        "font-weight": {
+          "$type": "fontWeight",
+          "$value": "inherit"
         }
       }
     },
@@ -52374,6 +52388,12 @@
             "color"
           ]
         }
+      }
+    },
+    "map-marker": {
+      "background-color": {
+        "$type": "color",
+        "$value": "currentColor"
       }
     },
     "root": {

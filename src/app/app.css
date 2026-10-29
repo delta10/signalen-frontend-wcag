@@ -87,9 +87,17 @@
   padding-inline: var(--basis-space-inline-min-md);
 }
 
-.utrecht-form-label.utrecht-form-label--checkbox {
-  display: flex !important;
-  flex-direction: row-reverse !important;
+/* Keep the checkbox and its label content together in FormFieldCheckbox. */
+.utrecht-form-field__label--checkbox > .utrecht-form-label--checkbox {
+  display: flex;
+  align-items: flex-start;
+}
+
+.utrecht-form-field__label--checkbox
+  > .utrecht-form-label--checkbox
+  > .utrecht-checkbox {
+  order: 0;
+  flex-shrink: 0;
 }
 
 .utrecht-page-body.incident-map .utrecht-page-body__content {

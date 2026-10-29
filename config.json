@@ -1,6 +1,6 @@
 {
-  "baseUrlApi": "https://api.meldingen-acpt.brabant.nl",
-  "frontendUrl": "https://meldingen-acpt.brabant.nl",
+  "baseUrlApi": "https://api.meldingen.demo.meierijstad.delta10.cloud/",
+  "frontendUrl": "http://localhost:3000",
   "pdokUrlApi": "https://api.pdok.nl/bzk/locatieserver/",
   "mapStyle": "https://tiles.delta10.cloud/styles/signalen/style.json",
   "mapStyleDarkMode": "https://tiles.delta10.cloud/styles/signalen/style.json",
@@ -18,30 +18,19 @@
   "maptilerApiKey": "x0IfDO01xuLQQKYlSzuz",
   "maptilerMap": "https://api.maptiler.com/maps/nl-cartiqo-topo",
   "maptilerMapDarkMode": "https://api.maptiler.com/maps/streets-v2-dark",
-  "maptilerOutOfBoundsSelectionArea": "https://api.maptiler.com/tiles/019bff1a-5275-7f4c-ba32-70c3d26b4122/tiles.json?key=K3FQAjXPERToZYyHKNPG",
-  "restrictSelectionArea": true,
-  "maptilerOutOfBoundsLayerId": "difference",
+  "restrictSelectionArea": false,
   "base": {
-    "municipality": "Noord-Brabant",
-    "theme": "brabant",
+    "municipality": "utrecht",
+    "theme": "utrecht",
     "fonts": {
-      "googleStylesheetUrl": "https://fonts.googleapis.com/css2?family=Jost:wght@700&display=swap"
+      "googleStylesheetUrl": "https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap"
     },
     "pdok_address_suggest": {
-      "scope": "provincie",
-      "organization": "Noord-Brabant"
+      "scope": "gemeente",
+      "organization": "Utrecht"
     },
-    "pdok_hectometer_suggest": {
-      "enabled": true,
-      "bounds": [
-        [4.17, 51.21],
-        [6.08, 51.88]
-      ],
-      "roadNumberExceptions": ["A270"],
-      "maxResults": 400
-    },
-    "municipality_display_name": "Noord-Brabant",
-    "assets_url": "https://meldingen-acpt.brabant.nl/",
+    "municipality_display_name": "Utrecht",
+    "assets_url": "https://meldingen.demo.meierijstad.delta10.cloud",
     "supportedLanguages": [
       {
         "label": "Schakel over naar het Nederlands",
@@ -49,109 +38,40 @@
         "name": "Nederlands"
       }
     ],
-    "naam": "Provincie Noord-Brabant",
+    "naam": "Gemeente Utrecht",
     "header": {
       "logo": {
-        "alt": "Provincie Noord-Brabant logo, naar de homepagina",
-        "url": "logo_provincie_noord-brabant.svg",
-        "width": 300,
-        "height": 37.5
+        "alt": "Gemeente Utrecht logo, naar de homepagina",
+        "url": "utrecht-logo.svg",
+        "width": 154,
+        "height": 80
       }
     },
     "contact": {
-      "tel": "073 68 12 812"
+      "tel": "14 030"
     },
     "map": {
-      "find_address_in_distance": 60,
+      "find_address_in_distance": 30,
       "minimal_zoom": 17,
-      "center": [51.52, 5.112],
+      "center": [52.0886922, 5.09520363],
       "maxBounds": [
         [3.31497114423, 50.803721015],
         [7.09205325687, 53.5104033474]
       ],
-      "default_zoom": 9,
-      "layers": [
-        {
-          "id": "hectometrering",
-          "source": {
-            "type": "geojson",
-            "data": "https://geoportaal.brabant.nl/server/rest/services/Mobiliteit/Provinciale_wegen/MapServer/1/query?where=1%3D1&outFields=*&returnGeometry=true&outSR=4326&f=geojson"
-          },
-          "icons": [
-            {
-              "id": "hectometer-marker",
-              "url": "/assets/images/hectometer-marker.svg",
-              "width": 64,
-              "height": 32
-            }
-          ],
-          "layers": [
-            {
-              "id": "hectometer-sign",
-              "type": "symbol",
-              "minzoom": 14,
-              "layout": {
-                "icon-image": "hectometer-marker",
-                "icon-size": 0.55,
-                "text-field": ["get", "TEKST"],
-                "text-font": ["Liberation Sans Bold"],
-                "text-size": 12,
-                "text-anchor": "center",
-                "text-offset": [0, 0],
-                "icon-allow-overlap": true,
-                "text-allow-overlap": true
-              },
-              "paint": {
-                "text-color": "#ffffff"
-              }
-            }
-          ]
-        }
-      ]
+      "default_zoom": 12
     },
     "links": {
-      "about": "https://signalen.org",
-      "accessibility": "https://signalen.org",
-      "help": "https://signalen.org/",
-      "home": "https://brabant.nl/",
-      "privacy": "https://www.brabant.nl/@3657/privacyverklaring/"
+      "about": "https://www.utrecht.nl/over-deze-website",
+      "accessibility": "https://www.utrecht.nl/over-deze-website/toegankelijkheid-van-deze-website",
+      "help": "https://loket.digitaal.utrecht.nl/nl/products/meldingen",
+      "home": "https://www.utrecht.nl/",
+      "privacy": "https://www.utrecht.nl/bestuur-en-organisatie/privacy/privacyverklaring"
     },
     "i18n": {
       "nl": {
-        "current_organisation": {
-          "default_homepage_label": "Keer terug naar de homepage van provincie {organization}",
-          "default_logo_label": "Logo van provincie {organization}, klik voor homepage"
-        },
-        "incident_map": {
-          "post_introduction": "zien waar al een melding is gemaakt. Een provinciale weg heeft altijd een N-nummer met uitzondering van de A270.",
-          "description": "Op deze kaart staan meldingen op en aan de provinciale wegen die bij ons in behandeling zijn."
-        },
-        "describe_add": {
-          "explainer": {
-            "type_address": "Typ een wegnummer of hectometerpaalnummer in het zoekveld bovenaan"
-          }
-        },
         "describe_report": {
           "alert": {
-            "footer_help_text": "Problemen met het indienen van een melding? Bel [073 - 68 12 812](tel:+31736812812). Wij zijn bereikbaar van maandag tot en met vrijdag van 8:00 uur tot 18:00 uur.\n\nBel bij calamiteiten: [073 - 680 73 68](tel:+31736807368). U belt dit telefoonnummer als de veiligheid of doorstroming op de provinciale weg acuut belemmerd wordt.\n\nWat is een calamiteit?\n- Een obstakel op de weg (boom, dier, afval)\n- Glas, olie of modder op de weg\n- Drugsafval\n- Niet werkend verkeerslicht\n\nHet telefoonnummer is 24 uur per dag, 7 dagen per week bereikbaar."
-          }
-        },
-        "describe_contact": {
-          "form": {
-            "description": "Wilt u op de hoogte gehouden worden over uw melding? Of mogen we u bellen als we extra informatie nodig hebben? Laat dan uw gegevens achter.\n\nUw telefoonnummer of mailadres gebruiken we alléén voor deze melding.",
-            "send_to_other_instance_description": "Soms kan de provincie niets doen. Een andere organisatie moet dan aan het werk. Als dat zo is, kunnen wij uw melding doorsturen. Wij sturen uw telefoonnummer of e-mailadres mee. Als u hiermee akkoord gaat dan kunt u dit hieronder aanklikken.",
-            "describe_checkbox_input_description": "Ja, ik geef de provincie {organization} toestemming om mijn melding door te sturen naar andere organisaties als de melding niet voor de provincie is bestemd.",
-            "no_contact_details": "U hebt geen contactgegevens ingevuld. We kunnen u niet laten weten wat wij hebben gedaan met uw melding. Wilt u dat wel? Dan kunt u via de 'Wijzig contactgegevens' knop rechtsboven uw contactgegevens alsnog invullen."
-          }
-        },
-        "describe_thankyou": {
-          "what_do_we_do_description": "Wij gaan aan de slag met uw melding. Wanneer u uw contactgegevens heeft ingevuld, hoort u binnen 5 werkdagen van ons wat we gaan doen."
-        }
-      },
-      "en": {
-        "describe_report": {
-          "alert": {
-            "footer_help_text": "Having trouble submitting a report? Call [073 - 68 12 812](tel:+31736812812). We are available monday through friday from 8:00 AM to 6:00 PM. Call for emergencies: [073 - 680 73 68](tel:+31736807368). You call this phone number if security or traffic on one of the provincial roads is urgently blocked. A provincial road always has an N number. The phone number is available 24 hours a day, 7 days a week."
+            "footer_help_text": "Hulp nodig bij uw melding? Bel [14 030](tel:14030). Telefonisch bereikbaar: maandag, dinsdag en donderdag van 9.00 tot 17.00 uur; woensdag en vrijdag van 9.00 tot 13.00 uur."
           }
         }
       }
