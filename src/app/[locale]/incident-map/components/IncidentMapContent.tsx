@@ -150,7 +150,7 @@ const IncidentMapContent = () => {
   }
 
   return (
-    <div className="grid h-full md:grid-cols-[max-content_1fr] overflow-y-hidden grid-rows-[auto_minmax(0,1fr)_auto] md:grid-rows-[minmax(0,1fr)]">
+    <div className="grid h-full min-h-0 md:grid-cols-[max-content_1fr] overflow-y-hidden grid-rows-[auto_minmax(0,1fr)_auto] md:grid-rows-[minmax(0,1fr)]">
       <AlertDialog type="error" ref={dialogRef}>
         <form
           method="dialog"
@@ -169,7 +169,7 @@ const IncidentMapContent = () => {
         </form>
       </AlertDialog>
       {!isMobile && (
-        <div className="col-span-1 flex flex-col shadow-right z-10 md:max-h-full md:max-w-[500px] overflow-y-auto">
+        <div className="incident-map-sidebar col-span-1 flex flex-col min-h-0 shadow-right z-10 md:max-h-full md:max-w-[500px] overflow-y-auto">
           {selectedFeature ? (
             <div className="p-4">
               <SelectedIncidentDetails
