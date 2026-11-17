@@ -29,6 +29,8 @@
     },
     "map": {
       "map_heading": "Kies uw locatie",
+      "existing_report_label": "Bestaande melding: {category}",
+      "existing_reports_unavailable": "Bestaande meldingen konden niet worden geladen. U kunt wel een locatie kiezen.",
       "map_label": "Waar is het?",
       "choose_this_location": "Gebruik deze locatie",
       "choose_this_location_no_asset_but_address": "Verder zonder {object} maar met locatie",
@@ -210,11 +212,12 @@
     "accessibility": "Toegankelijkheid"
   },
   "incident_map": {
+    "reports_unavailable": "De meldingen konden niet worden geladen. Verplaats de kaart om het opnieuw te proberen.",
     "heading": "Meldingenkaart",
     "incident_map": "meldingenkaart",
     "pre_introduction": "Voordat u een melding doet kunt u op de ",
     "post_introduction": " zien welke meldingen bekend zijn bij de gemeente.",
-    "description": "Op deze kaart staan meldingen in de openbare ruimte waarmee we aan het werk zijn. Vanwege privacy staat een klein deel van de meldingen niet op de kaart.",
+    "description": "Op deze kaart staan meldingen in de openbare ruimte waarmee we aan het werk zijn. Vanwege privacy staat een deel van de meldingen niet op de kaart.",
     "report": "Melding",
     "report_date": "Datum melding",
     "address_nearby": "Adres dichtbij",

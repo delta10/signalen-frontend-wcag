@@ -29,6 +29,8 @@
     },
     "map": {
       "map_heading": "Choose your location",
+      "existing_report_label": "Existing report: {category}",
+      "existing_reports_unavailable": "Existing reports could not be loaded. You can still choose a location.",
       "map_label": "Where is the location?",
       "choose_this_location": "Use this location",
       "choose_this_location_no_asset_but_address": "Continue without {object} but with address",
@@ -211,11 +213,12 @@
     "accessibility": "Accessibility"
   },
   "incident_map": {
+    "reports_unavailable": "Reports could not be loaded. Move the map to try again.",
     "heading": "Incident map",
     "incident_map": "incident map",
     "pre_introduction": "Before making a report, you can see on the ",
     "post_introduction": " which reports are known to the municipality.",
-    "description": "This map shows reports in public space that we are working on. Because of privacy, a small portion of the reports are not on the map.",
+    "description": "This map shows reports in public space that we are working on. Because of privacy, a part of the reports are not on the map.",
     "report": "Report",
     "report_date": "Report date",
     "address_nearby": "Nearest address",

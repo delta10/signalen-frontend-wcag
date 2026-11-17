@@ -1,14 +1,7 @@
 'use client'
 
-import NextImage from 'next/image'
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import {
-  MapLayerMouseEvent,
-  Marker,
-  MarkerEvent,
-  useMap,
-  ViewState,
-} from 'react-map-gl/maplibre'
+import React, { useMemo, useRef, useState } from 'react'
+import { MapLayerMouseEvent, useMap, ViewState } from 'react-map-gl/maplibre'
 import { useTranslations } from 'next-intl'
 
 import '../../incident/add/components/MapDialog.css'
@@ -17,8 +10,6 @@ import {
   Button,
   ButtonGroup,
   ButtonLink,
-  Icon,
-  MapMarker,
   SpotlightSection,
 } from '@/components'
 import { useConfig } from '@/contexts/ConfigContext'
@@ -30,36 +21,37 @@ import {
   IconPlus,
 } from '@tabler/icons-react'
 import { useDarkMode } from '@/hooks/useDarkMode'
-import { useMediaQuery, useWindowSize } from 'usehooks-ts'
-import { Feature, FeatureCollection } from 'geojson'
-import { createSignalsClient } from '@/services/client/api-client'
+import { useIsClient, useMediaQuery, useWindowSize } from 'usehooks-ts'
 import NestedCategoryCheckboxList from '@/app/[locale]/incident-map/components/NestedCategoryCheckboxList'
-import { Category, ParentCategory } from '@/types/category'
 import { AddressCombobox } from '@/components/ui/AddressCombobox'
 import { getNewSelectedAddress } from '@/lib/utils/address'
-import { generateFeatureId } from '@/lib/utils/features'
 import SelectedIncidentDetails from '@/app/[locale]/incident-map/components/SelectedIncidentDetails'
 import { Address } from '@/types/form'
 import { clsx } from 'clsx'
-import { debounce } from '@/lib/utils/utils'
 import IncidentMapMobileSidebar from '@/app/[locale]/incident-map/components/IncidentMapMobileSidebar'
 import { setCurrentLocation } from '@/lib/utils/LocationUtils'
 import { getMapStyleUrl } from '@/lib/utils/map'
 import { MapAttribution } from '@/components/ui/MapAttribution'
 import { Paragraph } from '@utrecht/component-library-react/dist/css-module'
-import { ExtendedFeature } from '@/types/map'
 import { stepToPath } from '@/routing/navigation'
 import { FormStep } from '@/types/form'
+import { usePublicSignals, type PublicSignal } from '@/hooks/usePublicSignals'
+import { PublicSignalMarkers } from '@/components/ui/PublicSignalMarkers'
 
 const IncidentMapContent = () => {
   const t = useTranslations('describe_add.map')
   const tIncidentMap = useTranslations('incident_map')
   const { dialogMap } = useMap()
-  const [features, setFeatures] = useState<ExtendedFeature[]>([])
-  const [selectedFeatureId, setSelectedFeatureId] = useState<any>(null)
+  const {
+    signals: features,
+    categories,
+    loadError,
+  } = usePublicSignals(dialogMap)
+  const [selectedFeatureId, setSelectedFeatureId] = useState<string | null>(
+    null
+  )
   const [selectedFeatureAddress, setSelectedFeatureAddress] =
     useState<Address | null>(null)
-  const [categories, setCategories] = useState<Category[] | null>(null)
   const [selectedSubCategories, setSelectedSubCategories] = useState<string[]>(
     []
   )
@@ -71,12 +63,6 @@ const IncidentMapContent = () => {
   const { isDarkMode } = useDarkMode()
   const { width = 0 } = useWindowSize()
   const isMobile = useMediaQuery('only screen and (max-width : 768px)')
-  const lastBboxRef = useRef<string | null>(null)
-  const signalsClient = useMemo(
-    () => createSignalsClient(config.baseUrlApi),
-    [config.baseUrlApi]
-  )
-
   const [viewState, setViewState] = useState<ViewState>({
     latitude: config.base.map.center[0],
     longitude: config.base.map.center[1],
@@ -91,11 +77,7 @@ const IncidentMapContent = () => {
     pitch: 0,
   })
 
-  const [hasMounted, setHasMounted] = useState(false)
-
-  useEffect(() => {
-    setHasMounted(true)
-  }, [])
+  const hasMounted = useIsClient()
 
   const mapContainerRef = useRef<HTMLDivElement>(null)
 
@@ -113,124 +95,16 @@ const IncidentMapContent = () => {
     </ButtonLink>
   )
 
-  // Memoize the function with useCallback and include all dependencies
-  const setNewFeatures = useCallback(async () => {
-    if (!dialogMap) return
-
-    const bounds = dialogMap.getBounds()
-
-    if (!bounds) return
-
-    // Extract the bounding box
-    const bbox = [
-      bounds.getWest(),
-      bounds.getSouth(),
-      bounds.getEast(),
-      bounds.getNorth(),
-    ].join(',')
-
-    // Skip if the bbox hasn't changed
-    if (bbox === lastBboxRef.current) return
-
-    lastBboxRef.current = bbox
-
-    try {
-      const res = await signalsClient.v1.v1PublicSignalsGeographyRetrieve(bbox)
-      if (res && res.features) {
-        // Wrap response in a FeatureCollection
-        const featureCollection: FeatureCollection = {
-          type: 'FeatureCollection',
-          // @ts-ignore
-          features: res.features,
-        }
-
-        const featuresWithIds = featureCollection.features.map(
-          (feature: Feature) => ({
-            ...feature,
-            internal_id: generateFeatureId(feature),
-            properties: {
-              ...feature.properties,
-            },
-          })
-        )
-
-        // @ts-ignore
-        setFeatures(featuresWithIds)
-      }
-    } catch (e) {
-      console.error('Error fetching features:', e)
-    }
-  }, [dialogMap, setFeatures, signalsClient])
-
-  useEffect(() => {
-    if (!dialogMap) return
-
-    const debouncedSetNewFeatures = debounce(() => {
-      setNewFeatures()
-    }, 50)
-
-    const handleMapLoad = () => {
-      setNewFeatures()
-    }
-
-    const handleMapMove = () => {
-      debouncedSetNewFeatures()
-    }
-
-    // Attach event listeners
-    dialogMap.on('load', handleMapLoad)
-    dialogMap.on('move', handleMapMove)
-
-    // Cleanup function
-    return () => {
-      dialogMap.off('load', handleMapLoad)
-      dialogMap.off('move', handleMapMove)
-      debouncedSetNewFeatures.cancel() // Cancel any pending debounced calls
-    }
-  }, [dialogMap, setNewFeatures])
-
-  // Filter features based on selected categories
-  const filteredFeatures = useMemo(() => {
-    // If no filters are selected, show all features
-    if (selectedSubCategories.length === 0) {
-      return features
-    }
-
-    return features.filter((feature: ExtendedFeature) => {
-      const featureCategory = feature.properties?.category
-      if (!featureCategory) return false
-
-      // Check if subcategory is directly selected
-      if (selectedSubCategories.includes(featureCategory.slug)) {
-        return true
-      }
-
-      // Check if parent category is selected
-      return false
-    })
-  }, [features, selectedSubCategories])
-
-  useEffect(() => {
-    const getCategories = async () => {
-      try {
-        const res = await signalsClient.v1.v1PublicTermsCategoriesList()
-        if (res?.results) {
-          // @ts-ignore
-          let categories: ParentCategory[] = res.results as ParentCategory[]
-
-          // Filter out non-public categories
-          categories = categories.filter(
-            (category) => category.is_public_accessible
-          )
-          setCategories(categories)
-        }
-      } catch (e) {
-        console.error(e)
-      }
-    }
-
-    getCategories()
-  }, [signalsClient])
+  const filteredFeatures = useMemo(
+    () =>
+      selectedSubCategories.length === 0
+        ? features
+        : features.filter((feature) => {
+            const slug = feature.properties.category.slug
+            return slug ? selectedSubCategories.includes(slug) : false
+          }),
+    [features, selectedSubCategories]
+  )
 
   const selectedFeature = useMemo(() => {
     if (!selectedFeatureId || !features) {
@@ -238,7 +112,7 @@ const IncidentMapContent = () => {
     }
 
     return features.find(
-      (feature: ExtendedFeature) => feature.internal_id === selectedFeatureId
+      (feature: PublicSignal) => feature.internal_id === selectedFeatureId
     )
   }, [selectedFeatureId, features])
 
@@ -257,51 +131,17 @@ const IncidentMapContent = () => {
     resetSelectedIncident()
   }
 
-  // Handle click on feature marker, set selectedFeatures and show error if maxNumberOfAssets is reached
-  const handleFeatureMarkerClick = async (
-    event: MarkerEvent,
-    feature: ExtendedFeature
-  ) => {
-    // @ts-ignore
-    event.originalEvent?.stopPropagation()
+  const handleFeatureMarkerClick = async (feature: PublicSignal) => {
     setSelectedFeatureId(feature.internal_id)
-
-    const address = await getNewSelectedAddress(
-      event.target.getLngLat().lat,
-      event.target.getLngLat().lng,
-      config
-    )
-
+    setSelectedFeatureAddress(null)
+    const [lng, lat] = feature.geometry.coordinates
+    const address = await getNewSelectedAddress(lat, lng, config)
     setSelectedFeatureAddress(address)
   }
 
   const resetSelectedIncident = () => {
     setSelectedFeatureId(null)
     setSelectedFeatureAddress(null)
-  }
-
-  const getFeatureCategoryIcon = (feature: Feature): string | null => {
-    const parentCategorySlug = feature.properties?.category.parent.slug
-    const parentCategory = categories?.find(
-      (category) => category.slug === parentCategorySlug
-    )
-    if (parentCategory) {
-      // check if feature category is sub category
-      // @ts-ignore
-      if (parentCategory.configuration?.show_children_in_filter) {
-        // @ts-ignore
-        const subCategory = parentCategory.sub_categories.find(
-          (category: Category) =>
-            category.slug === feature.properties?.category.slug
-        )
-
-        return subCategory?._links?.['sia:icon']?.href || null
-      }
-
-      return parentCategory?._links?.['sia:icon']?.href || null
-    }
-
-    return null
   }
 
   if (!hasMounted) {
@@ -330,7 +170,7 @@ const IncidentMapContent = () => {
       </AlertDialog>
       {!isMobile && (
         <div className="col-span-1 flex flex-col shadow-right z-10 md:max-h-full md:max-w-[500px] overflow-y-auto">
-          {selectedFeatureId ? (
+          {selectedFeature ? (
             <div className="p-4">
               <SelectedIncidentDetails
                 feature={selectedFeature}
@@ -398,27 +238,17 @@ const IncidentMapContent = () => {
             ]}
           >
             <MapAttribution customAttribution={config.mapAttribution} />
-            {filteredFeatures &&
-              filteredFeatures.map((feature: ExtendedFeature) => {
-                return (
-                  <Marker
-                    className="hover:cursor-pointer"
-                    key={feature.internal_id}
-                    // @ts-ignore
-                    longitude={feature.geometry?.coordinates[0]}
-                    // @ts-ignore
-                    latitude={feature.geometry?.coordinates[1]}
-                    // @ts-ignore
-                    onClick={(e) => handleFeatureMarkerClick(e, feature)}
-                  >
-                    {FeatureCategoryIcon(
-                      feature.internal_id,
-                      selectedFeatureId,
-                      getFeatureCategoryIcon(feature)
-                    )}
-                  </Marker>
-                )
-              })}
+            <PublicSignalMarkers
+              signals={filteredFeatures}
+              categories={categories}
+              selectedSignalId={selectedFeatureId}
+              onSelect={handleFeatureMarkerClick}
+            />
+            {loadError && (
+              <div className="public-signals-status" role="status">
+                {tIncidentMap('reports_unavailable')}
+              </div>
+            )}
           </Map>
           <div className="map-location-group">
             <Button
@@ -492,45 +322,6 @@ const IncidentMapContent = () => {
       )}
     </div>
   )
-}
-
-export const FeatureCategoryIcon = (
-  featureId: string | number | undefined,
-  selectedFeatureId: number,
-  featureIconUrl: string | null
-) => {
-  if (featureId === selectedFeatureId) {
-    return (
-      <Icon>
-        {/* offset the selected feature marker by 30px to prevent shift in position and overlap with possible duplicates. */}
-        <NextImage
-          unoptimized
-          width={28}
-          height={28}
-          alt=""
-          className={!featureIconUrl ? 'mb-[30px]' : ''}
-          src="/assets/images/feature-selected-marker.svg"
-        />
-      </Icon>
-    )
-  }
-
-  if (featureIconUrl) {
-    return (
-      <Icon className="!w-7 !h-7">
-        <NextImage
-          unoptimized
-          width={28}
-          height={28}
-          className="w-full h-auto"
-          src={featureIconUrl}
-          alt="Categorie icoon"
-        />
-      </Icon>
-    )
-  }
-
-  return <MapMarker />
 }
 
 export { IncidentMapContent }
