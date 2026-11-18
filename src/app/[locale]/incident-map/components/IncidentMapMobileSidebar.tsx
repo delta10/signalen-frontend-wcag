@@ -67,7 +67,7 @@ const IncidentMapMobileSidebar = ({
       <Drawer.Portal>
         <Drawer.Content className="fixed flex flex-col bg-white border border-gray-200 border-b-0 rounded-t-[10px] bottom-0 left-0 right-0 h-full max-h-[97%] mx-[-1px] dark:bg-[#161615] shadow-top z-20">
           <div
-            className={clsx('flex flex-col max-w-md mx-auto w-full pt-4', {
+            className={clsx('flex flex-col min-h-0 min-w-0 w-full px-4 pt-4', {
               'overflow-y-auto': snap === 1,
               'overflow-hidden': snap !== 1,
             })}
@@ -95,7 +95,7 @@ const IncidentMapMobileSidebar = ({
               </>
             )}
 
-            <div className="px-4 pb-20">
+            <div className="pb-20">
               <Drawer.Title className="text-xl my-2 font-medium text-gray-900">
                 {selectedFeature
                   ? tIncidentMap('details')

@@ -1,0 +1,52 @@
+.public-signal-marker {
+  display: grid;
+  place-items: center;
+  inline-size: 44px;
+  block-size: 44px;
+  padding: 8px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--utrecht-link-color, #004699);
+  cursor: pointer;
+}
+
+.public-signal-marker:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+.public-signal-popup {
+  z-index: 3;
+  color: CanvasText;
+  font-family: var(--utrecht-document-font-family, sans-serif);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.public-signal-popup .maplibregl-popup-content {
+  background: Canvas;
+  font: inherit;
+}
+
+.public-signal-close {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  inline-size: 32px;
+  block-size: 32px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.public-signals-status {
+  position: absolute;
+  z-index: 3;
+  inset-inline: 0.5rem 4.5rem;
+  inset-block-start: 5rem;
+  padding: 0.5rem;
+  background: Canvas;
+  color: CanvasText;
+}

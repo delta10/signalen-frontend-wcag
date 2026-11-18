@@ -42,6 +42,15 @@ const MapDialog = ({
         <Dialog.Content
           className="grid grid-rows-[auto_1fr_auto] md:grid-cols-3 overflow-y-auto signalen-modal-dialog signalen-modal-dialog--cover-viewport"
           id="headlessui-portal-root"
+          onEscapeKeyDown={(event) => {
+            // Let the report popup handle Escape without dismissing the map.
+            if (
+              event.target instanceof Element &&
+              event.target.closest('.public-signal-popup')
+            ) {
+              event.preventDefault()
+            }
+          }}
         >
           <VisuallyHidden.Root>
             <Dialog.Title>
