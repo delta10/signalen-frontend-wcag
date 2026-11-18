@@ -133,6 +133,10 @@ h2.utrecht-heading-2 {
 }
 
 /* A11y styles */
+.utrecht-paragraph .utrecht-link:any-link {
+  text-decoration-line: underline;
+}
+
 .maplibregl-canvas:focus-visible,
 .dashed-focus:focus-visible {
   --_utrecht-focus-ring-box-shadow: 0 0 0 var(--utrecht-focus-outline-width, 0)
