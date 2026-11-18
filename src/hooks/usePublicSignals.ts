@@ -57,18 +57,35 @@ export const usePublicSignals = (
   const config = useConfig()
   const mainCategory = filter?.mainCategory
   const subCategory = filter?.subCategory
-  const enabled = !filter || Boolean(mainCategory && subCategory)
   const queryKey = JSON.stringify([
     config.baseUrlApi,
     mainCategory,
     subCategory,
   ])
   const [result, setResult] = useState<PublicSignalsResult | null>(null)
-  const [categories, setCategories] = useState<ParentCategory[]>([])
+  const [categoryResult, setCategoryResult] = useState<{
+    client: SignalsClient
+    categories: ParentCategory[]
+  } | null>(null)
   const client = useMemo(
     () => createSignalsClient(config.baseUrlApi),
     [config.baseUrlApi]
   )
+  const categories =
+    categoryResult?.client === client ? categoryResult.categories : []
+  const enabled =
+    !filter ||
+    Boolean(
+      mainCategory &&
+        subCategory &&
+        categories
+          .find((category) => category.slug === mainCategory)
+          ?.sub_categories?.some(
+            (category) =>
+              category.slug === subCategory &&
+              category.is_public_accessible === true
+          )
+    )
 
   useEffect(() => {
     let active = true
@@ -79,13 +96,17 @@ export const usePublicSignals = (
           // The generated client does not describe nested categories correctly.
           const parents = (response.results ??
             []) as unknown as ParentCategory[]
-          setCategories(
-            parents.filter((category) => category.is_public_accessible)
-          )
+          setCategoryResult({
+            client,
+            categories: parents.filter(
+              (category) => category.is_public_accessible
+            ),
+          })
         }
       })
       .catch(() => {
-        // Reports remain usable with the fallback icon if category icons fail.
+        // The overview can still show reports, but the picker needs to verify
+        // that the selected subcategory is public before requesting reports.
       })
     return () => {
       active = false

@@ -79,6 +79,35 @@ const report = {
   },
 }
 
+const roadsCategory = {
+  slug: 'wegen-verkeer-en-straatmeubilair',
+  is_public_accessible: true,
+  configuration: { show_children_in_filter: true },
+  _links: { 'sia:icon': { href: '/parent.svg' } },
+  sub_categories: [
+    {
+      slug: 'openbare-verlichting',
+      is_public_accessible: true,
+      _links: { 'sia:icon': { href: '/lighting.svg' } },
+    },
+    { slug: 'onderhoud-weg', is_public_accessible: true },
+    { slug: 'intern', is_public_accessible: false },
+  ],
+}
+
+const categoryResults = {
+  results: [
+    roadsCategory,
+    {
+      slug: 'ander-domein',
+      is_public_accessible: true,
+      sub_categories: [
+        { slug: 'openbare-verlichting', is_public_accessible: true },
+      ],
+    },
+  ],
+}
+
 function deferred<T>() {
   let resolve!: (value: T) => void
   let reject!: (error: Error) => void
@@ -141,24 +170,7 @@ beforeEach(() => {
   api.v1PublicSignalsGeographyRetrieve.mockReturnValue(
     response({ features: [report] })
   )
-  api.v1PublicTermsCategoriesList.mockReturnValue(
-    response({
-      results: [
-        {
-          slug: 'wegen-verkeer-en-straatmeubilair',
-          is_public_accessible: true,
-          configuration: { show_children_in_filter: true },
-          _links: { 'sia:icon': { href: '/parent.svg' } },
-          sub_categories: [
-            {
-              slug: 'openbare-verlichting',
-              _links: { 'sia:icon': { href: '/lighting.svg' } },
-            },
-          ],
-        },
-      ],
-    })
-  )
+  api.v1PublicTermsCategoriesList.mockReturnValue(response(categoryResults))
 })
 
 it('loads reports for the initial bounds, including an already loaded map, and uses category icons', async () => {
@@ -243,6 +255,9 @@ it('updates after moving the map and ignores an older response even when cancell
     .mockReturnValueOnce(old.request)
     .mockReturnValueOnce(latest.request)
   const { unmount } = renderLayer()
+  await waitFor(() =>
+    expect(api.v1PublicSignalsGeographyRetrieve).toHaveBeenCalledTimes(1)
+  )
   map.getBounds.mockReturnValue(bounds(4.84))
   // Do not await the pending network request from the event handler.
   act(() => {
@@ -283,9 +298,18 @@ it('updates after moving the map and ignores an older response even when cancell
   expect(map.off.mock.calls.map(([name]) => name)).toEqual(['load', 'moveend'])
 })
 
-it('filters invalid and duplicate reports and keeps a fallback marker if category icons are unavailable', async () => {
+it('filters invalid and duplicate reports and keeps a fallback marker if the subcategory has no icon', async () => {
   api.v1PublicTermsCategoriesList.mockReturnValue(
-    Object.assign(Promise.reject(new Error('unavailable')), { cancel: vi.fn() })
+    response({
+      results: [
+        {
+          ...roadsCategory,
+          sub_categories: [
+            { slug: 'openbare-verlichting', is_public_accessible: true },
+          ],
+        },
+      ],
+    })
   )
   api.v1PublicSignalsGeographyRetrieve.mockReturnValue(
     response({
@@ -310,6 +334,9 @@ it('reports a loading failure and retries the same bounds without blocking locat
   const failed = deferred<never>()
   api.v1PublicSignalsGeographyRetrieve.mockReturnValueOnce(failed.request)
   renderLayer()
+  await waitFor(() =>
+    expect(api.v1PublicSignalsGeographyRetrieve).toHaveBeenCalledTimes(1)
+  )
   await act(async () => failed.reject(new Error('unavailable')))
   expect(screen.getByRole('status')).toHaveTextContent(
     'U kunt wel een locatie kiezen.'
@@ -424,6 +451,9 @@ it('ignores a late response from a previously chosen category', async () => {
     .mockReturnValueOnce(previous.request)
     .mockReturnValueOnce(current.request)
   renderLayer()
+  await waitFor(() =>
+    expect(api.v1PublicSignalsGeographyRetrieve).toHaveBeenCalledTimes(1)
+  )
   act(() => selectCategory('wegen-verkeer-en-straatmeubilair', 'onderhoud-weg'))
   const currentReport = {
     ...report,
@@ -464,3 +494,41 @@ it.each([
     expect(screen.queryByTestId('public-marker')).not.toBeInTheDocument()
   }
 )
+
+it('skips reports for a non-public subcategory under a public main category', async () => {
+  const categories = deferred<typeof categoryResults>()
+  api.v1PublicTermsCategoriesList.mockReturnValue(categories.request)
+  selectCategory(roadsCategory.slug, 'intern')
+  renderLayer()
+  expect(api.v1PublicSignalsGeographyRetrieve).not.toHaveBeenCalled()
+
+  await act(async () => categories.resolve(categoryResults))
+  await emit('moveend')
+  expect(api.v1PublicSignalsGeographyRetrieve).not.toHaveBeenCalled()
+  expect(screen.queryByRole('status')).not.toBeInTheDocument()
+
+  act(() => selectCategory(roadsCategory.slug, 'openbare-verlichting'))
+  fireEvent.click(
+    await screen.findByRole('button', {
+      name: 'Bestaande melding: Openbare verlichting',
+    })
+  )
+  expect(screen.getByTestId('public-popup')).toBeInTheDocument()
+
+  act(() => selectCategory(roadsCategory.slug, 'intern'))
+  expect(api.v1PublicSignalsGeographyRetrieve).toHaveBeenCalledTimes(1)
+  expect(screen.queryByTestId('public-marker')).not.toBeInTheDocument()
+  expect(screen.queryByTestId('public-popup')).not.toBeInTheDocument()
+  expect(screen.queryByRole('status')).not.toBeInTheDocument()
+})
+
+it('waits for category metadata before requesting reports even when the subcategory is public', async () => {
+  const categories = deferred<typeof categoryResults>()
+  api.v1PublicTermsCategoriesList.mockReturnValue(categories.request)
+  renderLayer()
+  expect(api.v1PublicSignalsGeographyRetrieve).not.toHaveBeenCalled()
+
+  await act(async () => categories.resolve(categoryResults))
+  expect(api.v1PublicSignalsGeographyRetrieve).toHaveBeenCalledTimes(1)
+  expect(screen.getByTestId('public-marker')).toBeInTheDocument()
+})

@@ -96,10 +96,10 @@ Map settings are configured at `base.map`.
 The desktop and mobile location pickers automatically show public reports from
 `/signals/v1/public/signals/geography/` for the selected main category and
 subcategory within the visible map area. Both category slugs and the map bounds
-are sent to the API. Reports refresh after panning, zooming or changing category;
-no reports are requested until both categories are available. Opening a report
-shows its category and date without
-changing the selected location or selected assets. Category icons come from the
+are sent to the API once the public categories endpoint confirms the selected
+subcategory is public. Reports refresh after panning, zooming or changing
+category. Opening a report shows its category and date without changing the
+selected location or selected assets. Category icons come from the
 public categories endpoint; a fallback marker is used if an icon is unavailable.
 These reports are separate from the custom layers below and do not require a
 `base.map.layers` entry.
