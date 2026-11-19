@@ -29,6 +29,7 @@
     },
     "map": {
       "map_heading": "Choose your location",
+      "map_canvas_label": "Map for choosing a report location",
       "map_label": "Where is the location?",
       "choose_this_location": "Use this location",
       "choose_this_location_no_asset_but_address": "Continue without {object} but with address",
@@ -68,6 +69,7 @@
       "search_location_label": "Search by road or street name, road number or hectometer post number",
       "search_result_outside_area": "This location is outside the allowed area. The map has zoomed to this result. Choose a location inside the allowed area to continue.",
       "pinned_location": "The location is pinned on the map",
+      "location_status_address": "Selected location: {address}.",
       "back_to_map": "Back to the map",
       "show_list": "Show {name} list",
       "toggle_fullscreen_on": "Show the map on fullscreen",

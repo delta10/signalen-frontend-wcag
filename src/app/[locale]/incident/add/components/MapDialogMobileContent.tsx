@@ -33,7 +33,6 @@ import * as Dialog from '@radix-ui/react-dialog'
 import { useFormStore } from '@/store/form_store'
 import clsx from 'clsx'
 import MapExplainerAccordion from '@/app/[locale]/incident/add/components/questions/MapExplainerAccordion'
-import { setCurrentLocation } from '@/lib/utils/LocationUtils'
 import { FeatureTypeIcon } from '@/app/[locale]/incident/add/components/FeatureTypeIcon'
 import { ExtendedFeature } from '@/types/map'
 import FeatureTypeLegend, {
@@ -72,10 +71,11 @@ const MapDialogMobileContent = ({
     config,
     viewState,
     setViewState,
-    marker,
     updatePosition,
-    isMapSelected,
     setIsMapSelected,
+    locationMarker,
+    locationStatus,
+    selectCurrentLocation,
     objectDisplayName,
     featureList,
     assetSelectFeatureLabel,
@@ -132,6 +132,9 @@ const MapDialogMobileContent = ({
 
   return (
     <>
+      <div role="status" aria-atomic="true" className="sr-only">
+        <span key={locationMarker?.join(',')}>{locationStatus}</span>
+      </div>
       <AlertDialog
         type="error"
         ref={dialogRef}
@@ -267,6 +270,7 @@ const MapDialogMobileContent = ({
             scrollZoom={!(width !== 0 && width < 768)}
             attributionControl={false}
             locale={{
+              'Map.Title': t('map_canvas_label'),
               'AttributionControl.ToggleAttribution': t('toggle_attribution'),
             }}
             maxBounds={[
@@ -282,14 +286,14 @@ const MapDialogMobileContent = ({
               }
             />
             {/* Address or selected point on map marker */}
-            {marker.length === 2 &&
-              marker[0] !== 0 &&
-              marker[1] !== 0 &&
-              (isMapSelected === null || isMapSelected) && (
-                <Marker latitude={marker[0]} longitude={marker[1]}>
-                  <MapMarker />
-                </Marker>
-              )}
+            {locationMarker && (
+              <Marker
+                latitude={locationMarker[0]}
+                longitude={locationMarker[1]}
+              >
+                <MapMarker />
+              </Marker>
+            )}
             {/* Show available features assets on the map */}
             {onMapReady &&
               dialogMap &&
@@ -343,15 +347,7 @@ const MapDialogMobileContent = ({
             mobileCurrentLocationControl={
               <Button
                 purpose="subtle"
-                onClick={() =>
-                  setCurrentLocation(
-                    config,
-                    updatePosition,
-                    setError,
-                    dialogRef,
-                    t
-                  )
-                }
+                onClick={selectCurrentLocation}
                 className="map-icon-button"
                 iconOnly
                 iconStart={<IconCurrentLocation />}
