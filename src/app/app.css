@@ -31,6 +31,13 @@
   --utrecht-paragraph-color: currentColor;
 }
 
+.organization-theme .utrecht-alert {
+  border-inline-start-width: var(
+    --utrecht-alert-border-inline-start-width,
+    var(--utrecht-alert-border-width, 0)
+  );
+}
+
 .utrecht-link.utrecht-link-list__link {
   display: flex;
   align-items: center;

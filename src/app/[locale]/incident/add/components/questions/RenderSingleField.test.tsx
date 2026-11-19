@@ -226,12 +226,25 @@ const VisibilityControl = () => {
 }
 
 test.each([
-  { validators: undefined, variant: 'info' },
-  { validators: 'isBlocking', variant: 'error' },
-  { validators: ['isBlocking'], variant: 'error' },
+  { type: undefined, validators: undefined, style: 'utrecht-alert--info' },
+  {
+    type: 'info',
+    validators: undefined,
+    style: 'utrecht-spotlight-section--info',
+  },
+  {
+    type: 'info',
+    validators: 'isBlocking',
+    style: 'utrecht-alert--error',
+  },
+  {
+    type: undefined,
+    validators: ['isBlocking'],
+    style: 'utrecht-alert--error',
+  },
 ])(
-  'renders plain text as $variant for validators $validators',
-  ({ validators, variant }) => {
+  'renders plain text with $style for type $type and validators $validators',
+  ({ type, validators, style }) => {
     const setIsBlocking = vi.fn()
     renderWithForm(
       <RenderSingleField
@@ -239,17 +252,19 @@ test.each([
           key: 'message',
           field_type: FieldTypes.PLAIN_TEXT,
           required: false,
-          meta: { value: 'Message for the resident', validators },
+          meta: { type, value: 'Message for the resident', validators },
         }}
         setIsBlocking={setIsBlocking}
       />,
       {}
     )
-    expect(
-      screen.getByText('Message for the resident').closest('.utrecht-alert')
-    ).toHaveClass(`utrecht-alert--${variant}`)
-    if (variant === 'error')
-      expect(setIsBlocking).toHaveBeenLastCalledWith(true)
+    const isBlocking = style === 'utrecht-alert--error'
+    const message = screen.getByTestId(
+      isBlocking ? 'plain-text-hard-stop' : 'plain-text-information'
+    )
+    expect(message).toHaveClass(style)
+    expect(message).toHaveTextContent('Message for the resident')
+    if (isBlocking) expect(setIsBlocking).toHaveBeenLastCalledWith(true)
   }
 )
 

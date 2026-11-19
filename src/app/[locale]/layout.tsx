@@ -5,6 +5,7 @@ import { Root } from '@/components'
 import localFont from 'next/font/local'
 import type { PropsWithChildren } from 'react'
 import { getServerConfig } from '@/services/config/config'
+import { getOrganizationTheme } from '@/services/config/theme'
 import { AppConfig } from '@/types/config'
 import { ConfigProvider } from '@/contexts/ConfigContext'
 
@@ -24,11 +25,8 @@ const LocaleLayout = ({
   params: { locale: string }
 }>) => {
   if (!getAllAvailableLocales().includes(locale)) notFound()
-  const configuredTheme = config.base.theme ?? config.base.municipality
-  const safeTheme = /^[a-z0-9-]+$/i.test(configuredTheme)
-    ? configuredTheme
-    : 'default'
-  const organizationThemeHref = `/assets/organizations/${safeTheme}/theme.css`
+  const theme = getOrganizationTheme(config.base)
+  const organizationThemeHref = `/assets/organizations/${theme}/theme.css`
   const googleFontStylesheetUrl = config.base.fonts?.googleStylesheetUrl
 
   return (

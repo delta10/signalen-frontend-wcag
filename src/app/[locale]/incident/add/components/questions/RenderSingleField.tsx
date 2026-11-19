@@ -24,6 +24,10 @@ export const RenderSingleField = ({ field, setIsBlocking }: props) => {
   )
   const watchValues = useWatch({ control })
   const shouldRender = evaluateConditions(field.meta, watchValues)
+  const validators = field.meta.validators
+  const isBlocking =
+    validators === 'isBlocking' ||
+    (Array.isArray(validators) && validators.includes('isBlocking'))
   const defaultValue = useMemo(
     () =>
       getDefaultValue(
@@ -40,7 +44,7 @@ export const RenderSingleField = ({ field, setIsBlocking }: props) => {
       <RadioInput field={field} />
     ),
     [FieldTypes.PLAIN_TEXT]: (field: PublicQuestion) => (
-      <PlainText field={field} />
+      <PlainText field={field} isBlocking={isBlocking} />
     ),
     [FieldTypes.TEXT_INPUT]: (field: PublicQuestion) => (
       <TextInput field={field} />
@@ -74,15 +78,9 @@ export const RenderSingleField = ({ field, setIsBlocking }: props) => {
   // control hard stop
   useEffect(() => {
     if (field.meta.validators) {
-      const isBlocking = !!(
-        field.meta.validators === 'isBlocking' ||
-        (typeof field.meta.validators === 'object' &&
-          field.meta.validators.includes('isBlocking'))
-      )
-
-      setIsBlocking(shouldRender ? isBlocking : false)
+      setIsBlocking(shouldRender && isBlocking)
     }
-  }, [field, shouldRender, setIsBlocking])
+  }, [field, isBlocking, shouldRender, setIsBlocking])
 
   if (!shouldRender) {
     return null
