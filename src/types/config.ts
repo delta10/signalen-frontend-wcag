@@ -76,7 +76,7 @@ export type AppConfig = {
     municipality: string
     /**
      * Theme folder name under /public/assets/organizations/<theme>/theme.css
-     * Falls back to `municipality` when omitted.
+     * Uses `municipality` when omitted, then `default` if its tokens or CSS are missing.
      */
     theme?: string
     municipality_display_name: string

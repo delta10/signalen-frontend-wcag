@@ -27,8 +27,10 @@ const buildOrganization = (organization) => {
 if (fileName === 'base.json' || fileName === 'overrides.json') {
   const organizations = fs
     .readdirSync(organizationsDir)
-    .filter((entry) => entry.endsWith('.json'))
+    .filter((entry) => entry.endsWith('.json') && entry !== 'default.json')
     .map((entry) => path.basename(entry, '.json'))
+
+  organizations.unshift('default')
 
   console.log(
     `${fileName} gewijzigd, build voor alle organisaties: ${organizations.join(', ')}`
