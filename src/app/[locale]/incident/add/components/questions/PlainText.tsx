@@ -1,13 +1,19 @@
 import { QuestionField } from '@/types/form'
-import { Alert } from '@/components'
+import { Alert, SpotlightSection } from '@/components'
 import { RenderMarkdown } from '@/components/ui/RenderMarkdown'
 
-interface PlainTextProps extends QuestionField {}
+export const PlainText = ({ field }: QuestionField) => {
+  const isInformation = ['info', 'citation', 'disclaimer'].includes(
+    field.meta.type
+  )
+  const Message = isInformation ? SpotlightSection : Alert
 
-export const PlainText = ({ field }: PlainTextProps) => {
   return field.meta.value ? (
-    <Alert type="error" data-testid="plain-text-hard-stop">
+    <Message
+      type={isInformation ? 'info' : 'error'}
+      data-testid="plain-text-hard-stop"
+    >
       <RenderMarkdown text={field.meta.value} />
-    </Alert>
+    </Message>
   ) : null
 }

@@ -51,6 +51,7 @@
     "basis.text.font-size.2xl": "1.875rem",
     "basis.text.font-size.3xl": "2rem",
     "basis.form-control.accent-color": "{basis.color.accent-1.color-default}",
+    "utrecht.heading-1.font-size": "{basis.text.font-size.3xl}",
     "utrecht.listbox.background-color": "#ffffff",
     "utrecht.listbox.border-color": "{basis.form-control.border-color}",
     "utrecht.listbox.border-radius": "{basis.form-control.border-radius}",
@@ -87,6 +88,8 @@
     "utrecht.spotlight-section.info.color": "{basis.color.info.color-document}",
     "utrecht.page-footer.background-color": "{basis.color.accent-1-inverse.bg-default}",
     "utrecht.page-footer.color": "{basis.color.accent-1-inverse.color-default}",
+    "nl.button.padding-block-start": "{basis.space.block.xl}",
+    "nl.button.padding-block-end": "{basis.space.block.xl}",
     "nl.button.default.background-color": "#ffffff",
     "nl.button.default.color": "{basis.color.action-1.color-default}",
     "nl.button.default.border-color": "{basis.color.action-1.color-default}",
@@ -108,6 +111,7 @@
     "nl.button.secondary.hover.border-color": "{basis.color.action-1.color-hover}"
   },
   "dark": {
+    "basis.color.accent-1.color-default": "#dd0000",
     "basis.color.accent-1-inverse.bg-default": "#11213d",
     "basis.color.accent-1-inverse.color-default": "#f5f5f5",
     "basis.color.action-1.color-default": "#f5f5f5",
@@ -118,8 +122,9 @@
     "basis.heading.color": "#ffffff",
     "basis.color.info.color-document": "#f5f5f5",
     "basis.color.info.bg-default": "#1d2532",
-    "nl.button.subtle.color": "{basis.color.action-1.color-default}",
-    "nl.button.subtle.hover.color": "{basis.color.action-1.color-hover}",
+    "nl.button.default.background-color": "{basis.color.default.bg-document}",
+    "nl.button.subtle.hover.color": "{basis.color.action-1.color-default}",
+    "nl.button.subtle.hover.border-color": "{basis.color.action-1.color-default}",
     "basis.focus.background-color": "{basis.color.accent-1-inverse.bg-default}",
     "basis.focus.color": "#ffffff",
     "basis.focus.outline-color": "#e96d1b"
