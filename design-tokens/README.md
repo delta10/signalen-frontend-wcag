@@ -30,6 +30,32 @@ daarna de gedeelde en organisatie `dark` overrides toe.
 }
 ```
 
+## Utrecht: zelfstandig organisatiebestand
+
+`organizations/utrecht.json` gebruikt hetzelfde `light`/`dark`-formaat als de
+andere organisaties. Kleuren en typografie zijn gebaseerd op de eerder bekeken
+Utrecht-tokenversie 7.0.0; de applicatie gebruikt de bestaande basisset en
+`overrides.json` voor componenten en layout. Het is een lokaal onderhouden thema,
+geen volledige kopie van het Utrecht-package. Nieuwe Utrecht-versies worden niet
+automatisch overgenomen.
+
+De componenttokens verwijzen waar mogelijk naar `basis.*`, zodat light en dark
+dezelfde relaties delen. De donkere informatievlakken zijn afgestemd op leesbare
+tekst en links. Zolang Utrecht in beide modi dezelfde lichte kaart gebruikt,
+houdt `utrecht.map-marker.background-color` de kaartpin in beide modi zwart.
+
+Build en activeer het thema:
+
+1. Run `npm run tokens:build:org -- utrecht`.
+2. Zet `base.theme` in `config.json` op `"utrecht"`.
+3. Laad Noto Sans via de bestaande instelling `base.fonts.googleStylesheetUrl`,
+   zoals in de meegeleverde configuratie. Zonder die stylesheet wordt Arial
+   gebruikt als fallback.
+4. Controleer light en dark mode op desktop en mobiel.
+
+De meegeleverde `config.json` gebruikt Meierijstad-demodata voor een lokale
+Utrecht-preview. Zie `config.md` voor de omgevingsinstellingen.
+
 ## Buildgedrag
 
 `npm run tokens:build:org` bouwt `default` en, als er een themabestand is,

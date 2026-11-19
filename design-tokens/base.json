@@ -52394,6 +52394,12 @@
         }
       }
     },
+    "map-marker": {
+      "background-color": {
+        "$type": "color",
+        "$value": "currentColor"
+      }
+    },
     "root": {
       "background-color": {
         "key": "{utrecht.root.background-color}",
