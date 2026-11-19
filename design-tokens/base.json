@@ -9,14 +9,14 @@
             "nl.nldesignsystem.color-scale-position": 1
           },
           "$type": "color",
-          "$value": "#fbfcfd",
+          "$value": "{basis.color.default.bg-document}",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "background-color",
               "nl.nldesignsystem.color-scale-position": 1
             },
             "$type": "color",
-            "$value": "#fbfcfd",
+            "$value": "{basis.color.default.bg-document}",
             "key": "{basis.color.accent-1.bg-document}"
           },
           "name": "bg-document",
@@ -35,14 +35,14 @@
             "nl.nldesignsystem.color-scale-position": 2
           },
           "$type": "color",
-          "$value": "#f4f7fa",
+          "$value": "{basis.color.default.bg-subtle}",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "background-color",
               "nl.nldesignsystem.color-scale-position": 2
             },
             "$type": "color",
-            "$value": "#f4f7fa",
+            "$value": "{basis.color.default.bg-subtle}",
             "key": "{basis.color.accent-1.bg-subtle}"
           },
           "name": "bg-subtle",
@@ -61,14 +61,14 @@
             "nl.nldesignsystem.color-scale-position": 3
           },
           "$type": "color",
-          "$value": "#ecf1f7",
+          "$value": "{basis.color.default.bg-default}",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "background-color",
               "nl.nldesignsystem.color-scale-position": 3
             },
             "$type": "color",
-            "$value": "#ecf1f7",
+            "$value": "{basis.color.default.bg-default}",
             "key": "{basis.color.accent-1.bg-default}"
           },
           "name": "bg-default",
@@ -87,14 +87,14 @@
             "nl.nldesignsystem.color-scale-position": 4
           },
           "$type": "color",
-          "$value": "#e4ecf4",
+          "$value": "{basis.color.default.bg-hover}",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "background-color",
               "nl.nldesignsystem.color-scale-position": 4
             },
             "$type": "color",
-            "$value": "#e4ecf4",
+            "$value": "{basis.color.default.bg-hover}",
             "key": "{basis.color.accent-1.bg-hover}"
           },
           "name": "bg-hover",
@@ -113,14 +113,14 @@
             "nl.nldesignsystem.color-scale-position": 5
           },
           "$type": "color",
-          "$value": "#dde6f1",
+          "$value": "{basis.color.default.bg-active}",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "background-color",
               "nl.nldesignsystem.color-scale-position": 5
             },
             "$type": "color",
-            "$value": "#dde6f1",
+            "$value": "{basis.color.default.bg-active}",
             "key": "{basis.color.accent-1.bg-active}"
           },
           "name": "bg-active",
@@ -139,14 +139,14 @@
             "nl.nldesignsystem.color-scale-position": 6
           },
           "$type": "color",
-          "$value": "#b0c6df",
+          "$value": "{basis.color.default.border-subtle}",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "border-color",
               "nl.nldesignsystem.color-scale-position": 6
             },
             "$type": "color",
-            "$value": "#b0c6df",
+            "$value": "{basis.color.default.border-subtle}",
             "key": "{basis.color.accent-1.border-subtle}"
           },
           "name": "border-subtle",
@@ -204,7 +204,7 @@
             "nl.nldesignsystem.color-scale-position": 7
           },
           "$type": "color",
-          "$value": "#5c89be",
+          "$value": "{basis.color.default.border-default}",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "border-color",
@@ -250,7 +250,7 @@
               "nl.nldesignsystem.color-scale-position": 7
             },
             "$type": "color",
-            "$value": "#5c89be",
+            "$value": "{basis.color.default.border-default}",
             "key": "{basis.color.accent-1.border-default}"
           },
           "name": "border-default",
@@ -308,7 +308,7 @@
             "nl.nldesignsystem.color-scale-position": 8
           },
           "$type": "color",
-          "$value": "#4e7fb8",
+          "$value": "{basis.color.default.border-hover}",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "border-color",
@@ -354,7 +354,7 @@
               "nl.nldesignsystem.color-scale-position": 8
             },
             "$type": "color",
-            "$value": "#4e7fb8",
+            "$value": "{basis.color.default.border-hover}",
             "key": "{basis.color.accent-1.border-hover}"
           },
           "name": "border-hover",
@@ -412,7 +412,7 @@
             "nl.nldesignsystem.color-scale-position": 9
           },
           "$type": "color",
-          "$value": "#3f74b2",
+          "$value": "{basis.color.default.border-active}",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "border-color",
@@ -458,7 +458,7 @@
               "nl.nldesignsystem.color-scale-position": 9
             },
             "$type": "color",
-            "$value": "#3f74b2",
+            "$value": "{basis.color.default.border-active}",
             "key": "{basis.color.accent-1.border-active}"
           },
           "name": "border-active",
@@ -477,14 +477,14 @@
             "nl.nldesignsystem.color-scale-position": 10
           },
           "$type": "color",
-          "$value": "#2964aa",
+          "$value": "{basis.color.default.color-subtle}",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "color",
               "nl.nldesignsystem.color-scale-position": 10
             },
             "$type": "color",
-            "$value": "#2964aa",
+            "$value": "{basis.color.default.color-subtle}",
             "key": "{basis.color.accent-1.color-subtle}"
           },
           "name": "color-subtle",
@@ -542,7 +542,7 @@
             "nl.nldesignsystem.color-scale-position": 11
           },
           "$type": "color",
-          "$value": "#1b59a4",
+          "$value": "#00205c",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "color",
@@ -588,7 +588,7 @@
               "nl.nldesignsystem.color-scale-position": 11
             },
             "$type": "color",
-            "$value": "#1b59a4",
+            "$value": "#00205c",
             "key": "{basis.color.accent-1.color-default}"
           },
           "name": "color-default",
@@ -646,7 +646,7 @@
             "nl.nldesignsystem.color-scale-position": 12
           },
           "$type": "color",
-          "$value": "#04499a",
+          "$value": "#001638",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "color",
@@ -692,7 +692,7 @@
               "nl.nldesignsystem.color-scale-position": 12
             },
             "$type": "color",
-            "$value": "#04499a",
+            "$value": "#001638",
             "key": "{basis.color.accent-1.color-hover}"
           },
           "name": "color-hover",
@@ -750,7 +750,7 @@
             "nl.nldesignsystem.color-scale-position": 13
           },
           "$type": "color",
-          "$value": "#003b81",
+          "$value": "#000e29",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "color",
@@ -796,7 +796,7 @@
               "nl.nldesignsystem.color-scale-position": 13
             },
             "$type": "color",
-            "$value": "#003b81",
+            "$value": "#000e29",
             "key": "{basis.color.accent-1.color-active}"
           },
           "name": "color-active",
@@ -854,7 +854,7 @@
             "nl.nldesignsystem.color-scale-position": 14
           },
           "$type": "color",
-          "$value": "#001b3c",
+          "$value": "{basis.color.default.color-document}",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "color",
@@ -900,7 +900,7 @@
               "nl.nldesignsystem.color-scale-position": 14
             },
             "$type": "color",
-            "$value": "#001b3c",
+            "$value": "{basis.color.default.color-document}",
             "key": "{basis.color.accent-1.color-document}"
           },
           "name": "color-document",
@@ -921,14 +921,14 @@
             "nl.nldesignsystem.color-scale-position": 1
           },
           "$type": "color",
-          "$value": "#00234d",
+          "$value": "{basis.color.default-inverse.bg-document}",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "background-color",
               "nl.nldesignsystem.color-scale-position": 1
             },
             "$type": "color",
-            "$value": "#00234d",
+            "$value": "{basis.color.default-inverse.bg-document}",
             "key": "{basis.color.accent-1-inverse.bg-document}"
           },
           "name": "bg-document",
@@ -947,14 +947,14 @@
             "nl.nldesignsystem.color-scale-position": 2
           },
           "$type": "color",
-          "$value": "#001b3c",
+          "$value": "{basis.color.default-inverse.bg-subtle}",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "background-color",
               "nl.nldesignsystem.color-scale-position": 2
             },
             "$type": "color",
-            "$value": "#001b3c",
+            "$value": "{basis.color.default-inverse.bg-subtle}",
             "key": "{basis.color.accent-1-inverse.bg-subtle}"
           },
           "name": "bg-subtle",
@@ -973,14 +973,14 @@
             "nl.nldesignsystem.color-scale-position": 3
           },
           "$type": "color",
-          "$value": "#1b59a4",
+          "$value": "{basis.color.default.color-default}",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "background-color",
               "nl.nldesignsystem.color-scale-position": 3
             },
             "$type": "color",
-            "$value": "#1b59a4",
+            "$value": "{basis.color.default.color-default}",
             "key": "{basis.color.accent-1-inverse.bg-default}"
           },
           "name": "bg-default",
@@ -999,14 +999,14 @@
             "nl.nldesignsystem.color-scale-position": 4
           },
           "$type": "color",
-          "$value": "#04499a",
+          "$value": "{basis.color.default.color-hover}",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "background-color",
               "nl.nldesignsystem.color-scale-position": 4
             },
             "$type": "color",
-            "$value": "#04499a",
+            "$value": "{basis.color.default.color-hover}",
             "key": "{basis.color.accent-1-inverse.bg-hover}"
           },
           "name": "bg-hover",
@@ -1025,14 +1025,14 @@
             "nl.nldesignsystem.color-scale-position": 5
           },
           "$type": "color",
-          "$value": "#003b81",
+          "$value": "{basis.color.default.color-active}",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "background-color",
               "nl.nldesignsystem.color-scale-position": 5
             },
             "$type": "color",
-            "$value": "#003b81",
+            "$value": "{basis.color.default.color-active}",
             "key": "{basis.color.accent-1-inverse.bg-active}"
           },
           "name": "bg-active",
@@ -1051,14 +1051,14 @@
             "nl.nldesignsystem.color-scale-position": 6
           },
           "$type": "color",
-          "$value": "#004494",
+          "$value": "{basis.color.default-inverse.border-subtle}",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "border-color",
               "nl.nldesignsystem.color-scale-position": 6
             },
             "$type": "color",
-            "$value": "#004494",
+            "$value": "{basis.color.default-inverse.border-subtle}",
             "key": "{basis.color.accent-1-inverse.border-subtle}"
           },
           "name": "border-subtle",
@@ -1116,7 +1116,7 @@
             "nl.nldesignsystem.color-scale-position": 7
           },
           "$type": "color",
-          "$value": "#b8cbe2",
+          "$value": "{basis.color.default-inverse.border-default}",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "border-color",
@@ -1162,7 +1162,7 @@
               "nl.nldesignsystem.color-scale-position": 7
             },
             "$type": "color",
-            "$value": "#b8cbe2",
+            "$value": "{basis.color.default-inverse.border-default}",
             "key": "{basis.color.accent-1-inverse.border-default}"
           },
           "name": "border-default",
@@ -1220,7 +1220,7 @@
             "nl.nldesignsystem.color-scale-position": 8
           },
           "$type": "color",
-          "$value": "#c6d6e8",
+          "$value": "{basis.color.default-inverse.border-hover}",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "border-color",
@@ -1266,7 +1266,7 @@
               "nl.nldesignsystem.color-scale-position": 8
             },
             "$type": "color",
-            "$value": "#c6d6e8",
+            "$value": "{basis.color.default-inverse.border-hover}",
             "key": "{basis.color.accent-1-inverse.border-hover}"
           },
           "name": "border-hover",
@@ -1324,7 +1324,7 @@
             "nl.nldesignsystem.color-scale-position": 9
           },
           "$type": "color",
-          "$value": "#d5e1ee",
+          "$value": "{basis.color.default-inverse.border-active}",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "border-color",
@@ -1370,7 +1370,7 @@
               "nl.nldesignsystem.color-scale-position": 9
             },
             "$type": "color",
-            "$value": "#d5e1ee",
+            "$value": "{basis.color.default-inverse.border-active}",
             "key": "{basis.color.accent-1-inverse.border-active}"
           },
           "name": "border-active",
@@ -1389,14 +1389,14 @@
             "nl.nldesignsystem.color-scale-position": 10
           },
           "$type": "color",
-          "$value": "#b0c6df",
+          "$value": "{basis.color.default-inverse.color-subtle}",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "color",
               "nl.nldesignsystem.color-scale-position": 10
             },
             "$type": "color",
-            "$value": "#b0c6df",
+            "$value": "{basis.color.default-inverse.color-subtle}",
             "key": "{basis.color.accent-1-inverse.color-subtle}"
           },
           "name": "color-subtle",
@@ -1454,7 +1454,7 @@
             "nl.nldesignsystem.color-scale-position": 11
           },
           "$type": "color",
-          "$value": "#ffffff",
+          "$value": "{basis.color.default.bg-document}",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "color",
@@ -1500,7 +1500,7 @@
               "nl.nldesignsystem.color-scale-position": 11
             },
             "$type": "color",
-            "$value": "#ffffff",
+            "$value": "{basis.color.default.bg-document}",
             "key": "{basis.color.accent-1-inverse.color-default}"
           },
           "name": "color-default",
@@ -1558,7 +1558,7 @@
             "nl.nldesignsystem.color-scale-position": 12
           },
           "$type": "color",
-          "$value": "#ffffff",
+          "$value": "{basis.color.default.bg-document}",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "color",
@@ -1604,7 +1604,7 @@
               "nl.nldesignsystem.color-scale-position": 12
             },
             "$type": "color",
-            "$value": "#ffffff",
+            "$value": "{basis.color.default.bg-document}",
             "key": "{basis.color.accent-1-inverse.color-hover}"
           },
           "name": "color-hover",
@@ -1662,7 +1662,7 @@
             "nl.nldesignsystem.color-scale-position": 13
           },
           "$type": "color",
-          "$value": "#ffffff",
+          "$value": "{basis.color.default.bg-document}",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "color",
@@ -1708,7 +1708,7 @@
               "nl.nldesignsystem.color-scale-position": 13
             },
             "$type": "color",
-            "$value": "#ffffff",
+            "$value": "{basis.color.default.bg-document}",
             "key": "{basis.color.accent-1-inverse.color-active}"
           },
           "name": "color-active",
@@ -1766,7 +1766,7 @@
             "nl.nldesignsystem.color-scale-position": 14
           },
           "$type": "color",
-          "$value": "#ffffff",
+          "$value": "{basis.color.accent-1-inverse.color-default}",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "color",
@@ -1812,7 +1812,7 @@
               "nl.nldesignsystem.color-scale-position": 14
             },
             "$type": "color",
-            "$value": "#ffffff",
+            "$value": "{basis.color.accent-1-inverse.color-default}",
             "key": "{basis.color.accent-1-inverse.color-document}"
           },
           "name": "color-document",
@@ -11369,14 +11369,14 @@
             "nl.nldesignsystem.color-scale-position": 1
           },
           "$type": "color",
-          "$value": "#fcfcfc",
+          "$value": "#ffffff",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "background-color",
               "nl.nldesignsystem.color-scale-position": 1
             },
             "$type": "color",
-            "$value": "#fcfcfc",
+            "$value": "#ffffff",
             "key": "{basis.color.default.bg-document}"
           },
           "name": "bg-document",
@@ -11395,14 +11395,14 @@
             "nl.nldesignsystem.color-scale-position": 2
           },
           "$type": "color",
-          "$value": "#f6f6f6",
+          "$value": "#f5f5f5",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "background-color",
               "nl.nldesignsystem.color-scale-position": 2
             },
             "$type": "color",
-            "$value": "#f6f6f6",
+            "$value": "#f5f5f5",
             "key": "{basis.color.default.bg-subtle}"
           },
           "name": "bg-subtle",
@@ -11564,7 +11564,7 @@
             "nl.nldesignsystem.color-scale-position": 7
           },
           "$type": "color",
-          "$value": "#868686",
+          "$value": "#767676",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "border-color",
@@ -11610,7 +11610,7 @@
               "nl.nldesignsystem.color-scale-position": 7
             },
             "$type": "color",
-            "$value": "#868686",
+            "$value": "#767676",
             "key": "{basis.color.default.border-default}"
           },
           "name": "border-default",
@@ -11837,14 +11837,14 @@
             "nl.nldesignsystem.color-scale-position": 10
           },
           "$type": "color",
-          "$value": "#636363",
+          "$value": "#595959",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "color",
               "nl.nldesignsystem.color-scale-position": 10
             },
             "$type": "color",
-            "$value": "#636363",
+            "$value": "#595959",
             "key": "{basis.color.default.color-subtle}"
           },
           "name": "color-subtle",
@@ -11902,7 +11902,7 @@
             "nl.nldesignsystem.color-scale-position": 11
           },
           "$type": "color",
-          "$value": "#595959",
+          "$value": "#464646",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "color",
@@ -11948,7 +11948,7 @@
               "nl.nldesignsystem.color-scale-position": 11
             },
             "$type": "color",
-            "$value": "#595959",
+            "$value": "#464646",
             "key": "{basis.color.default.color-default}"
           },
           "name": "color-default",
@@ -12006,7 +12006,7 @@
             "nl.nldesignsystem.color-scale-position": 12
           },
           "$type": "color",
-          "$value": "#4b4b4b",
+          "$value": "#323232",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "color",
@@ -12052,7 +12052,7 @@
               "nl.nldesignsystem.color-scale-position": 12
             },
             "$type": "color",
-            "$value": "#4b4b4b",
+            "$value": "#323232",
             "key": "{basis.color.default.color-hover}"
           },
           "name": "color-hover",
@@ -12110,7 +12110,7 @@
             "nl.nldesignsystem.color-scale-position": 13
           },
           "$type": "color",
-          "$value": "#3e3e3e",
+          "$value": "#1b1b1b",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "color",
@@ -12156,7 +12156,7 @@
               "nl.nldesignsystem.color-scale-position": 13
             },
             "$type": "color",
-            "$value": "#3e3e3e",
+            "$value": "#1b1b1b",
             "key": "{basis.color.default.color-active}"
           },
           "name": "color-active",
@@ -12214,7 +12214,7 @@
             "nl.nldesignsystem.color-scale-position": 14
           },
           "$type": "color",
-          "$value": "#1b1b1b",
+          "$value": "#000000",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "color",
@@ -12260,7 +12260,7 @@
               "nl.nldesignsystem.color-scale-position": 14
             },
             "$type": "color",
-            "$value": "#1b1b1b",
+            "$value": "#000000",
             "key": "{basis.color.default.color-document}"
           },
           "name": "color-document",
@@ -16253,14 +16253,14 @@
             "nl.nldesignsystem.color-scale-position": 1
           },
           "$type": "color",
-          "$value": "#fbfcfd",
+          "$value": "{basis.color.default.bg-document}",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "background-color",
               "nl.nldesignsystem.color-scale-position": 1
             },
             "$type": "color",
-            "$value": "#fbfcfd",
+            "$value": "{basis.color.default.bg-document}",
             "key": "{basis.color.info.bg-document}"
           },
           "name": "bg-document",
@@ -16279,14 +16279,14 @@
             "nl.nldesignsystem.color-scale-position": 2
           },
           "$type": "color",
-          "$value": "#f4f7fa",
+          "$value": "{basis.color.default.bg-subtle}",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "background-color",
               "nl.nldesignsystem.color-scale-position": 2
             },
             "$type": "color",
-            "$value": "#f4f7fa",
+            "$value": "{basis.color.default.bg-subtle}",
             "key": "{basis.color.info.bg-subtle}"
           },
           "name": "bg-subtle",
@@ -16305,14 +16305,14 @@
             "nl.nldesignsystem.color-scale-position": 3
           },
           "$type": "color",
-          "$value": "#ecf1f7",
+          "$value": "{basis.color.default.bg-subtle}",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "background-color",
               "nl.nldesignsystem.color-scale-position": 3
             },
             "$type": "color",
-            "$value": "#ecf1f7",
+            "$value": "{basis.color.default.bg-subtle}",
             "key": "{basis.color.info.bg-default}"
           },
           "name": "bg-default",
@@ -16331,14 +16331,14 @@
             "nl.nldesignsystem.color-scale-position": 4
           },
           "$type": "color",
-          "$value": "#e4ecf4",
+          "$value": "{basis.color.default.bg-hover}",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "background-color",
               "nl.nldesignsystem.color-scale-position": 4
             },
             "$type": "color",
-            "$value": "#e4ecf4",
+            "$value": "{basis.color.default.bg-hover}",
             "key": "{basis.color.info.bg-hover}"
           },
           "name": "bg-hover",
@@ -16357,14 +16357,14 @@
             "nl.nldesignsystem.color-scale-position": 5
           },
           "$type": "color",
-          "$value": "#dde6f1",
+          "$value": "{basis.color.default.bg-active}",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "background-color",
               "nl.nldesignsystem.color-scale-position": 5
             },
             "$type": "color",
-            "$value": "#dde6f1",
+            "$value": "{basis.color.default.bg-active}",
             "key": "{basis.color.info.bg-active}"
           },
           "name": "bg-active",
@@ -16383,14 +16383,14 @@
             "nl.nldesignsystem.color-scale-position": 6
           },
           "$type": "color",
-          "$value": "#b0c6df",
+          "$value": "{basis.color.default.border-subtle}",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "border-color",
               "nl.nldesignsystem.color-scale-position": 6
             },
             "$type": "color",
-            "$value": "#b0c6df",
+            "$value": "{basis.color.default.border-subtle}",
             "key": "{basis.color.info.border-subtle}"
           },
           "name": "border-subtle",
@@ -16448,7 +16448,7 @@
             "nl.nldesignsystem.color-scale-position": 7
           },
           "$type": "color",
-          "$value": "#5c89be",
+          "$value": "{basis.color.default.border-default}",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "border-color",
@@ -16494,7 +16494,7 @@
               "nl.nldesignsystem.color-scale-position": 7
             },
             "$type": "color",
-            "$value": "#5c89be",
+            "$value": "{basis.color.default.border-default}",
             "key": "{basis.color.info.border-default}"
           },
           "name": "border-default",
@@ -16552,7 +16552,7 @@
             "nl.nldesignsystem.color-scale-position": 8
           },
           "$type": "color",
-          "$value": "#4e7fb8",
+          "$value": "{basis.color.default.border-hover}",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "border-color",
@@ -16598,7 +16598,7 @@
               "nl.nldesignsystem.color-scale-position": 8
             },
             "$type": "color",
-            "$value": "#4e7fb8",
+            "$value": "{basis.color.default.border-hover}",
             "key": "{basis.color.info.border-hover}"
           },
           "name": "border-hover",
@@ -16656,7 +16656,7 @@
             "nl.nldesignsystem.color-scale-position": 9
           },
           "$type": "color",
-          "$value": "#3f74b2",
+          "$value": "{basis.color.default.border-active}",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "border-color",
@@ -16702,7 +16702,7 @@
               "nl.nldesignsystem.color-scale-position": 9
             },
             "$type": "color",
-            "$value": "#3f74b2",
+            "$value": "{basis.color.default.border-active}",
             "key": "{basis.color.info.border-active}"
           },
           "name": "border-active",
@@ -16721,14 +16721,14 @@
             "nl.nldesignsystem.color-scale-position": 10
           },
           "$type": "color",
-          "$value": "#2964aa",
+          "$value": "{basis.color.default.color-subtle}",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "color",
               "nl.nldesignsystem.color-scale-position": 10
             },
             "$type": "color",
-            "$value": "#2964aa",
+            "$value": "{basis.color.default.color-subtle}",
             "key": "{basis.color.info.color-subtle}"
           },
           "name": "color-subtle",
@@ -16786,7 +16786,7 @@
             "nl.nldesignsystem.color-scale-position": 11
           },
           "$type": "color",
-          "$value": "#1b59a4",
+          "$value": "{basis.color.accent-1.color-default}",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "color",
@@ -16832,7 +16832,7 @@
               "nl.nldesignsystem.color-scale-position": 11
             },
             "$type": "color",
-            "$value": "#1b59a4",
+            "$value": "{basis.color.accent-1.color-default}",
             "key": "{basis.color.info.color-default}"
           },
           "name": "color-default",
@@ -16890,7 +16890,7 @@
             "nl.nldesignsystem.color-scale-position": 12
           },
           "$type": "color",
-          "$value": "#04499a",
+          "$value": "{basis.color.default.color-hover}",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "color",
@@ -16936,7 +16936,7 @@
               "nl.nldesignsystem.color-scale-position": 12
             },
             "$type": "color",
-            "$value": "#04499a",
+            "$value": "{basis.color.default.color-hover}",
             "key": "{basis.color.info.color-hover}"
           },
           "name": "color-hover",
@@ -16994,7 +16994,7 @@
             "nl.nldesignsystem.color-scale-position": 13
           },
           "$type": "color",
-          "$value": "#003b81",
+          "$value": "{basis.color.default.color-active}",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "color",
@@ -17040,7 +17040,7 @@
               "nl.nldesignsystem.color-scale-position": 13
             },
             "$type": "color",
-            "$value": "#003b81",
+            "$value": "{basis.color.default.color-active}",
             "key": "{basis.color.info.color-active}"
           },
           "name": "color-active",
@@ -17098,7 +17098,7 @@
             "nl.nldesignsystem.color-scale-position": 14
           },
           "$type": "color",
-          "$value": "#001b3c",
+          "$value": "{basis.color.default.color-document}",
           "original": {
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "color",
@@ -17144,7 +17144,7 @@
               "nl.nldesignsystem.color-scale-position": 14
             },
             "$type": "color",
-            "$value": "#001b3c",
+            "$value": "{basis.color.default.color-document}",
             "key": "{basis.color.info.color-document}"
           },
           "name": "color-document",
@@ -27506,7 +27506,7 @@
       "font-family": {
         "key": "{basis.heading.font-family}",
         "$type": "fontFamily",
-        "$value": "\"Arial\",\"Helvetica\",sans-serif",
+        "$value": "{basis.text.font-family.default}",
         "$extensions": {
           "studio.tokens": {
             "originalType": "fontFamilies"
@@ -27514,7 +27514,7 @@
         },
         "original": {
           "$type": "fontFamily",
-          "$value": "\"Arial\",\"Helvetica\",sans-serif",
+          "$value": "{basis.text.font-family.default}",
           "$extensions": {
             "studio.tokens": {
               "originalType": "fontFamilies"
@@ -27545,7 +27545,7 @@
           }
         },
         "$type": "color",
-        "$value": "#1b1b1b",
+        "$value": "{basis.color.default.color-document}",
         "original": {
           "$extensions": {
             "nl.nldesignsystem.token-subtype": "color",
@@ -27613,7 +27613,7 @@
             }
           },
           "$type": "fontFamily",
-          "$value": "\"IBM Plex Sans\",sans-serif",
+          "$value": "\"Arial\",\"Helvetica\",\"sans-serif\"",
           "original": {
             "$extensions": {
               "studio.tokens": {
@@ -27621,7 +27621,7 @@
               }
             },
             "$type": "fontFamily",
-            "$value": "\"IBM Plex Sans\",sans-serif",
+            "$value": "\"Arial\",\"Helvetica\",\"sans-serif\"",
             "key": "{basis.text.font-family.default}"
           },
           "name": "default",
@@ -27792,7 +27792,7 @@
             "nl.nldesignsystem.token-subtype": "font-size"
           },
           "$type": "fontSize",
-          "$value": "1.75rem",
+          "$value": "1.5rem",
           "original": {
             "$extensions": {
               "studio.tokens": {
@@ -27801,7 +27801,7 @@
               "nl.nldesignsystem.token-subtype": "font-size"
             },
             "$type": "fontSize",
-            "$value": "1.75rem",
+            "$value": "1.5rem",
             "key": "{basis.text.font-size.2xl}"
           },
           "name": "2xl",
@@ -31623,13 +31623,13 @@
       "sm": {
         "key": "{basis.border-radius.sm}",
         "$type": "dimension",
-        "$value": "4px",
+        "$value": "0px",
         "$extensions": {
           "nl.nldesignsystem.token-subtype": "border-radius"
         },
         "original": {
           "$type": "dimension",
-          "$value": "4px",
+          "$value": "0px",
           "$extensions": {
             "nl.nldesignsystem.token-subtype": "border-radius"
           },
@@ -31646,13 +31646,13 @@
       "md": {
         "key": "{basis.border-radius.md}",
         "$type": "dimension",
-        "$value": "8px",
+        "$value": "0px",
         "$extensions": {
           "nl.nldesignsystem.token-subtype": "border-radius"
         },
         "original": {
           "$type": "dimension",
-          "$value": "8px",
+          "$value": "0px",
           "$extensions": {
             "nl.nldesignsystem.token-subtype": "border-radius"
           },
@@ -31669,13 +31669,13 @@
       "lg": {
         "key": "{basis.border-radius.lg}",
         "$type": "dimension",
-        "$value": "16px",
+        "$value": "0px",
         "$extensions": {
           "nl.nldesignsystem.token-subtype": "border-radius"
         },
         "original": {
           "$type": "dimension",
-          "$value": "16px",
+          "$value": "0px",
           "$extensions": {
             "nl.nldesignsystem.token-subtype": "border-radius"
           },
@@ -32210,7 +32210,7 @@
         "background-color": {
           "key": "{utrecht.accordion.button.background-color}",
           "$type": "color",
-          "$value": "#f1f1f1",
+          "$value": "{basis.color.default.bg-default}",
           "$extensions": {
             "nl.nldesignsystem.token-subtype": "background-color",
             "nl.nldesignsystem.value-resolved-as": {
@@ -32350,7 +32350,7 @@
         "color": {
           "key": "{utrecht.accordion.button.color}",
           "$type": "color",
-          "$value": "#1b59a4",
+          "$value": "{basis.heading.color}",
           "$extensions": {
             "nl.nldesignsystem.token-subtype": "color",
             "nl.nldesignsystem.contrast-with": [
@@ -32397,7 +32397,7 @@
           },
           "original": {
             "$type": "color",
-            "$value": "{basis.color.action-2.color-default}",
+            "$value": "{basis.heading.color}",
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "color",
               "nl.nldesignsystem.contrast-with": [
@@ -33560,7 +33560,7 @@
         "border-width": {
           "key": "{utrecht.accordion.section.border-width}",
           "$type": "dimension",
-          "$value": "0.0625rem",
+          "$value": "0",
           "$extensions": {
             "nl.nldesignsystem.token-subtype": "border-width",
             "nl.nldesignsystem.value-resolved-as": {
@@ -33570,7 +33570,7 @@
           },
           "original": {
             "$type": "dimension",
-            "$value": "{basis.border-width.sm}",
+            "$value": "0",
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "border-width",
               "nl.nldesignsystem.value-resolved-as": {
@@ -33845,10 +33845,14 @@
       }
     },
     "alert": {
+      "border-inline-start-width": {
+        "$type": "dimension",
+        "$value": "3px"
+      },
       "background-color": {
         "key": "{utrecht.alert.background-color}",
         "$type": "color",
-        "$value": "#ecf1f7",
+        "$value": "{basis.color.default.bg-document}",
         "$extensions": {
           "nl.nldesignsystem.token-subtype": "background-color",
           "nl.nldesignsystem.value-resolved-as": {
@@ -33863,7 +33867,7 @@
         },
         "original": {
           "$type": "color",
-          "$value": "{basis.color.info.bg-default}",
+          "$value": "{basis.color.default.bg-document}",
           "$extensions": {
             "nl.nldesignsystem.token-subtype": "background-color",
             "nl.nldesignsystem.value-resolved-as": {
@@ -33889,7 +33893,7 @@
       "border-color": {
         "key": "{utrecht.alert.border-color}",
         "$type": "color",
-        "$value": "#5c89be",
+        "$value": "{basis.color.default.color-default}",
         "$extensions": {
           "nl.nldesignsystem.token-subtype": "border-color",
           "nl.nldesignsystem.value-resolved-as": {
@@ -33904,7 +33908,7 @@
         },
         "original": {
           "$type": "color",
-          "$value": "{basis.color.info.border-default}",
+          "$value": "{basis.color.default.color-default}",
           "$extensions": {
             "nl.nldesignsystem.token-subtype": "border-color",
             "nl.nldesignsystem.value-resolved-as": {
@@ -33953,7 +33957,7 @@
       "border-width": {
         "key": "{utrecht.alert.border-width}",
         "$type": "dimension",
-        "$value": "0.125rem",
+        "$value": "0px",
         "$extensions": {
           "nl.nldesignsystem.token-subtype": "border-width",
           "nl.nldesignsystem.value-resolved-as": {
@@ -33963,7 +33967,7 @@
         },
         "original": {
           "$type": "dimension",
-          "$value": "{basis.border-width.md}",
+          "$value": "0px",
           "$extensions": {
             "nl.nldesignsystem.token-subtype": "border-width",
             "nl.nldesignsystem.value-resolved-as": {
@@ -33984,7 +33988,7 @@
       "color": {
         "key": "{utrecht.alert.color}",
         "$type": "color",
-        "$value": "#001b3c",
+        "$value": "{basis.color.default.color-document}",
         "$extensions": {
           "nl.nldesignsystem.token-subtype": "color",
           "nl.nldesignsystem.contrast-with": [
@@ -34031,7 +34035,7 @@
         },
         "original": {
           "$type": "color",
-          "$value": "{basis.color.info.color-document}",
+          "$value": "{basis.color.default.color-document}",
           "$extensions": {
             "nl.nldesignsystem.token-subtype": "color",
             "nl.nldesignsystem.contrast-with": [
@@ -34089,7 +34093,7 @@
       "column-gap": {
         "key": "{utrecht.alert.column-gap}",
         "$type": "dimension",
-        "$value": "8px",
+        "$value": "{basis.space.column.md}",
         "$extensions": {
           "nl.nldesignsystem.token-subtype": "space-inline",
           "nl.nldesignsystem.value-resolved-as": {
@@ -34170,7 +34174,7 @@
       "padding-block-end": {
         "key": "{utrecht.alert.padding-block-end}",
         "$type": "dimension",
-        "$value": "20px",
+        "$value": "0px",
         "$extensions": {
           "nl.nldesignsystem.token-subtype": "space-block",
           "nl.nldesignsystem.value-resolved-as": {
@@ -34180,7 +34184,7 @@
         },
         "original": {
           "$type": "dimension",
-          "$value": "{basis.space.block.2xl}",
+          "$value": "0px",
           "$extensions": {
             "nl.nldesignsystem.token-subtype": "space-block",
             "nl.nldesignsystem.value-resolved-as": {
@@ -34201,7 +34205,7 @@
       "padding-block-start": {
         "key": "{utrecht.alert.padding-block-start}",
         "$type": "dimension",
-        "$value": "16px",
+        "$value": "0px",
         "$extensions": {
           "nl.nldesignsystem.token-subtype": "space-block",
           "nl.nldesignsystem.value-resolved-as": {
@@ -34211,7 +34215,7 @@
         },
         "original": {
           "$type": "dimension",
-          "$value": "{basis.space.block.xl}",
+          "$value": "0px",
           "$extensions": {
             "nl.nldesignsystem.token-subtype": "space-block",
             "nl.nldesignsystem.value-resolved-as": {
@@ -34232,7 +34236,7 @@
       "padding-inline-end": {
         "key": "{utrecht.alert.padding-inline-end}",
         "$type": "dimension",
-        "$value": "16px",
+        "$value": "0px",
         "$extensions": {
           "nl.nldesignsystem.token-subtype": "space-inline",
           "nl.nldesignsystem.value-resolved-as": {
@@ -34242,7 +34246,7 @@
         },
         "original": {
           "$type": "dimension",
-          "$value": "{basis.space.inline.xl}",
+          "$value": "0px",
           "$extensions": {
             "nl.nldesignsystem.token-subtype": "space-inline",
             "nl.nldesignsystem.value-resolved-as": {
@@ -34263,7 +34267,7 @@
       "padding-inline-start": {
         "key": "{utrecht.alert.padding-inline-start}",
         "$type": "dimension",
-        "$value": "16px",
+        "$value": "{basis.space.inline.lg}",
         "$extensions": {
           "nl.nldesignsystem.token-subtype": "space-inline",
           "nl.nldesignsystem.value-resolved-as": {
@@ -34273,7 +34277,7 @@
         },
         "original": {
           "$type": "dimension",
-          "$value": "{basis.space.inline.xl}",
+          "$value": "{basis.space.inline.lg}",
           "$extensions": {
             "nl.nldesignsystem.token-subtype": "space-inline",
             "nl.nldesignsystem.value-resolved-as": {
@@ -34467,7 +34471,7 @@
           "color": {
             "key": "{utrecht.alert.icon.error.color}",
             "$type": "color",
-            "$value": "#b70000",
+            "$value": "{utrecht.alert.border-color}",
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "color",
               "nl.nldesignsystem.value-resolved-as": {
@@ -34482,7 +34486,7 @@
             },
             "original": {
               "$type": "color",
-              "$value": "{basis.color.negative.color-default}",
+              "$value": "{utrecht.alert.border-color}",
               "$extensions": {
                 "nl.nldesignsystem.token-subtype": "color",
                 "nl.nldesignsystem.value-resolved-as": {
@@ -34829,7 +34833,7 @@
         "background-color": {
           "key": "{utrecht.alert.error.background-color}",
           "$type": "color",
-          "$value": "#feeded",
+          "$value": "{utrecht.alert.background-color}",
           "$extensions": {
             "nl.nldesignsystem.token-subtype": "background-color",
             "nl.nldesignsystem.value-resolved-as": {
@@ -34844,7 +34848,7 @@
           },
           "original": {
             "$type": "color",
-            "$value": "{basis.color.negative.bg-default}",
+            "$value": "{utrecht.alert.background-color}",
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "background-color",
               "nl.nldesignsystem.value-resolved-as": {
@@ -34871,7 +34875,7 @@
         "border-color": {
           "key": "{utrecht.alert.error.border-color}",
           "$type": "color",
-          "$value": "#f14848",
+          "$value": "{utrecht.alert.border-color}",
           "$extensions": {
             "nl.nldesignsystem.token-subtype": "border-color",
             "nl.nldesignsystem.value-resolved-as": {
@@ -34886,7 +34890,7 @@
           },
           "original": {
             "$type": "color",
-            "$value": "{basis.color.negative.border-default}",
+            "$value": "{utrecht.alert.border-color}",
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "border-color",
               "nl.nldesignsystem.value-resolved-as": {
@@ -34913,7 +34917,7 @@
         "color": {
           "key": "{utrecht.alert.error.color}",
           "$type": "color",
-          "$value": "#410000",
+          "$value": "{utrecht.alert.color}",
           "$extensions": {
             "nl.nldesignsystem.token-subtype": "color",
             "nl.nldesignsystem.contrast-with": [
@@ -34960,7 +34964,7 @@
           },
           "original": {
             "$type": "color",
-            "$value": "{basis.color.negative.color-document}",
+            "$value": "{utrecht.alert.color}",
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "color",
               "nl.nldesignsystem.contrast-with": [
@@ -41058,6 +41062,12 @@
       }
     },
     "form-field": {
+      "label": {
+        "margin-block-end": {
+          "$type": "dimension",
+          "$value": "{basis.space.block.md}"
+        }
+      },
       "margin-block-end": {
         "key": "{utrecht.form-field.margin-block-end}",
         "$type": "dimension",
@@ -41214,6 +41224,14 @@
             "invalid",
             "padding-inline-start"
           ]
+        }
+      }
+    },
+    "form-fieldset": {
+      "legend": {
+        "font-weight": {
+          "$type": "fontWeight",
+          "$value": "{basis.text.font-weight.bold}"
         }
       }
     },
@@ -41863,7 +41881,7 @@
       "font-weight": {
         "key": "{utrecht.form-label.font-weight}",
         "$type": "fontWeight",
-        "$value": 700,
+        "$value": "{basis.text.font-weight.bold}",
         "$extensions": {
           "studio.tokens": {
             "originalType": "fontWeights"
@@ -42235,7 +42253,7 @@
       "font-size": {
         "key": "{utrecht.heading-1.font-size}",
         "$type": "dimension",
-        "$value": "2rem",
+        "$value": "{basis.text.font-size.xl}",
         "$extensions": {
           "studio.tokens": {
             "originalType": "fontSizes"
@@ -42248,7 +42266,7 @@
         },
         "original": {
           "$type": "dimension",
-          "$value": "{basis.text.font-size.3xl}",
+          "$value": "{basis.text.font-size.xl}",
           "$extensions": {
             "studio.tokens": {
               "originalType": "fontSizes"
@@ -43692,7 +43710,7 @@
       "text-decoration-color": {
         "key": "{utrecht.link.text-decoration-color}",
         "$type": "color",
-        "$value": "#1b59a4",
+        "$value": "currentColor",
         "$description": "[code-only]",
         "$extensions": {
           "nl.nldesignsystem.value-resolved-as": {
@@ -43707,7 +43725,7 @@
         },
         "original": {
           "$type": "color",
-          "$value": "{basis.color.action-2.color-default}",
+          "$value": "currentColor",
           "$description": "[code-only]",
           "$extensions": {
             "nl.nldesignsystem.value-resolved-as": {
@@ -44082,10 +44100,10 @@
         "text-decoration": {
           "key": "{utrecht.link.hover.text-decoration}",
           "$type": "textDecoration",
-          "$value": "None",
+          "$value": "underline",
           "original": {
             "$type": "textDecoration",
-            "$value": "None",
+            "$value": "underline",
             "key": "{utrecht.link.hover.text-decoration}"
           },
           "name": "text-decoration",
@@ -44365,10 +44383,10 @@
         "text-decoration": {
           "key": "{utrecht.link-list.link.text-decoration}",
           "$type": "textDecoration",
-          "$value": "None",
+          "$value": "underline",
           "original": {
             "$type": "textDecoration",
-            "$value": "None",
+            "$value": "underline",
             "key": "{utrecht.link-list.link.text-decoration}"
           },
           "name": "text-decoration",
@@ -44846,7 +44864,7 @@
       "background-color": {
         "key": "{utrecht.spotlight-section.background-color}",
         "$type": "color",
-        "$value": "#f1f1f1",
+        "$value": "{basis.color.default.bg-subtle}",
         "$extensions": {
           "nl.nldesignsystem.token-subtype": "background-color",
           "nl.nldesignsystem.value-resolved-as": {
@@ -44861,7 +44879,7 @@
         },
         "original": {
           "$type": "color",
-          "$value": "{basis.color.default.bg-default}",
+          "$value": "{basis.color.default.bg-subtle}",
           "$extensions": {
             "nl.nldesignsystem.token-subtype": "background-color",
             "nl.nldesignsystem.value-resolved-as": {
@@ -50171,7 +50189,7 @@
       "max-inline-size": {
         "key": "{utrecht.textarea.max-inline-size}",
         "$type": "dimension",
-        "$value": "25rem",
+        "$value": "100%",
         "$extensions": {
           "nl.nldesignsystem.token-subtype": "size",
           "nl.nldesignsystem.value-resolved-as": {
@@ -50181,7 +50199,7 @@
         },
         "original": {
           "$type": "dimension",
-          "$value": "{basis.form-control.max-inline-size}",
+          "$value": "100%",
           "$extensions": {
             "nl.nldesignsystem.token-subtype": "size",
             "nl.nldesignsystem.value-resolved-as": {
@@ -53020,7 +53038,7 @@
         "padding-block-end": {
           "key": "{utrecht.page-header.content.padding-block-end}",
           "$type": "dimension",
-          "$value": "32px",
+          "$value": "{basis.space.inline.min.xl}",
           "$extensions": {
             "nl.nldesignsystem.token-subtype": "space-block",
             "nl.nldesignsystem.value-resolved-as": {
@@ -53030,7 +53048,7 @@
           },
           "original": {
             "$type": "dimension",
-            "$value": "{basis.space.block.4xl}",
+            "$value": "{basis.space.inline.min.xl}",
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "space-block",
               "nl.nldesignsystem.value-resolved-as": {
@@ -53052,7 +53070,7 @@
         "padding-block-start": {
           "key": "{utrecht.page-header.content.padding-block-start}",
           "$type": "dimension",
-          "$value": "32px",
+          "$value": "{basis.space.inline.min.xl}",
           "$extensions": {
             "nl.nldesignsystem.token-subtype": "space-block",
             "nl.nldesignsystem.value-resolved-as": {
@@ -53062,7 +53080,7 @@
           },
           "original": {
             "$type": "dimension",
-            "$value": "{basis.space.block.4xl}",
+            "$value": "{basis.space.inline.min.xl}",
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "space-block",
               "nl.nldesignsystem.value-resolved-as": {
@@ -53084,7 +53102,7 @@
         "padding-inline": {
           "key": "{utrecht.page-header.content.padding-inline}",
           "$type": "dimension",
-          "$value": "32px",
+          "$value": "{basis.space.inline.min.xl}",
           "$extensions": {
             "nl.nldesignsystem.token-subtype": "space-inline",
             "nl.nldesignsystem.value-resolved-as": {
@@ -53094,7 +53112,7 @@
           },
           "original": {
             "$type": "dimension",
-            "$value": "{basis.space.inline.4xl}",
+            "$value": "{basis.space.inline.min.xl}",
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "space-inline",
               "nl.nldesignsystem.value-resolved-as": {
@@ -53397,7 +53415,7 @@
       "background-color": {
         "key": "{utrecht.page-footer.background-color}",
         "$type": "color",
-        "$value": "#ecf1f7",
+        "$value": "{basis.color.default.bg-subtle}",
         "$extensions": {
           "nl.nldesignsystem.token-subtype": "background-color",
           "nl.nldesignsystem.value-resolved-as": {
@@ -53412,7 +53430,7 @@
         },
         "original": {
           "$type": "color",
-          "$value": "{basis.color.accent-1.bg-default}",
+          "$value": "{basis.color.default.bg-subtle}",
           "$extensions": {
             "nl.nldesignsystem.token-subtype": "background-color",
             "nl.nldesignsystem.value-resolved-as": {
@@ -53438,7 +53456,7 @@
       "color": {
         "key": "{utrecht.page-footer.color}",
         "$type": "color",
-        "$value": "#1b1b1b",
+        "$value": "{basis.color.default.color-document}",
         "$extensions": {
           "nl.nldesignsystem.token-subtype": "color",
           "nl.nldesignsystem.contrast-with": [
@@ -54911,7 +54929,7 @@
       "padding-block-end": {
         "key": "{nl.button.padding-block-end}",
         "$type": "dimension",
-        "$value": "8px",
+        "$value": "{basis.space.block.md}",
         "$extensions": {
           "nl.nldesignsystem.token-subtype": "space-block",
           "nl.nldesignsystem.value-resolved-as": {
@@ -54942,7 +54960,7 @@
       "padding-block-start": {
         "key": "{nl.button.padding-block-start}",
         "$type": "dimension",
-        "$value": "8px",
+        "$value": "{basis.space.block.md}",
         "$extensions": {
           "nl.nldesignsystem.token-subtype": "space-block",
           "nl.nldesignsystem.value-resolved-as": {
@@ -54973,7 +54991,7 @@
       "padding-inline-end": {
         "key": "{nl.button.padding-inline-end}",
         "$type": "dimension",
-        "$value": "16px",
+        "$value": "{basis.space.inline.3xl}",
         "$extensions": {
           "nl.nldesignsystem.token-subtype": "space-inline",
           "nl.nldesignsystem.value-resolved-as": {
@@ -54983,7 +55001,7 @@
         },
         "original": {
           "$type": "dimension",
-          "$value": "{basis.space.inline.xl}",
+          "$value": "{basis.space.inline.3xl}",
           "$extensions": {
             "nl.nldesignsystem.token-subtype": "space-inline",
             "nl.nldesignsystem.value-resolved-as": {
@@ -55004,7 +55022,7 @@
       "padding-inline-start": {
         "key": "{nl.button.padding-inline-start}",
         "$type": "dimension",
-        "$value": "16px",
+        "$value": "{basis.space.inline.3xl}",
         "$extensions": {
           "nl.nldesignsystem.token-subtype": "space-inline",
           "nl.nldesignsystem.value-resolved-as": {
@@ -55014,7 +55032,7 @@
         },
         "original": {
           "$type": "dimension",
-          "$value": "{basis.space.inline.xl}",
+          "$value": "{basis.space.inline.3xl}",
           "$extensions": {
             "nl.nldesignsystem.token-subtype": "space-inline",
             "nl.nldesignsystem.value-resolved-as": {
@@ -55392,7 +55410,7 @@
         "background-color": {
           "key": "{nl.button.default.background-color}",
           "$type": "color",
-          "$value": "#f1f1f1",
+          "$value": "{basis.color.action-1-inverse.bg-default}",
           "$extensions": {
             "nl.nldesignsystem.token-subtype": "background-color",
             "nl.nldesignsystem.value-resolved-as": {
@@ -55407,7 +55425,7 @@
           },
           "original": {
             "$type": "color",
-            "$value": "{basis.color.default.bg-default}",
+            "$value": "{basis.color.action-1-inverse.bg-default}",
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "background-color",
               "nl.nldesignsystem.value-resolved-as": {
@@ -55434,7 +55452,7 @@
         "border-color": {
           "key": "{nl.button.default.border-color}",
           "$type": "color",
-          "$value": "#868686",
+          "$value": "{basis.color.action-1-inverse.bg-default}",
           "$extensions": {
             "nl.nldesignsystem.token-subtype": "border-color",
             "nl.nldesignsystem.value-resolved-as": {
@@ -55449,7 +55467,7 @@
           },
           "original": {
             "$type": "color",
-            "$value": "{basis.color.default.border-default}",
+            "$value": "{basis.color.action-1-inverse.bg-default}",
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "border-color",
               "nl.nldesignsystem.value-resolved-as": {
@@ -55508,7 +55526,7 @@
         "color": {
           "key": "{nl.button.default.color}",
           "$type": "color",
-          "$value": "#595959",
+          "$value": "{basis.color.action-1-inverse.color-default}",
           "$extensions": {
             "nl.nldesignsystem.token-subtype": "color",
             "nl.nldesignsystem.contrast-with": [
@@ -55555,7 +55573,7 @@
           },
           "original": {
             "$type": "color",
-            "$value": "{basis.color.default.color-default}",
+            "$value": "{basis.color.action-1-inverse.color-default}",
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "color",
               "nl.nldesignsystem.contrast-with": [
@@ -55717,7 +55735,7 @@
           "background-color": {
             "key": "{nl.button.default.active.background-color}",
             "$type": "color",
-            "$value": "#e5e5e5",
+            "$value": "{basis.color.action-1-inverse.bg-active}",
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "background-color",
               "nl.nldesignsystem.value-resolved-as": {
@@ -55732,7 +55750,7 @@
             },
             "original": {
               "$type": "color",
-              "$value": "{basis.color.default.bg-active}",
+              "$value": "{basis.color.action-1-inverse.bg-active}",
               "$extensions": {
                 "nl.nldesignsystem.token-subtype": "background-color",
                 "nl.nldesignsystem.value-resolved-as": {
@@ -55760,7 +55778,7 @@
           "border-color": {
             "key": "{nl.button.default.active.border-color}",
             "$type": "color",
-            "$value": "#727272",
+            "$value": "{basis.color.action-1-inverse.bg-active}",
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "border-color",
               "nl.nldesignsystem.value-resolved-as": {
@@ -55775,7 +55793,7 @@
             },
             "original": {
               "$type": "color",
-              "$value": "{basis.color.default.border-active}",
+              "$value": "{basis.color.action-1-inverse.bg-active}",
               "$extensions": {
                 "nl.nldesignsystem.token-subtype": "border-color",
                 "nl.nldesignsystem.value-resolved-as": {
@@ -55803,7 +55821,7 @@
           "color": {
             "key": "{nl.button.default.active.color}",
             "$type": "color",
-            "$value": "#3e3e3e",
+            "$value": "{basis.color.action-1-inverse.color-active}",
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "color",
               "nl.nldesignsystem.contrast-with": [
@@ -55850,7 +55868,7 @@
             },
             "original": {
               "$type": "color",
-              "$value": "{basis.color.default.color-active}",
+              "$value": "{basis.color.action-1-inverse.color-active}",
               "$extensions": {
                 "nl.nldesignsystem.token-subtype": "color",
                 "nl.nldesignsystem.contrast-with": [
@@ -56043,7 +56061,7 @@
           "background-color": {
             "key": "{nl.button.default.hover.background-color}",
             "$type": "color",
-            "$value": "#ebebeb",
+            "$value": "{basis.color.action-1-inverse.bg-hover}",
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "background-color",
               "nl.nldesignsystem.value-resolved-as": {
@@ -56058,7 +56076,7 @@
             },
             "original": {
               "$type": "color",
-              "$value": "{basis.color.default.bg-hover}",
+              "$value": "{basis.color.action-1-inverse.bg-hover}",
               "$extensions": {
                 "nl.nldesignsystem.token-subtype": "background-color",
                 "nl.nldesignsystem.value-resolved-as": {
@@ -56086,7 +56104,7 @@
           "border-color": {
             "key": "{nl.button.default.hover.border-color}",
             "$type": "color",
-            "$value": "#7c7c7c",
+            "$value": "{basis.color.action-1-inverse.bg-hover}",
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "border-color",
               "nl.nldesignsystem.value-resolved-as": {
@@ -56101,7 +56119,7 @@
             },
             "original": {
               "$type": "color",
-              "$value": "{basis.color.default.border-hover}",
+              "$value": "{basis.color.action-1-inverse.bg-hover}",
               "$extensions": {
                 "nl.nldesignsystem.token-subtype": "border-color",
                 "nl.nldesignsystem.value-resolved-as": {
@@ -56129,7 +56147,7 @@
           "color": {
             "key": "{nl.button.default.hover.color}",
             "$type": "color",
-            "$value": "#4b4b4b",
+            "$value": "{basis.color.action-1-inverse.color-hover}",
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "color",
               "nl.nldesignsystem.contrast-with": [
@@ -56176,7 +56194,7 @@
             },
             "original": {
               "$type": "color",
-              "$value": "{basis.color.default.color-hover}",
+              "$value": "{basis.color.action-1-inverse.color-hover}",
               "$extensions": {
                 "nl.nldesignsystem.token-subtype": "color",
                 "nl.nldesignsystem.contrast-with": [
@@ -60406,7 +60424,7 @@
         "background-color": {
           "key": "{nl.button.secondary.background-color}",
           "$type": "color",
-          "$value": "#00000000",
+          "$value": "{basis.color.default.bg-document}",
           "$extensions": {
             "nl.nldesignsystem.token-subtype": "background-color",
             "nl.nldesignsystem.value-resolved-as": {
@@ -60421,7 +60439,7 @@
           },
           "original": {
             "$type": "color",
-            "$value": "{basis.color.transparent}",
+            "$value": "{basis.color.default.bg-document}",
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "background-color",
               "nl.nldesignsystem.value-resolved-as": {
@@ -63848,7 +63866,7 @@
         "background-color": {
           "key": "{nl.button.subtle.background-color}",
           "$type": "color",
-          "$value": "#00000000",
+          "$value": "{basis.color.default.bg-subtle}",
           "$extensions": {
             "nl.nldesignsystem.token-subtype": "background-color",
             "nl.nldesignsystem.value-resolved-as": {
@@ -63863,7 +63881,7 @@
           },
           "original": {
             "$type": "color",
-            "$value": "{basis.color.transparent}",
+            "$value": "{basis.color.default.bg-subtle}",
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "background-color",
               "nl.nldesignsystem.value-resolved-as": {
@@ -63890,7 +63908,7 @@
         "border-color": {
           "key": "{nl.button.subtle.border-color}",
           "$type": "color",
-          "$value": "#00000000",
+          "$value": "{basis.color.action-1.color-default}",
           "$extensions": {
             "nl.nldesignsystem.token-subtype": "border-color",
             "nl.nldesignsystem.value-resolved-as": {
@@ -63905,7 +63923,7 @@
           },
           "original": {
             "$type": "color",
-            "$value": "{basis.color.transparent}",
+            "$value": "{basis.color.action-1.color-default}",
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "border-color",
               "nl.nldesignsystem.value-resolved-as": {
@@ -63956,7 +63974,7 @@
         "color": {
           "key": "{nl.button.subtle.color}",
           "$type": "color",
-          "$value": "#1b59a4",
+          "$value": "{basis.color.action-1.color-default}",
           "$extensions": {
             "nl.nldesignsystem.token-subtype": "color",
             "nl.nldesignsystem.value-resolved-as": {
@@ -64363,7 +64381,7 @@
           "background-color": {
             "key": "{nl.button.subtle.hover.background-color}",
             "$type": "color",
-            "$value": "#e4ecf4",
+            "$value": "{basis.color.default.bg-hover}",
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "background-color",
               "nl.nldesignsystem.value-resolved-as": {
@@ -64378,7 +64396,7 @@
             },
             "original": {
               "$type": "color",
-              "$value": "{basis.color.action-1.bg-hover}",
+              "$value": "{basis.color.default.bg-hover}",
               "$extensions": {
                 "nl.nldesignsystem.token-subtype": "background-color",
                 "nl.nldesignsystem.value-resolved-as": {
@@ -64406,7 +64424,7 @@
           "border-color": {
             "key": "{nl.button.subtle.hover.border-color}",
             "$type": "color",
-            "$value": "#00000000",
+            "$value": "{basis.color.action-1.color-hover}",
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "border-color",
               "nl.nldesignsystem.value-resolved-as": {
@@ -64421,7 +64439,7 @@
             },
             "original": {
               "$type": "color",
-              "$value": "{basis.color.transparent}",
+              "$value": "{basis.color.action-1.color-hover}",
               "$extensions": {
                 "nl.nldesignsystem.token-subtype": "border-color",
                 "nl.nldesignsystem.value-resolved-as": {
@@ -64449,7 +64467,7 @@
           "color": {
             "key": "{nl.button.subtle.hover.color}",
             "$type": "color",
-            "$value": "#04499a",
+            "$value": "{basis.color.action-1.color-hover}",
             "$extensions": {
               "nl.nldesignsystem.token-subtype": "color",
               "nl.nldesignsystem.value-resolved-as": {
@@ -67288,7 +67306,7 @@
       },
       "border-radius": {
         "$type": "dimension",
-        "$value": "4px"
+        "$value": "0px"
       },
       "background-color": {
         "$type": "color",
