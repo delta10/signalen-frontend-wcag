@@ -14,8 +14,29 @@ import {
 } from '@/services/location/address'
 import { isCoordinateOutsideRestrictedArea } from '@/lib/utils/restrictedAreaUtils'
 import type { AppConfig } from '@/types/config'
-import config from '../../../config.json'
+import defaultConfig from '../../../config.json'
 import { AddressCombobox, SearchType } from './AddressCombobox'
+
+const config = {
+  ...defaultConfig,
+  restrictSelectionArea: true,
+  base: {
+    ...defaultConfig.base,
+    pdok_address_suggest: {
+      scope: 'provincie',
+      organization: 'Noord-Brabant',
+    },
+    pdok_hectometer_suggest: {
+      enabled: true,
+      bounds: [
+        [4.17, 51.21],
+        [6.08, 51.88],
+      ],
+      roadNumberExceptions: ['A270'],
+      maxResults: 400,
+    },
+  },
+}
 
 vi.mock('@/services/location/address', () => ({
   getSuggestedAddresses: vi.fn(),
