@@ -35,6 +35,7 @@ import { useWindowSize } from 'usehooks-ts'
 import { useConfig } from '@/contexts/ConfigContext'
 import { generateFeatureId } from '@/lib/utils/features'
 import { ExtendedFeature } from '@/types/map'
+import { setCurrentLocation } from '@/lib/utils/LocationUtils'
 import {
   isCoordinateOutsideRestrictedArea,
   isPointOutsideRestrictedArea,
@@ -190,8 +191,7 @@ function useMapDialog(
         }
       }
     }
-    const element = document.getElementsByClassName('maplibregl-canvas')
-    const canvas = element[1]
+    const canvas = dialogMap?.getCanvas()
     const debouncedHandler = debounce(keyDownHandler, 500)
     const eventHandler = (event: Event) => {
       if (event instanceof KeyboardEvent) debouncedHandler(event)
@@ -371,6 +371,39 @@ function useMapDialog(
       ? aerialPhotoMapStyle
       : getMapStyleUrl(config, isDarkMode)
 
+  const locationMarker =
+    marker.length === 2 &&
+    marker[0] !== 0 &&
+    marker[1] !== 0 &&
+    (isMapSelected === null || isMapSelected)
+      ? marker
+      : null
+  const address = formState.address
+  const selectedAddress =
+    address &&
+    address.coordinates[0] === marker[1] &&
+    address.coordinates[1] === marker[0]
+      ? address.weergave_naam
+      : null
+  const locationStatus = locationMarker
+    ? selectedAddress
+      ? t('location_status_address', { address: selectedAddress })
+      : t('pinned_location')
+    : ''
+
+  const selectCurrentLocation = () => {
+    setCurrentLocation(
+      config,
+      (lat, lng) => {
+        updatePosition(lat, lng)
+        if (!isAssetSelect) setIsMapSelected(true)
+      },
+      setError,
+      dialogRef,
+      t
+    )
+  }
+
   return {
     dialogMap,
     dialogRef,
@@ -378,10 +411,11 @@ function useMapDialog(
     config,
     viewState,
     setViewState,
-    marker,
     updatePosition,
-    isMapSelected,
     setIsMapSelected,
+    locationMarker,
+    locationStatus,
+    selectCurrentLocation,
     objectDisplayName,
     featureList,
     assetSelectFeatureLabel,
