@@ -210,11 +210,7 @@ const MapDialogContent = ({
             </div>
           ) : null}
         </div>
-        <Dialog.Close
-          className="flex items-end"
-          asChild
-          onClick={() => closeMapDialog()}
-        >
+        <Dialog.Close asChild onClick={() => closeMapDialog()}>
           <Button purpose="primary" className="ml-4 mr-4 mb-4" type="button">
             {isAssetSelect
               ? formState.selectedFeatures.length === 0
