@@ -44,7 +44,7 @@ RUN (cd design-tokens && npm ci)
 RUN mkdir -p /app/tmp && \
     mkdir -p /app/public/assets/organizations && \
     chown nextjs:nextjs /app/tmp && \
-    chown nextjs:nextjs /app/public/assets/organizations
+    chown -R nextjs:nextjs /app/public/assets/organizations
 
 # Copy the start script
 COPY ./start.sh ./start.sh

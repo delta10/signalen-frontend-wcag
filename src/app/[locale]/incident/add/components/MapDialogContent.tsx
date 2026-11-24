@@ -21,7 +21,6 @@ import useMapDialog from '@/hooks/useMapDialog'
 import { useFormStore } from '@/store/form_store'
 import { FeatureCollection } from 'geojson'
 import { PublicQuestion } from '@/types/form'
-import { setCurrentLocation } from '@/lib/utils/LocationUtils'
 import { FeatureTypeIcon } from '@/app/[locale]/incident/add/components/FeatureTypeIcon'
 import { ExtendedFeature } from '@/types/map'
 import FeatureTypeLegend, {
@@ -66,10 +65,11 @@ const MapDialogContent = ({
     config,
     viewState,
     setViewState,
-    marker,
     updatePosition,
-    isMapSelected,
     setIsMapSelected,
+    locationMarker,
+    locationStatus,
+    selectCurrentLocation,
     objectDisplayName,
     featureList,
     assetSelectFeatureLabel,
@@ -121,6 +121,9 @@ const MapDialogContent = ({
 
   return (
     <>
+      <div role="status" aria-atomic="true" className="sr-only">
+        <span key={locationMarker?.join(',')}>{locationStatus}</span>
+      </div>
       <AlertDialog
         type="error"
         ref={dialogRef}
@@ -207,11 +210,7 @@ const MapDialogContent = ({
             </div>
           ) : null}
         </div>
-        <Dialog.Close
-          className="flex items-end"
-          asChild
-          onClick={() => closeMapDialog()}
-        >
+        <Dialog.Close asChild onClick={() => closeMapDialog()}>
           <Button purpose="primary" className="ml-4 mr-4 mb-4" type="button">
             {isAssetSelect
               ? formState.selectedFeatures.length === 0
@@ -251,6 +250,7 @@ const MapDialogContent = ({
             scrollZoom={!(width !== 0 && width < 768)}
             attributionControl={false}
             locale={{
+              'Map.Title': t('map_canvas_label'),
               'AttributionControl.ToggleAttribution': t('toggle_attribution'),
             }}
             maxBounds={[
@@ -266,14 +266,14 @@ const MapDialogContent = ({
               }
             />
             {/* Address or selected point on map marker */}
-            {marker.length === 2 &&
-              marker[0] !== 0 &&
-              marker[1] !== 0 &&
-              (isMapSelected === null || isMapSelected) && (
-                <Marker latitude={marker[0]} longitude={marker[1]}>
-                  <MapMarker />
-                </Marker>
-              )}
+            {locationMarker && (
+              <Marker
+                latitude={locationMarker[0]}
+                longitude={locationMarker[1]}
+              >
+                <MapMarker />
+              </Marker>
+            )}
             {/* Show available features assets on the map */}
             {onMapReady &&
               dialogMap &&
@@ -328,15 +328,7 @@ const MapDialogContent = ({
           >
             <Button
               purpose="secondary"
-              onClick={() =>
-                setCurrentLocation(
-                  config,
-                  updatePosition,
-                  setError,
-                  dialogRef,
-                  t
-                )
-              }
+              onClick={selectCurrentLocation}
               iconStart={<IconCurrentLocation />}
             >
               {t('current_location')}
