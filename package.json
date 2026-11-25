@@ -18,7 +18,7 @@
     "update-design-system": "npm-check-updates --configFileName .ncurc.major.cjs --filter '/^@(utrecht|nl-design-system-community)/'",
     "tokens:build": "node ./design-tokens/build-theme.mjs",
     "tokens:build:org": "node ./design-tokens/build-theme.mjs --org",
-    "tokens:watch:org": "chokidar \"design-tokens/base.json\" \"design-tokens/overrides.json\" \"design-tokens/organizations/*.json\" --initial --polling -d 500 -c \"node ./design-tokens/watch-build-org.mjs {path}\""
+    "tokens:watch:org": "node ./design-tokens/watch-build-org.mjs design-tokens/base.json && chokidar \"design-tokens/base.json\" \"design-tokens/overrides.json\" \"design-tokens/organizations/*.json\" --polling -d 500 -c \"node ./design-tokens/watch-build-org.mjs {path}\""
   },
   "dependencies": {
     "@headlessui/react": "2.2.10",

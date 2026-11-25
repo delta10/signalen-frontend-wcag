@@ -29,6 +29,7 @@
     },
     "map": {
       "map_heading": "Kies uw locatie",
+      "map_canvas_label": "Kaart voor het kiezen van een meldlocatie",
       "map_label": "Waar is het?",
       "choose_this_location": "Gebruik deze locatie",
       "choose_this_location_no_asset_but_address": "Verder zonder {object} maar met locatie",
@@ -70,6 +71,7 @@
       "object": "object",
       "objects": "objecten",
       "pinned_location": "De locatie is gepind op de kaart",
+      "location_status_address": "Geselecteerde locatie: {address}.",
       "back_to_map": "Terug naar de kaart",
       "show_list": "Toon {name} lijst",
       "toggle_fullscreen_on": "Open de kaart op volledig scherm",

@@ -49,8 +49,8 @@ for the active theme are required.
 
 All organisation-specific settings are nested under `base`.
 
-- `base.municipality`: Internal organisation name. Also used as the theme folder fallback when `base.theme` is not set.
-- `base.theme`: Optional theme folder name under `public/assets/organizations/<theme>/`.
+- `base.municipality`: Internal organisation name. Also used as the theme name when `base.theme` is not set.
+- `base.theme`: Optional theme name. The neutral `default` is used when the organisation JSON or generated CSS is missing. A token build always generates the default CSS, so no organisation theme file is required.
 - `base.municipality_display_name`: Human-readable organisation name used in labels and fallback text.
 - `base.naam`: Organisation name used in page metadata and page titles, for example `gemeente Amsterdam` or `provincie Noord-Brabant`.
 - `base.assets_url`: Base URL used for API-provided assets such as feature icons. Do not include a trailing slash.
