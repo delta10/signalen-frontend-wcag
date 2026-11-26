@@ -66,9 +66,22 @@
   line-height: 1.5rem;
 }
 
+.utrecht-page-layout.incident-map-layout {
+  block-size: 100dvh;
+  min-block-size: 0;
+  overflow: hidden;
+}
+
+.utrecht-page-body.incident-map {
+  min-block-size: 0;
+  overflow: hidden;
+}
+
 .utrecht-page-body.incident-map > .utrecht-page-body__content {
   display: flex;
   flex-direction: column;
+  min-block-size: 0;
+  overflow: hidden;
   padding: 0;
 }
 
@@ -120,6 +133,10 @@ h2.utrecht-heading-2 {
 }
 
 /* A11y styles */
+.utrecht-paragraph .utrecht-link:any-link {
+  text-decoration-line: underline;
+}
+
 .maplibregl-canvas:focus-visible,
 .dashed-focus:focus-visible {
   --_utrecht-focus-ring-box-shadow: 0 0 0 var(--utrecht-focus-outline-width, 0)

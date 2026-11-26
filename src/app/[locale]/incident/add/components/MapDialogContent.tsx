@@ -31,6 +31,7 @@ import { Layer, Source } from 'react-map-gl/maplibre'
 import { OUT_OF_BOUNDS_SOURCE_ID } from '@/lib/utils/restrictedAreaUtils'
 import { MapLayers } from '@/app/[locale]/incident/add/components/MapLayers'
 import { MapControls } from '@/app/[locale]/incident/add/components/MapControls'
+import { PublicSignalsLayer } from '@/app/[locale]/incident/add/components/PublicSignalsLayer'
 
 export type MapDialogContentProps = {
   onMapReady?: (map: MapRef) => void
@@ -190,7 +191,7 @@ const MapDialogContent = ({
                     className="flex-1 overflow-y-auto mb-2 max-h-[calc(100vh-22em)]"
                     aria-labelledby="object-list-label"
                   >
-                    {featureList.map((feature: any) => (
+                    {(featureList as ExtendedFeature[]).map((feature) => (
                       <FeatureListItem
                         configUrl={config?.base.assets_url}
                         feature={feature}
@@ -265,12 +266,17 @@ const MapDialogContent = ({
                   : config.mapAttribution
               }
             />
+            <PublicSignalsLayer />
             {/* Address or selected point on map marker */}
             {marker.length === 2 &&
               marker[0] !== 0 &&
               marker[1] !== 0 &&
               (isMapSelected === null || isMapSelected) && (
-                <Marker latitude={marker[0]} longitude={marker[1]}>
+                <Marker
+                  latitude={marker[0]}
+                  longitude={marker[1]}
+                  style={{ zIndex: 2 }}
+                >
                   <MapMarker />
                 </Marker>
               )}
@@ -288,6 +294,7 @@ const MapDialogContent = ({
                 return (
                   <Marker
                     key={id}
+                    style={{ zIndex: 1 }}
                     // @ts-ignore
                     longitude={feature.geometry?.coordinates[0]}
                     // @ts-ignore

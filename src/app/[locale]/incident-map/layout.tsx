@@ -7,11 +7,11 @@ export default function IncidentLayout({ children }: Layout) {
   const messages = useMessages()
 
   return (
-    <PageLayout>
+    <PageLayout className="incident-map-layout">
       <PageBody className="incident-map">
         <NextIntlClientProvider messages={messages}>
           <IncidentMapHeader />
-          <div className="flex-1 min-h-0">{children}</div>
+          <div className="flex-1 min-h-0 overflow-hidden">{children}</div>
         </NextIntlClientProvider>
       </PageBody>
     </PageLayout>

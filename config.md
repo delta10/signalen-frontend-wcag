@@ -93,6 +93,24 @@ Street/road names and hectometer posts are shown together in the existing search
 
 Map settings are configured at `base.map`.
 
+The desktop and mobile location pickers automatically show public reports from
+`/signals/v1/public/signals/geography/` for the selected main category and
+subcategory within the visible map area. Both category slugs and the map bounds
+are sent to the API once the public categories endpoint confirms the selected
+subcategory is public. Reports refresh after panning, zooming or changing
+category. Opening a report shows its category and date without changing the
+selected location or selected assets. Category icons come from the
+public categories endpoint; a fallback marker is used if an icon is unavailable.
+These reports are separate from the custom layers below and do not require a
+`base.map.layers` entry.
+
+The incident map and location pickers share `usePublicSignals` for fetching,
+`PublicSignalMarkers` for category icons and marker selection, and
+`PublicSignalDetails` for category, date and optional address details. The incident
+map applies its own category filters and uses its sidebar; the location pickers
+limit reports to the form's selected categories and show details in a popup
+without changing the form selection.
+
 - `find_address_in_distance`: Search radius in meters when finding an address near a selected location.
 - `minimal_zoom`: Minimum zoom level required before users can select a location.
 - `default_zoom`: Initial map zoom level.
